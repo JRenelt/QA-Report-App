@@ -1854,42 +1854,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     setDragOverCategory(null);
   };
 
-  // Organisiere Kategorien nach Hierarchie - UNBEGRENZTE EBENEN
-  const organizeCategories = () => {
-    const categoryMap = new Map();
-    const rootCategories = [];
-    
-    // Erstelle Map aller Kategorien für schnelle Suche
-    categories.forEach(category => {
-      categoryMap.set(category.name, {
-        ...category,
-        children: []
-      });
-    });
-    
-    // Erstelle hierarchische Struktur
-    categories.forEach(category => {
-      const categoryObj = categoryMap.get(category.name);
-      
-      if (!category.parent_category) {
-        // Hauptkategorie
-        rootCategories.push(categoryObj);
-      } else {
-        // Unterkategorie - füge zu Parent hinzu
-        const parent = categoryMap.get(category.parent_category);
-        if (parent) {
-          parent.children.push(categoryObj);
-        } else {
-          // Parent nicht gefunden - wird zu Hauptkategorie
-          rootCategories.push(categoryObj);
-        }
-      }
-    });
-    
-    return rootCategories;
-  };
-
-  const organizedCategories = organizeCategories();
+  // Use organizeCategories from the CategoryManageDialog scope
+  const organizedCategories = [];
 
   return (
     <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
