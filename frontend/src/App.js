@@ -434,6 +434,17 @@ const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkC
               <Copy className="w-4 h-4 mr-2" />
               {duplicateCount > 0 ? `Duplikate [${duplicateCount}]` : 'Duplikate'}
             </Button>
+            
+            {/* V2.3.0: Spielteppich-Spiel Button */}
+            <Button 
+              onClick={onGameClick} 
+              className="action-btn game-btn"
+              size="sm"
+              title="Fang die Maus - Multi-Layer Spielteppich"
+            >
+              <Mouse className="w-4 h-4 mr-2" />
+              Spiel
+            </Button>
           </div>
         </div>
 
