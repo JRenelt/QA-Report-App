@@ -2092,14 +2092,28 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
                   size="sm"
                   onClick={() => onEditBookmark(bookmark)}
                   className="edit-btn"
+                  disabled={bookmark.is_locked}
                 >
                   <Edit className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={() => handleToggleBookmarkLock(bookmark.id, !bookmark.is_locked)}
+                  className="lock-btn"
+                  title={bookmark.is_locked ? "Entsperren" : "Sperren"}
+                >
+                  {bookmark.is_locked ? 
+                    <LockKeyholeOpen className="w-4 h-4 text-green-600" /> : 
+                    <LockKeyhole className="w-4 h-4 text-gray-600" />
+                  }
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => onDeleteBookmark(bookmark.id)}
                   className="delete-btn"
+                  disabled={bookmark.is_locked}
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
