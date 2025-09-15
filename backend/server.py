@@ -46,6 +46,7 @@ class Bookmark(BaseModel):
     subcategory: Optional[str] = None
     date_added: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     is_dead_link: bool = False
+    is_locked: bool = False
     last_checked: Optional[datetime] = None
     favicon: Optional[str] = None
     description: Optional[str] = None
