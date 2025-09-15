@@ -3426,6 +3426,27 @@ function App() {
     return () => clearTimeout(timer);
   }, [loadBookmarks, loadCategories, loadStatistics]);
 
+  // Keyboard Shortcuts Handler
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // STRG+Z (Undo)
+      if (e.ctrlKey && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        handleUndo();
+      }
+      // STRG+Y (Redo)
+      else if (e.ctrlKey && e.key === 'y') {
+        e.preventDefault();
+        handleRedo();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [undoStack, redoStack, bookmarks]);
+
 
 
   const handleCreateTestData = async () => {
