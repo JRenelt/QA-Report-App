@@ -645,13 +645,15 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
       setFormData({
         title: bookmark.title || '',
         url: bookmark.url || '',
-        category: bookmark.category || 'Uncategorized'
+        category: bookmark.category || 'Uncategorized',
+        is_locked: bookmark.is_locked || false
       });
     } else {
       setFormData({
         title: '',
         url: '',
-        category: '' // Leer für Placeholder
+        category: '', // Leer für Placeholder
+        is_locked: false
       });
     }
     setErrors({});
