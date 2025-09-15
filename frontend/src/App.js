@@ -3902,7 +3902,6 @@ function App() {
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
         onDeleteAllClick={handleDeleteAll}
-        onGameClick={handleGameClick}
         deadLinksCount={statistics?.dead_links || 0}
         hasValidated={hasValidated}
         totalBookmarks={statistics?.total_bookmarks || 0}
