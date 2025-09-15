@@ -3693,6 +3693,25 @@ function App() {
     setShowBookmarkDialog(true);
   };
 
+  const handleToggleBookmarkLock = async (bookmarkId, isLocked) => {
+    try {
+      const updateData = { is_locked: isLocked };
+      await favoritesService.updateBookmark(bookmarkId, updateData);
+      
+      // Lokale Liste aktualisieren
+      setBookmarks(bookmarks.map(bookmark => 
+        bookmark.id === bookmarkId 
+          ? { ...bookmark, is_locked: isLocked, status_type: isLocked ? 'locked' : 'active' }
+          : bookmark
+      ));
+      
+      toast.success(isLocked ? 'Favorit gesperrt.' : 'Favorit entsperrt.');
+    } catch (error) {
+      console.error('Error toggling bookmark lock:', error);
+      toast.error(`Fehler beim ${isLocked ? 'Sperren' : 'Entsperren'} des Favoriten.`);
+    }
+  };
+
   const handleCreateBookmark = () => {
     clearAllToasts(); // Schließe alle Toasts beim Öffnen des Dialogs
     setEditingBookmark(null);
