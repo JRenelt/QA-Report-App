@@ -544,7 +544,15 @@ const FavOrg = () => {
                 <CardContent>
                   <Dialog open={showImport} onOpenChange={setShowImport}>
                     <DialogTrigger asChild>
-                      <Button className="w-full">Browser-Favoriten importieren</Button>
+                      <Button 
+                        className="w-full"
+                        onClick={() => {
+                          setImportForm({ browser_name: "", bookmarks_data: "" });
+                          setShowImport(true);
+                        }}
+                      >
+                        Browser-Favoriten importieren
+                      </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
