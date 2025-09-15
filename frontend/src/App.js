@@ -2695,19 +2695,12 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
           </div>
           
           <div className="status-filter-wrapper">
-            <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-              <SelectTrigger className="status-filter">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alle Status</SelectItem>
-                <SelectItem value="active">Nur aktive</SelectItem>
-                <SelectItem value="dead">Nur tote</SelectItem>
-                <SelectItem value="localhost">Nur localhost</SelectItem>
-                <SelectItem value="duplicate">Nur Duplikate</SelectItem>
-                <SelectItem value="unchecked">Nur ungeprüfte</SelectItem>
-              </SelectContent>
-            </Select>
+            {/* Enhanced Status Filter V2.3.0 */}
+            <EnhancedStatusFilter
+              value={statusFilter}
+              onChange={onStatusFilterChange}
+              lockedCount={bookmarks.filter(b => b.is_locked || b.status_type === 'locked').length}
+            />
           </div>
         </div>
       </div>
