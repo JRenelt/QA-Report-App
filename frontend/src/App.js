@@ -2087,8 +2087,8 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
                   title={bookmark.is_locked ? "Entsperren" : "Sperren"}
                 >
                   {bookmark.is_locked ? 
-                    <LockKeyholeOpen className="w-4 h-4 text-green-600" /> : 
-                    <LockKeyhole className="w-4 h-4 text-gray-600" />
+                    <LockKeyhole className="w-4 h-4 text-red-600" /> : 
+                    <LockKeyholeOpen className="w-4 h-4 text-green-600" />
                   }
                 </Button>
                 <Button
