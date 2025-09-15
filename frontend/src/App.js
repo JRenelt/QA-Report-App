@@ -2822,8 +2822,7 @@ function App() {
     );
   }
 
-  // Original App Code würde hier fortgesetzt...
-  // Für Demo-Zwecke zeigen wir nur die neue Version
+  // Fallback zur vereinfachten alten Version für Demo
   return (
     <div>
       <div className="bg-gray-600 text-white p-2 text-center">
