@@ -443,12 +443,13 @@ const FavOrg = () => {
                           </div>
                         </div>
                         
-                        <div className="flex gap-2 ml-4">
+                        <div className="flex gap-2 ml-4 flex-shrink-0">
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => handleEditFavorite(favorite)}
                             disabled={favorite.is_protected}
+                            className="h-8 w-8 p-0"
                           >
                             <Edit2 className="w-4 h-4" />
                           </Button>
@@ -457,6 +458,7 @@ const FavOrg = () => {
                             variant="destructive"
                             onClick={() => handleDeleteFavorite(favorite.id)}
                             disabled={favorite.is_protected}
+                            className="h-8 w-8 p-0"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
