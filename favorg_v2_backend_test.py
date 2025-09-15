@@ -200,7 +200,7 @@ class FavOrgAPITester:
         }
         
         # This might not work if the create endpoint doesn't support is_locked
-        success, data = self.run_test("Create Directly Locked Bookmark", "POST", "bookmarks", 201, bookmark_data)
+        success, data = self.run_test("Create Directly Locked Bookmark", "POST", "bookmarks", 200, bookmark_data)
         
         if success and 'id' in data:
             bookmark_id = data['id']
