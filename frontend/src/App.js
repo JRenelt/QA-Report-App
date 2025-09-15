@@ -2802,6 +2802,52 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
 
 // Hauptkomponente
 function App() {
+  // Temporäre Umleitung zur neuen integrierten Komponente
+  const [showNewVersion, setShowNewVersion] = useState(true);
+
+  if (showNewVersion) {
+    return (
+      <div>
+        <div className="bg-blue-600 text-white p-2 text-center">
+          <span className="mr-4">🚀 FavOrg V2.3.0 - Neue Features aktiv!</span>
+          <button 
+            onClick={() => setShowNewVersion(false)}
+            className="bg-blue-500 hover:bg-blue-400 px-3 py-1 rounded text-sm"
+          >
+            Zur alten Version
+          </button>
+        </div>
+        <IntegratedFavOrg />
+      </div>
+    );
+  }
+
+  // Original App Code würde hier fortgesetzt...
+  // Für Demo-Zwecke zeigen wir nur die neue Version
+  return (
+    <div>
+      <div className="bg-gray-600 text-white p-2 text-center">
+        <span className="mr-4">📋 FavOrg V2.2.0 - Klassische Ansicht</span>
+        <button 
+          onClick={() => setShowNewVersion(true)}
+          className="bg-green-600 hover:bg-green-500 px-3 py-1 rounded text-sm"
+        >
+          🚀 Zu V2.3.0 wechseln
+        </button>
+      </div>
+      <div className="p-8 text-center">
+        <h2 className="text-2xl font-bold mb-4">FavOrg V2.2.0</h2>
+        <p className="text-gray-600 mb-4">Klassische Ansicht (vereinfacht für Demo)</p>
+        <button 
+          onClick={() => setShowNewVersion(true)}
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+        >
+          🚀 Neue V2.3.0 Features testen
+        </button>
+      </div>
+    </div>
+  );
+}
   // Core State Management
   const [bookmarks, setBookmarks] = useState([]);
   const [categories, setCategories] = useState([]);
