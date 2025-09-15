@@ -65,6 +65,8 @@ class BookmarkCreate(BaseModel):
     url: str
     category: str = "Uncategorized"
     subcategory: Optional[str] = None
+    is_locked: bool = False
+    status_type: str = "active"  # active, dead, localhost, duplicate, locked
 
 class BookmarkUpdate(BaseModel):
     title: Optional[str] = None
