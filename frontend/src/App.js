@@ -786,7 +786,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                 className="checkbox"
               />
               <Label htmlFor="is_locked" className="flex items-center space-x-2">
-                <Lock className="w-4 h-4" />
+                <LockKeyhole className="w-4 h-4" />
                 <span>Favorit sperren (gegen Löschung schützen)</span>
               </Label>
             </div>
