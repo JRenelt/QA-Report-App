@@ -3737,6 +3737,9 @@ function App() {
 
   const handleToggleBookmarkLock = async (bookmarkId, isLocked) => {
     try {
+      // Save current state to undo stack
+      saveToUndoStack();
+      
       const updateData = { is_locked: isLocked };
       await favoritesService.updateBookmark(bookmarkId, updateData);
       
@@ -3752,6 +3755,64 @@ function App() {
       console.error('Error toggling bookmark lock:', error);
       toast.error(`Fehler beim ${isLocked ? 'Sperren' : 'Entsperren'} des Favoriten.`);
     }
+  };
+
+  // Undo/Redo Functions
+  const saveToUndoStack = () => {
+    const currentState = {
+      bookmarks: [...bookmarks],
+      categories: [...categories],
+      timestamp: Date.now()
+    };
+    
+    setUndoStack(prev => [...prev.slice(-19), currentState]); // Keep last 20 states
+    setRedoStack([]); // Clear redo stack when new action is performed
+  };
+
+  const handleUndo = () => {
+    if (undoStack.length === 0) {
+      toast.info('Nichts rückgängig zu machen.');
+      return;
+    }
+
+    const currentState = {
+      bookmarks: [...bookmarks],
+      categories: [...categories],
+      timestamp: Date.now()
+    };
+
+    const previousState = undoStack[undoStack.length - 1];
+    
+    setRedoStack(prev => [...prev, currentState]);
+    setUndoStack(prev => prev.slice(0, -1));
+    
+    setBookmarks(previousState.bookmarks);
+    setCategories(previousState.categories);
+    
+    toast.success('Aktion rückgängig gemacht.');
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length === 0) {
+      toast.info('Nichts wiederherzustellen.');
+      return;
+    }
+
+    const currentState = {
+      bookmarks: [...bookmarks],
+      categories: [...categories],
+      timestamp: Date.now()
+    };
+
+    const nextState = redoStack[redoStack.length - 1];
+    
+    setUndoStack(prev => [...prev, currentState]);
+    setRedoStack(prev => prev.slice(0, -1));
+    
+    setBookmarks(nextState.bookmarks);
+    setCategories(nextState.categories);
+    
+    toast.success('Aktion wiederhergestellt.');
   };
 
   const handleCreateBookmark = () => {
