@@ -1,0 +1,301 @@
+/* Enhanced Components Styles */
+
+/* Status Filter Styles */
+.status-filter-select .flex {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Bookmark Card Styles */
+.bookmark-card {
+  transition: all 0.2s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.bookmark-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-color: #d1d5db;
+}
+
+.bookmark-card .status-icon {
+  font-size: 0.875rem;
+}
+
+/* Enhanced Bookmark Dialog Styles */
+.enhanced-bookmark-dialog {
+  max-width: 48rem;
+}
+
+.enhanced-bookmark-dialog .grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.enhanced-bookmark-dialog .col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
+.enhanced-bookmark-dialog .border-t {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.enhanced-bookmark-dialog .text-gray-700 {
+  color: #374151;
+}
+
+.enhanced-bookmark-dialog .text-gray-900 {
+  color: #111827;
+}
+
+.enhanced-bookmark-dialog .bg-white {
+  background-color: #ffffff;
+}
+
+.enhanced-bookmark-dialog .border-red-500 {
+  border-color: #ef4444;
+}
+
+.enhanced-bookmark-dialog .text-red-500 {
+  color: #ef4444;
+}
+
+/* Catch Mouse Game Styles */
+.catch-mouse-game {
+  max-width: 56rem;
+}
+
+.game-container {
+  padding: 1rem;
+}
+
+.game-menu, .game-settings, .game-over {
+  text-align: center;
+  padding: 2rem;
+}
+
+.game-description, .game-settings {
+  margin: 1rem 0;
+}
+
+.game-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.game-stats {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-left: auto;
+}
+
+.game-canvas {
+  border: 2px solid #d1d5db;
+  cursor: crosshair;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.pause-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+}
+
+.game-layers, .game-settings, .game-instructions {
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.game-layers h5, .game-settings h5, .game-instructions h5 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Help Dialog Enhanced Styles */
+.help-section .feature-highlight {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.help-section .tip-box {
+  background-color: #fffbeb;
+  border: 1px solid #fed7aa;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.help-section .instructions {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.help-section .status-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.help-section .status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.25rem;
+}
+
+.help-section .status-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.help-section .shortcuts-grid, .help-section .features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.help-section .shortcut-category, .help-section .feature-group {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.help-section .shortcut-category h5, .help-section .feature-group h5 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.help-section .new-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.help-section .feature-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background-color: #ffffff;
+}
+
+.help-section .feature-item h5 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+}
+
+.help-section .settings-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.help-section .setting-category {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.help-section .setting-category h5 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #475569;
+}
+
+.help-section .alphabetical-note {
+  background-color: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.help-section .version-info {
+  background-color: #f0f4f8;
+  border: 1px solid #cbd5e0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.help-section .version-info p {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .enhanced-bookmark-dialog .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .enhanced-bookmark-dialog .col-span-2 {
+    grid-column: span 1 / span 1;
+  }
+  
+  .game-controls {
+    flex-wrap: wrap;
+  }
+  
+  .game-stats {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+  
+  .help-section .shortcuts-grid, .help-section .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Focus states */
+.enhanced-bookmark-dialog input:focus,
+.enhanced-bookmark-dialog textarea:focus,
+.enhanced-bookmark-dialog select:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Animation for status changes */
+.bookmark-card .status-item {
+  transition: all 0.3s ease;
+}
+
+.bookmark-card .status-item:hover {
+  transform: scale(1.05);
+}
+
+/* Game elements animations */
+.game-canvas:hover {
+  border-color: #3b82f6;
+}
+
+.pause-overlay {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
