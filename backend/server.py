@@ -70,6 +70,8 @@ class BookmarkUpdate(BaseModel):
     url: Optional[str] = None
     category: Optional[str] = None
     subcategory: Optional[str] = None
+    status_type: Optional[str] = None
+    is_locked: Optional[bool] = None
 
 class BookmarkMove(BaseModel):
     bookmark_ids: List[str]
