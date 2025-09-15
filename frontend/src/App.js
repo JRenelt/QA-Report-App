@@ -930,7 +930,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
         {/* Rekursiv Kinder rendern */}
         {category.children && category.children.length > 0 && 
-          renderCategoryTree(category.children, level + 1)
+          renderCategoryTree(category.children, level + 1, newVisited)
         }
       </div>
     ));
