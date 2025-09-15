@@ -3576,6 +3576,9 @@ function App() {
 
   const handleDeleteBookmark = async (bookmarkId) => {
     try {
+      // Save current state to undo stack
+      saveToUndoStack();
+      
       await favoritesService.deleteBookmark(bookmarkId);
       toast.success('Favorit gelöscht.');
       await loadBookmarks();
