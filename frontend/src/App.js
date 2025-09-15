@@ -367,7 +367,7 @@ class UIStateManager {
 
 // React Komponenten
 
-const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkClick, onFileUploadClick, onExportClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick, deadLinksCount, hasValidated, totalBookmarks, duplicateCount, hasDuplicatesMarked, filteredCount }) => {
+const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkClick, onFileUploadClick, onExportClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick, onGameClick, deadLinksCount, hasValidated, totalBookmarks, duplicateCount, hasDuplicatesMarked, filteredCount }) => {
   return (
     <header className="header-fixed">
       <div className="header-content">
