@@ -64,7 +64,10 @@ import {
   Mouse,
   Monitor,
   Workflow,
-  GripVertical
+  GripVertical,
+  LockKeyhole,
+  LockKeyholeOpen,
+  Info
 } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
