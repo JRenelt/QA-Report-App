@@ -867,13 +867,13 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     
     return cats.map(category => {
       // Schutz gegen zirkuläre Referenzen
-      if (visited.has(category.id)) {
+      if (visited.has(category.name)) {
         console.warn(`Circular reference detected for category: ${category.name}`);
         return null;
       }
       
       const newVisited = new Set(visited);
-      newVisited.add(category.id);
+      newVisited.add(category.name);
       
       return (
         <div key={category.id} className="category-live-group">
