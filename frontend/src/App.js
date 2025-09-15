@@ -858,8 +858,24 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   const organizedCategories = organizeCategories();
 
   // Rekursive Funktion zum Rendern von Kategorien aller Ebenen
-  const renderCategoryTree = (cats, level = 0) => {
-    return cats.map(category => (
+  const renderCategoryTree = (cats, level = 0, visited = new Set()) => {
+    // Schutz gegen unendliche Rekursion
+    if (level > 10) {
+      console.warn('Maximum category nesting level reached (10)');
+      return null;
+    }
+    
+    return cats.map(category => {
+      // Schutz gegen zirkuläre Referenzen
+      if (visited.has(category.id)) {
+        console.warn(`Circular reference detected for category: ${category.name}`);
+        return null;
+      }
+      
+      const newVisited = new Set(visited);
+      newVisited.add(category.id);
+      
+      return (
       <div key={category.id} className="category-live-group">
         {/* Hauptkategorie */}
         <div className="category-live-item main-category" style={{ marginLeft: `${level * 20}px` }}>
