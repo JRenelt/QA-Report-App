@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Card, CardContent } from './ui/card';
-import { ExternalLink, Edit2, Trash2, Lock, Unlock, Info } from 'lucide-react';
+import { ExternalLink, Edit2, Trash2, LockKeyhole, LockKeyholeOpen, Info } from 'lucide-react';
 
 const BookmarkCard = ({ 
   bookmark, 
