@@ -3872,6 +3872,7 @@ function App() {
           onDeleteBookmark={handleDeleteBookmark}
           onEditBookmark={handleEditBookmark}
           onToggleStatus={handleToggleStatus}
+          onToggleLock={handleToggleBookmarkLock}
           onFileSelected={handleFileSelected}
           viewMode={viewMode}
           onViewModeChange={handleViewModeChange}
