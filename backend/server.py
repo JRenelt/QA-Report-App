@@ -981,7 +981,15 @@ class BookmarkManager:
     
     async def create_bookmark(self, bookmark_data: BookmarkCreate) -> Bookmark:
         """Neues Bookmark erstellen"""
-        bookmark = Bookmark(**bookmark_data.dict())
+        bookmark_dict = bookmark_data.dict()
+        
+        # Konsistenz zwischen is_locked und status_type sicherstellen
+        if bookmark_dict.get("is_locked", False):
+            bookmark_dict["status_type"] = "locked"
+        elif bookmark_dict.get("status_type") == "locked":
+            bookmark_dict["is_locked"] = True
+            
+        bookmark = Bookmark(**bookmark_dict)
         await self.db.bookmarks.insert_one(bookmark.dict())
         await self.category_manager.update_bookmark_counts()
         return bookmark
