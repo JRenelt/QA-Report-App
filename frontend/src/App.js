@@ -474,7 +474,11 @@ const FavOrg = () => {
               <h2 className="text-xl font-semibold">Kategorien verwalten</h2>
               <Dialog open={showAddCategory} onOpenChange={setShowAddCategory}>
                 <DialogTrigger asChild>
-                  <Button onClick={() => { setEditingCategory(null); setCategoryForm({ name: "", parent_id: "" }); }}>
+                  <Button onClick={() => { 
+                    setEditingCategory(null); 
+                    setCategoryForm({ name: "", parent_id: "" });
+                    setShowAddCategory(true);
+                  }}>
                     <Plus className="w-4 h-4 mr-2" />
                     Kategorie hinzufügen
                   </Button>
