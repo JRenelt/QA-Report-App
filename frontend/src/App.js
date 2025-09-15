@@ -776,6 +776,22 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             />
           </div>
           
+          <div className="form-group">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="is_locked"
+                checked={formData.is_locked}
+                onChange={(e) => setFormData({...formData, is_locked: e.target.checked})}
+                className="checkbox"
+              />
+              <Label htmlFor="is_locked" className="flex items-center space-x-2">
+                <Lock className="w-4 h-4" />
+                <span>Favorit sperren (gegen Löschung schützen)</span>
+              </Label>
+            </div>
+          </div>
+          
           <div className="form-actions">
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
               Abbrechen
