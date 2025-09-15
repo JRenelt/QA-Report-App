@@ -1395,6 +1395,102 @@ async def delete_bookmark(bookmark_id: str):
     await bookmark_manager.category_manager.update_bookmark_counts()
     return {"message": "Bookmark deleted successfully"}
 
+# Category Management Endpoints
+class CategoryCreate(BaseModel):
+    name: str
+    parent_category: Optional[str] = None
+
+class CategoryUpdate(BaseModel):
+    name: Optional[str] = None
+    parent_category: Optional[str] = None
+
+@api_router.post("/categories", response_model=Category)
+async def create_category(category_data: CategoryCreate):
+    """Neue Kategorie erstellen"""
+    # Prüfen ob Kategorie bereits existiert
+    existing = await db.categories.find_one({"name": category_data.name})
+    if existing:
+        raise HTTPException(status_code=400, detail="Kategorie existiert bereits")
+    
+    category = Category(
+        name=category_data.name,
+        parent_category=category_data.parent_category,
+        bookmark_count=0,
+        subcategory_count=0
+    )
+    
+    await db.categories.insert_one(category.dict())
+    await bookmark_manager.category_manager.update_bookmark_counts()
+    return category
+
+@api_router.put("/categories/{category_id}", response_model=Category)
+async def update_category(category_id: str, update_data: CategoryUpdate):
+    """Kategorie aktualisieren"""
+    # Finde Kategorie
+    category = await db.categories.find_one({"id": category_id})
+    if not category:
+        raise HTTPException(status_code=404, detail="Kategorie nicht gefunden")
+    
+    # Update nur geänderte Felder
+    update_dict = {}
+    if update_data.name is not None:
+        update_dict["name"] = update_data.name
+    if update_data.parent_category is not None:
+        update_dict["parent_category"] = update_data.parent_category
+    
+    if update_dict:
+        await db.categories.update_one({"id": category_id}, {"$set": update_dict})
+    
+    # Aktualisierte Kategorie zurückgeben
+    updated_category = await db.categories.find_one({"id": category_id})
+    await bookmark_manager.category_manager.update_bookmark_counts()
+    return Category(**updated_category)
+
+@api_router.delete("/categories/{category_id}")
+async def delete_category(category_id: str):
+    """Kategorie löschen"""
+    # Finde Kategorie
+    category = await db.categories.find_one({"id": category_id})
+    if not category:
+        raise HTTPException(status_code=404, detail="Kategorie nicht gefunden")
+    
+    category_name = category["name"]
+    
+    # Verschiebe alle Bookmarks zu "Uncategorized"
+    await db.bookmarks.update_many(
+        {"category": category_name},
+        {"$set": {"category": "Uncategorized", "subcategory": None}}
+    )
+    
+    # Verschiebe alle Unterkategorien zu Hauptkategorien
+    await db.categories.update_many(
+        {"parent_category": category_name},
+        {"$unset": {"parent_category": ""}}
+    )
+    
+    # Lösche die Kategorie
+    result = await db.categories.delete_one({"id": category_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Kategorie nicht gefunden")
+    
+    await bookmark_manager.category_manager.update_bookmark_counts()
+    return {"message": f"Kategorie '{category_name}' gelöscht und Bookmarks zu 'Uncategorized' verschoben"}
+
+# Leere Kategorien aufräumen Endpoint
+@api_router.delete("/categories/cleanup-empty")
+async def cleanup_empty_categories():
+    """Leere Kategorien mit Namen '' oder null entfernen"""
+    result = await db.categories.delete_many({
+        "$or": [
+            {"name": ""},
+            {"name": None},
+            {"name": {"$exists": False}}
+        ]
+    })
+    
+    await bookmark_manager.category_manager.update_bookmark_counts()
+    return {"message": f"{result.deleted_count} leere Kategorien entfernt"}
+
 # Include the router in the main app
 app.include_router(api_router)
 
