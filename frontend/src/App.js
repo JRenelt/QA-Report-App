@@ -352,7 +352,7 @@ const FavOrg = () => {
                       </div>
                       <div>
                         <Label htmlFor="category">Kategorie</Label>
-                        <Select value={favoriteForm.category_id || ""} onValueChange={(value) => setFavoriteForm({...favoriteForm, category_id: value})}>
+                        <Select value={favoriteForm.category_id || ""} onValueChange={(value) => setFavoriteForm({...favoriteForm, category_id: value === "" ? null : value})}>
                           <SelectTrigger>
                             <SelectValue placeholder="Kategorie wählen" />
                           </SelectTrigger>
