@@ -525,10 +525,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Easter Egg Game with Organic Street Network (NEW)"
-    - "Link Validation with System Messages (NEW)"
-    - "Bookmark Dialog (Create/Edit)"
-    - "Drag & Drop Extended Functionality (NEW)"
+    - "Gesperrt Features (Locked Bookmarks)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
