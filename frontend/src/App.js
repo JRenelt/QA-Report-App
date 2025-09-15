@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
+import "./components/enhanced-components.css";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
 import { Button } from "./components/ui/button";
@@ -14,6 +15,13 @@ import { Label } from "./components/ui/label";
 import { Textarea } from "./components/ui/textarea";
 import TableView from "./components/TableView";
 import DraggableToast from "./components/DraggableToast";
+
+// V2.3.0 Enhanced Components
+import EnhancedStatusFilter from "./components/EnhancedStatusFilter";
+import EnhancedBookmarkCard from "./components/EnhancedBookmarkCard";
+import ImprovedBookmarkDialog from "./components/ImprovedBookmarkDialog";
+import EnhancedCatchMouseGame from "./components/EnhancedCatchMouseGame";
+import ComprehensiveHelpDialog from "./components/ComprehensiveHelpDialog";
 import { 
   Settings, 
   HelpCircle, 
