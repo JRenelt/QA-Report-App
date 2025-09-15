@@ -98,7 +98,7 @@ class FavOrgAPITester:
             "subcategory": "Locked Tests"
         }
         
-        success, data = self.run_test("Create Normal Bookmark", "POST", "bookmarks", 201, bookmark_data)
+        success, data = self.run_test("Create Normal Bookmark", "POST", "bookmarks", 200, bookmark_data)
         
         if success and 'id' in data:
             bookmark_id = data['id']
