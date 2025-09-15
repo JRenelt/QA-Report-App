@@ -2825,6 +2825,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             onDeleteBookmark={onDeleteBookmark}
             onEditBookmark={onEditBookmark}
             onToggleStatus={onToggleStatus}
+            onToggleLock={onToggleLock}
             onBookmarkReorder={onBookmarkReorder}
           />
         )}
