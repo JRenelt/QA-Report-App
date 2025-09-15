@@ -2892,7 +2892,6 @@ function App() {
       </div>
     </div>
   );
-}
   // Core State Management
   const [bookmarks, setBookmarks] = useState([]);
   const [categories, setCategories] = useState([]);
