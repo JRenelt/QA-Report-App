@@ -1,401 +1,650 @@
-#!/usr/bin/env python3
-"""
-FavOrg Backend API Test Suite
-Tests all endpoints for the favorites manager system
-"""
-
 import requests
-import json
 import sys
+import json
+import io
 from datetime import datetime
-import time
 
-class FavOrgAPITester:
-    def __init__(self, base_url="https://bookmark-central.preview.emergentagent.com"):
+class FavLinkBackendTester:
+    def __init__(self, base_url="https://favorg-manager.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
         self.tests_passed = 0
-        self.created_items = {
-            'categories': [],
-            'favorites': []
-        }
 
-    def log_test(self, name, success, details=""):
-        """Log test results"""
-        self.tests_run += 1
-        if success:
-            self.tests_passed += 1
-            print(f"✅ {name}")
-        else:
-            print(f"❌ {name} - {details}")
-        
-        if details and success:
-            print(f"   {details}")
-
-    def make_request(self, method, endpoint, data=None, expected_status=200):
-        """Make HTTP request and return response"""
+    def run_test(self, name, method, endpoint, expected_status, data=None, files=None, expect_json=True):
+        """Run a single API test"""
         url = f"{self.api_url}/{endpoint}"
-        headers = {'Content-Type': 'application/json'}
+        headers = {}
+        
+        if not files:
+            headers['Content-Type'] = 'application/json'
+
+        self.tests_run += 1
+        print(f"\n🔍 Testing {name}...")
+        print(f"   URL: {url}")
         
         try:
             if method == 'GET':
-                response = requests.get(url, headers=headers, timeout=30)
+                response = requests.get(url, headers=headers)
             elif method == 'POST':
-                response = requests.post(url, json=data, headers=headers, timeout=30)
+                if files:
+                    response = requests.post(url, files=files)
+                else:
+                    response = requests.post(url, json=data, headers=headers)
             elif method == 'PUT':
-                response = requests.put(url, json=data, headers=headers, timeout=30)
+                response = requests.put(url, json=data, headers=headers)
             elif method == 'DELETE':
-                response = requests.delete(url, headers=headers, timeout=30)
-            
+                response = requests.delete(url, headers=headers)
+
             success = response.status_code == expected_status
-            return success, response
-            
-        except Exception as e:
-            return False, str(e)
-
-    def test_api_root(self):
-        """Test API root endpoint"""
-        success, response = self.make_request('GET', '')
-        if success:
-            try:
-                data = response.json()
-                self.log_test("API Root", True, f"Message: {data.get('message', 'No message')}")
-            except:
-                self.log_test("API Root", False, "Invalid JSON response")
-        else:
-            self.log_test("API Root", False, f"Status: {response.status_code if hasattr(response, 'status_code') else response}")
-
-    def test_categories_crud(self):
-        """Test complete CRUD operations for categories"""
-        print("\n🔍 Testing Categories CRUD...")
-        
-        # 1. GET categories (initially empty or with existing data)
-        success, response = self.make_request('GET', 'categories')
-        if success:
-            initial_categories = response.json()
-            self.log_test("GET Categories", True, f"Found {len(initial_categories)} existing categories")
-        else:
-            self.log_test("GET Categories", False, f"Status: {response.status_code}")
-            return
-
-        # 2. CREATE main category
-        main_cat_data = {"name": "Test Hauptkategorie", "parent_id": None}
-        success, response = self.make_request('POST', 'categories', main_cat_data, 200)
-        if success:
-            main_category = response.json()
-            self.created_items['categories'].append(main_category['id'])
-            self.log_test("CREATE Main Category", True, f"ID: {main_category['id']}, Level: {main_category['level']}")
-        else:
-            self.log_test("CREATE Main Category", False, f"Status: {response.status_code}")
-            return
-
-        # 3. CREATE subcategory
-        sub_cat_data = {"name": "Test Unterkategorie", "parent_id": main_category['id']}
-        success, response = self.make_request('POST', 'categories', sub_cat_data, 200)
-        if success:
-            sub_category = response.json()
-            self.created_items['categories'].append(sub_category['id'])
-            self.log_test("CREATE Sub Category", True, f"ID: {sub_category['id']}, Level: {sub_category['level']}")
-        else:
-            self.log_test("CREATE Sub Category", False, f"Status: {response.status_code}")
-
-        # 4. UPDATE category
-        update_data = {"name": "Test Hauptkategorie (Bearbeitet)"}
-        success, response = self.make_request('PUT', f'categories/{main_category["id"]}', update_data, 200)
-        if success:
-            updated_category = response.json()
-            self.log_test("UPDATE Category", True, f"New name: {updated_category['name']}")
-        else:
-            self.log_test("UPDATE Category", False, f"Status: {response.status_code}")
-
-        # 5. GET categories again to verify changes
-        success, response = self.make_request('GET', 'categories')
-        if success:
-            updated_categories = response.json()
-            self.log_test("GET Updated Categories", True, f"Total: {len(updated_categories)} categories")
-        else:
-            self.log_test("GET Updated Categories", False, f"Status: {response.status_code}")
-
-    def test_favorites_crud(self):
-        """Test complete CRUD operations for favorites"""
-        print("\n🔍 Testing Favorites CRUD...")
-        
-        # Get a category ID for testing (use first created category)
-        category_id = self.created_items['categories'][0] if self.created_items['categories'] else None
-        
-        # 1. GET favorites (initially empty or with existing data)
-        success, response = self.make_request('GET', 'favorites')
-        if success:
-            initial_favorites = response.json()
-            self.log_test("GET Favorites", True, f"Found {len(initial_favorites)} existing favorites")
-        else:
-            self.log_test("GET Favorites", False, f"Status: {response.status_code}")
-            return
-
-        # 2. CREATE normal favorite
-        normal_fav_data = {
-            "title": "Test Google",
-            "url": "https://www.google.com",
-            "description": "Test favorite for Google",
-            "category_id": category_id,
-            "tags": ["search", "test"]
-        }
-        success, response = self.make_request('POST', 'favorites', normal_fav_data, 200)
-        if success:
-            normal_favorite = response.json()
-            self.created_items['favorites'].append(normal_favorite['id'])
-            self.log_test("CREATE Normal Favorite", True, 
-                         f"ID: {normal_favorite['id']}, Broken: {normal_favorite['is_broken']}, Localhost: {normal_favorite['is_localhost']}")
-        else:
-            self.log_test("CREATE Normal Favorite", False, f"Status: {response.status_code}")
-            return
-
-        # 3. CREATE localhost favorite
-        localhost_fav_data = {
-            "title": "Test Localhost",
-            "url": "http://localhost:3000",
-            "description": "Test localhost favorite",
-            "category_id": category_id,
-            "tags": ["localhost", "test"]
-        }
-        success, response = self.make_request('POST', 'favorites', localhost_fav_data, 200)
-        if success:
-            localhost_favorite = response.json()
-            self.created_items['favorites'].append(localhost_favorite['id'])
-            self.log_test("CREATE Localhost Favorite", True, 
-                         f"ID: {localhost_favorite['id']}, Localhost: {localhost_favorite['is_localhost']}")
-        else:
-            self.log_test("CREATE Localhost Favorite", False, f"Status: {response.status_code}")
-
-        # 4. CREATE duplicate favorite (same URL as first)
-        duplicate_fav_data = {
-            "title": "Test Google Duplicate",
-            "url": "https://www.google.com",
-            "description": "Duplicate of Google",
-            "category_id": category_id,
-            "tags": ["duplicate", "test"]
-        }
-        success, response = self.make_request('POST', 'favorites', duplicate_fav_data, 200)
-        if success:
-            duplicate_favorite = response.json()
-            self.created_items['favorites'].append(duplicate_favorite['id'])
-            self.log_test("CREATE Duplicate Favorite", True, f"ID: {duplicate_favorite['id']}")
-            
-            # Wait a moment for duplicate detection to process
-            time.sleep(2)
-        else:
-            self.log_test("CREATE Duplicate Favorite", False, f"Status: {response.status_code}")
-
-        # 5. UPDATE favorite with protection
-        update_data = {
-            "title": "Test Google (Protected)",
-            "is_protected": True
-        }
-        success, response = self.make_request('PUT', f'favorites/{normal_favorite["id"]}', update_data, 200)
-        if success:
-            updated_favorite = response.json()
-            self.log_test("UPDATE Favorite (Add Protection)", True, 
-                         f"Protected: {updated_favorite['is_protected']}")
-        else:
-            self.log_test("UPDATE Favorite (Add Protection)", False, f"Status: {response.status_code}")
-
-        # 6. Try to update protected favorite (should fail)
-        success, response = self.make_request('PUT', f'favorites/{normal_favorite["id"]}', 
-                                            {"title": "Should Fail"}, 403)
-        self.log_test("UPDATE Protected Favorite (Should Fail)", success, 
-                     "Correctly blocked protected favorite update")
-
-    def test_favorites_filtering(self):
-        """Test favorites filtering functionality"""
-        print("\n🔍 Testing Favorites Filtering...")
-        
-        # Test filter by status - duplicates
-        success, response = self.make_request('GET', 'favorites?status=duplicates')
-        if success:
-            duplicates = response.json()
-            duplicate_count = len([f for f in duplicates if f.get('is_duplicate', False)])
-            self.log_test("Filter Duplicates", True, f"Found {duplicate_count} duplicate favorites")
-        else:
-            self.log_test("Filter Duplicates", False, f"Status: {response.status_code}")
-
-        # Test filter by status - localhost
-        success, response = self.make_request('GET', 'favorites?status=localhost')
-        if success:
-            localhost_favs = response.json()
-            localhost_count = len([f for f in localhost_favs if f.get('is_localhost', False)])
-            self.log_test("Filter Localhost", True, f"Found {localhost_count} localhost favorites")
-        else:
-            self.log_test("Filter Localhost", False, f"Status: {response.status_code}")
-
-        # Test filter by status - broken
-        success, response = self.make_request('GET', 'favorites?status=broken')
-        if success:
-            broken_favs = response.json()
-            broken_count = len([f for f in broken_favs if f.get('is_broken', False)])
-            self.log_test("Filter Broken", True, f"Found {broken_count} broken favorites")
-        else:
-            self.log_test("Filter Broken", False, f"Status: {response.status_code}")
-
-        # Test filter by category
-        if self.created_items['categories']:
-            category_id = self.created_items['categories'][0]
-            success, response = self.make_request('GET', f'favorites?category_id={category_id}')
             if success:
-                category_favs = response.json()
-                self.log_test("Filter by Category", True, f"Found {len(category_favs)} favorites in category")
+                self.tests_passed += 1
+                print(f"✅ Passed - Status: {response.status_code}")
+                if expect_json:
+                    try:
+                        response_data = response.json()
+                        print(f"   Response: {json.dumps(response_data, indent=2)[:200]}...")
+                        return success, response_data
+                    except:
+                        print(f"   Response: {response.text[:200]}...")
+                        return success, {}
+                else:
+                    print(f"   Response: {response.text[:200]}...")
+                    return success, response.text
             else:
-                self.log_test("Filter by Category", False, f"Status: {response.status_code}")
+                print(f"❌ Failed - Expected {expected_status}, got {response.status_code}")
+                print(f"   Response: {response.text[:300]}...")
+                return success, {}
 
-    def test_import_export(self):
-        """Test import and export functionality"""
-        print("\n🔍 Testing Import/Export...")
-        
-        # Test import with sample bookmark data
-        sample_bookmarks = {
-            "name": "Bookmarks",
-            "type": "folder",
+        except Exception as e:
+            print(f"❌ Failed - Error: {str(e)}")
+            return False, {}
+
+    def create_sample_html_file(self):
+        """Create a sample HTML bookmarks file for testing"""
+        html_content = """<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Bookmarks</TITLE>
+<H1>Bookmarks Menu</H1>
+
+<DL><p>
+    <DT><H3>Development</H3>
+    <DL><p>
+        <DT><A HREF="https://github.com/">GitHub</A>
+        <DT><A HREF="https://stackoverflow.com/">Stack Overflow</A>
+    </DL><p>
+    
+    <DT><H3>News</H3>
+    <DL><p>
+        <DT><A HREF="https://news.ycombinator.com/">Hacker News</A>
+        <DT><A HREF="https://www.reddit.com/">Reddit</A>
+    </DL><p>
+    
+    <DT><H3>Tools</H3>
+    <DL><p>
+        <DT><A HREF="https://www.google.com/">Google</A>
+        <DT><A HREF="https://www.wikipedia.org/">Wikipedia</A>
+    </DL><p>
+</DL><p>"""
+        return html_content
+
+    def create_sample_json_file(self):
+        """Create a sample JSON bookmarks file for testing"""
+        json_content = {
             "children": [
                 {
-                    "name": "Test Folder",
-                    "type": "folder",
+                    "name": "Social Media",
                     "children": [
-                        {
-                            "name": "GitHub",
-                            "url": "https://github.com",
-                            "type": "url"
-                        },
-                        {
-                            "name": "Stack Overflow",
-                            "url": "https://stackoverflow.com",
-                            "type": "url"
-                        }
+                        {"name": "Twitter", "url": "https://twitter.com/"},
+                        {"name": "LinkedIn", "url": "https://linkedin.com/"}
                     ]
                 },
                 {
-                    "name": "Direct Link",
-                    "url": "https://www.example.com",
-                    "type": "url"
+                    "name": "Entertainment", 
+                    "children": [
+                        {"name": "YouTube", "url": "https://youtube.com/"},
+                        {"name": "Netflix", "url": "https://netflix.com/"}
+                    ]
                 }
             ]
         }
+        return json.dumps(json_content)
+
+    def test_import_html_bookmarks(self):
+        """Test HTML bookmarks import"""
+        html_content = self.create_sample_html_file()
+        files = {'file': ('bookmarks.html', html_content, 'text/html')}
         
-        import_data = {
-            "browser_name": "Chrome",
-            "bookmarks_data": json.dumps(sample_bookmarks)
+        success, response = self.run_test(
+            "Import HTML Bookmarks",
+            "POST",
+            "bookmarks/import",
+            200,
+            files=files
+        )
+        return success, response
+
+    def test_import_json_bookmarks(self):
+        """Test JSON bookmarks import"""
+        json_content = self.create_sample_json_file()
+        files = {'file': ('bookmarks.json', json_content, 'application/json')}
+        
+        success, response = self.run_test(
+            "Import JSON Bookmarks", 
+            "POST",
+            "bookmarks/import",
+            200,
+            files=files
+        )
+        return success, response
+
+    def test_get_all_bookmarks(self):
+        """Test getting all bookmarks"""
+        success, response = self.run_test(
+            "Get All Bookmarks",
+            "GET", 
+            "bookmarks",
+            200
+        )
+        return success, response
+
+    def test_get_categories(self):
+        """Test getting all categories"""
+        success, response = self.run_test(
+            "Get All Categories",
+            "GET",
+            "categories", 
+            200
+        )
+        return success, response
+
+    def test_get_bookmarks_by_category(self, category="Development"):
+        """Test getting bookmarks by category"""
+        success, response = self.run_test(
+            f"Get Bookmarks by Category ({category})",
+            "GET",
+            f"bookmarks/category/{category}",
+            200
+        )
+        return success, response
+
+    def test_search_bookmarks(self, query="GitHub"):
+        """Test bookmark search functionality"""
+        success, response = self.run_test(
+            f"Search Bookmarks ({query})",
+            "GET",
+            f"bookmarks/search/{query}",
+            200
+        )
+        return success, response
+
+    def test_validate_links(self):
+        """Test link validation (dead link check)"""
+        success, response = self.run_test(
+            "Validate Links (Dead Link Check)",
+            "POST",
+            "bookmarks/validate",
+            200
+        )
+        return success, response
+
+    def test_remove_duplicates(self):
+        """Test duplicate removal"""
+        success, response = self.run_test(
+            "Remove Duplicates",
+            "POST", 
+            "bookmarks/remove-duplicates",
+            200
+        )
+        return success, response
+
+    def test_create_single_bookmark(self):
+        """Test creating a single bookmark"""
+        bookmark_data = {
+            "title": "Test Bookmark",
+            "url": "https://example.com/test",
+            "category": "Testing"
         }
         
-        success, response = self.make_request('POST', 'import/browser', import_data, 200)
-        if success:
-            result = response.json()
-            self.log_test("Import Browser Bookmarks", True, result.get('message', 'Import successful'))
-        else:
-            self.log_test("Import Browser Bookmarks", False, f"Status: {response.status_code}")
+        success, response = self.run_test(
+            "Create Single Bookmark",
+            "POST",
+            "bookmarks",
+            200,
+            data=bookmark_data
+        )
+        return success, response
 
-        # Test export
-        success, response = self.make_request('POST', 'export/Chrome', None, 200)
-        if success:
-            export_data = response.json()
-            self.log_test("Export Bookmarks", True, f"Export structure created with {len(export_data.get('children', []))} top-level items")
-        else:
-            self.log_test("Export Bookmarks", False, f"Status: {response.status_code}")
+    def test_delete_single_bookmark(self, bookmark_id):
+        """Test deleting a single bookmark"""
+        success, response = self.run_test(
+            f"Delete Single Bookmark ({bookmark_id})",
+            "DELETE",
+            f"bookmarks/{bookmark_id}",
+            200
+        )
+        return success, response
 
-    def test_link_analysis(self):
-        """Test link analysis functionality"""
-        print("\n🔍 Testing Link Analysis...")
+    def test_delete_all_bookmarks(self):
+        """Test deleting all bookmarks"""
+        success, response = self.run_test(
+            "Delete All Bookmarks",
+            "DELETE",
+            "bookmarks/all",
+            200
+        )
+        return success, response
+
+    def test_update_bookmark(self, bookmark_id, update_data):
+        """Test updating a bookmark"""
+        success, response = self.run_test(
+            f"Update Bookmark ({bookmark_id})",
+            "PUT",
+            f"bookmarks/{bookmark_id}",
+            200,
+            data=update_data
+        )
+        return success, response
+
+    def test_move_bookmarks(self, bookmark_ids, target_category, target_subcategory=None):
+        """Test moving bookmarks to different category"""
+        move_data = {
+            "bookmark_ids": bookmark_ids,
+            "target_category": target_category,
+            "target_subcategory": target_subcategory
+        }
         
-        success, response = self.make_request('POST', 'analyze/links', None, 200)
-        if success:
-            result = response.json()
-            self.log_test("Analyze Links", True, result.get('message', 'Analysis completed'))
-        else:
-            self.log_test("Analyze Links", False, f"Status: {response.status_code}")
+        success, response = self.run_test(
+            f"Move Bookmarks to {target_category}",
+            "POST",
+            "bookmarks/move",
+            200,
+            data=move_data
+        )
+        return success, response
 
-    def test_special_categories(self):
-        """Test that special categories are created and used correctly"""
-        print("\n🔍 Testing Special Categories...")
-        
-        # Get all categories and check for special ones
-        success, response = self.make_request('GET', 'categories')
-        if success:
-            categories = response.json()
-            special_cats = ["Doppelte Favoriten", "Defekte Links", "Localhost"]
-            found_special = []
+    def test_export_xml(self, category=None):
+        """Test XML export functionality"""
+        export_data = {"format": "xml"}
+        if category:
+            export_data["category"] = category
             
-            for cat in categories:
-                if cat['name'] in special_cats:
-                    found_special.append(cat['name'])
-            
-            self.log_test("Special Categories Created", len(found_special) > 0, 
-                         f"Found: {', '.join(found_special)}")
-        else:
-            self.log_test("Special Categories Check", False, f"Status: {response.status_code}")
+        success, response = self.run_test(
+            f"Export XML{' (Category: ' + category + ')' if category else ''}",
+            "POST",
+            "export",
+            200,
+            data=export_data,
+            expect_json=False
+        )
+        return success, response
 
-    def cleanup_test_data(self):
-        """Clean up created test data"""
-        print("\n🧹 Cleaning up test data...")
+    def test_export_csv(self, category=None):
+        """Test CSV export functionality"""
+        export_data = {"format": "csv"}
+        if category:
+            export_data["category"] = category
+            
+        success, response = self.run_test(
+            f"Export CSV{' (Category: ' + category + ')' if category else ''}",
+            "POST",
+            "export",
+            200,
+            data=export_data,
+            expect_json=False
+        )
+        return success, response
+
+    def test_get_statistics(self):
+        """Test statistics endpoint"""
+        success, response = self.run_test(
+            "Get Statistics",
+            "GET",
+            "statistics",
+            200
+        )
+        return success, response
+
+    def test_download_collector_zip(self):
+        """Test downloading collector scripts as ZIP"""
+        success, response = self.run_test(
+            "Download Collector ZIP",
+            "GET",
+            "download/collector",
+            200,
+            expect_json=False
+        )
+        return success, response
+
+    def test_create_sample_bookmarks(self):
+        """Test creating sample bookmarks"""
+        success, response = self.run_test(
+            "Create Sample Bookmarks",
+            "POST",
+            "bookmarks/create-samples",
+            200
+        )
+        return success, response
+
+    def test_remove_dead_links(self):
+        """Test removing all dead links (NEW FEATURE)"""
+        success, response = self.run_test(
+            "Remove Dead Links (NEW)",
+            "DELETE",
+            "bookmarks/dead-links",
+            200
+        )
+        return success, response
+
+    def test_status_management(self):
+        """Test new status management features"""
+        print("\n🔄 Testing Status Management Features...")
         
-        # Delete test favorites (in reverse order)
-        for fav_id in reversed(self.created_items['favorites']):
-            success, response = self.make_request('DELETE', f'favorites/{fav_id}', expected_status=200)
-            if success:
-                print(f"   ✅ Deleted favorite {fav_id}")
+        # First get a bookmark to test with
+        success, bookmarks = self.test_get_all_bookmarks()
+        if not success or not bookmarks:
+            print("❌ No bookmarks available for status testing")
+            return False, "No bookmarks available"
+        
+        bookmark_id = bookmarks[0]['id']
+        print(f"   Using bookmark ID: {bookmark_id}")
+        
+        # Test all status types
+        status_types = ['active', 'dead', 'localhost', 'duplicate', 'unchecked']
+        
+        for status_type in status_types:
+            status_data = {"status_type": status_type}
+            success, response = self.run_test(
+                f"Update Status to {status_type}",
+                "PUT",
+                f"bookmarks/{bookmark_id}/status",
+                200,
+                data=status_data
+            )
+            if not success:
+                return False, f"Failed to set status to {status_type}"
+        
+        return True, "All status types tested successfully"
+
+    def test_duplicate_workflow(self):
+        """Test complete duplicate workflow: Find → Mark → Delete"""
+        print("\n🔄 Testing Duplicate Workflow...")
+        
+        # Step 1: Find and mark duplicates
+        success, find_response = self.run_test(
+            "Find and Mark Duplicates",
+            "POST",
+            "bookmarks/find-duplicates",
+            200
+        )
+        if not success:
+            return False, "Failed to find duplicates"
+        
+        duplicate_groups = find_response.get('duplicate_groups', 0)
+        marked_count = find_response.get('marked_count', 0)
+        print(f"   Found {duplicate_groups} duplicate groups, marked {marked_count} duplicates")
+        
+        # Step 2: Delete marked duplicates
+        success, delete_response = self.run_test(
+            "Delete Marked Duplicates",
+            "DELETE",
+            "bookmarks/duplicates",
+            200
+        )
+        if not success:
+            return False, "Failed to delete duplicates"
+        
+        removed_count = delete_response.get('removed_count', 0)
+        print(f"   Removed {removed_count} duplicate bookmarks")
+        
+        return True, {
+            "duplicate_groups": duplicate_groups,
+            "marked_count": marked_count,
+            "removed_count": removed_count
+        }
+
+    def test_statistics_comprehensive(self):
+        """Test statistics endpoint with comprehensive field validation for new vertical layout"""
+        success, response = self.run_test(
+            "Get Comprehensive Statistics",
+            "GET",
+            "statistics",
+            200
+        )
+        
+        if success:
+            # Validate all required fields for the new vertical layout
+            required_fields = [
+                'total_bookmarks', 'total_categories', 'active_links', 
+                'dead_links', 'localhost_links', 'duplicate_links', 
+                'timeout_links', 'unchecked_links'
+            ]
+            
+            missing_fields = []
+            for field in required_fields:
+                if field not in response:
+                    missing_fields.append(field)
+            
+            if missing_fields:
+                print(f"   ⚠️  Missing fields for vertical layout: {missing_fields}")
+                return False, f"Missing required fields: {missing_fields}"
             else:
-                # Try to remove protection first
-                self.make_request('PUT', f'favorites/{fav_id}', {"is_protected": False})
-                success, response = self.make_request('DELETE', f'favorites/{fav_id}', expected_status=200)
-                if success:
-                    print(f"   ✅ Deleted protected favorite {fav_id}")
-                else:
-                    print(f"   ❌ Failed to delete favorite {fav_id}")
-
-        # Delete test categories (in reverse order to handle hierarchy)
-        for cat_id in reversed(self.created_items['categories']):
-            success, response = self.make_request('DELETE', f'categories/{cat_id}', expected_status=200)
-            if success:
-                print(f"   ✅ Deleted category {cat_id}")
-            else:
-                print(f"   ❌ Failed to delete category {cat_id}")
-
-    def run_all_tests(self):
-        """Run complete test suite"""
-        print("🚀 Starting FavOrg Backend API Tests")
-        print(f"📍 Testing against: {self.base_url}")
-        print("=" * 60)
+                print("   ✅ All required statistics fields present for vertical layout")
+                print(f"   📊 Statistics: {response['total_bookmarks']} total, {response['active_links']} active, {response['dead_links']} dead")
+                return True, response
         
-        try:
-            # Core API tests
-            self.test_api_root()
-            self.test_categories_crud()
-            self.test_favorites_crud()
-            self.test_favorites_filtering()
-            self.test_import_export()
-            self.test_link_analysis()
-            self.test_special_categories()
+        return success, response
+
+    def test_integration_workflow(self):
+        """Test the complete integration workflow: Validate → Check Dead Links → Remove → Update Statistics"""
+        print("\n🔄 Starting Integration Workflow Test...")
+        
+        # Step 1: Get initial statistics
+        print("   Step 1: Getting initial statistics...")
+        stats_success, initial_stats = self.test_get_statistics()
+        if not stats_success:
+            return False, "Failed to get initial statistics"
+        
+        initial_dead_links = initial_stats.get('dead_links', 0)
+        initial_total = initial_stats.get('total_bookmarks', 0)
+        print(f"   Initial state: {initial_total} total bookmarks, {initial_dead_links} dead links")
+        
+        # Step 2: Validate all links
+        print("   Step 2: Validating all links...")
+        validate_success, validate_response = self.test_validate_links()
+        if not validate_success:
+            return False, "Link validation failed"
+        
+        dead_links_found = validate_response.get('dead_links_found', 0)
+        print(f"   Validation result: {dead_links_found} dead links found")
+        
+        # Step 3: Get updated statistics after validation
+        print("   Step 3: Getting statistics after validation...")
+        stats_success, post_validate_stats = self.test_get_statistics()
+        if not stats_success:
+            return False, "Failed to get post-validation statistics"
+        
+        post_validate_dead_links = post_validate_stats.get('dead_links', 0)
+        print(f"   Post-validation: {post_validate_dead_links} dead links in statistics")
+        
+        # Step 4: Remove dead links if any exist
+        if post_validate_dead_links > 0:
+            print("   Step 4: Removing dead links...")
+            remove_success, remove_response = self.test_remove_dead_links()
+            if not remove_success:
+                return False, "Dead links removal failed"
             
-        except KeyboardInterrupt:
-            print("\n⚠️  Tests interrupted by user")
-        except Exception as e:
-            print(f"\n💥 Unexpected error: {str(e)}")
-        finally:
-            # Always try to clean up
-            self.cleanup_test_data()
-        
-        # Print summary
-        print("\n" + "=" * 60)
-        print(f"📊 Test Results: {self.tests_passed}/{self.tests_run} passed")
-        
-        if self.tests_passed == self.tests_run:
-            print("🎉 All tests passed!")
-            return 0
+            removed_count = remove_response.get('removed_count', 0)
+            print(f"   Removal result: {removed_count} dead links removed")
+            
+            # Step 5: Get final statistics
+            print("   Step 5: Getting final statistics...")
+            stats_success, final_stats = self.test_get_statistics()
+            if not stats_success:
+                return False, "Failed to get final statistics"
+            
+            final_dead_links = final_stats.get('dead_links', 0)
+            final_total = final_stats.get('total_bookmarks', 0)
+            print(f"   Final state: {final_total} total bookmarks, {final_dead_links} dead links")
+            
+            # Verify the workflow worked correctly
+            expected_total = initial_total - removed_count
+            if final_total == expected_total and final_dead_links == 0:
+                print("   ✅ Integration workflow completed successfully!")
+                return True, {
+                    "initial_total": initial_total,
+                    "initial_dead_links": initial_dead_links,
+                    "dead_links_found": dead_links_found,
+                    "removed_count": removed_count,
+                    "final_total": final_total,
+                    "final_dead_links": final_dead_links
+                }
+            else:
+                return False, f"Workflow verification failed: expected {expected_total} total, got {final_total}; expected 0 dead links, got {final_dead_links}"
         else:
-            print(f"⚠️  {self.tests_run - self.tests_passed} tests failed")
-            return 1
+            print("   No dead links found, workflow completed without removal")
+            return True, {
+                "initial_total": initial_total,
+                "initial_dead_links": initial_dead_links,
+                "dead_links_found": dead_links_found,
+                "removed_count": 0,
+                "final_total": initial_total,
+                "final_dead_links": 0
+            }
+
+    def test_dead_links_error_handling(self):
+        """Test error handling when removing dead links with none present"""
+        # First ensure no dead links exist by running the removal
+        self.test_remove_dead_links()
+        
+        # Now test removing dead links when none exist
+        success, response = self.run_test(
+            "Remove Dead Links (No Dead Links Present)",
+            "DELETE",
+            "bookmarks/dead-links",
+            200
+        )
+        
+        if success:
+            removed_count = response.get('removed_count', 0)
+            if removed_count == 0:
+                print("   ✅ Correctly handled case with no dead links to remove")
+                return True, response
+            else:
+                print(f"   ⚠️  Unexpected: {removed_count} links removed when none should exist")
+                return False, response
+        
+        return success, response
 
 def main():
-    """Main test runner"""
-    tester = FavOrgAPITester()
-    return tester.run_all_tests()
+    print("🚀 Starting FavLink Manager Backend API Tests")
+    print("🎯 FOCUS: Comprehensive Backend Testing nach Frontend Updates")
+    print("🇩🇪 Teste das FavOrg Backend nach den aktuellen Frontend-Updates")
+    print("=" * 70)
+    
+    tester = FavLinkBackendTester()
+    
+    # Test sequence - prioritizing Statistics and Status Management as requested
+    print("\n📋 Phase 1: 🎯 PRIORITY - Statistics Endpoint (für vertikales Layout)")
+    print("   Testing statistics endpoint for new vertical layout requirements")
+    stats_success, stats_response = tester.test_statistics_comprehensive()
+    
+    print("\n📋 Phase 2: Categories Endpoint (für verbesserte Tooltip-Funktionalität)")
+    categories_success, categories_response = tester.test_get_categories()
+    
+    print("\n📋 Phase 3: CRUD Operations (Basis-Operationen)")
+    # Create
+    create_success, create_response = tester.test_create_single_bookmark()
+    bookmark_id = None
+    if create_success and 'id' in create_response:
+        bookmark_id = create_response['id']
+        
+        # Read
+        tester.test_get_all_bookmarks()
+        tester.test_get_bookmarks_by_category("Development")
+        
+        # Update
+        update_data = {
+            "title": "Updated Test Bookmark für Backend Test",
+            "category": "Testing"
+        }
+        tester.test_update_bookmark(bookmark_id, update_data)
+        
+        # Move
+        tester.test_move_bookmarks([bookmark_id], "Development")
+        
+        # Delete (will be done at end)
+    
+    print("\n📋 Phase 4: 🎯 Status Management (alle status_type Operationen)")
+    status_success, status_response = tester.test_status_management()
+    
+    print("\n📋 Phase 5: Export-Funktionalität (XML/CSV)")
+    xml_success, xml_response = tester.test_export_xml()
+    csv_success, csv_response = tester.test_export_csv()
+    # Test with category filter
+    tester.test_export_xml("Development")
+    tester.test_export_csv("Development")
+    
+    print("\n📋 Phase 6: Link-Validierung (POST /api/bookmarks/validate)")
+    validation_success, validation_response = tester.test_validate_links()
+    
+    print("\n📋 Phase 7: 🎯 Duplikat-Management (Find und Delete Operationen)")
+    duplicate_success, duplicate_response = tester.test_duplicate_workflow()
+    
+    print("\n📋 Phase 8: Dead Links Removal & Integration Workflow")
+    workflow_success, workflow_result = tester.test_integration_workflow()
+    tester.test_dead_links_error_handling()
+    
+    print("\n📋 Phase 9: Scripts Download (ZIP)")
+    scripts_success, scripts_response = tester.test_download_collector_zip()
+    
+    print("\n📋 Phase 10: Final Verification")
+    # Get final statistics to verify everything is consistent
+    final_stats_success, final_stats = tester.test_get_statistics()
+    
+    # Cleanup - Delete the test bookmark if it was created
+    if bookmark_id:
+        tester.test_delete_single_bookmark(bookmark_id)
+    
+    # Print final results
+    print("\n" + "=" * 70)
+    print(f"📊 FINAL RESULTS - Backend Testing nach Frontend Updates")
+    print(f"Tests Run: {tester.tests_run}")
+    print(f"Tests Passed: {tester.tests_passed}")
+    print(f"Tests Failed: {tester.tests_run - tester.tests_passed}")
+    print(f"Success Rate: {(tester.tests_passed/tester.tests_run)*100:.1f}%")
+    
+    # Detailed results for key areas
+    print(f"\n🎯 KEY AREAS STATUS:")
+    print(f"✅ Statistics Endpoint (vertikales Layout): {'PASS' if stats_success else 'FAIL'}")
+    print(f"✅ Categories Endpoint (Tooltip): {'PASS' if categories_success else 'FAIL'}")
+    print(f"✅ CRUD Operations: {'PASS' if create_success else 'FAIL'}")
+    print(f"✅ Status Management: {'PASS' if status_success else 'FAIL'}")
+    print(f"✅ Export Functionality: {'PASS' if xml_success and csv_success else 'FAIL'}")
+    print(f"✅ Link Validation: {'PASS' if validation_success else 'FAIL'}")
+    print(f"✅ Duplicate Management: {'PASS' if duplicate_success else 'FAIL'}")
+    print(f"✅ Scripts Download: {'PASS' if scripts_success else 'FAIL'}")
+    
+    # Critical issues check
+    critical_failures = []
+    if not stats_success:
+        critical_failures.append("Statistics Endpoint")
+    if not categories_success:
+        critical_failures.append("Categories Endpoint")
+    if not create_success:
+        critical_failures.append("CRUD Operations")
+    
+    if critical_failures:
+        print(f"\n❌ CRITICAL FAILURES: {', '.join(critical_failures)}")
+        print("   These failures could impact frontend functionality!")
+    
+    if tester.tests_passed == tester.tests_run:
+        print("\n🎉 All tests passed! Backend API is fully functional nach Frontend Updates.")
+        print("🎯 Alle kritischen Endpunkte funktionieren einwandfrei!")
+        return 0
+    else:
+        print(f"\n⚠️  {tester.tests_run - tester.tests_passed} tests failed. Check the output above for details.")
+        return 1
 
 if __name__ == "__main__":
     sys.exit(main())
