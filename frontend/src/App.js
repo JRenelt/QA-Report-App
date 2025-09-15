@@ -3478,6 +3478,27 @@ function App() {
     setActiveSubcategory(subcategory);
   };
 
+  // V2.3.0: Handler für neue Features
+  const handleGameClick = () => {
+    clearAllToasts();
+    setShowGameDialog(true);
+  };
+
+  const handleToggleLock = async (bookmarkId, shouldLock) => {
+    try {
+      await favoritesService.updateBookmark(bookmarkId, { is_locked: shouldLock });
+      showCustomToast(shouldLock ? 'Favorit gesperrt 🔒' : 'Favorit entsperrt 🔓', 'success');
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      showCustomToast('Fehler beim Ändern des Sperr-Status: ' + error.message, 'error');
+    }
+  };
+
+  const handleToggleExtraInfo = () => {
+    setShowExtraInfo(!showExtraInfo);
+  };
+
   const handleDeleteBookmark = async (bookmarkId) => {
     try {
       await favoritesService.deleteBookmark(bookmarkId);
