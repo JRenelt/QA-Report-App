@@ -127,7 +127,7 @@ const UpdatedHelpDialog = ({ isOpen, onClose }) => {
                 <div className="feature-highlight">
                   <h5>✨ Neue Funktionen:</h5>
                   <ul>
-                    <li>Automatische Sortierung in "Doppelte Favoriten", "Defekte Links", "Localhost"</li>
+                    <li>Automatische Sortierung in "Duplikate", "Defekte Links", "Localhost"</li>
                     <li>Erkennung und Markierung von Localhost-URLs</li>
                     <li>Erweiterte Unterkategorien-Unterstützung</li>
                   </ul>
