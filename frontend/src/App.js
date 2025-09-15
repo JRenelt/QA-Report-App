@@ -15,6 +15,9 @@ import { Textarea } from "./components/ui/textarea";
 import TableView from "./components/TableView";
 import DraggableToast from "./components/DraggableToast";
 
+// Import der neuen integrierten Komponente
+import IntegratedFavOrg from "./components/IntegratedFavOrg";
+
 // Import neue verbesserte Komponenten
 import EnhancedStatusFilter from "./components/EnhancedStatusFilter";
 import EnhancedBookmarkCard from "./components/EnhancedBookmarkCard";
