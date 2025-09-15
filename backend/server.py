@@ -1149,6 +1149,7 @@ async def get_statistics():
         "dead_links": dead_links,
         "localhost_links": localhost_links,
         "duplicate_links": duplicate_links,
+        "locked_links": locked_links,
         "timeout_links": timeout_links,
         "unchecked_links": unchecked_links,
         "categories_distribution": categories_distribution,
