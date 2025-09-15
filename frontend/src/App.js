@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
+import "./components/enhanced-components.css";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
 import { Button } from "./components/ui/button";
