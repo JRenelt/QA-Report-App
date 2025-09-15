@@ -634,7 +634,8 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   const [formData, setFormData] = useState({
     title: '',
     url: '',
-    category: 'Uncategorized'
+    category: 'Uncategorized',
+    is_locked: false
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
