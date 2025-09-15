@@ -1476,6 +1476,20 @@ async def delete_category(category_id: str):
     await bookmark_manager.category_manager.update_bookmark_counts()
     return {"message": f"Kategorie '{category_name}' gelöscht und Bookmarks zu 'Uncategorized' verschoben"}
 
+@api_router.post("/categories/cleanup")
+async def cleanup_empty_categories():
+    """Leere Kategorien mit Namen '' oder null entfernen"""
+    result = await db.categories.delete_many({
+        "$or": [
+            {"name": ""},
+            {"name": None},
+            {"name": {"$exists": False}}
+        ]
+    })
+    
+    await bookmark_manager.category_manager.update_bookmark_counts()
+    return {"message": f"{result.deleted_count} leere Kategorien entfernt"}
+
 # Include the router in the main app
 app.include_router(api_router)
 
