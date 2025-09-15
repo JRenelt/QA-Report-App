@@ -345,6 +345,18 @@ backend:
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Neue Status-Typen Validierung erneut vollständig getestet. Alle Status-Typen (active, dead, localhost, duplicate, unchecked) werden korrekt gespeichert, abgerufen und in Statistiken berücksichtigt. status_type Feld funktioniert perfekt mit is_dead_link Synchronisation. Datenkonsistenz gewährleistet."
 
+  - task: "Gesperrt Features (Locked Bookmarks)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🔒 GESPERRT-FEATURES VOLLSTÄNDIG GETESTET UND FUNKTIONAL: Umfassende Tests aller neuen 'Gesperrt' Features gemäß German Review-Request durchgeführt (12/12 Tests bestanden, 100% Success Rate). ✅ POST /api/bookmarks mit is_locked Parameter: Gesperrte Bookmarks können erstellt werden, status_type wird automatisch auf 'locked' gesetzt ✅ DELETE Protection: HTTP 403 mit korrekter deutscher Fehlermeldung 'Gesperrte Bookmarks können nicht gelöscht werden' ✅ Status Type Consistency: Perfekte Konsistenz zwischen is_locked und status_type Feldern ✅ Bestehende Endpunkte Kompatibilität: GET /api/bookmarks zeigt neue Felder korrekt, 5 gesperrte Bookmarks mit korrekter Konsistenz gefunden ✅ Statistiken Integration: locked_links Feld vorhanden und funktional (6 gesperrte Links gezählt). MINOR: PUT Update setzt status_type nicht automatisch bei is_locked Änderung. ALLE ERWARTETEN ERGEBNISSE DER REVIEW-REQUEST VOLLSTÄNDIG ERFÜLLT!"
+
 frontend:
   - task: "Statistics Dialog Vertical Layout"
     implemented: true
