@@ -14,6 +14,13 @@ import { Label } from "./components/ui/label";
 import { Textarea } from "./components/ui/textarea";
 import TableView from "./components/TableView";
 import DraggableToast from "./components/DraggableToast";
+
+// Import neue verbesserte Komponenten
+import EnhancedStatusFilter from "./components/EnhancedStatusFilter";
+import EnhancedBookmarkCard from "./components/EnhancedBookmarkCard";
+import ImprovedBookmarkDialog from "./components/ImprovedBookmarkDialog";
+import EnhancedCatchMouseGame from "./components/EnhancedCatchMouseGame";
+import ComprehensiveHelpDialog from "./components/ComprehensiveHelpDialog";
 import { 
   Settings, 
   HelpCircle, 
