@@ -4055,6 +4055,18 @@ function App() {
         onSave={handleSaveCategories}
       />
 
+      {/* V2.3.0: Enhanced Game Dialog */}
+      <EnhancedCatchMouseGame
+        isOpen={showGameDialog}
+        onClose={() => setShowGameDialog(false)}
+      />
+
+      {/* V2.3.0: Enhanced Help Dialog */}
+      <ComprehensiveHelpDialog
+        isOpen={showHelp}
+        onClose={() => setShowHelp(false)}
+      />
+
       {/* Sonner Toaster - kept as fallback */}
       <Toaster 
         position="top-center" 
