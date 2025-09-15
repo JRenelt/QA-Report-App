@@ -3202,6 +3202,10 @@ function App() {
 
   // Toast Management
   const [toasts, setToasts] = useState([]);
+  
+  // Undo/Redo System States
+  const [undoStack, setUndoStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
   const [toastIdCounter, setToastIdCounter] = useState(0);
 
   const favoritesService = new FavoritesService();
