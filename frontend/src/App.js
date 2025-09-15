@@ -4122,4 +4122,16 @@ function App() {
         onSave={handleSaveCategories}
       />
 
+      {/* Sonner Toaster - kept as fallback */}
+      <Toaster 
+        position="top-center" 
+        offset="140px"
+        closeButton={true}
+        duration={4000}
+        visibleToasts={3}
+      />
+    </div>
+  );
+}
+
 export default App;
