@@ -90,6 +90,7 @@ class Statistics(BaseModel):
     dead_links: int
     localhost_links: int
     duplicate_links: int
+    locked_links: int
     timeout_links: int
     unchecked_links: int
     categories_distribution: Dict[str, int]
