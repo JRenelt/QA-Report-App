@@ -1,34 +1,173 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* FavOrg Custom Styles */
+.App {
+  min-height: 100vh;
+  background-color: #f9fafb;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+/* Custom scroll styling */
+.scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.scroll-area::-webkit-scrollbar {
+  width: 6px;
 }
 
-.App-link {
-    color: #61dafb;
+.scroll-area::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.scroll-area::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.scroll-area::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Drag and drop styling (for future implementation) */
+.draggable {
+  cursor: move;
+  transition: all 0.2s ease;
+}
+
+.draggable:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.drop-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  transition: all 0.2s ease;
+}
+
+.drop-zone.active {
+  border-color: #3b82f6;
+  background-color: #dbeafe;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.status-badge.duplicate {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.status-badge.broken {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.status-badge.localhost {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.status-badge.protected {
+  background-color: #f0f9ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+/* Animation for loading states */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Truncate long URLs */
+.truncate-url {
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Category tree indentation */
+.category-tree-node {
+  position: relative;
+}
+
+.category-tree-node::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #e5e7eb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .truncate-url {
+    max-width: 200px;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Focus states for better accessibility */
+.focus-ring:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Custom button variants */
+.btn-ghost {
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: #6b7280;
+}
+
+.btn-ghost:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+/* Table styles for future data tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.data-table th {
+  font-weight: 600;
+  color: #374151;
+  background-color: #f9fafb;
 }
