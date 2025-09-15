@@ -876,64 +876,65 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       newVisited.add(category.id);
       
       return (
-      <div key={category.id} className="category-live-group">
-        {/* Hauptkategorie */}
-        <div className="category-live-item main-category" style={{ marginLeft: `${level * 20}px` }}>
-          <div className="category-live-info">
-            <span className="category-level-icon">
-              {level === 0 ? '📁' : `${'└─'.repeat(level)}📂`}
-            </span>
-            {editingCategory === category.id ? (
-              <Input
-                defaultValue={category.name}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleRenameCategory(category, e.target.value);
-                  } else if (e.key === 'Escape') {
-                    setEditingCategory(null);
-                  }
-                }}
-                onBlur={(e) => handleRenameCategory(category, e.target.value)}
-                className="category-edit-input"
-                autoFocus
-              />
-            ) : (
-              <span 
-                className="category-name-editable"
-                onClick={() => setEditingCategory(category.id)}
-              >
-                {category.name} ({category.bookmark_count || 0})
+        <div key={category.id} className="category-live-group">
+          {/* Hauptkategorie */}
+          <div className="category-live-item main-category" style={{ marginLeft: `${level * 20}px` }}>
+            <div className="category-live-info">
+              <span className="category-level-icon">
+                {level === 0 ? '📁' : `${'└─'.repeat(level)}📂`}
               </span>
-            )}
+              {editingCategory === category.id ? (
+                <Input
+                  defaultValue={category.name}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleRenameCategory(category, e.target.value);
+                    } else if (e.key === 'Escape') {
+                      setEditingCategory(null);
+                    }
+                  }}
+                  onBlur={(e) => handleRenameCategory(category, e.target.value)}
+                  className="category-edit-input"
+                  autoFocus
+                />
+              ) : (
+                <span 
+                  className="category-name-editable"
+                  onClick={() => setEditingCategory(category.id)}
+                >
+                  {category.name} ({category.bookmark_count || 0})
+                </span>
+              )}
+            </div>
+            <div className="category-live-actions">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setEditingCategory(category.id)}
+                className="edit-category-btn-live"
+                title="Bearbeiten"
+              >
+                <Edit2 className="w-3 h-3" />
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => handleDeleteCategory(category)}
+                className="delete-category-btn-live"
+                title="Löschen"
+              >
+                <Trash2 className="w-3 h-3" />
+              </Button>
+            </div>
           </div>
-          <div className="category-live-actions">
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => setEditingCategory(category.id)}
-              className="edit-category-btn-live"
-              title="Bearbeiten"
-            >
-              <Edit2 className="w-3 h-3" />
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => handleDeleteCategory(category)}
-              className="delete-category-btn-live"
-              title="Löschen"
-            >
-              <Trash2 className="w-3 h-3" />
-            </Button>
-          </div>
-        </div>
 
-        {/* Rekursiv Kinder rendern */}
-        {category.children && category.children.length > 0 && 
-          renderCategoryTree(category.children, level + 1, newVisited)
-        }
-      </div>
-    ));
+          {/* Rekursiv Kinder rendern */}
+          {category.children && category.children.length > 0 && 
+            renderCategoryTree(category.children, level + 1, newVisited)
+          }
+        </div>
+      );
+    });
   };
 
   // Live-Editing: Neue Kategorie erstellen
