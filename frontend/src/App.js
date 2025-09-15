@@ -2824,7 +2824,9 @@ function App() {
   const [showStatistics, setShowStatistics] = useState(false);
   const [showExportDialog, setShowExportDialog] = useState(false); // Neu: Export Dialog
   const [showCategoryManageDialog, setShowCategoryManageDialog] = useState(false); // Neu: Category Management
+  const [showGameDialog, setShowGameDialog] = useState(false); // V2.3.0: Spielteppich-Spiel
   const [editingBookmark, setEditingBookmark] = useState(null);
+  const [showExtraInfo, setShowExtraInfo] = useState(false); // V2.3.0: Extra Info Kartenansicht
 
   // Clear all toasts function
   const clearAllToasts = () => {
