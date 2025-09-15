@@ -491,7 +491,7 @@ const FavOrg = () => {
                     </div>
                     <div>
                       <Label htmlFor="parent">Übergeordnete Kategorie</Label>
-                      <Select value={categoryForm.parent_id} onValueChange={(value) => setCategoryForm({...categoryForm, parent_id: value})}>
+                      <Select value={categoryForm.parent_id || ""} onValueChange={(value) => setCategoryForm({...categoryForm, parent_id: value})}>
                         <SelectTrigger>
                           <SelectValue placeholder="Hauptkategorie" />
                         </SelectTrigger>
