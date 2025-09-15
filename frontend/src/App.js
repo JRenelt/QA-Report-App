@@ -286,7 +286,7 @@ const FavOrg = () => {
           <TabsContent value="favorites" className="space-y-4">
             <div className="flex flex-wrap gap-4 items-center justify-between">
               <div className="flex gap-2">
-                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                <Select value={selectedStatus || "all"} onValueChange={setSelectedStatus}>
                   <SelectTrigger className="w-48">
                     <SelectValue placeholder="Status filtern" />
                   </SelectTrigger>
@@ -298,7 +298,7 @@ const FavOrg = () => {
                   </SelectContent>
                 </Select>
 
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <Select value={selectedCategory || "all"} onValueChange={setSelectedCategory}>
                   <SelectTrigger className="w-48">
                     <SelectValue placeholder="Kategorie filtern" />
                   </SelectTrigger>
