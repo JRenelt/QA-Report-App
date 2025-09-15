@@ -543,7 +543,7 @@ const FavOrg = () => {
                       <form onSubmit={handleImport} className="space-y-4">
                         <div>
                           <Label htmlFor="browser_name">Browser</Label>
-                          <Select value={importForm.browser_name} onValueChange={(value) => setImportForm({...importForm, browser_name: value})}>
+                          <Select value={importForm.browser_name || ""} onValueChange={(value) => setImportForm({...importForm, browser_name: value})}>
                             <SelectTrigger>
                               <SelectValue placeholder="Browser wählen" />
                             </SelectTrigger>
