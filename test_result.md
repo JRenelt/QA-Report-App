@@ -523,10 +523,61 @@ metadata:
   test_sequence: 1
   run_ui: false
 
+  - task: "Category CRUD Operations (MISSING ENDPOINTS)"
+    implemented: false
+    working: false
+    file: "backend/server.py"
+    stuck_count: 3
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ KRITISCHE BACKEND-PROBLEME ENTDECKT: Category CRUD Endpoints fehlen komplett. POST /api/categories (405 Method Not Allowed), PUT /api/categories/{id} (404 Not Found), DELETE /api/categories/{id} (404 Not Found). User kann keine neuen Kategorien erstellen, umbenennen oder löschen. Diese Endpoints müssen implementiert werden."
+
+  - task: "Empty Categories Database Cleanup"
+    implemented: true
+    working: false
+    file: "backend/server.py"
+    stuck_count: 2
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ KRITISCHES DATENPROBLEM: 3 leere Kategorien mit name='' in Database gefunden. Diese verursachen die [1][1][1] leeren Kategorien im Frontend. Categories: parent_category='Testing' (15 bookmarks), parent_category='Development' (3 bookmarks), parent_category='Social Media' (1 bookmark). Database-Cleanup erforderlich."
+
+  - task: "Status Filter Query Parameters"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ STATUS FILTER FUNKTIONIERT: GET /api/bookmarks?status_type=locked funktioniert korrekt und findet 3 gesperrte Bookmarks. Query Parameter wird korrekt verarbeitet. Löschschutz für gesperrte Bookmarks funktioniert (HTTP 403 'Gesperrte Bookmarks können nicht gelöscht werden')."
+
+  - task: "Bookmark Move Counter Update"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ BOOKMARK MOVE FUNKTIONIERT: POST /api/bookmarks/move verschiebt Bookmarks korrekt zwischen Kategorien (moved_count: 1). Category Counter werden nach Move-Operation aktualisiert. Integration mit CategoryManager.update_bookmark_counts() arbeitet einwandfrei."
+
 test_plan:
   current_focus:
-    - "Gesperrt Features (Locked Bookmarks)"
-  stuck_tasks: []
+    - "Category CRUD Operations (MISSING ENDPOINTS)"
+    - "Empty Categories Database Cleanup"
+  stuck_tasks:
+    - "Category CRUD Operations (MISSING ENDPOINTS)"
+    - "Empty Categories Database Cleanup"
   test_all: false
   test_priority: "high_first"
 
