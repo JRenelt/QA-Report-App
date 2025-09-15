@@ -645,10 +645,13 @@ class StatisticsManager:
         total_categories = len(categories)
         
         # Status-basierte Zählung
-        active_links = sum(1 for b in bookmarks if not b.get('is_dead_link', False) and b.get('last_checked'))
-        dead_links = sum(1 for b in bookmarks if b.get('is_dead_link', False))
-        timeout_links = 0  # Könnte erweitert werden
-        unchecked_links = sum(1 for b in bookmarks if not b.get('last_checked'))
+        active_links = sum(1 for b in bookmarks if b.get('status_type') == 'active')
+        dead_links = sum(1 for b in bookmarks if b.get('status_type') == 'dead')
+        localhost_links = sum(1 for b in bookmarks if b.get('status_type') == 'localhost')
+        duplicate_links = sum(1 for b in bookmarks if b.get('status_type') == 'duplicate')
+        locked_links = sum(1 for b in bookmarks if b.get('status_type') == 'locked' or b.get('is_locked', False))
+        timeout_links = sum(1 for b in bookmarks if b.get('status_type') == 'timeout')
+        unchecked_links = sum(1 for b in bookmarks if not b.get('status_type') or b.get('status_type') == 'unchecked')
         
         # Kategorien-Verteilung
         categories_distribution = {}
