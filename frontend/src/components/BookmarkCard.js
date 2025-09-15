@@ -103,7 +103,7 @@ const BookmarkCard = ({
               className="h-8 w-8 p-0"
               title={isLocked ? "Entsperren" : "Sperren"}
             >
-              {isLocked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+              {isLocked ? <LockKeyholeOpen className="w-4 h-4" /> : <LockKeyhole className="w-4 h-4" />}
             </Button>
             
             <Button
