@@ -317,7 +317,11 @@ const FavOrg = () => {
                 
                 <Dialog open={showAddFavorite} onOpenChange={setShowAddFavorite}>
                   <DialogTrigger asChild>
-                    <Button onClick={() => { setEditingFavorite(null); setFavoriteForm({ title: "", url: "", description: "", category_id: "", tags: "", is_protected: false }); }}>
+                    <Button onClick={() => { 
+                      setEditingFavorite(null); 
+                      setFavoriteForm({ title: "", url: "", description: "", category_id: "", tags: "", is_protected: false }); 
+                      setShowAddFavorite(true);
+                    }}>
                       <Plus className="w-4 h-4 mr-2" />
                       Favorit hinzufügen
                     </Button>
