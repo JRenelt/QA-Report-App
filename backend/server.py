@@ -1371,6 +1371,15 @@ async def move_bookmarks(move_data: BookmarkMove):
 @api_router.delete("/bookmarks/{bookmark_id}")
 async def delete_bookmark(bookmark_id: str):
     """Einzelnes Bookmark löschen"""
+    # Erst prüfen ob das Bookmark gesperrt ist
+    bookmark = await db.bookmarks.find_one({"id": bookmark_id})
+    if not bookmark:
+        raise HTTPException(status_code=404, detail="Bookmark not found")
+    
+    # Löschschutz für gesperrte Bookmarks
+    if bookmark.get("is_locked", False):
+        raise HTTPException(status_code=403, detail="Gesperrte Bookmarks können nicht gelöscht werden")
+    
     result = await db.bookmarks.delete_one({"id": bookmark_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Bookmark not found")
