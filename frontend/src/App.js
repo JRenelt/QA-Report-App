@@ -3048,7 +3048,7 @@ function App() {
       await favoritesService.deleteAllBookmarks();
       showSuccess('Alle Favoriten erfolgreich gelöscht');
       await loadBookmarks();
-      await loadCategories();
+      await refreshCategories();
       await loadStatistics();
     } catch (error) {
       console.error('Error deleting all bookmarks:', error);
