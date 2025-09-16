@@ -896,7 +896,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
           console.error(`Fehler: ${error.detail}`);
         }
       } catch (error) {
-        toast.error(`Fehler beim Erstellen: ${error.message}`);
+        console.error(`Fehler beim Erstellen: ${error.message}`);
       }
     }
   };
