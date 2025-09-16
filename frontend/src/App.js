@@ -1003,7 +1003,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         
         if (response.ok) {
           toast.success(`Kategorie "${category.name}" gelöscht`);
-          await loadCategories(); // Kategorien neu laden
+          await refreshCategories(); // Kategorien neu laden
           await loadBookmarks(); // Bookmarks neu laden (falls sich Zuordnungen geändert haben)
         } else {
           throw new Error('Kategorie konnte nicht gelöscht werden');
