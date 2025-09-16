@@ -3297,6 +3297,7 @@ function App() {
           case 'dead': return statusType === 'dead';
           case 'localhost': return statusType === 'localhost';
           case 'duplicate': return statusType === 'duplicate';
+          case 'locked': return statusType === 'locked' || bookmark.is_locked;
           case 'unchecked': return !bookmark.last_checked;
           default: return true;
         }
