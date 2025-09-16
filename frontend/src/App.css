@@ -2277,6 +2277,166 @@ body {
   color: var(--text-primary) !important;
 }
 
+/* Advanced Category Management Dialog */
+.category-manage-dialog-advanced {
+  z-index: 99999 !important;
+  background: var(--bg-primary) !important;
+  border: 2px solid var(--border-primary) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.category-management-group {
+  margin-bottom: 8px;
+}
+
+.category-management-item {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 6px;
+  transition: all 0.2s ease;
+  cursor: grab;
+}
+
+.category-management-item:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-management-item.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+  cursor: grabbing;
+}
+
+.category-management-item.drop-target {
+  border-color: var(--accent-primary);
+  background: var(--accent-bg);
+  box-shadow: 0 0 0 2px var(--accent-primary);
+}
+
+.category-management-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-level-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 60px;
+}
+
+.level-number {
+  background: var(--accent-primary);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.category-icon {
+  font-size: 16px;
+}
+
+.category-info-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.category-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-name-advanced {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.bookmark-count-badge {
+  background: var(--accent-secondary);
+  color: var(--text-secondary);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.category-actions-advanced {
+  display: flex;
+  gap: 4px;
+}
+
+.category-actions-advanced .button {
+  padding: 4px;
+  min-width: 32px;
+  height: 32px;
+}
+
+.move-to-root-btn {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+
+.move-to-root-btn:hover {
+  background: var(--success-hover);
+}
+
+.add-subcategory-btn {
+  background: var(--accent-bg);
+  color: var(--accent-text);
+}
+
+.add-subcategory-btn:hover {
+  background: var(--accent-hover);
+}
+
+.delete-category-btn-advanced {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+.delete-category-btn-advanced:hover {
+  background: var(--danger-hover);
+}
+
+.root-drop-zone {
+  border: 2px dashed var(--border-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  color: var(--text-secondary);
+  margin: 8px 0;
+  transition: all 0.2s ease;
+  background: var(--bg-tertiary);
+}
+
+.root-drop-zone.active {
+  border-color: var(--accent-primary);
+  background: var(--accent-bg);
+  color: var(--accent-text);
+  transform: scale(1.02);
+}
+
+.category-edit-input-advanced {
+  background: white;
+  border: 2px solid var(--accent-primary);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
 /* Help Dialog mit Navigation */
 .help-body-with-nav {
   display: flex;
