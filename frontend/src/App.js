@@ -1128,7 +1128,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
               </Button>
             </div>
           </div>
-        </dialogContent>
+        </DialogContent>
       </Dialog>
     </>
   );
