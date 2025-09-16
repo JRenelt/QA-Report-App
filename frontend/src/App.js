@@ -942,7 +942,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         onSave();
       } else {
         const error = await response.json();
-        toast.error(`Fehler beim Löschen`);
+        console.error(`Fehler beim Löschen`);
       }
     } catch (error) {
       toast.error(`Fehler beim Löschen: ${error.message}`);
