@@ -2897,7 +2897,7 @@ function App() {
     }
   };
 
-  const loadCategories = async () => {
+  const refreshCategories = async () => {
     try {
       const response = await favoritesService.getAllCategories();
       setCategories(response);
