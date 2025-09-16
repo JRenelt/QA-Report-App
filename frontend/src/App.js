@@ -981,7 +981,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         if (response.ok) {
           toast.success(`Kategorie "${category.name}" zu "${newName}" umbenannt`);
           setEditingCategory(null);
-          await loadCategories(); // Kategorien neu laden
+          await refreshCategories(); // Kategorien neu laden
         } else {
           throw new Error('Kategorie konnte nicht umbenannt werden');
         }
