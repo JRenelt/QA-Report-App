@@ -1050,14 +1050,14 @@ body {
 }
 
 .category-edit-input-advanced {
-  background: var(--bg-primary);
-  border: 2px solid var(--cyan-400);
-  color: var(--text-primary);
-  font-family: var(--font-family);
-  font-size: 14px;
-  padding: 6px 8px;
-  border-radius: 4px;
-  width: 200px;
+  background: var(--bg-primary) !important;
+  border: 2px solid var(--cyan-400) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-family) !important;
+  font-size: 14px !important;
+  padding: 6px 8px !important;
+  border-radius: 4px !important;
+  width: 200px !important;
 }
 
 .subcategories {
