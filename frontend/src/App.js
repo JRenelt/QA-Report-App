@@ -923,7 +923,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         console.error(`Fehler: ${error.detail}`);
       }
     } catch (error) {
-      toast.error(`Fehler beim Umbenennen: ${error.message}`);
+      console.error(`Fehler beim Umbenennen: ${error.message}`);
     }
   };
 
