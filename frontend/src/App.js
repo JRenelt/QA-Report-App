@@ -2895,7 +2895,6 @@ function App() {
 }
 
 export default App;
-  const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showStatistics, setShowStatistics] = useState(false);
