@@ -2864,6 +2864,9 @@ function App() {
   const [showCategoryManageDialog, setShowCategoryManageDialog] = useState(false); // Neu: Category Management
   const [showGameDialog, setShowGameDialog] = useState(false); // V2.3.0: Spielteppich-Spiel
   const [editingBookmark, setEditingBookmark] = useState(null);
+  
+  // Description Dialog State
+  const [showDescriptionDialog, setShowDescriptionDialog] = useState({show: false, bookmark: null});
   const [showExtraInfo, setShowExtraInfo] = useState(false); // V2.3.0: Extra Info Kartenansicht
 
   // Clear all toasts function
