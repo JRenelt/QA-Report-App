@@ -1220,6 +1220,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   // Duplicate function removed - using the one defined above with deleteConfirmDialog
 
   return (
+    <>
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
         className="category-manage-dialog-advanced"
