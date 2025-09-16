@@ -638,6 +638,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
         title: bookmark.title || '',
         url: bookmark.url || '',
         category: bookmark.category || 'Uncategorized',
+        subcategory: bookmark.subcategory || '',
         is_locked: bookmark.is_locked || false
       });
     } else {
