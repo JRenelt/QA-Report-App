@@ -958,40 +958,172 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     });
   };
 
-  // Einfache Liste ohne Rekursion
-  const renderCategoryList = () => {
-    return organizedCategories.map(category => (
-      <div key={category.id} className="category-item-simple">
-        <div className="category-info">
-          {editingCategory === category.id ? (
-            <Input
-              defaultValue={category.name}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleRenameCategory(category, e.target.value);
-                } else if (e.key === 'Escape') {
-                  setEditingCategory(null);
-                }
-              }}
-              onBlur={(e) => handleRenameCategory(category, e.target.value)}
-              autoFocus
-            />
-          ) : (
-            <span onClick={() => setEditingCategory(category.id)} className="category-name-simple">
-              📁 {category.name} ({category.bookmark_count || 0})
+  // Hierarchische Kategorie-Verwaltung mit unbegrenzten Ebenen
+  const organizeHierarchy = () => {
+    const categoryMap = new Map();
+    const rootCategories = [];
+    
+    // Erstelle Map aller Kategorien
+    organizedCategories.forEach(category => {
+      categoryMap.set(category.name, {
+        ...category,
+        children: []
+      });
+    });
+    
+    // Erstelle hierarchische Struktur
+    organizedCategories.forEach(category => {
+      const categoryObj = categoryMap.get(category.name);
+      
+      if (!category.parent_category) {
+        rootCategories.push(categoryObj);
+      } else {
+        const parent = categoryMap.get(category.parent_category);
+        if (parent) {
+          parent.children.push(categoryObj);
+        } else {
+          rootCategories.push(categoryObj); // Fallback
+        }
+      }
+    });
+    
+    return rootCategories;
+  };
+
+  const renderHierarchicalList = (categories, level = 0) => {
+    if (!categories || categories.length === 0) return null;
+    
+    return categories.map(category => (
+      <div key={category.id} className="category-hierarchy-item">
+        <div 
+          className="category-item-advanced" 
+          style={{ marginLeft: `${level * 24}px` }}
+        >
+          <div className="category-level-info">
+            <span className="level-indicator">{level + 1}</span>
+            <span className="category-icon">
+              {level === 0 ? '📁' : level === 1 ? '📂' : level === 2 ? '🗂️' : '📄'}
             </span>
-          )}
+          </div>
+          
+          <div className="category-content">
+            {editingCategory === category.id ? (
+              <input
+                className="category-edit-input-advanced"
+                defaultValue={category.name}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleRenameCategory(category, e.target.value);
+                  } else if (e.key === 'Escape') {
+                    setEditingCategory(null);
+                  }
+                }}
+                onBlur={(e) => handleRenameCategory(category, e.target.value)}
+                autoFocus
+              />
+            ) : (
+              <div className="category-display-info">
+                <span 
+                  onClick={() => setEditingCategory(category.id)} 
+                  className="category-name-advanced"
+                >
+                  {category.name}
+                </span>
+                <span className="bookmark-count">({category.bookmark_count || 0})</span>
+              </div>
+            )}
+          </div>
+          
+          <div className="category-actions-advanced">
+            {/* Zur Hauptebene Button */}
+            {level > 0 && (
+              <button
+                onClick={() => handleMoveToRoot(category)}
+                className="move-to-root-btn"
+                title="Zur Hauptebene verschieben"
+              >
+                <ArrowUp className="w-3 h-3" />
+              </button>
+            )}
+            
+            {/* Neue Unterkategorie Button */}
+            <button
+              onClick={() => handleCreateSubcategory(category.name)}
+              className="add-subcategory-btn"
+              title="Unterkategorie hinzufügen"
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+            
+            {/* Umbenennen Button */}
+            <button
+              onClick={() => setEditingCategory(category.id)}
+              className="edit-category-btn"
+              title="Umbenennen"
+            >
+              <Edit2 className="w-3 h-3" />
+            </button>
+            
+            {/* Löschen Button */}
+            <button
+              onClick={() => confirmDeleteCategory(category)}
+              className="delete-category-btn"
+              title="Löschen"
+            >
+              <Trash2 className="w-3 h-3" />
+            </button>
+          </div>
         </div>
-        <div className="category-actions-simple">
-          <Button size="sm" variant="ghost" onClick={() => setEditingCategory(category.id)} title="Umbenennen">
-            <Edit2 className="w-3 h-3" />
-          </Button>
-          <Button size="sm" variant="ghost" onClick={() => confirmDeleteCategory(category)} title="Löschen">
-            <Trash2 className="w-3 h-3" />
-          </Button>
-        </div>
+        
+        {/* Rekursiv Unterkategorien rendern */}
+        {category.children && category.children.length > 0 && (
+          <div className="subcategories">
+            {renderHierarchicalList(category.children, level + 1)}
+          </div>
+        )}
       </div>
     ));
+  };
+
+  // Zusätzliche Handler-Funktionen
+  const handleMoveToRoot = async (category) => {
+    try {
+      const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories/${category.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ parent_category: null })
+      });
+      
+      if (response.ok) {
+        console.log(`Kategorie "${category.name}" zur Hauptebene verschoben`);
+        onSave();
+      }
+    } catch (error) {
+      console.error('Fehler beim Verschieben:', error.message);
+    }
+  };
+
+  const handleCreateSubcategory = async (parentName) => {
+    const subcatName = window.prompt(`Neue Unterkategorie für "${parentName}":`);
+    if (subcatName && subcatName.trim()) {
+      try {
+        const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            name: subcatName.trim(),
+            parent_category: parentName
+          })
+        });
+        
+        if (response.ok) {
+          console.log(`Unterkategorie "${subcatName}" erstellt`);
+          onSave();
+        }
+      } catch (error) {
+        console.error('Fehler beim Erstellen der Unterkategorie:', error.message);
+      }
+    }
   };
 
   // Funktion entfernt - doppelt vorhanden
