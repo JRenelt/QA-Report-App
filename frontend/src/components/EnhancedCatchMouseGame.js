@@ -255,9 +255,20 @@ const EnhancedCatchMouseGame = ({ isOpen, onClose }) => {
     ctx.fillStyle = '#87CEEB';
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    // Layer 1: Draw Spielteppich background
+    // Layer 1: Draw Verkehrsteppich background (responsive scaling)
     if (backgroundLoaded && backgroundImageRef.current) {
-      ctx.drawImage(backgroundImageRef.current, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      // Scale image to fit canvas while maintaining aspect ratio
+      const img = backgroundImageRef.current;
+      const scaleX = CANVAS_WIDTH / img.width;
+      const scaleY = CANVAS_HEIGHT / img.height;
+      const scale = Math.max(scaleX, scaleY); // Fill entire canvas
+      
+      const scaledWidth = img.width * scale;
+      const scaledHeight = img.height * scale;
+      const offsetX = (CANVAS_WIDTH - scaledWidth) / 2;
+      const offsetY = (CANVAS_HEIGHT - scaledHeight) / 2;
+      
+      ctx.drawImage(img, offsetX, offsetY, scaledWidth, scaledHeight);
     } else {
       // Fallback pattern if image doesn't load
       drawFallbackBackground(ctx);
