@@ -1026,38 +1026,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     }
   };
 
-  // Live-Editing: Neue Unterkategorie erstellen
-  const handleCreateSubcategory = async (e) => {
-    if (e.key === 'Enter' && newSubcategoryName.trim() && selectedParentCategory) {
-      try {
-        const newSubcategory = {
-          name: newSubcategoryName.trim(),
-          parent_category: selectedParentCategory
-        };
-        
-        // API Call zum Backend
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSubcategory)
-        });
-        
-        if (response.ok) {
-          toast.success(`Neue Unterkategorie "${newSubcategoryName}" unter "${selectedParentCategory}" erstellt`);
-          setNewSubcategoryName('');
-          setSelectedParentCategory('');
-          onSave(); // Kategorien neu laden
-        } else {
-          throw new Error('Unterkategorie konnte nicht erstellt werden');
-        }
-      } catch (error) {
-        console.error('Create subcategory error:', error);
-        toast.error('Fehler beim Erstellen der Unterkategorie: ' + error.message);
-      }
-    }
-  };
+  // Removed unused subcategory function
 
   // Duplicate function removed - using the one defined above
 
