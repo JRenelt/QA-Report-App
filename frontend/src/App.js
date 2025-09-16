@@ -1217,28 +1217,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
   // Duplicate function removed - using the one defined above
 
-  // Live-Editing: Kategorie löschen
-  const handleDeleteCategory = async (category) => {
-    if (window.confirm(`Sind Sie sicher, dass Sie die Kategorie "${category.name}" löschen möchten? Alle Lesezeichen werden auf "Uncategorized" verschoben.`)) {
-      try {
-        // API Call zum Backend
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories/${category.id}`, {
-          method: 'DELETE'
-        });
-        
-        if (response.ok) {
-          toast.success(`Kategorie "${category.name}" gelöscht`);
-          await loadCategories(); // Kategorien neu laden
-          await loadBookmarks(); // Bookmarks neu laden (falls sich Zuordnungen geändert haben)
-        } else {
-          throw new Error('Kategorie konnte nicht gelöscht werden');
-        }
-      } catch (error) {
-        console.error('Delete category error:', error);
-        toast.error('Fehler beim Löschen der Kategorie: ' + error.message);
-      }
-    }
-  };
+  // Duplicate function removed - using the one defined above with deleteConfirmDialog
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
