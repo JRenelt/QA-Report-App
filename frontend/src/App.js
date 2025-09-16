@@ -4041,22 +4041,22 @@ function App() {
   };
 
   // Handler für Kategorie-Management
-  const handleSaveCategories = async (categoryList) => {
+  const handleSaveCategories = async () => {
     try {
-      // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
-      // Für jetzt loggen wir die Änderungen und aktualisieren lokal
-      console.log('Kategorien gespeichert:', categoryList);
+      // Kategorie-Daten und Statistiken vom Backend neu laden
+      await loadCategories();
+      await loadStatistics();
+      await loadBookmarks();
       
-      // Simuliere Speicherung durch lokale Aktualisierung
-      const validCategories = categoryList
-        .filter(cat => cat.newName && cat.newName.trim() !== '')
-        .map(cat => ({
-          ...cat,
-          name: cat.newName,
-          editing: false
-        }));
+      console.log('✅ Kategorien und Daten erfolgreich aktualisiert');
       
-      setCategories(validCategories);
+      // Optional: Toast-Meldung anzeigen
+      toast.success('Kategorien erfolgreich aktualisiert');
+    } catch (error) {
+      console.error('❌ Fehler beim Aktualisieren der Kategorien:', error);
+      toast.error('Fehler beim Aktualisieren der Kategorien: ' + error.message);
+    }
+  };
       
       // Lokale Speicherung
       localStorage.setItem('favorg-categories', JSON.stringify(validCategories));
