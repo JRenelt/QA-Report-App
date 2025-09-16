@@ -2207,7 +2207,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   );
 };
 
-const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onToggleLock, onBookmarkReorder }) => {
+const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onToggleLock, onBookmarkReorder, onShowDescription }) => {
   const [draggedBookmark, setDraggedBookmark] = useState(null);
   const [dragOverBookmark, setDragOverBookmark] = useState(null);
 
