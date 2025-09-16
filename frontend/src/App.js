@@ -3022,7 +3022,7 @@ function App() {
       const result = await favoritesService.importBookmarks(file);
       showSuccess(`Import erfolgreich: ${result.imported_count} Favoriten importiert`);
       await loadBookmarks();
-      await loadCategories();
+      await refreshCategories();
       await loadStatistics();
     } catch (error) {
       console.error('Error importing file:', error);
