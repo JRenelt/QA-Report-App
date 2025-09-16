@@ -888,7 +888,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         });
         
         if (response.ok) {
-          toast.success(`Kategorie "${newCategoryName}" erstellt`);
+          console.log(`Kategorie "${newCategoryName}" erstellt`);
           setNewCategoryName('');
           onSave();
         } else {
