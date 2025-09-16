@@ -4057,20 +4057,6 @@ function App() {
       toast.error('Fehler beim Aktualisieren der Kategorien: ' + error.message);
     }
   };
-      
-      // Lokale Speicherung
-      localStorage.setItem('favorg-categories', JSON.stringify(validCategories));
-      
-      await loadCategories();
-      await loadBookmarks();
-      await loadStatistics();
-      
-      toast.success('Kategorien erfolgreich gespeichert');
-    } catch (error) {
-      console.error('Save categories error:', error);
-      toast.error('Kategorien speichern fehlgeschlagen: ' + error.message);
-    }
-  };
 
   const handleClearSearch = () => {
     setSearchQuery('');
