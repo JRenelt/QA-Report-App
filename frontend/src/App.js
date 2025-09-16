@@ -2885,7 +2885,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
 
 
 
-const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onToggleLock, onFileSelected, viewMode, onViewModeChange, onBookmarkReorder, onShowDescription, onHelpClick, onStatsToggle, onSettingsClick, onDeleteAllClick }) => {
+const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onToggleLock, onFileSelected, viewMode, onViewModeChange, onBookmarkReorder, onShowDescription, onHelpClick, onStatsToggle, onSettingsClick, onDeleteAllClick, statistics }) => {
   return (
     <main className="main-content">
       <div className="main-header">
