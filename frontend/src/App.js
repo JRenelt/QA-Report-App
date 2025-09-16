@@ -958,164 +958,40 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     });
   };
 
-  // ERWEITERTE hierarchische Kategorie-Rendering mit Drag & Drop (unbegrenzte Ebenen)
-  const renderCategoryTree = (cats, level = 0) => {
-    if (!cats || cats.length === 0) return null;
-    
-    // Erhöhe Limit für unbegrenzte Hierarchie
-    if (level > 10) {
-      console.warn('Maximum category nesting level reached (10)');
-      return null;
-    }
-    
-    return cats.map(category => {
-      if (!category || !category.name) return null;
-      
-      const isDragging = draggedCategory?.id === category.id;
-      const canDropHere = draggedCategory && draggedCategory.id !== category.id;
-      
-      return (
-        <div key={category.id || category.name} className="category-management-group">
-          <div 
-            className={`category-management-item ${isDragging ? 'dragging' : ''} ${canDropHere ? 'drop-target' : ''}`}
-            style={{ marginLeft: `${level * 20}px` }}
-            draggable={true}
-            onDragStart={(e) => {
-              setDraggedCategory(category);
-              e.dataTransfer.effectAllowed = 'move';
-            }}
-            onDragEnd={() => setDraggedCategory(null)}
-            onDragOver={(e) => {
-              if (canDropHere) {
-                e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
-              }
-            }}
-            onDrop={(e) => {
-              e.preventDefault();
-              if (draggedCategory && draggedCategory.id !== category.id) {
-                handleMoveCategory(draggedCategory.id, category.name);
-                setDraggedCategory(null);
-              }
-            }}
-          >
-            <div className="category-management-content">
-              <div className="category-level-indicator">
-                <span className="level-number">{level + 1}</span>
-                <span className="category-icon">
-                  {level === 0 ? '📁' : level === 1 ? '📂' : level === 2 ? '🗂️' : '📄'}
-                </span>
-              </div>
-              
-              <div className="category-info-section">
-                {editingCategory === category.id ? (
-                  <Input
-                    defaultValue={category.name}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        handleRenameCategory(category, e.target.value);
-                      } else if (e.key === 'Escape') {
-                        setEditingCategory(null);
-                      }
-                    }}
-                    onBlur={(e) => handleRenameCategory(category, e.target.value)}
-                    className="category-edit-input-advanced"
-                    autoFocus
-                  />
-                ) : (
-                  <div className="category-display">
-                    <span className="category-name-advanced">{category.name}</span>
-                    <span className="bookmark-count-badge">
-                      {category.bookmark_count || 0} Einträge
-                    </span>
-                  </div>
-                )}
-              </div>
-              
-              <div className="category-actions-advanced">
-                {/* Move to Root Button */}
-                {level > 0 && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleMoveCategory(category.id, 'root')}
-                    className="move-to-root-btn"
-                    title="Zur Hauptebene verschieben"
-                  >
-                    <ArrowUp className="w-3 h-3" />
-                  </Button>
-                )}
-                
-                {/* Edit Button */}
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setEditingCategory(category.id)}
-                  className="edit-category-btn-advanced"
-                  title="Umbenennen"
-                >
-                  <Edit2 className="w-3 h-3" />
-                </Button>
-                
-                {/* Add Subcategory Button */}
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => {
-                    const subcatName = window.prompt(`Neue Unterkategorie für "${category.name}":`);
-                    if (subcatName && subcatName.trim()) {
-                      handleCreateCategory(subcatName.trim(), category.name);
-                    }
-                  }}
-                  className="add-subcategory-btn"
-                  title="Unterkategorie hinzufügen"
-                >
-                  <Plus className="w-3 h-3" />
-                </Button>
-                
-                {/* Delete Button */}
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => confirmDeleteCategory(category)}
-                  className="delete-category-btn-advanced"
-                  title="Löschen"
-                >
-                  <Trash2 className="w-3 h-3" />
-                </Button>
-              </div>
-            </div>
-          </div>
-          
-          {/* Drop Zone für Hauptebene */}
-          {level === 0 && (
-            <div 
-              className={`root-drop-zone ${canDropHere ? 'active' : ''}`}
-              onDragOver={(e) => {
-                if (draggedCategory) {
-                  e.preventDefault();
-                  e.dataTransfer.dropEffect = 'move';
+  // Einfache Liste ohne Rekursion
+  const renderCategoryList = () => {
+    return organizedCategories.map(category => (
+      <div key={category.id} className="category-item-simple">
+        <div className="category-info">
+          {editingCategory === category.id ? (
+            <Input
+              defaultValue={category.name}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleRenameCategory(category, e.target.value);
+                } else if (e.key === 'Escape') {
+                  setEditingCategory(null);
                 }
               }}
-              onDrop={(e) => {
-                e.preventDefault();
-                if (draggedCategory) {
-                  handleMoveCategory(draggedCategory.id, 'root');
-                  setDraggedCategory(null);
-                }
-              }}
-            >
-              📌 Hier ablegen für Hauptebene
-            </div>
+              onBlur={(e) => handleRenameCategory(category, e.target.value)}
+              autoFocus
+            />
+          ) : (
+            <span onClick={() => setEditingCategory(category.id)} className="category-name-simple">
+              📁 {category.name} ({category.bookmark_count || 0})
+            </span>
           )}
-          
-          {/* Rekursiv Unterkategorien rendern - UNBEGRENZT */}
-          {category.children && category.children.length > 0 && 
-            renderCategoryTree(category.children, level + 1)
-          }
         </div>
-      );
-    });
+        <div className="category-actions-simple">
+          <Button size="sm" variant="ghost" onClick={() => setEditingCategory(category.id)} title="Umbenennen">
+            <Edit2 className="w-3 h-3" />
+          </Button>
+          <Button size="sm" variant="ghost" onClick={() => confirmDeleteCategory(category)} title="Löschen">
+            <Trash2 className="w-3 h-3" />
+          </Button>
+        </div>
+      </div>
+    ));
   };
 
   // Live-Editing: Neue Kategorie erstellen
