@@ -1151,7 +1151,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   };
 
   // Live-Editing: Neue Kategorie erstellen
-  const handleCreateCategory = async (e) => {
+  const handleCreateCategoryKeyDown = async (e) => {
     if (e.key === 'Enter' && newCategoryName.trim()) {
       try {
         const newCategory = {
