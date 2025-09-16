@@ -3966,7 +3966,7 @@ function App() {
 
       <footer className="footer">
         <p 
-          onClick={startMouseGame} 
+          onClick={() => setShowGameDialog(true)} 
           className="copyright-game-trigger"
         >
           &copy; 2025 Jörg Renelt – Version 2.1.0 – Alle Rechte vorbehalten.
