@@ -773,7 +773,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                   <SelectItem value="none">Keine Unterkategorie</SelectItem>
                   {/* Dynamische Unterkategorien für die gewählte Hauptkategorie */}
                   {categories
-                    .filter(cat => cat.parent_category === formData.category)
+                    .filter(cat => cat.parent_category === formData.category && cat.name && cat.name.trim() !== '')
                     .map(subcat => (
                       <SelectItem key={subcat.id} value={subcat.name}>
                         {subcat.name}
