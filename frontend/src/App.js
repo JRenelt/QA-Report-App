@@ -908,7 +908,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories/${category.id}`, {
+      const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories/${category.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newName.trim() })
