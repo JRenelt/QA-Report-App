@@ -1094,7 +1094,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
                   size="sm"
                   variant="ghost"
                   onClick={() => {
-                    const subcatName = prompt(`Neue Unterkategorie für "${category.name}":`);
+                    const subcatName = window.prompt(`Neue Unterkategorie für "${category.name}":`);
                     if (subcatName && subcatName.trim()) {
                       handleCreateCategory(subcatName.trim(), category.name);
                     }
