@@ -878,18 +878,35 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
   const organizedCategories = organizeCategories();
 
-  // Vereinfachte Kategorie-Rendering ohne Rekursion
-  const renderCategoryTree = (cats) => {
+  // KORRIGIERTE hierarchische Kategorie-Rendering
+  const renderCategoryTree = (cats, level = 0, visited = new Set()) => {
     if (!cats || cats.length === 0) return null;
+    
+    // Schutz gegen tiefe Rekursion
+    if (level > 5) {
+      console.warn('Maximum category nesting level reached (5)');
+      return null;
+    }
     
     return cats.map(category => {
       if (!category || !category.name) return null;
       
+      // Schutz gegen zirkuläre Referenzen
+      if (visited.has(category.name)) {
+        console.warn(`Circular reference detected for category: ${category.name}`);
+        return null;
+      }
+      
+      const newVisited = new Set(visited);
+      newVisited.add(category.name);
+      
       return (
         <div key={category.id || category.name} className="category-live-group">
-          <div className="category-live-item main-category">
+          <div className="category-live-item main-category" style={{ marginLeft: `${level * 15}px` }}>
             <div className="category-live-info">
-              <span className="category-level-icon">📁</span>
+              <span className="category-level-icon">
+                {level === 0 ? '📁' : '📂'}
+              </span>
               {editingCategory === category.id ? (
                 <Input
                   defaultValue={category.name}
@@ -934,6 +951,11 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
               </Button>
             </div>
           </div>
+          
+          {/* Rekursiv Unterkategorien rendern */}
+          {category.children && category.children.length > 0 && 
+            renderCategoryTree(category.children, level + 1, newVisited)
+          }
         </div>
       );
     });
