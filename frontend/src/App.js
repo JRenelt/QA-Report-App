@@ -1137,7 +1137,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="category-manage-dialog-corporate" style={{zIndex: 99999, maxWidth: '600px', maxHeight: '80vh'}}>
+        <DialogContent className="category-manage-dialog-corporate" style={{zIndex: 999999, maxWidth: '700px', maxHeight: '85vh', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <span style={{color: 'var(--cyan-400)'}}>🏷️</span>
