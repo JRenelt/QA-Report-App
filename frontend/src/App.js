@@ -3251,7 +3251,7 @@ function App() {
       // Alt+G for Game (Easter Egg)
       if (event.altKey && event.key === 'g') {
         event.preventDefault();
-        startMouseGame();
+        setShowGameDialog(true);
         return;
       }
       
