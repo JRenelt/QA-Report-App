@@ -957,15 +957,15 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       
       if (response.ok) {
         const result = await response.json();
-        console.log(result.message);
+        showSuccess(result.message);
         setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0});
         onSave();
       } else {
         const error = await response.json();
-        console.error(`Fehler beim Löschen`);
+        showError(`Fehler beim Löschen: ${error.detail || 'Unbekannter Fehler'}`);
       }
     } catch (error) {
-      console.error(`Fehler beim Löschen: ${error.message}`);
+      showError(`Fehler beim Löschen: ${error.message}`);
     }
   };
 
