@@ -2117,7 +2117,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
 };
 
 // Settings Dialog Component
-const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
+const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettings, onSettingsChange }) => {
   const [settings, setSettings] = useState({
     theme: 'dark',
     autoSync: true,
@@ -2173,6 +2173,16 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
       
       // Einstellungen in localStorage speichern
       localStorage.setItem('favorg-settings', JSON.stringify(settings));
+      
+      // App-Settings aktualisieren
+      const updatedAppSettings = {
+        ...appSettings,
+        theme: settings.theme,
+        autoSync: settings.autoSync,
+        notifications: settings.notifications
+      };
+      localStorage.setItem('favorg-app-settings', JSON.stringify(updatedAppSettings));
+      onSettingsChange(updatedAppSettings);
       
       await new Promise(resolve => setTimeout(resolve, 500)); // Simulation
       toast.success('Einstellungen erfolgreich gespeichert.');
@@ -2287,6 +2297,23 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                       <SelectItem value="auto">🔄 Automatisch</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Meldungen Delay</Label>
+                    <span className="setting-description">Meldungen mit X-Button zeigen statt automatisch ausblenden</span>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={appSettings.melungenDelay}
+                    onChange={(e) => {
+                      const updated = {...appSettings, melungenDelay: e.target.checked};
+                      onSettingsChange(updated);
+                      localStorage.setItem('favorg-app-settings', JSON.stringify(updated));
+                    }}
+                    className="setting-checkbox"
+                  />
                 </div>
 
                 <div className="setting-item">
