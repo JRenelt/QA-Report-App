@@ -2802,6 +2802,19 @@ function App() {
     }
   };
 
+  const handleCreateTestData = async () => {
+    try {
+      const result = await favoritesService.createTestData();
+      showSuccess(`Testdaten erfolgreich erstellt: ${result.created_count || 50} Favoriten hinzugefügt`);
+      await loadBookmarks();
+      await refreshCategories();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error creating test data:', error);
+      showError('Fehler beim Erstellen der Testdaten');
+    }
+  };
+
   const handleCategoryChange = (category, subcategory = null) => {
     setActiveCategory(category);
     setActiveSubcategory(subcategory);
