@@ -1206,7 +1206,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
       {/* Lösch-Bestätigung - Corporate Design */}
       <Dialog open={deleteConfirmDialog.show} onOpenChange={(open) => !open && setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
-        <DialogContent className="category-manage-dialog-corporate" style={{zIndex: 100000, maxWidth: '500px'}}>
+        <DialogContent className="category-manage-dialog-corporate" style={{zIndex: 1000000, maxWidth: '500px', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
           <DialogHeader>
             <DialogTitle style={{color: 'var(--red-500)', fontFamily: 'var(--font-family)', display: 'flex', alignItems: 'center', gap: '8px'}}>
               <span>⚠️</span>
