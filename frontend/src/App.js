@@ -2931,7 +2931,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             <EnhancedStatusFilter
               value={statusFilter}
               onChange={onStatusFilterChange}
-              lockedCount={bookmarks.filter(b => b.is_locked || b.status_type === 'locked').length}
+              statistics={statistics}
             />
           </div>
         </div>
