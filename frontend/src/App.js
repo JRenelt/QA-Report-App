@@ -915,7 +915,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       });
       
       if (response.ok) {
-        toast.success(`Kategorie umbenannt`);
+        console.log(`Kategorie umbenannt`);
         setEditingCategory(null);
         onSave();
       } else {
