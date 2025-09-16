@@ -1072,29 +1072,63 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         </DialogContent>
       </Dialog>
 
-      {/* Lösch-Bestätigung */}
+      {/* Lösch-Bestätigung - Corporate Design */}
       <Dialog open={deleteConfirmDialog.show} onOpenChange={(open) => !open && setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
-        <DialogContent style={{zIndex: 100000}}>
+        <DialogContent className="category-manage-dialog-corporate" style={{zIndex: 100000, maxWidth: '500px'}}>
           <DialogHeader>
-            <DialogTitle className="text-red-600">⚠️ Kategorie löschen?</DialogTitle>
+            <DialogTitle style={{color: 'var(--red-500)', fontFamily: 'var(--font-family)', display: 'flex', alignItems: 'center', gap: '8px'}}>
+              <span>⚠️</span>
+              <span>Kategorie löschen?</span>
+            </DialogTitle>
           </DialogHeader>
-          <div>
-            <p>Kategorie <strong>"{deleteConfirmDialog.category?.name}"</strong> löschen?</p>
+          <div style={{marginTop: '16px'}}>
+            <p style={{color: 'var(--text-primary)', fontFamily: 'var(--font-family)', fontSize: '15px', lineHeight: '1.5'}}>
+              Möchten Sie die Kategorie <strong style={{color: 'var(--cyan-400)'}}>"{deleteConfirmDialog.category?.name}"</strong> wirklich löschen?
+            </p>
             {deleteConfirmDialog.bookmarkCount > 0 && (
-              <p className="text-yellow-600 mt-2">
-                ⚠️ {deleteConfirmDialog.bookmarkCount} Einträge werden zu "Nicht zugeordnet" verschoben.
-              </p>
+              <div style={{
+                background: 'var(--bg-tertiary)',
+                border: '1px solid var(--yellow-500)',
+                borderRadius: '8px',
+                padding: '12px',
+                marginTop: '12px'
+              }}>
+                <p style={{color: 'var(--yellow-500)', fontFamily: 'var(--font-family)', fontSize: '14px', lineHeight: '1.5'}}>
+                  <strong>⚠️ Achtung:</strong> Diese Kategorie enthält <strong>{deleteConfirmDialog.bookmarkCount} Einträge</strong>.
+                  <br />
+                  Diese werden automatisch zu <strong>"Nicht zugeordnet"</strong> verschoben.
+                </p>
+              </div>
             )}
-            <div className="flex justify-end space-x-2 mt-4">
-              <Button variant="outline" onClick={() => setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
+            <div style={{display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid var(--border-primary)'}}>
+              <Button 
+                onClick={() => setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}
+                style={{
+                  background: 'var(--bg-tertiary)',
+                  border: '1px solid var(--border-primary)',
+                  color: 'var(--text-primary)',
+                  fontFamily: 'var(--font-family)',
+                  padding: '8px 16px'
+                }}
+              >
                 Abbrechen
               </Button>
-              <Button variant="destructive" onClick={handleDeleteCategory}>
+              <Button 
+                onClick={handleDeleteCategory}
+                style={{
+                  background: 'var(--red-500)',
+                  border: '1px solid var(--red-500)',
+                  color: 'white',
+                  fontFamily: 'var(--font-family)',
+                  padding: '8px 16px'
+                }}
+              >
+                <Trash2 className="w-4 h-4" style={{marginRight: '6px'}} />
                 Löschen
               </Button>
             </div>
           </div>
-        </DialogContent>
+        </dialogContent>
       </Dialog>
     </>
   );
