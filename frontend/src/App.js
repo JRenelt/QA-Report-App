@@ -1272,7 +1272,20 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="category-manage-dialog-live">
+      <DialogContent 
+        className="category-manage-dialog-advanced"
+        style={{
+          zIndex: 99999,
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '95vw',
+          maxWidth: '1400px',
+          height: '85vh',
+          maxHeight: '900px'
+        }}
+      >
         <DialogHeader>
           <DialogTitle className="category-manage-title">
             🏷️ Kategorien verwalten
