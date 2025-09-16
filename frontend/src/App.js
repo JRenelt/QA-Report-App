@@ -1215,37 +1215,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     }
   };
 
-  // Live-Editing: Kategorie umbenennen
-  const handleRenameCategory = async (category, newName) => {
-    if (newName.trim() && newName !== category.name) {
-      try {
-        const updatedCategory = {
-          ...category,
-          name: newName.trim()
-        };
-        
-        // API Call zum Backend
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories/${category.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedCategory)
-        });
-        
-        if (response.ok) {
-          toast.success(`Kategorie "${category.name}" zu "${newName}" umbenannt`);
-          setEditingCategory(null);
-          await loadCategories(); // Kategorien neu laden
-        } else {
-          throw new Error('Kategorie konnte nicht umbenannt werden');
-        }
-      } catch (error) {
-        console.error('Rename category error:', error);
-        toast.error('Fehler beim Umbenennen der Kategorie: ' + error.message);
-      }
-    }
-  };
+  // Duplicate function removed - using the one defined above
 
   // Live-Editing: Kategorie löschen
   const handleDeleteCategory = async (category) => {
