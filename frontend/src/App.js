@@ -893,7 +893,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
           onSave();
         } else {
           const error = await response.json();
-          toast.error(`Fehler: ${error.detail}`);
+          console.error(`Fehler: ${error.detail}`);
         }
       } catch (error) {
         toast.error(`Fehler beim Erstellen: ${error.message}`);
