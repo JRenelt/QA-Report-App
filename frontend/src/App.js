@@ -4161,6 +4161,7 @@ function App() {
           onStatsToggle={() => setShowStatistics(true)}
           onSettingsClick={() => setShowSettings(true)}
           onDeleteAllClick={handleDeleteAll}
+          statistics={statistics}
         />
       </div>
 
