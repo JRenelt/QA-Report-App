@@ -931,7 +931,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     const { category } = deleteConfirmDialog;
     
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories/${category.id}`, {
+      const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories/${category.id}`, {
         method: 'DELETE'
       });
       
