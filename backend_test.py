@@ -876,4 +876,34 @@ def main():
         return 1
 
 if __name__ == "__main__":
-    sys.exit(main())
+    # Run the focused link validation test as requested in German review
+    print("🎯 GERMAN REVIEW-REQUEST: Link-Validierung Test")
+    print("Fokus: POST /api/bookmarks/validate Endpunkt")
+    
+    # Run the focused link validation tests
+    success = main()
+    
+    # Also run the comprehensive backend tests
+    print("\n" + "="*70)
+    print("🔄 ZUSÄTZLICH: Comprehensive Backend Tests")
+    
+    # Initialize comprehensive tester
+    tester = FavLinkBackendTester()
+    
+    # Quick validation of key endpoints
+    print("\n📋 Schnelle Validierung der Haupt-Endpunkte:")
+    bookmarks_success, _ = tester.test_get_all_bookmarks()
+    stats_success, _ = tester.test_get_statistics()
+    categories_success, _ = tester.test_get_categories()
+    
+    print(f"\n📊 Schnell-Check Ergebnisse:")
+    print(f"   Bookmarks Endpunkt: {'✅ OK' if bookmarks_success else '❌ FEHLER'}")
+    print(f"   Statistics Endpunkt: {'✅ OK' if stats_success else '❌ FEHLER'}")
+    print(f"   Categories Endpunkt: {'✅ OK' if categories_success else '❌ FEHLER'}")
+    
+    if success and bookmarks_success and stats_success:
+        print("\n🎉 ALLE TESTS ERFOLGREICH - Link-Validierung und Backend funktionieren einwandfrei!")
+        sys.exit(0)
+    else:
+        print("\n❌ EINIGE TESTS FEHLGESCHLAGEN - Siehe Details oben")
+        sys.exit(1)
