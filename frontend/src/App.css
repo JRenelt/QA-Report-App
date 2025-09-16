@@ -922,39 +922,102 @@ body {
   font-size: 0.875rem;
   font-weight: 500;
 }
+/* Kategorie-Verwaltung - Corporate Design (Dunkles Theme) */
+.category-manage-dialog-corporate {
+  background: var(--bg-primary) !important;
+  border: 2px solid var(--border-primary) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-family) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.category-manage-dialog-corporate h2 {
+  color: var(--text-primary) !important;
+  font-family: var(--font-family) !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  margin-bottom: 16px !important;
+}
+
 .category-item-simple {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-primary);
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
   border-radius: 8px;
   padding: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   transition: all 0.2s ease;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: var(--font-family);
+}
+
+.category-item-simple:hover {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--cyan-400) !important;
+  transform: translateY(-1px);
 }
 
 .category-info {
   flex: 1;
+  padding: 4px 0;
 }
 
 .category-name-simple {
   color: var(--text-primary) !important;
   font-weight: 500 !important;
-  font-size: 14px !important;
+  font-size: 15px !important;
+  font-family: var(--font-family) !important;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .category-actions-simple {
   display: flex;
-  gap: 4px;
+  gap: 6px;
+  margin-left: 12px;
 }
 
 .category-actions-simple button {
   background: var(--bg-tertiary) !important;
-  border: 1px solid var(--border-primary) !important;
+  border: 1px solid var(--border-secondary) !important;
   color: var(--text-primary) !important;
+  border-radius: 6px !important;
+  padding: 6px 8px !important;
+  transition: all 0.2s ease !important;
+  font-family: var(--font-family) !important;
+}
+
+.category-actions-simple button:hover {
+  background: var(--cyan-500) !important;
+  color: white !important;
+  border-color: var(--cyan-400) !important;
+  transform: scale(1.05);
+}
+
+.category-new-input {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-primary) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-family) !important;
+  font-size: 14px !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+}
+
+.category-new-input:focus {
+  border-color: var(--cyan-400) !important;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1) !important;
+  outline: none !important;
+}
+
+.category-new-input::placeholder {
+  color: var(--text-secondary) !important;
+  font-family: var(--font-family) !important;
 }
 
 .main-category {
