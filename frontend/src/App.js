@@ -1112,7 +1112,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
                 </SelectTrigger>
                 <SelectContent>
                   {/* Alle Kategorien flach für Parent-Auswahl */}
-                  {categories.map(cat => (
+                  {categories.filter(cat => cat.name && cat.name.trim() !== '').map(cat => (
                     <SelectItem key={cat.name} value={cat.name}>
                       {cat.parent_category ? `${cat.parent_category} → ${cat.name}` : cat.name}
                     </SelectItem>
