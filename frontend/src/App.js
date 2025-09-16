@@ -4233,6 +4233,7 @@ function App() {
           viewMode={viewMode}
           onViewModeChange={handleViewModeChange}
           onBookmarkReorder={handleBookmarkReorder}
+          onShowDescription={setShowDescriptionDialog}
           onHelpClick={() => setShowHelp(true)}
           onStatsToggle={() => setShowStatistics(true)}
           onSettingsClick={() => setShowSettings(true)}
