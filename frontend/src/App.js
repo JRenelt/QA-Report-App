@@ -935,15 +935,15 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       });
       
       if (response.ok) {
-        console.log(`Kategorie umbenannt`);
+        showSuccess(`Kategorie "${category.name}" → "${newName}" umbenannt`);
         setEditingCategory(null);
         onSave();
       } else {
         const error = await response.json();
-        console.error(`Fehler: ${error.detail}`);
+        showError(`Fehler beim Umbenennen: ${error.detail || 'Unbekannter Fehler'}`);
       }
     } catch (error) {
-      console.error(`Fehler beim Umbenennen: ${error.message}`);
+      showError(`Fehler beim Umbenennen: ${error.message}`);
     }
   };
 
