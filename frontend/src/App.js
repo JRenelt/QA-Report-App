@@ -901,7 +901,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   const handleCreateCategory = async (e) => {
     if (e.key === 'Enter' && newCategoryName.trim()) {
       try {
-        const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories`, {
+        const response = await fetch(`https://favorg-manager-1.preview.emergentagent.com/api/categories`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: newCategoryName.trim() })
@@ -928,7 +928,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     }
 
     try {
-      const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories/${category.id}`, {
+      const response = await fetch(`https://favorg-manager-1.preview.emergentagent.com/api/categories/${category.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newName.trim() })
@@ -951,7 +951,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     const { category } = deleteConfirmDialog;
     
     try {
-      const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories/${category.id}`, {
+      const response = await fetch(`https://favorg-manager-1.preview.emergentagent.com/api/categories/${category.id}`, {
         method: 'DELETE'
       });
       
@@ -1108,7 +1108,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   // Zusätzliche Handler-Funktionen
   const handleMoveToRoot = async (category) => {
     try {
-      const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories/${category.id}`, {
+      const response = await fetch(`https://favorg-manager-1.preview.emergentagent.com/api/categories/${category.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ parent_category: null })
@@ -1130,7 +1130,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     const subcatName = window.prompt(`Neue Unterkategorie für "${parentName}":`);
     if (subcatName && subcatName.trim()) {
       try {
-        const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories`, {
+        const response = await fetch(`https://favorg-manager-1.preview.emergentagent.com/api/categories`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
