@@ -887,8 +887,17 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       console.error(message);
       alert(message); // Temporär mit alert, kann später mit toast ersetzt werden
     } else {
-      // Nur in Console loggen wenn Meldungen ausgeblendet sind
-      console.log('Error (hidden):', message);
+      // Bei Meldungen Delay = True: Toast mit X-Button anzeigen
+      console.log('Error (with delay):', message);
+      toast.error(message, {
+        duration: Infinity, // Nur mit X geschlossen
+        closeButton: true,
+        dismissible: true,
+        action: {
+          label: "✕",
+          onClick: () => {} // Toast schließen
+        }
+      });
     }
   };
 
