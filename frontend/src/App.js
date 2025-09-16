@@ -2824,72 +2824,401 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [showStatistics, setShowStatistics] = useState(false);
   const [showCategoryManageDialog, setShowCategoryManageDialog] = useState(false);
-  const [showImportExportDialog, setShowImportExportDialog] = useState(false);
+  const [showExportDialog, setShowExportDialog] = useState(false);
+  const [editingBookmark, setEditingBookmark] = useState(null);
+  const [selectedBookmarks, setSelectedBookmarks] = useState(new Set());
 
-  // Load initial data - just basic functionality to prevent errors
+  // Application Settings mit Meldungen Delay
+  const [appSettings, setAppSettings] = useState(() => {
+    const saved = localStorage.getItem('favorg-app-settings');
+    return saved ? JSON.parse(saved) : {
+      melungenDelay: false, // Neue Einstellung für Toast-Verhalten
+      theme: 'dark',
+      autoSync: true,
+      notifications: true
+    };
+  });
+
+  // Toast-System basierend auf Meldungen Delay konfigurieren
+  const showSuccess = (message) => {
+    if (appSettings.melungenDelay) {
+      toast.success(message, {
+        closeButton: true,
+        duration: Infinity // Bleibt bis manuell geschlossen
+      });
+    } else {
+      toast.success(message); // Standard Verhalten
+    }
+  };
+
+  const showError = (message) => {
+    if (appSettings.melungenDelay) {
+      toast.error(message, {
+        closeButton: true,
+        duration: Infinity // Bleibt bis manuell geschlossen
+      });
+    } else {
+      toast.error(message); // Standard Verhalten
+    }
+  };
+
+  // Service Instanzen
+  const favoritesService = new FavoritesService();
+  
+  // Load initial data
   useEffect(() => {
-    // Basic data loading would go here
+    loadBookmarks();
+    loadCategories();
+    loadStatistics();
   }, []);
 
-  // Return a simple working component for testing
+  // Reload when category or status filter changes
+  useEffect(() => {
+    loadBookmarks();
+  }, [activeCategory, activeSubcategory, statusFilter]);
+
+  const loadBookmarks = async () => {
+    try {
+      setIsLoading(true);
+      let response;
+      
+      if (activeCategory === 'all') {
+        response = await favoritesService.getAllBookmarks();
+      } else {
+        response = await favoritesService.getBookmarksByCategory(activeCategory, activeSubcategory);
+      }
+      
+      setBookmarks(response);
+    } catch (error) {
+      console.error('Error loading bookmarks:', error);
+      showError('Fehler beim Laden der Favoriten');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadCategories = async () => {
+    try {
+      const response = await favoritesService.getAllCategories();
+      setCategories(response);
+    } catch (error) {
+      console.error('Error loading categories:', error);
+      showError('Fehler beim Laden der Kategorien');
+    }
+  };
+
+  const loadStatistics = async () => {
+    try {
+      const response = await favoritesService.getStatistics();
+      setStatistics(response);
+    } catch (error) {
+      console.error('Error loading statistics:', error);
+      showError('Fehler beim Laden der Statistiken');
+    }
+  };
+
+  // Event Handlers
+  const handleCreateBookmark = () => {
+    setEditingBookmark(null);
+    setShowBookmarkDialog(true);
+  };
+
+  const handleEditBookmark = (bookmark) => {
+    setEditingBookmark(bookmark);
+    setShowBookmarkDialog(true);
+  };
+
+  const handleSaveBookmark = async (bookmarkData) => {
+    try {
+      if (editingBookmark) {
+        await favoritesService.updateBookmark(editingBookmark.id, bookmarkData);
+        showSuccess('Favorit erfolgreich aktualisiert');
+      } else {
+        await favoritesService.createBookmark(bookmarkData);
+        showSuccess('Favorit erfolgreich erstellt');
+      }
+      
+      setShowBookmarkDialog(false);
+      setEditingBookmark(null);
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error saving bookmark:', error);
+      showError('Fehler beim Speichern des Favoriten');
+      throw error;
+    }
+  };
+
+  const handleDeleteBookmark = async (bookmarkId) => {
+    try {
+      await favoritesService.deleteBookmark(bookmarkId);
+      showSuccess('Favorit erfolgreich gelöscht');
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error deleting bookmark:', error);
+      showError('Fehler beim Löschen des Favoriten');
+    }
+  };
+
+  const handleToggleStatus = async (bookmarkId, currentStatus) => {
+    try {
+      const newStatus = currentStatus === 'dead' ? 'localhost' : 'dead';
+      await favoritesService.updateBookmarkStatus(bookmarkId, newStatus);
+      showSuccess(`Status zu "${newStatus}" geändert`);
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error updating status:', error);
+      showError('Fehler beim Aktualisieren des Status');
+    }
+  };
+
+  const handleValidateLinks = async () => {
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.validateLinks();
+      showSuccess(`Validierung abgeschlossen: ${result.dead_links_found} tote Links gefunden von ${result.total_checked} geprüften Links`);
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error validating links:', error);
+      showError('Fehler bei der Link-Validierung');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoveDeadLinks = async () => {
+    try {
+      const result = await favoritesService.removeDeadLinks();
+      showSuccess(`${result.removed_count} tote Links erfolgreich entfernt`);
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error removing dead links:', error);
+      showError('Fehler beim Entfernen toter Links');
+    }
+  };
+
+  const handleRemoveDuplicates = async () => {
+    try {
+      const result = await favoritesService.removeDuplicates();
+      showSuccess(`${result.removed_count} Duplikate erfolgreich entfernt`);
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error removing duplicates:', error);
+      showError('Fehler beim Entfernen der Duplikate');
+    }
+  };
+
+  const handleFileSelected = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.importBookmarks(file);
+      showSuccess(`Import erfolgreich: ${result.imported_count} Favoriten importiert`);
+      await loadBookmarks();
+      await loadCategories();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error importing file:', error);
+      showError('Fehler beim Importieren der Datei');
+    } finally {
+      setIsLoading(false);
+      event.target.value = ''; // Reset file input
+    }
+  };
+
+  const handleExport = async (format, category = null) => {
+    try {
+      await favoritesService.exportBookmarks(format, category);
+      showSuccess(`${format.toUpperCase()}-Export erfolgreich heruntergeladen`);
+    } catch (error) {
+      console.error('Export error:', error);
+      showError(`Export fehlgeschlagen: ${error.message}`);
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    try {
+      await favoritesService.deleteAllBookmarks();
+      showSuccess('Alle Favoriten erfolgreich gelöscht');
+      await loadBookmarks();
+      await loadCategories();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error deleting all bookmarks:', error);
+      showError('Fehler beim Löschen aller Favoriten');
+    }
+  };
+
+  const handleCategoryChange = (category, subcategory = null) => {
+    setActiveCategory(category);
+    setActiveSubcategory(subcategory);
+  };
+
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+  };
+
+  const handleStatusFilterChange = (filter) => {
+    setStatusFilter(filter);
+  };
+
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode);
+    localStorage.setItem('favorg-view-mode', mode);
+  };
+
+  // Filter bookmarks based on search and status
+  const filteredBookmarks = bookmarks.filter(bookmark => {
+    // Search filter
+    if (searchQuery) {
+      const searchLower = searchQuery.toLowerCase();
+      const matchesSearch = 
+        bookmark.title?.toLowerCase().includes(searchLower) ||
+        bookmark.url?.toLowerCase().includes(searchLower) ||
+        bookmark.category?.toLowerCase().includes(searchLower);
+      
+      if (!matchesSearch) return false;
+    }
+
+    // Status filter
+    if (statusFilter !== 'all') {
+      const bookmarkStatus = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
+      if (statusFilter === 'locked' && !bookmark.is_locked) return false;
+      if (statusFilter === 'active' && bookmarkStatus !== 'active') return false;
+      if (statusFilter === 'dead' && bookmarkStatus !== 'dead') return false;
+      if (statusFilter === 'localhost' && bookmarkStatus !== 'localhost') return false;
+      if (statusFilter === 'duplicate' && bookmarkStatus !== 'duplicate') return false;
+      if (statusFilter === 'unchecked' && bookmarkStatus !== 'unchecked') return false;
+    }
+
+    return true;
+  });
+
+  // Calculate counts for various statuses
+  const deadLinksCount = bookmarks.filter(b => b.status_type === 'dead' || b.is_dead_link).length;
+  const duplicateCount = bookmarks.filter(b => b.status_type === 'duplicate').length;
+  const lockedCount = bookmarks.filter(b => b.is_locked).length;
+  
+  // Check if duplicates have been marked
+  const hasDuplicatesMarked = duplicateCount > 0;
+
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-blue-600 text-white p-3 rounded-lg mb-6 text-center">
-          <h1 className="text-2xl font-bold">🚀 FavOrg V2.3.0 - Bereit für Tests!</h1>
-          <p className="text-blue-100">Alle neuen Features wurden erfolgreich implementiert</p>
-        </div>
-        
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">✅ Implementierte Komponenten</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="border rounded p-4">
-              <h3 className="font-medium mb-2">🔒 Lock-System</h3>
-              <ul className="text-sm space-y-1">
-                <li>• EnhancedStatusFilter.js</li>
-                <li>• EnhancedBookmarkCard.js</li>
-                <li>• Lucide Lock-Icons verwendet</li>
-                <li>• Position links neben Mülleimer</li>
-              </ul>
-            </div>
-            <div className="border rounded p-4">
-              <h3 className="font-medium mb-2">📝 Verbesserter Dialog</h3>
-              <ul className="text-sm space-y-1">
-                <li>• ImprovedBookmarkDialog.js</li>
-                <li>• Unterkategorien-Auswahl</li>
-                <li>• Schwarzer Text für Beschreibungen</li>
-                <li>• Extra Info versteckt (0)</li>
-              </ul>
-            </div>
-            <div className="border rounded p-4">
-              <h3 className="font-medium mb-2">🎮 Spielteppich-Spiel</h3>
-              <ul className="text-sm space-y-1">
-                <li>• EnhancedCatchMouseGame.js</li>
-                <li>• 6-Layer System</li>
-                <li>• S-KFZ, S-Human, S-Animal</li>
-                <li>• Spielteppich-Hintergrund</li>
-              </ul>
-            </div>
-            <div className="border rounded p-4">
-              <h3 className="font-medium mb-2">📖 Aktualisierte Hilfe</h3>
-              <ul className="text-sm space-y-1">
-                <li>• ComprehensiveHelpDialog.js</li>
-                <li>• V2.3.0 Dokumentation</li>
-                <li>• Strukturierte Navigation</li>
-                <li>• Visual Guides</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded">
-            <h3 className="font-medium text-green-800 mb-2">🚀 Status: Bereit für Tests</h3>
-            <p className="text-green-700 text-sm">
-              Alle Komponenten sind implementiert und können getestet werden. 
-              Backend-APIs sind funktional und bereit für die Integration.
-            </p>
-          </div>
-        </div>
+    <div className="app-container">
+      <Toaster 
+        position="top-center"
+        richColors 
+        closeButton={appSettings.melungenDelay}
+      />
+      
+      <Header
+        onSettingsClick={() => setShowSettings(true)}
+        onHelpClick={() => setShowHelp(true)}
+        onStatsToggle={() => setShowStatistics(!showStatistics)}
+        onCreateBookmarkClick={handleCreateBookmark}
+        onFileUploadClick={() => document.getElementById('file-upload').click()}
+        onExportClick={() => setShowExportDialog(true)}
+        onValidateClick={handleValidateLinks}
+        onRemoveDuplicatesClick={handleRemoveDuplicates}
+        onDeleteAllClick={handleDeleteAll}
+        deadLinksCount={deadLinksCount}
+        duplicateCount={duplicateCount}
+        totalBookmarks={bookmarks.length}
+        filteredCount={filteredBookmarks.length}
+        hasValidated={statistics?.total_bookmarks > 0}
+        hasDuplicatesMarked={hasDuplicatesMarked}
+      />
+
+      <div className="app-body">
+        <CategorySidebar
+          categories={categories}
+          activeCategory={activeCategory}
+          activeSubcategory={activeSubcategory}
+          onCategoryChange={handleCategoryChange}
+          statistics={statistics}
+          onCategoryManage={() => setShowCategoryManageDialog(true)}
+        />
+
+        <MainContent
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+          onClearSearch={handleClearSearch}
+          statusFilter={statusFilter}
+          onStatusFilterChange={handleStatusFilterChange}
+          bookmarks={filteredBookmarks}
+          onDeleteBookmark={handleDeleteBookmark}
+          onEditBookmark={handleEditBookmark}
+          onToggleStatus={handleToggleStatus}
+          onFileSelected={handleFileSelected}
+          viewMode={viewMode}
+          onViewModeChange={handleViewModeChange}
+          statistics={statistics}
+        />
       </div>
+
+      {/* Dialoge */}
+      <BookmarkDialog
+        isOpen={showBookmarkDialog}
+        onClose={() => {
+          setShowBookmarkDialog(false);
+          setEditingBookmark(null);
+        }}
+        bookmark={editingBookmark}
+        onSave={handleSaveBookmark}
+        categories={categories}
+      />
+
+      <SettingsDialog
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        onExport={handleExport}
+        appSettings={appSettings}
+        onSettingsChange={setAppSettings}
+      />
+
+      <HelpDialog
+        isOpen={showHelp}
+        onClose={() => setShowHelp(false)}
+      />
+
+      <StatisticsDialog
+        isOpen={showStatistics}
+        onClose={() => setShowStatistics(false)}
+        statistics={statistics}
+        onRefresh={loadStatistics}
+      />
+
+      <CategoryManageDialog
+        isOpen={showCategoryManageDialog}
+        onClose={() => setShowCategoryManageDialog(false)}
+        categories={categories}
+        onSave={loadCategories}
+      />
+
+      <ExportDialog
+        isOpen={showExportDialog}
+        onClose={() => setShowExportDialog(false)}
+        onExport={handleExport}
+      />
+
+      {/* Hidden file input */}
+      <input
+        type="file"
+        id="file-upload"
+        accept=".html,.json,.xml,.csv,.jsonlz4"
+        onChange={handleFileSelected}
+        style={{ display: 'none' }}
+      />
     </div>
   );
 }
