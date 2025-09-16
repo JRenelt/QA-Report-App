@@ -751,7 +751,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Uncategorized">Nicht zugeordnet</SelectItem>
-                {uniqueCategories.filter(cat => cat !== 'Uncategorized').map(cat => (
+                {uniqueCategories.filter(cat => cat !== 'Uncategorized' && cat && cat.trim() !== '').map(cat => (
                   <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                 ))}
               </SelectContent>
