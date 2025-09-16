@@ -1115,11 +1115,14 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       });
       
       if (response.ok) {
-        console.log(`Kategorie "${category.name}" zur Hauptebene verschoben`);
+        showSuccess(`Kategorie "${category.name}" zur Hauptebene verschoben`);
         onSave();
+      } else {
+        const error = await response.json();
+        showError(`Fehler beim Verschieben: ${error.detail || 'Unbekannter Fehler'}`);
       }
     } catch (error) {
-      console.error('Fehler beim Verschieben:', error.message);
+      showError(`Fehler beim Verschieben: ${error.message}`);
     }
   };
 
@@ -1137,11 +1140,14 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         });
         
         if (response.ok) {
-          console.log(`Unterkategorie "${subcatName}" erstellt`);
+          showSuccess(`Unterkategorie "${subcatName}" erstellt`);
           onSave();
+        } else {
+          const error = await response.json();
+          showError(`Fehler beim Erstellen der Unterkategorie: ${error.detail || 'Unbekannter Fehler'}`);
         }
       } catch (error) {
-        console.error('Fehler beim Erstellen der Unterkategorie:', error.message);
+        showError(`Fehler beim Erstellen der Unterkategorie: ${error.message}`);
       }
     }
   };
