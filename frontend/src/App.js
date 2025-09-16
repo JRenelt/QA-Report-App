@@ -769,7 +769,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                 <SelectTrigger>
                   <SelectValue placeholder="Unterkategorie wählen" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-[9999]" style={{zIndex: 9999}}>
                   <SelectItem value="none">Keine Unterkategorie</SelectItem>
                   {/* Dynamische Unterkategorien für die gewählte Hauptkategorie */}
                   {categories
