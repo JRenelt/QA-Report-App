@@ -2769,8 +2769,25 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
 
                 <div className="setting-item">
                   <div className="setting-info">
-                    <Label className="setting-label">S-Time</Label>
-                    <span className="setting-description">System-Timer Konfiguration (1-10)</span>
+                    <Label className="setting-label">Meldungen Delay</Label>
+                    <span className="setting-description">Error-Meldungen temporär ausblenden für Screenshots</span>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={settings.hideErrors || false}
+                    onChange={(e) => {
+                      const newSettings = { ...settings, hideErrors: e.target.checked };
+                      setSettings(newSettings);
+                      localStorage.setItem('favorg-settings', JSON.stringify(newSettings));
+                    }}
+                    className="setting-checkbox"
+                  />
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">S-Time (Debug)</Label>
+                    <span className="setting-description">System-Timer-Einstellung (1-10)</span>
                   </div>
                   <div className="setting-input-group">
                     <Input
