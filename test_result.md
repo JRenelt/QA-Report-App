@@ -579,11 +579,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Category CRUD Operations (MISSING ENDPOINTS)"
-    - "Empty Categories Database Cleanup"
-  stuck_tasks:
-    - "Category CRUD Operations (MISSING ENDPOINTS)"
-    - "Empty Categories Database Cleanup"
+    - "Status Filter Query Parameters"
+    - "Bookmark Move Counter Update"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
