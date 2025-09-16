@@ -1310,56 +1310,56 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       </DialogContent>
     </Dialog>
 
-      {/* Sicherheitsabfrage für Kategorie löschen */}
-      <Dialog open={deleteConfirmDialog.show} onOpenChange={(open) => !open && setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
-        <DialogContent style={{zIndex: 100000}}>
-          <DialogHeader>
-            <DialogTitle className="text-red-600">
-              ⚠️ Kategorie löschen bestätigen
-            </DialogTitle>
-          </DialogHeader>
-          <div className="delete-confirm-content">
-            <p className="text-lg mb-4">
-              Möchten Sie die Kategorie <strong>"{deleteConfirmDialog.category?.name}"</strong> wirklich löschen?
-            </p>
-            
-            {deleteConfirmDialog.bookmarkCount > 0 && (
-              <div className="warning-box bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <AlertTriangle className="h-5 w-5 text-yellow-400" />
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm text-yellow-700">
-                      <strong>Achtung:</strong> Diese Kategorie enthält <strong>{deleteConfirmDialog.bookmarkCount} Einträge</strong>.
-                      <br />
-                      Diese werden automatisch der Kategorie <strong>"Nicht zugeordnet"</strong> zugewiesen.
-                    </p>
-                  </div>
+    {/* Sicherheitsabfrage für Kategorie löschen */}
+    <Dialog open={deleteConfirmDialog.show} onOpenChange={(open) => !open && setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
+      <DialogContent style={{zIndex: 100000}}>
+        <DialogHeader>
+          <DialogTitle className="text-red-600">
+            ⚠️ Kategorie löschen bestätigen
+          </DialogTitle>
+        </DialogHeader>
+        <div className="delete-confirm-content">
+          <p className="text-lg mb-4">
+            Möchten Sie die Kategorie <strong>"{deleteConfirmDialog.category?.name}"</strong> wirklich löschen?
+          </p>
+          
+          {deleteConfirmDialog.bookmarkCount > 0 && (
+            <div className="warning-box bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <AlertTriangle className="h-5 w-5 text-yellow-400" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-yellow-700">
+                    <strong>Achtung:</strong> Diese Kategorie enthält <strong>{deleteConfirmDialog.bookmarkCount} Einträge</strong>.
+                    <br />
+                    Diese werden automatisch der Kategorie <strong>"Nicht zugeordnet"</strong> zugewiesen.
+                  </p>
                 </div>
               </div>
-            )}
-            
-            <div className="flex justify-end space-x-3 mt-6">
-              <Button 
-                variant="outline" 
-                onClick={() => setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}
-              >
-                Abbrechen
-              </Button>
-              <Button 
-                variant="destructive" 
-                onClick={handleDeleteCategory}
-                className="bg-red-600 hover:bg-red-700"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Löschen bestätigen
-              </Button>
             </div>
+          )}
+          
+          <div className="flex justify-end space-x-3 mt-6">
+            <Button 
+              variant="outline" 
+              onClick={() => setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}
+            >
+              Abbrechen
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleDeleteCategory}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Löschen bestätigen
+            </Button>
           </div>
-        </DialogContent>
-      </Dialog>
-    </>
+        </div>
+      </DialogContent>
+    </Dialog>
+  </>
   );
 };
 
