@@ -834,13 +834,10 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
-// NEUE Advanced Category Management Dialog Component
+// Einfache, stabile Category Management Dialog Component
 const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [newCategoryName, setNewCategoryName] = useState('');
-  const [newSubcategoryName, setNewSubcategoryName] = useState('');
-  const [selectedParentCategory, setSelectedParentCategory] = useState('');
-  const [draggedCategory, setDraggedCategory] = useState(null);
   const [deleteConfirmDialog, setDeleteConfirmDialog] = useState({show: false, category: null, bookmarkCount: 0});
 
   // Organisiere Kategorien hierarchisch - UNBEGRENZTE EBENEN
