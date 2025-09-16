@@ -2078,46 +2078,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     setDragOverCategory(null);
   };
 
-  // KORRIGIERTE Organisations-Funktion für Kategorien (hierarchisch)
-  const organizeCategories = () => {
-    const categoryMap = new Map();
-    const rootCategories = [];
-    
-    // Erstelle Map aller Kategorien für schnelle Suche
-    categories.forEach(category => {
-      if (category && category.name && category.name.trim() !== '') {
-        categoryMap.set(category.name, {
-          ...category,
-          children: []
-        });
-      }
-    });
-    
-    // Erstelle hierarchische Struktur
-    categories.forEach(category => {
-      if (!category || !category.name || category.name.trim() === '') return;
-      
-      const categoryObj = categoryMap.get(category.name);
-      
-      if (!category.parent_category) {
-        // Hauptkategorie
-        rootCategories.push(categoryObj);
-      } else {
-        // Unterkategorie - füge zu Parent hinzu
-        const parent = categoryMap.get(category.parent_category);
-        if (parent) {
-          parent.children.push(categoryObj);
-        } else {
-          // Parent nicht gefunden - wird zu Hauptkategorie
-          rootCategories.push(categoryObj);
-        }
-      }
-    });
-    
-    return rootCategories;
-  };
-
-  const organizedCategories = organizeCategories();
+  // Einfache, sichere Kategorien-Organisation
+  const organizedCategories = categories.filter(cat => cat && cat.name && cat.name.trim() !== '');
 
   return (
     <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
