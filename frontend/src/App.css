@@ -922,6 +922,40 @@ body {
   font-size: 0.875rem;
   font-weight: 500;
 }
+.category-item-simple {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-info {
+  flex: 1;
+}
+
+.category-name-simple {
+  color: var(--text-primary) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  cursor: pointer;
+}
+
+.category-actions-simple {
+  display: flex;
+  gap: 4px;
+}
+
+.category-actions-simple button {
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-primary) !important;
+  color: var(--text-primary) !important;
+}
 
 .main-category {
   color: var(--text-primary);
