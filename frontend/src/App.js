@@ -2083,9 +2083,22 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
                   onClick={() => onEditBookmark(bookmark)}
                   className="edit-btn"
                   disabled={bookmark.is_locked}
+                  title="Bearbeiten"
                 >
                   <Edit className="w-4 h-4" />
                 </Button>
+                {/* Info/Description Button - nur anzeigen wenn Beschreibung vorhanden */}
+                {bookmark.description && bookmark.description.trim() && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowDescriptionDialog({show: true, bookmark})}
+                    className="info-btn"
+                    title="Bemerkung anzeigen"
+                  >
+                    <Info className="w-4 h-4 text-blue-600" />
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -2104,6 +2117,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
                   onClick={() => onDeleteBookmark(bookmark.id)}
                   className="delete-btn"
                   disabled={bookmark.is_locked}
+                  title="Löschen"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
