@@ -943,9 +943,9 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
             </div>
           </div>
           
-          {/* Rekursiv Unterkategorien rendern */}
-          {category.children && category.children.length > 0 && 
-            renderCategoryTree(category.children, level + 1, newVisited)
+          {/* Rekursiv Unterkategorien rendern - SICHER */}
+          {category.children && category.children.length > 0 && level < 3 && 
+            renderCategoryTree(category.children, level + 1)
           }
         </div>
       );
