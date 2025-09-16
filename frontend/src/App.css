@@ -2255,6 +2255,28 @@ body {
   min-width: 1014px;
 }
 
+/* Comprehensive Help Dialog - Dunkel Design */
+.comprehensive-help-dialog {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.comprehensive-help-dialog .help-body-with-nav {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.comprehensive-help-dialog .help-navigation {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.comprehensive-help-dialog .help-content {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
 /* Help Dialog mit Navigation */
 .help-body-with-nav {
   display: flex;
