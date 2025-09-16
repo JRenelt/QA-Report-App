@@ -878,27 +878,18 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
   const organizedCategories = organizeCategories();
 
-  // KORRIGIERTE hierarchische Kategorie-Rendering
-  const renderCategoryTree = (cats, level = 0, visited = new Set()) => {
+  // SICHERE hierarchische Kategorie-Rendering (ohne Rekursion-Probleme)
+  const renderCategoryTree = (cats, level = 0) => {
     if (!cats || cats.length === 0) return null;
     
     // Schutz gegen tiefe Rekursion
-    if (level > 5) {
-      console.warn('Maximum category nesting level reached (5)');
+    if (level > 3) {
+      console.warn('Maximum category nesting level reached (3)');
       return null;
     }
     
     return cats.map(category => {
       if (!category || !category.name) return null;
-      
-      // Schutz gegen zirkuläre Referenzen
-      if (visited.has(category.name)) {
-        console.warn(`Circular reference detected for category: ${category.name}`);
-        return null;
-      }
-      
-      const newVisited = new Set(visited);
-      newVisited.add(category.name);
       
       return (
         <div key={category.id || category.name} className="category-live-group">
