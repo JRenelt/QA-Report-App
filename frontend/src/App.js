@@ -881,7 +881,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   const handleCreateCategory = async (e) => {
     if (e.key === 'Enter' && newCategoryName.trim()) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
+        const response = await fetch(`https://markmaster-2.preview.emergentagent.com/api/categories`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: newCategoryName.trim() })
