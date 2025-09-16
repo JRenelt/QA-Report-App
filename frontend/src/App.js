@@ -3089,6 +3089,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             onToggleStatus={onToggleStatus}
             onToggleLock={onToggleLock}
             onBookmarkReorder={onBookmarkReorder}
+            onShowDescription={setShowDescriptionDialog}
           />
         )}
       </div>
