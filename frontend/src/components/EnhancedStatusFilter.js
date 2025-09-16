@@ -1,16 +1,16 @@
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
-const EnhancedStatusFilter = ({ value, onChange, lockedCount = 0 }) => {
+const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   const statusOptions = [
-    { value: 'all', label: 'Alle Status', icon: '📊', count: null },
-    { value: 'active', label: 'Aktiv', icon: '✅', count: null },
-    { value: 'dead', label: 'Tot', icon: '❌', count: null }, 
-    { value: 'localhost', label: 'Localhost', icon: '🏠', count: null },
-    { value: 'duplicate', label: 'Duplikate', icon: '🔄', count: null },
-    { value: 'locked', label: 'Gesperrt', icon: '🔒', count: lockedCount },
+    { value: 'all', label: 'Alle Status', icon: '📊', count: statistics.total_bookmarks },
+    { value: 'active', label: 'Aktiv', icon: '✅', count: statistics.active_links }, 
+    { value: 'dead', label: 'Tot', icon: '❌', count: statistics.dead_links },
+    { value: 'localhost', label: 'Localhost', icon: '🏠', count: statistics.localhost_links },
+    { value: 'duplicate', label: 'Duplikate', icon: '🔄', count: statistics.duplicate_links },
+    { value: 'locked', label: 'Gesperrt', icon: '🔒', count: statistics.locked_links },
     { value: 'timeout', label: 'Timeout', icon: '⏱️', count: null },
-    { value: 'unchecked', label: 'Ungeprüft', icon: '❓', count: null }
+    { value: 'unchecked', label: 'Ungeprüft', icon: '❓', count: statistics.unchecked_links }
   ];
 
   return (
