@@ -937,7 +937,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       
       if (response.ok) {
         const result = await response.json();
-        toast.success(result.message);
+        console.log(result.message);
         setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0});
         onSave();
       } else {
