@@ -2350,7 +2350,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setShowDescriptionDialog({show: true, bookmark})}
+                    onClick={() => onShowDescription && onShowDescription({show: true, bookmark})}
                     className="info-btn"
                     title="Bemerkung anzeigen"
                   >
