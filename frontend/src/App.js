@@ -994,37 +994,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     ));
   };
 
-  // Live-Editing: Neue Kategorie erstellen
-  const handleCreateCategoryKeyDown = async (e) => {
-    if (e.key === 'Enter' && newCategoryName.trim()) {
-      try {
-        const newCategory = {
-          name: newCategoryName.trim(),
-          parent_category: null
-        };
-        
-        // API Call zum Backend
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newCategory)
-        });
-        
-        if (response.ok) {
-          toast.success(`Neue Kategorie "${newCategoryName}" erstellt`);
-          setNewCategoryName('');
-          onSave(); // Kategorien neu laden
-        } else {
-          throw new Error('Kategorie konnte nicht erstellt werden');
-        }
-      } catch (error) {
-        console.error('Create category error:', error);
-        toast.error('Fehler beim Erstellen der Kategorie: ' + error.message);
-      }
-    }
-  };
+  // Funktion entfernt - doppelt vorhanden
 
   // Removed unused subcategory function
 
