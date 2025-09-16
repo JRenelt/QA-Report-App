@@ -42,9 +42,27 @@ const EnhancedCatchMouseGame = ({ isOpen, onClose }) => {
 
   const [backgroundLoaded, setBackgroundLoaded] = useState(false);
 
-  // Canvas dimensions
-  const CANVAS_WIDTH = 800;
-  const CANVAS_HEIGHT = 600;
+  // Dynamic Canvas dimensions - responsive to window
+  const [canvasDimensions, setCanvasDimensions] = useState({
+    width: Math.min(window.innerWidth * 0.8, 800),
+    height: Math.min(window.innerHeight * 0.6, 600)
+  });
+
+  // Update canvas size on window resize
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      setCanvasDimensions({
+        width: Math.min(window.innerWidth * 0.8, 800),
+        height: Math.min(window.innerHeight * 0.6, 600)
+      });
+    };
+
+    window.addEventListener('resize', updateCanvasSize);
+    return () => window.removeEventListener('resize', updateCanvasSize);
+  }, []);
+
+  const CANVAS_WIDTH = canvasDimensions.width;
+  const CANVAS_HEIGHT = canvasDimensions.height;
 
   // Load Spielteppich background image
   useEffect(() => {
