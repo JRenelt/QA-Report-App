@@ -4217,6 +4217,33 @@ function App() {
         onClose={() => setShowHelp(false)}
       />
 
+      {/* Description Dialog */}
+      <Dialog open={showDescriptionDialog.show} onOpenChange={(open) => setShowDescriptionDialog({show: open, bookmark: null})}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Info className="w-5 h-5 text-blue-600" />
+              Bemerkung zu "{showDescriptionDialog.bookmark?.title}"
+            </DialogTitle>
+          </DialogHeader>
+          <div className="description-content">
+            <div className="bg-gray-50 p-4 rounded-lg border">
+              <p className="text-gray-800 whitespace-pre-wrap">
+                {showDescriptionDialog.bookmark?.description || 'Keine Bemerkung vorhanden.'}
+              </p>
+            </div>
+            <div className="mt-4 flex justify-end">
+              <Button 
+                onClick={() => setShowDescriptionDialog({show: false, bookmark: null})}
+                variant="outline"
+              >
+                Schließen
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Sonner Toaster - kept as fallback */}
       <Toaster 
         position="top-center" 
