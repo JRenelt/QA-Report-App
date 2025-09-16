@@ -848,32 +848,18 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
   const organizedCategories = organizeCategories();
 
-  // Rekursive Funktion zum Rendern von Kategorien aller Ebenen
-  const renderCategoryTree = (cats, level = 0, visited = new Set()) => {
-    // Schutz gegen unendliche Rekursion
-    if (level > 10) {
-      console.warn('Maximum category nesting level reached (10)');
-      return null;
-    }
+  // Vereinfachte Kategorie-Rendering ohne Rekursion
+  const renderCategoryTree = (cats) => {
+    if (!cats || cats.length === 0) return null;
     
     return cats.map(category => {
-      // Schutz gegen zirkuläre Referenzen
-      if (visited.has(category.name)) {
-        console.warn(`Circular reference detected for category: ${category.name}`);
-        return null;
-      }
-      
-      const newVisited = new Set(visited);
-      newVisited.add(category.name);
+      if (!category || !category.name) return null;
       
       return (
-        <div key={category.id} className="category-live-group">
-          {/* Hauptkategorie */}
-          <div className="category-live-item main-category" style={{ marginLeft: `${level * 20}px` }}>
+        <div key={category.id || category.name} className="category-live-group">
+          <div className="category-live-item main-category">
             <div className="category-live-info">
-              <span className="category-level-icon">
-                {level === 0 ? '📁' : `${'└─'.repeat(level)}📂`}
-              </span>
+              <span className="category-level-icon">📁</span>
               {editingCategory === category.id ? (
                 <Input
                   defaultValue={category.name}
@@ -918,11 +904,6 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
               </Button>
             </div>
           </div>
-
-          {/* Rekursiv Kinder rendern */}
-          {category.children && category.children.length > 0 && 
-            renderCategoryTree(category.children, level + 1, newVisited)
-          }
         </div>
       );
     });
