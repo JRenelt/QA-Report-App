@@ -2084,7 +2084,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
           >
             <div className="category-info">
               <FolderOpen className="category-icon all-icon" />
-              <span className="category-name">Alle ({statistics?.total_bookmarks || 0})</span>
+              <span className="category-name">Alle ({categories?.length || 0})</span>
             </div>
           </div>
           
