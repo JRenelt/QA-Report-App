@@ -1845,8 +1845,13 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     setDragOverCategory(null);
   };
 
-  // Use organizeCategories from the CategoryManageDialog scope
-  const organizedCategories = [];
+  // Sichere Organisations-Funktion für Kategorien (ohne Rekursion)
+  const organizeCategories = () => {
+    // Einfache flache Liste ohne Hierarchie-Probleme
+    return categories.filter(cat => cat && cat.name && cat.name.trim() !== '');
+  };
+
+  const organizedCategories = organizeCategories();
 
   return (
     <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
