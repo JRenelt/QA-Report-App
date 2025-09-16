@@ -1130,7 +1130,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
     const subcatName = window.prompt(`Neue Unterkategorie für "${parentName}":`);
     if (subcatName && subcatName.trim()) {
       try {
-        const response = await fetch(`https://favorg-manager-1.preview.emergentagent.com/api/categories`, {
+        const response = await fetch(`${BACKEND_URL}/api/categories`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
