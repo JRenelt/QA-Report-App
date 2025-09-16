@@ -1181,8 +1181,8 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
               }}>
                 📚 Vorhandene Kategorien ({organizedCategories.length}):
               </label>
-              <div style={{maxHeight: '350px', overflowY: 'auto', paddingRight: '4px'}}>
-                {renderCategoryList()}
+              <div style={{maxHeight: '400px', overflowY: 'auto', paddingRight: '4px'}}>
+                {renderHierarchicalList(organizeHierarchy())}
               </div>
             </div>
           </div>
