@@ -1065,145 +1065,60 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
   return (
     <>
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className="category-manage-dialog-advanced"
-        style={{
-          zIndex: 99999,
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '95vw',
-          maxWidth: '1400px',
-          height: '85vh',
-          maxHeight: '900px'
-        }}
-      >
-        <DialogHeader>
-          <DialogTitle className="category-manage-title">
-            🏷️ Kategorien verwalten
-          </DialogTitle>
-          <p className="category-manage-subtitle">
-            Live-Bearbeitung - Änderungen mit Enter bestätigen
-          </p>
-        </DialogHeader>
-        
-        <div className="category-manage-live-content">
-          {/* Neue Kategorie erstellen */}
-          <div className="new-category-section">
-            <div className="new-category-row">
-              <div className="new-category-icon">➕</div>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent style={{zIndex: 99999}}>
+          <DialogHeader>
+            <DialogTitle>🏷️ Kategorien verwalten</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            {/* Neue Kategorie erstellen */}
+            <div>
               <Input
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
-                onKeyDown={handleCreateCategoryKeyDown}
-                placeholder="+ Neue Kategorie (Enter zum Erstellen)"
-                className="new-category-input"
+                onKeyDown={handleCreateCategory}
+                placeholder="Neue Kategorie erstellen (Enter)"
               />
             </div>
-          </div>
 
-          {/* Neue Unterkategorie erstellen */}
-          <div className="new-subcategory-section">
-            <div className="new-subcategory-row">
-              <div className="new-subcategory-icon">└─➕</div>
-              <Select 
-                value={selectedParentCategory} 
-                onValueChange={setSelectedParentCategory}
-              >
-                <SelectTrigger className="parent-category-select">
-                  <SelectValue placeholder="Übergeordnete Kategorie wählen" />
-                </SelectTrigger>
-                <SelectContent>
-                  {/* Alle Kategorien flach für Parent-Auswahl */}
-                  {categories.filter(cat => cat.name && cat.name.trim() !== '').map(cat => (
-                    <SelectItem key={cat.name} value={cat.name}>
-                      {cat.parent_category ? `${cat.parent_category} → ${cat.name}` : cat.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Input
-                value={newSubcategoryName}
-                onChange={(e) => setNewSubcategoryName(e.target.value)}
-                onKeyDown={handleCreateSubcategory}
-                placeholder="+ Neue Unterkategorie (Enter zum Erstellen)"
-                className="new-subcategory-input"
-                disabled={!selectedParentCategory}
-              />
+            {/* Kategorien-Liste */}
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {renderCategoryList()}
             </div>
           </div>
-
-          {/* Bestehende Kategorien */}
-          <div className="existing-categories-section">
-            <h4 className="section-title">Bestehende Kategorien</h4>
-            <div className="categories-live-list">
-              {renderCategoryTree(organizedCategories)}
-            </div>
-          </div>
-        </div>
-        
-        {/* Minimale Aktionen - nur Schließen Button */}
-        <div className="dialog-actions-minimal">
-          <Button onClick={onClose} className="close-dialog-btn">
-            <X className="w-4 h-4 mr-2" />
-            Schließen
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
-
-    {/* Sicherheitsabfrage für Kategorie löschen */}
-    <Dialog open={deleteConfirmDialog.show} onOpenChange={(open) => !open && setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
-      <DialogContent style={{zIndex: 100000}}>
-        <DialogHeader>
-          <DialogTitle className="text-red-600">
-            ⚠️ Kategorie löschen bestätigen
-          </DialogTitle>
-        </DialogHeader>
-        <div className="delete-confirm-content">
-          <p className="text-lg mb-4">
-            Möchten Sie die Kategorie <strong>"{deleteConfirmDialog.category?.name}"</strong> wirklich löschen?
-          </p>
           
-          {deleteConfirmDialog.bookmarkCount > 0 && (
-            <div className="warning-box bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <AlertTriangle className="h-5 w-5 text-yellow-400" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-yellow-700">
-                    <strong>Achtung:</strong> Diese Kategorie enthält <strong>{deleteConfirmDialog.bookmarkCount} Einträge</strong>.
-                    <br />
-                    Diese werden automatisch der Kategorie <strong>"Nicht zugeordnet"</strong> zugewiesen.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          <div className="flex justify-end space-x-3 mt-6">
-            <Button 
-              variant="outline" 
-              onClick={() => setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}
-            >
-              Abbrechen
-            </Button>
-            <Button 
-              variant="destructive" 
-              onClick={handleDeleteCategory}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Löschen bestätigen
-            </Button>
+          <div className="flex justify-end mt-4">
+            <Button onClick={onClose} variant="outline">Schließen</Button>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  </>
+        </DialogContent>
+      </Dialog>
+
+      {/* Lösch-Bestätigung */}
+      <Dialog open={deleteConfirmDialog.show} onOpenChange={(open) => !open && setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
+        <DialogContent style={{zIndex: 100000}}>
+          <DialogHeader>
+            <DialogTitle className="text-red-600">⚠️ Kategorie löschen?</DialogTitle>
+          </DialogHeader>
+          <div>
+            <p>Kategorie <strong>"{deleteConfirmDialog.category?.name}"</strong> löschen?</p>
+            {deleteConfirmDialog.bookmarkCount > 0 && (
+              <p className="text-yellow-600 mt-2">
+                ⚠️ {deleteConfirmDialog.bookmarkCount} Einträge werden zu "Nicht zugeordnet" verschoben.
+              </p>
+            )}
+            <div className="flex justify-end space-x-2 mt-4">
+              <Button variant="outline" onClick={() => setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
+                Abbrechen
+              </Button>
+              <Button variant="destructive" onClick={handleDeleteCategory}>
+                Löschen
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
