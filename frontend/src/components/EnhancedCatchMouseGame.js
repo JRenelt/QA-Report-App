@@ -57,8 +57,8 @@ const EnhancedCatchMouseGame = ({ isOpen, onClose }) => {
       console.error('Failed to load Spielteppich image');
       setBackgroundLoaded(false);
     };
-    // Spielteppich-Bild URL
-    img.src = 'https://customer-assets.emergentagent.com/job_bookmark-central/artifacts/tiwm7lbf_Kartenteppich.png';
+    // Neuer Verkehrsteppich-Hintergrund
+    img.src = 'https://customer-assets.emergentagent.com/job_96c10ff9-05ad-4656-98cf-dd116f1d81b0/artifacts/cwij38yc_Verkehrsteppich_minimal.png';
   }, []);
 
   // Initialize game objects when game starts
