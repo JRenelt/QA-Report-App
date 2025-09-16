@@ -201,6 +201,38 @@ def test_statistics_after_validation():
         print(f"❌ Fehler bei Statistiken-Test: {str(e)}")
         return False
 
+def main():
+    """
+    Hauptfunktion für Link-Validierung Tests gemäß German Review-Request
+    """
+    print("🚀 FavOrg Link-Validierung Test Suite")
+    print(f"⏰ Gestartet: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    success_count = 0
+    total_tests = 2
+    
+    # Test 1: Link-Validierung
+    if test_link_validation():
+        success_count += 1
+    
+    # Test 2: Statistiken nach Validierung
+    if test_statistics_after_validation():
+        success_count += 1
+    
+    # Zusammenfassung
+    print("\n" + "="*60)
+    print("📋 TEST ZUSAMMENFASSUNG")
+    print("="*60)
+    print(f"✅ Erfolgreiche Tests: {success_count}/{total_tests}")
+    print(f"📊 Success Rate: {(success_count/total_tests)*100:.1f}%")
+    
+    if success_count == total_tests:
+        print("🎉 ALLE TESTS ERFOLGREICH - Link-Validierung funktioniert einwandfrei!")
+        return True
+    else:
+        print("❌ EINIGE TESTS FEHLGESCHLAGEN - Link-Validierung benötigt Aufmerksamkeit")
+        return False
+
 class FavLinkBackendTester:
     def __init__(self, base_url="https://bookmark-rescue.preview.emergentagent.com"):
         self.base_url = base_url
