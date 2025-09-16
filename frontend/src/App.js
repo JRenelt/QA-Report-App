@@ -755,6 +755,33 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             </Select>
           </div>
           
+          {/* Unterkategorie-Auswahl */}
+          {formData.category && formData.category !== 'Uncategorized' && (
+            <div className="form-group">
+              <Label htmlFor="subcategory">Unterkategorie (optional)</Label>
+              <Select
+                value={formData.subcategory || ''}
+                onValueChange={(value) => setFormData({...formData, subcategory: value === 'none' ? '' : value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Unterkategorie wählen" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Keine Unterkategorie</SelectItem>
+                  {/* Dynamische Unterkategorien für die gewählte Hauptkategorie */}
+                  {categories
+                    .filter(cat => cat.parent_category === formData.category)
+                    .map(subcat => (
+                      <SelectItem key={subcat.id} value={subcat.name}>
+                        {subcat.name}
+                      </SelectItem>
+                    ))
+                  }
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          
           <div className="form-group">
             <Label htmlFor="description">Beschreibung (optional)</Label>
             <textarea
