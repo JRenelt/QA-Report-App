@@ -1171,7 +1171,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         if (response.ok) {
           toast.success(`Neue Kategorie "${newCategoryName}" erstellt`);
           setNewCategoryName('');
-          await loadCategories(); // Kategorien neu laden
+          onSave(); // Kategorien neu laden
         } else {
           throw new Error('Kategorie konnte nicht erstellt werden');
         }
@@ -1204,7 +1204,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
           toast.success(`Neue Unterkategorie "${newSubcategoryName}" unter "${selectedParentCategory}" erstellt`);
           setNewSubcategoryName('');
           setSelectedParentCategory('');
-          await loadCategories(); // Kategorien neu laden
+          onSave(); // Kategorien neu laden
         } else {
           throw new Error('Unterkategorie konnte nicht erstellt werden');
         }
