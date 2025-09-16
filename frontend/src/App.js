@@ -646,6 +646,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
         title: '',
         url: '',
         category: '', // Leer für Placeholder
+        subcategory: '',
         is_locked: false
       });
     }
