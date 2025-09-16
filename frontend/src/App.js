@@ -1779,8 +1779,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     setDragOverCategory(null);
   };
 
-  // Einfache, sichere Kategorien-Organisation
-  const organizedCategories = categories.filter(cat => cat && cat.name && cat.name.trim() !== '');
+  // Einfache Kategorien-Liste (korrigiert)
+  const organizedCategories = categories ? categories.filter(cat => cat && cat.name && cat.name.trim() !== '') : [];
 
   return (
     <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
