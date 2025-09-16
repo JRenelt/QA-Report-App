@@ -949,7 +949,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
           toast.success(`Neue Unterkategorie "${newSubcategoryName}" unter "${selectedParentCategory}" erstellt`);
           setNewSubcategoryName('');
           setSelectedParentCategory('');
-          await loadCategories(); // Kategorien neu laden
+          await refreshCategories(); // Kategorien neu laden
         } else {
           throw new Error('Unterkategorie konnte nicht erstellt werden');
         }
