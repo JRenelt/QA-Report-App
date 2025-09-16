@@ -1303,7 +1303,7 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
               <Input
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
-                onKeyDown={handleCreateCategory}
+                onKeyDown={handleCreateCategoryKeyDown}
                 placeholder="+ Neue Kategorie (Enter zum Erstellen)"
                 className="new-category-input"
               />
