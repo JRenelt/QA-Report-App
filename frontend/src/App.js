@@ -2868,7 +2868,7 @@ function App() {
   // Load initial data
   useEffect(() => {
     loadBookmarks();
-    loadCategories();
+    refreshCategories();
     loadStatistics();
   }, []);
 
