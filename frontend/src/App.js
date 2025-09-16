@@ -3202,7 +3202,7 @@ function App() {
         isOpen={showCategoryManageDialog}
         onClose={() => setShowCategoryManageDialog(false)}
         categories={categories}
-        onSave={loadCategories}
+        onSave={refreshCategories}
       />
 
       <ExportDialog
