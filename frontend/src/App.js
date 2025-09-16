@@ -1005,30 +1005,69 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent style={{zIndex: 99999}}>
+        <DialogContent className="category-manage-dialog-corporate" style={{zIndex: 99999, maxWidth: '600px', maxHeight: '80vh'}}>
           <DialogHeader>
-            <DialogTitle>🏷️ Kategorien verwalten</DialogTitle>
+            <DialogTitle className="flex items-center gap-2">
+              <span style={{color: 'var(--cyan-400)'}}>🏷️</span>
+              <span style={{color: 'var(--text-primary)', fontFamily: 'var(--font-family)'}}>
+                Kategorien verwalten
+              </span>
+            </DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-4">
+          <div style={{display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '16px'}}>
             {/* Neue Kategorie erstellen */}
             <div>
-              <Input
+              <label style={{
+                color: 'var(--text-secondary)', 
+                fontFamily: 'var(--font-family)', 
+                fontSize: '13px', 
+                fontWeight: '500',
+                display: 'block',
+                marginBottom: '8px'
+              }}>
+                📁 Neue Kategorie erstellen:
+              </label>
+              <input
+                className="category-new-input"
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
                 onKeyDown={handleCreateCategory}
-                placeholder="Neue Kategorie erstellen (Enter)"
+                placeholder="Kategorie-Name eingeben und Enter drücken..."
               />
             </div>
 
             {/* Kategorien-Liste */}
-            <div className="space-y-2 max-h-96 overflow-y-auto">
-              {renderCategoryList()}
+            <div>
+              <label style={{
+                color: 'var(--text-secondary)', 
+                fontFamily: 'var(--font-family)', 
+                fontSize: '13px', 
+                fontWeight: '500',
+                display: 'block',
+                marginBottom: '12px'
+              }}>
+                📚 Vorhandene Kategorien ({organizedCategories.length}):
+              </label>
+              <div style={{maxHeight: '350px', overflowY: 'auto', paddingRight: '4px'}}>
+                {renderCategoryList()}
+              </div>
             </div>
           </div>
           
-          <div className="flex justify-end mt-4">
-            <Button onClick={onClose} variant="outline">Schließen</Button>
+          <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border-primary)'}}>
+            <Button 
+              onClick={onClose} 
+              style={{
+                background: 'var(--bg-tertiary)',
+                border: '1px solid var(--border-primary)',
+                color: 'var(--text-primary)',
+                fontFamily: 'var(--font-family)',
+                padding: '8px 16px'
+              }}
+            >
+              Schließen
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
