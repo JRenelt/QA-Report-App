@@ -877,29 +877,27 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
   const organizedCategories = organizeCategories();
 
-  // CRUD API Funktionen
-  const handleCreateCategory = async (name, parentCategory = null) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name,
-          parent_category: parentCategory
-        })
-      });
-      
-      if (response.ok) {
-        const newCategory = await response.json();
-        toast.success(`Kategorie "${name}" erstellt`);
-        onSave(); // Refresh categories
-        return newCategory;
-      } else {
-        const error = await response.json();
-        toast.error(`Fehler: ${error.detail}`);
+  // Einfache CRUD Funktionen
+  const handleCreateCategory = async (e) => {
+    if (e.key === 'Enter' && newCategoryName.trim()) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: newCategoryName.trim() })
+        });
+        
+        if (response.ok) {
+          toast.success(`Kategorie "${newCategoryName}" erstellt`);
+          setNewCategoryName('');
+          onSave();
+        } else {
+          const error = await response.json();
+          toast.error(`Fehler: ${error.detail}`);
+        }
+      } catch (error) {
+        toast.error(`Fehler beim Erstellen: ${error.message}`);
       }
-    } catch (error) {
-      toast.error(`Fehler beim Erstellen: ${error.message}`);
     }
   };
 
@@ -917,9 +915,9 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       });
       
       if (response.ok) {
-        toast.success(`Kategorie "${category.name}" → "${newName}" umbenannt`);
+        toast.success(`Kategorie umbenannt`);
         setEditingCategory(null);
-        onSave(); // Refresh categories
+        onSave();
       } else {
         const error = await response.json();
         toast.error(`Fehler: ${error.detail}`);
@@ -941,44 +939,17 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         const result = await response.json();
         toast.success(result.message);
         setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0});
-        onSave(); // Refresh categories
+        onSave();
       } else {
         const error = await response.json();
-        toast.error(`Fehler: ${error.detail}`);
+        toast.error(`Fehler beim Löschen`);
       }
     } catch (error) {
       toast.error(`Fehler beim Löschen: ${error.message}`);
     }
   };
 
-  const handleMoveCategory = async (categoryId, newParentCategory) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories/${categoryId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          parent_category: newParentCategory === 'root' ? null : newParentCategory 
-        })
-      });
-      
-      if (response.ok) {
-        const movedCategory = await response.json();
-        const moveDescription = newParentCategory === 'root' 
-          ? `"${movedCategory.name}" zur Hauptebene verschoben`
-          : `"${movedCategory.name}" zu "${newParentCategory}" verschoben`;
-        toast.success(moveDescription);
-        onSave(); // Refresh categories
-      } else {
-        const error = await response.json();
-        toast.error(`Fehler: ${error.detail}`);
-      }
-    } catch (error) {
-      toast.error(`Fehler beim Verschieben: ${error.message}`);
-    }
-  };
-
   const confirmDeleteCategory = (category) => {
-    // Count bookmarks in this category
     const bookmarkCount = category.bookmark_count || 0;
     setDeleteConfirmDialog({
       show: true, 
