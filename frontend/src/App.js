@@ -1309,7 +1309,6 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
       </DialogContent>
     </Dialog>
 
-    <>
       {/* Sicherheitsabfrage für Kategorie löschen */}
       <Dialog open={deleteConfirmDialog.show} onOpenChange={(open) => !open && setDeleteConfirmDialog({show: false, category: null, bookmarkCount: 0})}>
         <DialogContent style={{zIndex: 100000}}>
