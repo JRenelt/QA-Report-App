@@ -1458,14 +1458,26 @@ async def delete_category(category_id: str):
     
     category_name = category["name"]
     
-    # Verschiebe alle Bookmarks zu "Uncategorized"
-    await db.bookmarks.update_many(
+    # Prüfe ob "Nicht zugeordnet" existiert, falls nicht erstelle sie
+    unassigned_category = await db.categories.find_one({"name": "Nicht zugeordnet"})
+    if not unassigned_category:
+        unassigned_cat = Category(
+            name="Nicht zugeordnet",
+            parent_category=None,
+            bookmark_count=0,
+            subcategory_count=0
+        )
+        await db.categories.insert_one(unassigned_cat.dict())
+        print("Kategorie 'Nicht zugeordnet' wurde erstellt")
+    
+    # Verschiebe alle Bookmarks zu "Nicht zugeordnet"
+    bookmark_result = await db.bookmarks.update_many(
         {"category": category_name},
-        {"$set": {"category": "Uncategorized", "subcategory": None}}
+        {"$set": {"category": "Nicht zugeordnet", "subcategory": None}}
     )
     
-    # Verschiebe alle Unterkategorien zu Hauptkategorien
-    await db.categories.update_many(
+    # Verschiebe alle Unterkategorien zu Hauptkategorien (parent_category = null)
+    subcategory_result = await db.categories.update_many(
         {"parent_category": category_name},
         {"$unset": {"parent_category": ""}}
     )
@@ -1476,7 +1488,14 @@ async def delete_category(category_id: str):
         raise HTTPException(status_code=404, detail="Kategorie nicht gefunden")
     
     await bookmark_manager.category_manager.update_bookmark_counts()
-    return {"message": f"Kategorie '{category_name}' gelöscht und Bookmarks zu 'Uncategorized' verschoben"}
+    
+    message = f"Kategorie '{category_name}' gelöscht"
+    if bookmark_result.modified_count > 0:
+        message += f" - {bookmark_result.modified_count} Bookmarks zu 'Nicht zugeordnet' verschoben"
+    if subcategory_result.modified_count > 0:
+        message += f" - {subcategory_result.modified_count} Unterkategorien zu Hauptebene verschoben"
+    
+    return {"message": message}
 
 @api_router.post("/categories/cleanup")
 async def cleanup_empty_categories():
