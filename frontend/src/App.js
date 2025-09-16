@@ -877,7 +877,27 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
 
   const organizedCategories = organizeCategories();
 
-  // Einfache CRUD Funktionen
+  // Error-Handling System
+  const showError = (message) => {
+    const savedSettings = localStorage.getItem('favorg-settings');
+    const settings = savedSettings ? JSON.parse(savedSettings) : {};
+    
+    if (!settings.hideErrors) {
+      // Normale Error-Anzeige
+      console.error(message);
+      alert(message); // Temporär mit alert, kann später mit toast ersetzt werden
+    } else {
+      // Nur in Console loggen wenn Meldungen ausgeblendet sind
+      console.log('Error (hidden):', message);
+    }
+  };
+
+  const showSuccess = (message) => {
+    console.log(message);
+    // Erfolgs-Meldungen immer anzeigen (können später auch optional gemacht werden)
+  };
+
+  // REPARIERTE CRUD Funktionen
   const handleCreateCategory = async (e) => {
     if (e.key === 'Enter' && newCategoryName.trim()) {
       try {
@@ -888,15 +908,15 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
         });
         
         if (response.ok) {
-          console.log(`Kategorie "${newCategoryName}" erstellt`);
+          showSuccess(`Kategorie "${newCategoryName}" erstellt`);
           setNewCategoryName('');
           onSave();
         } else {
           const error = await response.json();
-          console.error(`Fehler: ${error.detail}`);
+          showError(`Fehler beim Erstellen: ${error.detail || 'Unbekannter Fehler'}`);
         }
       } catch (error) {
-        console.error(`Fehler beim Erstellen: ${error.message}`);
+        showError(`Fehler beim Erstellen: ${error.message}`);
       }
     }
   };
