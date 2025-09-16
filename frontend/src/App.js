@@ -2892,22 +2892,9 @@ function App() {
       </div>
     </div>
   );
-  // Core State Management
-  const [bookmarks, setBookmarks] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [statistics, setStatistics] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  // UI State
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [activeSubcategory, setActiveSubcategory] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [viewMode, setViewMode] = useState(() => {
-    return localStorage.getItem('favorg-view-mode') || 'cards';
-  });
+}
 
-  // Dialog States
+export default App;
   const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
