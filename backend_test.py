@@ -1,8 +1,205 @@
+#!/usr/bin/env python3
+"""
+FavOrg Link-Validierung Test
+Teste die Link-Validierung der FavOrg-App gemäß German Review-Request
+
+Fokus:
+- POST /api/bookmarks/validate Endpunkt
+- Response-Format mit "total_checked", "dead_links_found" etc.
+- Teste mit vorhandenen Testdaten aus der Datenbank
+- Backend URL aus .env-Datei verwenden
+"""
+
 import requests
 import sys
 import json
 import io
 from datetime import datetime
+
+# Backend URL aus Frontend .env laden
+def get_backend_url():
+    try:
+        with open('/app/frontend/.env', 'r') as f:
+            for line in f:
+                if line.startswith('REACT_APP_BACKEND_URL='):
+                    url = line.split('=', 1)[1].strip()
+                    return f"{url}/api"
+        return "http://localhost:8001/api"  # Fallback
+    except:
+        return "http://localhost:8001/api"  # Fallback
+
+def test_link_validation():
+    """
+    Teste POST /api/bookmarks/validate Endpunkt
+    Fokus auf Response-Format und Validierungslogik
+    """
+    BACKEND_URL = get_backend_url()
+    print(f"🔗 Backend URL: {BACKEND_URL}")
+    
+    print("\n" + "="*60)
+    print("🔍 LINK-VALIDIERUNG TEST")
+    print("="*60)
+    
+    try:
+        # 1. Erst prüfen ob Bookmarks vorhanden sind
+        print("\n1️⃣ Prüfe vorhandene Bookmarks...")
+        bookmarks_response = requests.get(f"{BACKEND_URL}/bookmarks", timeout=30)
+        
+        if bookmarks_response.status_code != 200:
+            print(f"❌ Fehler beim Abrufen der Bookmarks: {bookmarks_response.status_code}")
+            return False
+            
+        bookmarks = bookmarks_response.json()
+        print(f"✅ {len(bookmarks)} Bookmarks in der Datenbank gefunden")
+        
+        if len(bookmarks) == 0:
+            print("⚠️ Keine Bookmarks zum Testen vorhanden")
+            return False
+        
+        # Zeige einige Beispiel-URLs
+        print("\n📋 Beispiel-URLs in der Datenbank:")
+        for i, bookmark in enumerate(bookmarks[:5]):
+            print(f"   {i+1}. {bookmark.get('title', 'Ohne Titel')}: {bookmark.get('url', 'Keine URL')}")
+        if len(bookmarks) > 5:
+            print(f"   ... und {len(bookmarks) - 5} weitere")
+        
+        # 2. Link-Validierung durchführen
+        print(f"\n2️⃣ Starte Link-Validierung für {len(bookmarks)} Links...")
+        validation_response = requests.post(f"{BACKEND_URL}/bookmarks/validate", timeout=60)
+        
+        if validation_response.status_code != 200:
+            print(f"❌ Link-Validierung fehlgeschlagen: {validation_response.status_code}")
+            print(f"Response: {validation_response.text}")
+            return False
+        
+        validation_result = validation_response.json()
+        print("✅ Link-Validierung erfolgreich abgeschlossen")
+        
+        # 3. Response-Format prüfen
+        print("\n3️⃣ Prüfe Response-Format...")
+        required_fields = ["total_checked", "dead_links_found", "message"]
+        
+        print("📊 Validierungs-Ergebnis:")
+        for field in required_fields:
+            if field in validation_result:
+                print(f"   ✅ {field}: {validation_result[field]}")
+            else:
+                print(f"   ❌ Fehlendes Feld: {field}")
+        
+        # Zusätzliche Felder anzeigen
+        print("\n📋 Vollständige Response:")
+        for key, value in validation_result.items():
+            if key not in required_fields:
+                print(f"   📌 {key}: {value}")
+        
+        # 4. Validierung der Ergebnisse
+        print("\n4️⃣ Validiere Ergebnisse...")
+        total_checked = validation_result.get("total_checked", 0)
+        dead_links_found = validation_result.get("dead_links_found", 0)
+        
+        if total_checked > 0:
+            print(f"✅ {total_checked} Links wurden geprüft")
+        else:
+            print("❌ Keine Links wurden geprüft")
+            return False
+        
+        if dead_links_found >= 0:
+            print(f"✅ {dead_links_found} tote Links gefunden")
+            if dead_links_found > 0:
+                print(f"   📊 Dead Link Rate: {(dead_links_found/total_checked)*100:.1f}%")
+        else:
+            print("❌ Ungültige Anzahl toter Links")
+            return False
+        
+        # 5. Prüfe ob Bookmarks aktualisiert wurden
+        print("\n5️⃣ Prüfe Bookmark-Updates nach Validierung...")
+        updated_bookmarks_response = requests.get(f"{BACKEND_URL}/bookmarks", timeout=30)
+        
+        if updated_bookmarks_response.status_code == 200:
+            updated_bookmarks = updated_bookmarks_response.json()
+            
+            # Zähle Status-Typen
+            status_counts = {}
+            for bookmark in updated_bookmarks:
+                status = bookmark.get('status_type', 'unknown')
+                status_counts[status] = status_counts.get(status, 0) + 1
+            
+            print("📊 Status-Verteilung nach Validierung:")
+            for status, count in status_counts.items():
+                print(f"   📌 {status}: {count}")
+            
+            # Prüfe ob last_checked aktualisiert wurde
+            checked_count = sum(1 for b in updated_bookmarks if b.get('last_checked'))
+            print(f"✅ {checked_count} Bookmarks haben last_checked Timestamp")
+        
+        print(f"\n🎯 LINK-VALIDIERUNG TEST ERFOLGREICH")
+        print(f"   📊 Geprüfte Links: {total_checked}")
+        print(f"   ❌ Tote Links: {dead_links_found}")
+        print(f"   ✅ Success Rate: {((total_checked-dead_links_found)/total_checked)*100:.1f}%")
+        
+        return True
+        
+    except requests.exceptions.Timeout:
+        print("❌ Timeout bei Link-Validierung (>60s)")
+        return False
+    except requests.exceptions.ConnectionError:
+        print(f"❌ Verbindungsfehler zu {BACKEND_URL}")
+        return False
+    except Exception as e:
+        print(f"❌ Unerwarteter Fehler: {str(e)}")
+        return False
+
+def test_statistics_after_validation():
+    """
+    Teste ob Statistiken nach Link-Validierung korrekt aktualisiert werden
+    """
+    BACKEND_URL = get_backend_url()
+    
+    print("\n" + "="*60)
+    print("📊 STATISTIKEN NACH VALIDIERUNG TEST")
+    print("="*60)
+    
+    try:
+        response = requests.get(f"{BACKEND_URL}/statistics", timeout=30)
+        
+        if response.status_code != 200:
+            print(f"❌ Statistiken-Endpunkt fehlgeschlagen: {response.status_code}")
+            return False
+        
+        stats = response.json()
+        
+        print("📊 Aktuelle Statistiken:")
+        print(f"   📌 Gesamt Bookmarks: {stats.get('total_bookmarks', 0)}")
+        print(f"   ✅ Aktive Links: {stats.get('active_links', 0)}")
+        print(f"   ❌ Tote Links: {stats.get('dead_links', 0)}")
+        print(f"   🏠 Localhost Links: {stats.get('localhost_links', 0)}")
+        print(f"   🔄 Duplikate: {stats.get('duplicate_links', 0)}")
+        print(f"   🔒 Gesperrt: {stats.get('locked_links', 0)}")
+        print(f"   ⏱️ Timeout: {stats.get('timeout_links', 0)}")
+        print(f"   ❓ Ungeprüft: {stats.get('unchecked_links', 0)}")
+        
+        # Validiere dass Statistiken sinnvoll sind
+        total = stats.get('total_bookmarks', 0)
+        sum_status = (stats.get('active_links', 0) + 
+                     stats.get('dead_links', 0) + 
+                     stats.get('localhost_links', 0) + 
+                     stats.get('duplicate_links', 0) + 
+                     stats.get('locked_links', 0) + 
+                     stats.get('timeout_links', 0) + 
+                     stats.get('unchecked_links', 0))
+        
+        if total > 0:
+            print(f"\n✅ Statistiken-Konsistenz: {sum_status}/{total} Links kategorisiert")
+            if sum_status == total:
+                print("✅ Alle Links sind korrekt kategorisiert")
+            else:
+                print(f"⚠️ {total - sum_status} Links nicht kategorisiert")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Fehler bei Statistiken-Test: {str(e)}")
+        return False
 
 class FavLinkBackendTester:
     def __init__(self, base_url="https://bookmark-rescue.preview.emergentagent.com"):
