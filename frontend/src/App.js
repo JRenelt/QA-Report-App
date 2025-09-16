@@ -1984,8 +1984,14 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     setDragOverCategory(null);
   };
 
-  // Einfache Kategorien-Liste (korrigiert)
-  const organizedCategories = categories ? categories.filter(cat => cat && cat.name && cat.name.trim() !== '') : [];
+  // Sichere Kategorien-Liste mit Fehlerbehandlung
+  const organizedCategories = useMemo(() => {
+    if (!categories || !Array.isArray(categories)) {
+      console.warn('Categories is undefined or not an array:', categories);
+      return [];
+    }
+    return categories.filter(cat => cat && cat.name && cat.name.trim() !== '');
+  }, [categories]);
 
   return (
     <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
