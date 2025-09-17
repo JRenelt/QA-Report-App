@@ -2823,9 +2823,8 @@ function App() {
     }
   };
 
-  const handleToggleStatus = async (bookmarkId, currentStatus) => {
+  const handleToggleStatus = async (bookmarkId, newStatus) => {
     try {
-      const newStatus = currentStatus === 'dead' ? 'localhost' : 'dead';
       await favoritesService.updateBookmarkStatus(bookmarkId, newStatus);
       showSuccess(`Status zu "${newStatus}" geändert`);
       await loadBookmarks();
