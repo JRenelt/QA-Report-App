@@ -18,7 +18,9 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   );
   
   const statusOptions = [
-    // Nur die 7 verschiedenen Status-Optionen (OHNE "Status" Titel)
+    // Status-Titel (OHNE Anzahl) bleibt erhalten
+    { value: 'all', label: 'Status', icon: <StatusIcon />, showCount: false },
+    // Nur die 7 verschiedenen Status-Optionen mit [Anzahl]
     { value: 'active', label: 'Aktiv', icon: '✅', count: safeStats.active_links || 0 }, 
     { value: 'dead', label: 'Tot', icon: '❌', count: safeStats.dead_links || 0 },
     { value: 'localhost', label: 'Localhost', icon: '🏠', count: safeStats.localhost_links || 0 },
@@ -40,9 +42,11 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
               <span>{option.icon}</span>
               <span>
                 {option.label}
-                <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
-                  [{option.count}]
-                </span>
+                {option.showCount === false ? '' : (
+                  <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
+                    [{option.count}]
+                  </span>
+                )}
               </span>
             </span>
           </SelectItem>
