@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { FilterX } from 'lucide-react';
+import { Filter, FilterX } from 'lucide-react';
 
 const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   // Sicherstellen, dass statistics nie null ist
@@ -23,7 +23,7 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="status-filter-select" style={{ width: 'auto', minWidth: '120px' }}>
         <div className="flex items-center gap-2">
-          <FilterX className="w-4 h-4" />
+          <Filter className="w-4 h-4" />
           <SelectValue placeholder="Filter" />
         </div>
       </SelectTrigger>
