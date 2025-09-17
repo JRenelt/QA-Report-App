@@ -3189,9 +3189,11 @@ function App() {
         onExportClick={() => setShowExportDialog(true)}
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
+        onRemoveLocalhostClick={handleRemoveLocalhost}
         onDeleteAllClick={handleDeleteAll}
         deadLinksCount={deadLinksCount}
         duplicateCount={duplicateCount}
+        localhostCount={localhostCount}
         totalBookmarks={bookmarks.length}
         filteredCount={filteredBookmarks.length}
         hasValidated={statistics?.total_bookmarks > 0}
