@@ -3021,6 +3021,61 @@ function App() {
       }
     }
   };
+
+  const handleRemoveLocalhost = async () => {
+    // Wenn bereits Localhost-Links gefunden wurden, frage nach
+    if (localhostCount > 0) {
+      const confirmed = window.confirm(
+        `Es wurden ${localhostCount} Localhost-Links gefunden.\n\nMöchten Sie diese jetzt löschen?`
+      );
+      
+      if (confirmed) {
+        try {
+          // Lösche alle Bookmarks mit status_type = 'localhost'
+          const localhostBookmarks = bookmarks.filter(b => b.status_type === 'localhost');
+          let removedCount = 0;
+          
+          for (const bookmark of localhostBookmarks) {
+            await favoritesService.deleteBookmark(bookmark.id);
+            removedCount++;
+          }
+          
+          showSuccess(`${removedCount} Localhost-Links erfolgreich entfernt`);
+          await loadBookmarks();
+          await loadStatistics();
+        } catch (error) {
+          console.error('Error removing localhost links:', error);
+          showError('Fehler beim Entfernen der Localhost-Links');
+        }
+      }
+    } else {
+      // Sonst führe Localhost-Suche durch (markiert alle localhost-Links)
+      try {
+        const localhostBookmarks = bookmarks.filter(b => 
+          b.url && (b.url.includes('localhost') || b.url.includes('127.0.0.1') || b.url.includes('::1'))
+        );
+        
+        if (localhostBookmarks.length > 0) {
+          // Markiere als localhost
+          for (const bookmark of localhostBookmarks) {
+            await favoritesService.updateBookmarkStatus(bookmark.id, 'localhost');
+          }
+          
+          showSuccess(`${localhostBookmarks.length} Localhost-Links gefunden und markiert`);
+        } else {
+          showSuccess('Keine Localhost-Links gefunden');
+        }
+        
+        await loadBookmarks();
+        await loadStatistics();
+      } catch (error) {
+        console.error('Error finding localhost links:', error);
+        showError('Fehler bei der Localhost-Suche');
+      }
+    }
+  };
+
+  const handleRemoveDuplicates = async () => {
     // Wenn bereits Duplikate gefunden wurden, frage nach
     if (duplicateCount > 0) {
       const confirmed = window.confirm(
