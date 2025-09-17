@@ -887,8 +887,6 @@ class BookmarkManager:
             {"title": "WebMD Health", "url": "https://www.webmd.com", "category": "Health", "subcategory": "Medical Info"},
             {"title": "Yahoo Finance Markets", "url": "https://finance.yahoo.com", "category": "Finance", "subcategory": "Markets"},
             {"title": "Booking Hotels", "url": "https://www.booking.com", "category": "Travel", "subcategory": "Hotels"},
-            {"title": "React Framework", "url": "https://reactjs.org", "category": "Development", "subcategory": "Documentation"}, 
-            
             # Tote Links (15 Stück - nicht erreichbare URLs)
             {"title": "Dead Link Example 1", "url": "https://nonexistentdomain12345.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
             {"title": "Dead Link Example 2", "url": "https://brokenlink98765.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
