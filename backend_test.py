@@ -1,444 +1,472 @@
 #!/usr/bin/env python3
 """
-FavOrg Backend Test - German Review Request
-Erstelle 100 umfangreiche Testdatensätze für FavOrg
-
-ANFORDERUNG: 100 Datensätze mit ALLEN Kategorien vermengen
+Phase 2.5 Backend Testing - German Review Request
+Fokus auf 100 Testdaten-Generierung, Status-Integration, Statistiken und Lock/Unlock
 """
 
 import requests
 import json
 import time
-import random
-from datetime import datetime, timezone
+from datetime import datetime
 
-# Backend URL aus .env-Datei
+# Backend URL aus .env
 BACKEND_URL = "https://bookmark-hub-4.preview.emergentagent.com/api"
 
-def test_api_connection():
-    """Test API-Verbindung"""
-    print("🔗 Testing API connection...")
-    try:
-        response = requests.get(f"{BACKEND_URL}/statistics")
-        if response.status_code == 200:
-            print(f"✅ API connection successful: {response.status_code}")
-            return True
-        else:
-            print(f"❌ API connection failed: {response.status_code}")
-            return False
-    except Exception as e:
-        print(f"❌ API connection error: {e}")
-        return False
-
-def delete_all_bookmarks():
-    """1. Lösche alle bestehenden Bookmarks"""
-    print("\n🗑️ Deleting all existing bookmarks...")
-    try:
-        response = requests.delete(f"{BACKEND_URL}/bookmarks/all")
-        if response.status_code == 200:
-            data = response.json()
-            print(f"✅ Deleted {data.get('deleted_count', 0)} bookmarks")
-            return True
-        else:
-            print(f"❌ Failed to delete bookmarks: {response.status_code}")
-            return False
-    except Exception as e:
-        print(f"❌ Error deleting bookmarks: {e}")
-        return False
-
-def create_comprehensive_test_data():
-    """2. Erstelle 100 diverse Bookmarks mit allen Kategorien und Status-Typen"""
-    print("\n📊 Creating 100 comprehensive test bookmarks...")
-    
-    # Kategorien-Hierarchie definieren
-    categories_structure = {
-        "Development": {
-            "subcategories": ["Frontend", "Backend", "JavaScript", "Python", "DevOps", "Mobile"],
-            "count": 20
-        },
-        "News": {
-            "subcategories": ["Tech News", "World News", "Local News", "Business"],
-            "count": 15
-        },
-        "Social Media": {
-            "subcategories": ["Professional", "Personal", "Microblogging", "Photo Sharing"],
-            "count": 12
-        },
-        "Tools": {
-            "subcategories": ["Productivity", "Design", "Cloud Storage", "Communication"],
-            "count": 15
-        },
-        "Entertainment": {
-            "subcategories": ["Video", "Music", "Gaming", "Streaming"],
-            "count": 10
-        },
-        "Reference": {
-            "subcategories": ["Documentation", "Learning", "Wikipedia", "Archives"],
-            "count": 8
-        },
-        "Shopping": {
-            "subcategories": ["Online Stores", "Price Comparison", "Reviews", "Deals"],
-            "count": 6
-        },
-        "Education": {
-            "subcategories": ["Online Courses", "Universities", "Tutorials", "Research"],
-            "count": 6
-        },
-        "Health": {
-            "subcategories": ["Medical Info", "Fitness", "Nutrition", "Mental Health"],
-            "count": 4
-        },
-        "Finance": {
-            "subcategories": ["Banking", "Investment", "Cryptocurrency", "Budget"],
-            "count": 2
-        },
-        "Travel": {
-            "subcategories": ["Booking", "Reviews", "Guides", "Maps"],
-            "count": 2
+class Phase25BackendTester:
+    def __init__(self):
+        self.backend_url = BACKEND_URL
+        self.session = requests.Session()
+        self.session.headers.update({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        })
+        self.test_results = []
+        
+    def log_test(self, test_name, success, details="", response_data=None):
+        """Test-Ergebnis protokollieren"""
+        result = {
+            "test": test_name,
+            "success": success,
+            "details": details,
+            "timestamp": datetime.now().isoformat(),
+            "response_data": response_data
         }
-    }
-    
-    # Status-Verteilung: 60% active, 20% dead/localhost, 10% duplicate, 10% unchecked
-    status_distribution = {
-        "active": 60,
-        "dead": 10,
-        "localhost": 10,
-        "duplicate": 10,
-        "unchecked": 10
-    }
-    
-    # Realistische URLs und Titel für jede Kategorie
-    bookmark_templates = {
-        "Development": [
-            {"title": "GitHub - Code Repository", "url": "https://github.com", "description": "World's leading software development platform"},
-            {"title": "Stack Overflow", "url": "https://stackoverflow.com", "description": "Programming Q&A community"},
-            {"title": "MDN Web Docs", "url": "https://developer.mozilla.org", "description": "Web development documentation"},
-            {"title": "Visual Studio Code", "url": "https://code.visualstudio.com", "description": "Free source code editor"},
-            {"title": "Docker Hub", "url": "https://hub.docker.com", "description": "Container registry service"},
-            {"title": "GitLab", "url": "https://gitlab.com", "description": "DevOps platform"},
-            {"title": "CodePen", "url": "https://codepen.io", "description": "Online code editor"},
-            {"title": "React Documentation", "url": "https://reactjs.org", "description": "JavaScript library for building UIs"},
-            {"title": "Node.js", "url": "https://nodejs.org", "description": "JavaScript runtime environment"},
-            {"title": "Python.org", "url": "https://python.org", "description": "Python programming language"},
-            {"title": "Angular", "url": "https://angular.io", "description": "Web application framework"},
-            {"title": "Vue.js", "url": "https://vuejs.org", "description": "Progressive JavaScript framework"},
-            {"title": "TypeScript", "url": "https://typescriptlang.org", "description": "Typed JavaScript"},
-            {"title": "Webpack", "url": "https://webpack.js.org", "description": "Module bundler"},
-            {"title": "Babel", "url": "https://babeljs.io", "description": "JavaScript compiler"},
-            {"title": "ESLint", "url": "https://eslint.org", "description": "JavaScript linter"},
-            {"title": "Prettier", "url": "https://prettier.io", "description": "Code formatter"},
-            {"title": "Jest", "url": "https://jestjs.io", "description": "JavaScript testing framework"},
-            {"title": "Cypress", "url": "https://cypress.io", "description": "End-to-end testing"},
-            {"title": "Postman", "url": "https://postman.com", "description": "API development platform"}
-        ],
-        "News": [
-            {"title": "BBC News", "url": "https://bbc.com/news", "description": "Breaking news and analysis"},
-            {"title": "CNN", "url": "https://cnn.com", "description": "Latest news and headlines"},
-            {"title": "Reuters", "url": "https://reuters.com", "description": "International news agency"},
-            {"title": "TechCrunch", "url": "https://techcrunch.com", "description": "Technology news and analysis"},
-            {"title": "The Verge", "url": "https://theverge.com", "description": "Technology and culture news"},
-            {"title": "Ars Technica", "url": "https://arstechnica.com", "description": "Technology news and reviews"},
-            {"title": "Hacker News", "url": "https://news.ycombinator.com", "description": "Tech community news"},
-            {"title": "Wired", "url": "https://wired.com", "description": "Technology and science magazine"},
-            {"title": "Engadget", "url": "https://engadget.com", "description": "Technology news and reviews"},
-            {"title": "The Guardian", "url": "https://theguardian.com", "description": "International news"},
-            {"title": "New York Times", "url": "https://nytimes.com", "description": "American newspaper"},
-            {"title": "Washington Post", "url": "https://washingtonpost.com", "description": "American daily newspaper"},
-            {"title": "Financial Times", "url": "https://ft.com", "description": "Business and financial news"},
-            {"title": "Bloomberg", "url": "https://bloomberg.com", "description": "Business and market news"},
-            {"title": "Wall Street Journal", "url": "https://wsj.com", "description": "Business and financial news"}
-        ],
-        "Social Media": [
-            {"title": "LinkedIn", "url": "https://linkedin.com", "description": "Professional networking platform"},
-            {"title": "Twitter", "url": "https://twitter.com", "description": "Social networking service"},
-            {"title": "Facebook", "url": "https://facebook.com", "description": "Social networking platform"},
-            {"title": "Instagram", "url": "https://instagram.com", "description": "Photo and video sharing"},
-            {"title": "YouTube", "url": "https://youtube.com", "description": "Video sharing platform"},
-            {"title": "TikTok", "url": "https://tiktok.com", "description": "Short-form video platform"},
-            {"title": "Reddit", "url": "https://reddit.com", "description": "Social news aggregation"},
-            {"title": "Discord", "url": "https://discord.com", "description": "Voice and text chat"},
-            {"title": "Slack", "url": "https://slack.com", "description": "Business communication"},
-            {"title": "Mastodon", "url": "https://mastodon.social", "description": "Decentralized social network"},
-            {"title": "Pinterest", "url": "https://pinterest.com", "description": "Image sharing platform"},
-            {"title": "Snapchat", "url": "https://snapchat.com", "description": "Multimedia messaging"}
-        ],
-        "Tools": [
-            {"title": "Google Drive", "url": "https://drive.google.com", "description": "Cloud storage service"},
-            {"title": "Dropbox", "url": "https://dropbox.com", "description": "File hosting service"},
-            {"title": "Notion", "url": "https://notion.so", "description": "All-in-one workspace"},
-            {"title": "Trello", "url": "https://trello.com", "description": "Project management tool"},
-            {"title": "Asana", "url": "https://asana.com", "description": "Team collaboration tool"},
-            {"title": "Figma", "url": "https://figma.com", "description": "Design and prototyping"},
-            {"title": "Canva", "url": "https://canva.com", "description": "Graphic design platform"},
-            {"title": "Adobe Creative Cloud", "url": "https://adobe.com", "description": "Creative software suite"},
-            {"title": "Zoom", "url": "https://zoom.us", "description": "Video conferencing"},
-            {"title": "Microsoft Teams", "url": "https://teams.microsoft.com", "description": "Collaboration platform"},
-            {"title": "Google Workspace", "url": "https://workspace.google.com", "description": "Productivity suite"},
-            {"title": "1Password", "url": "https://1password.com", "description": "Password manager"},
-            {"title": "LastPass", "url": "https://lastpass.com", "description": "Password management"},
-            {"title": "Evernote", "url": "https://evernote.com", "description": "Note-taking app"},
-            {"title": "OneNote", "url": "https://onenote.com", "description": "Digital notebook"}
-        ],
-        "Entertainment": [
-            {"title": "Netflix", "url": "https://netflix.com", "description": "Streaming service"},
-            {"title": "Spotify", "url": "https://spotify.com", "description": "Music streaming"},
-            {"title": "Apple Music", "url": "https://music.apple.com", "description": "Music streaming service"},
-            {"title": "Amazon Prime Video", "url": "https://primevideo.com", "description": "Video streaming"},
-            {"title": "Disney+", "url": "https://disneyplus.com", "description": "Streaming service"},
-            {"title": "Twitch", "url": "https://twitch.tv", "description": "Live streaming platform"},
-            {"title": "Steam", "url": "https://store.steampowered.com", "description": "Gaming platform"},
-            {"title": "Epic Games Store", "url": "https://epicgames.com", "description": "Digital game store"},
-            {"title": "IMDb", "url": "https://imdb.com", "description": "Movie database"},
-            {"title": "Goodreads", "url": "https://goodreads.com", "description": "Book recommendations"}
-        ],
-        "Reference": [
-            {"title": "Wikipedia", "url": "https://wikipedia.org", "description": "Free encyclopedia"},
-            {"title": "Wolfram Alpha", "url": "https://wolframalpha.com", "description": "Computational engine"},
-            {"title": "Archive.org", "url": "https://archive.org", "description": "Internet archive"},
-            {"title": "Google Scholar", "url": "https://scholar.google.com", "description": "Academic search"},
-            {"title": "Britannica", "url": "https://britannica.com", "description": "Encyclopedia"},
-            {"title": "Dictionary.com", "url": "https://dictionary.com", "description": "Online dictionary"},
-            {"title": "Thesaurus.com", "url": "https://thesaurus.com", "description": "Synonym finder"},
-            {"title": "Merriam-Webster", "url": "https://merriam-webster.com", "description": "Dictionary and thesaurus"}
-        ],
-        "Shopping": [
-            {"title": "Amazon", "url": "https://amazon.com", "description": "Online marketplace"},
-            {"title": "eBay", "url": "https://ebay.com", "description": "Online auction site"},
-            {"title": "Etsy", "url": "https://etsy.com", "description": "Handmade and vintage items"},
-            {"title": "AliExpress", "url": "https://aliexpress.com", "description": "Online retail service"},
-            {"title": "Best Buy", "url": "https://bestbuy.com", "description": "Electronics retailer"},
-            {"title": "Target", "url": "https://target.com", "description": "General merchandise retailer"}
-        ],
-        "Education": [
-            {"title": "Coursera", "url": "https://coursera.org", "description": "Online learning platform"},
-            {"title": "edX", "url": "https://edx.org", "description": "Online course provider"},
-            {"title": "Khan Academy", "url": "https://khanacademy.org", "description": "Free online education"},
-            {"title": "Udemy", "url": "https://udemy.com", "description": "Online learning marketplace"},
-            {"title": "MIT OpenCourseWare", "url": "https://ocw.mit.edu", "description": "Free course materials"},
-            {"title": "Codecademy", "url": "https://codecademy.com", "description": "Interactive coding lessons"}
-        ],
-        "Health": [
-            {"title": "WebMD", "url": "https://webmd.com", "description": "Medical information"},
-            {"title": "Mayo Clinic", "url": "https://mayoclinic.org", "description": "Medical information and tools"},
-            {"title": "Healthline", "url": "https://healthline.com", "description": "Health information"},
-            {"title": "MyFitnessPal", "url": "https://myfitnesspal.com", "description": "Nutrition and fitness tracking"}
-        ],
-        "Finance": [
-            {"title": "Yahoo Finance", "url": "https://finance.yahoo.com", "description": "Financial news and data"},
-            {"title": "Mint", "url": "https://mint.com", "description": "Personal finance management"}
-        ],
-        "Travel": [
-            {"title": "Booking.com", "url": "https://booking.com", "description": "Hotel booking platform"},
-            {"title": "TripAdvisor", "url": "https://tripadvisor.com", "description": "Travel reviews and booking"}
-        ]
-    }
-    
-    # Dead Links für Tests
-    dead_links = [
-        {"title": "Dead Link Test 1", "url": "https://nonexistentdomain12345.com", "description": "Test dead link"},
-        {"title": "Dead Link Test 2", "url": "https://brokenlink98765.org", "description": "Test dead link"},
-        {"title": "Dead Link Test 3", "url": "https://deadurl54321.net", "description": "Test dead link"},
-        {"title": "Dead Link Test 4", "url": "https://invalidsite11111.com", "description": "Test dead link"},
-        {"title": "Dead Link Test 5", "url": "https://notfound22222.org", "description": "Test dead link"},
-        {"title": "Dead Link Test 6", "url": "https://broken33333.net", "description": "Test dead link"},
-        {"title": "Dead Link Test 7", "url": "https://dead44444.com", "description": "Test dead link"},
-        {"title": "Dead Link Test 8", "url": "https://invalid55555.org", "description": "Test dead link"},
-        {"title": "Dead Link Test 9", "url": "https://missing66666.net", "description": "Test dead link"},
-        {"title": "Dead Link Test 10", "url": "https://gone77777.com", "description": "Test dead link"}
-    ]
-    
-    # Localhost Links für Tests
-    localhost_links = [
-        {"title": "Local Development Server", "url": "http://localhost:3000", "description": "React development server"},
-        {"title": "Local API Server", "url": "http://localhost:8000", "description": "FastAPI development server"},
-        {"title": "Local Database Admin", "url": "http://localhost:8080", "description": "Database administration"},
-        {"title": "Local Test Server", "url": "http://127.0.0.1:5000", "description": "Flask test server"},
-        {"title": "Local Docker Container", "url": "http://localhost:9000", "description": "Docker container service"},
-        {"title": "Local Webpack Dev Server", "url": "http://localhost:8080", "description": "Webpack development server"},
-        {"title": "Local MongoDB Express", "url": "http://localhost:8081", "description": "MongoDB web interface"},
-        {"title": "Local Redis Commander", "url": "http://localhost:8082", "description": "Redis web interface"},
-        {"title": "Local Jupyter Notebook", "url": "http://localhost:8888", "description": "Jupyter notebook server"},
-        {"title": "Local Grafana Dashboard", "url": "http://localhost:3001", "description": "Monitoring dashboard"}
-    ]
-    
-    # Erstelle Status-Array basierend auf Verteilung
-    status_array = []
-    for status, count in status_distribution.items():
-        status_array.extend([status] * count)
-    
-    # Shuffle für zufällige Verteilung
-    random.shuffle(status_array)
-    
-    created_bookmarks = []
-    bookmark_counter = 0
-    
-    # Erstelle Bookmarks für jede Kategorie
-    for category, config in categories_structure.items():
-        subcategories = config["subcategories"]
-        target_count = config["count"]
+        self.test_results.append(result)
+        status = "✅" if success else "❌"
+        print(f"{status} {test_name}: {details}")
         
-        # Hole Templates für diese Kategorie
-        templates = bookmark_templates.get(category, [])
-        
-        for i in range(target_count):
-            # Wähle Template oder erstelle generisches
-            if i < len(templates):
-                template = templates[i]
-                title = template["title"]
-                url = template["url"]
-                description = template["description"]
-            else:
-                # Generiere zusätzliche Bookmarks wenn nötig
-                title = f"{category} Resource {i+1}"
-                url = f"https://example-{category.lower()}-{i+1}.com"
-                description = f"Additional {category.lower()} resource for testing"
-            
-            # Wähle Unterkategorie
-            subcategory = random.choice(subcategories)
-            
-            # Bestimme Status
-            if bookmark_counter < len(status_array):
-                status_type = status_array[bookmark_counter]
-            else:
-                status_type = "active"
-            
-            # Spezielle URLs für bestimmte Status-Typen
-            if status_type == "dead" and bookmark_counter < len(dead_links):
-                dead_link = dead_links[bookmark_counter % len(dead_links)]
-                url = dead_link["url"]
-                title = f"{title} (Dead Link Test)"
-                description = dead_link["description"]
-            elif status_type == "localhost" and bookmark_counter < len(localhost_links):
-                localhost_link = localhost_links[bookmark_counter % len(localhost_links)]
-                url = localhost_link["url"]
-                title = f"{title} (Localhost)"
-                description = localhost_link["description"]
-            
-            # Zufällige is_locked Status (ca. 10% gesperrt)
-            is_locked = random.random() < 0.1
-            
-            bookmark_data = {
-                "title": title,
-                "url": url,
-                "category": category,
-                "subcategory": subcategory,
-                "description": description,
-                "status_type": status_type,
-                "is_locked": is_locked
-            }
-            
-            created_bookmarks.append(bookmark_data)
-            bookmark_counter += 1
-    
-    # Erstelle Bookmarks über API
-    success_count = 0
-    failed_count = 0
-    
-    print(f"📝 Creating {len(created_bookmarks)} bookmarks...")
-    
-    for i, bookmark in enumerate(created_bookmarks):
+    def test_clear_existing_data(self):
+        """Bestehende Daten löschen für sauberen Test"""
         try:
-            response = requests.post(f"{BACKEND_URL}/bookmarks", json=bookmark)
+            response = self.session.delete(f"{self.backend_url}/bookmarks/all")
             if response.status_code == 200:
-                success_count += 1
-                if (i + 1) % 10 == 0:
-                    print(f"   ✅ Created {i + 1}/{len(created_bookmarks)} bookmarks")
+                data = response.json()
+                self.log_test(
+                    "Clear Existing Data", 
+                    True, 
+                    f"Deleted {data.get('deleted_count', 0)} existing bookmarks",
+                    data
+                )
+                return True
             else:
-                failed_count += 1
-                print(f"   ❌ Failed to create bookmark {i+1}: {response.status_code}")
+                self.log_test("Clear Existing Data", False, f"HTTP {response.status_code}: {response.text}")
+                return False
         except Exception as e:
-            failed_count += 1
-            print(f"   ❌ Error creating bookmark {i+1}: {e}")
+            self.log_test("Clear Existing Data", False, f"Exception: {str(e)}")
+            return False
     
-    print(f"✅ Successfully created {success_count} bookmarks")
-    if failed_count > 0:
-        print(f"❌ Failed to create {failed_count} bookmarks")
+    def test_create_100_test_data(self):
+        """HAUPTTEST: 100 Testdaten erstellen (65 normal, 20 Duplikate, 15 tote Links)"""
+        try:
+            response = self.session.post(f"{self.backend_url}/bookmarks/create-test-data")
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Validiere Response-Struktur
+                required_fields = ['message', 'created_count', 'details']
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_test(
+                        "100 Testdaten Erstellung", 
+                        False, 
+                        f"Missing fields in response: {missing_fields}",
+                        data
+                    )
+                    return False
+                
+                # Validiere created_count = 100 (nicht 50)
+                created_count = data.get('created_count', 0)
+                if created_count != 100:
+                    self.log_test(
+                        "100 Testdaten Erstellung", 
+                        False, 
+                        f"FEHLER: created_count ist {created_count}, erwartet 100",
+                        data
+                    )
+                    return False
+                
+                # Validiere details
+                details = data.get('details', {})
+                expected_details = {
+                    'total': 100,
+                    'normal_links': 65,
+                    'duplicate_links': 20,
+                    'dead_links': 15
+                }
+                
+                validation_errors = []
+                for key, expected_value in expected_details.items():
+                    actual_value = details.get(key, 0)
+                    if actual_value != expected_value:
+                        validation_errors.append(f"{key}: erwartet {expected_value}, erhalten {actual_value}")
+                
+                if validation_errors:
+                    self.log_test(
+                        "100 Testdaten Erstellung", 
+                        False, 
+                        f"Details-Validierung fehlgeschlagen: {'; '.join(validation_errors)}",
+                        data
+                    )
+                    return False
+                
+                self.log_test(
+                    "100 Testdaten Erstellung", 
+                    True, 
+                    f"✅ Erfolgreich 100 Testdaten erstellt: {created_count} total, Details: {details}",
+                    data
+                )
+                return True
+                
+            else:
+                self.log_test(
+                    "100 Testdaten Erstellung", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                return False
+                
+        except Exception as e:
+            self.log_test("100 Testdaten Erstellung", False, f"Exception: {str(e)}")
+            return False
     
-    return success_count, failed_count
-
-def verify_statistics():
-    """6. Prüfe Statistics API ob alle Kategorien und Status korrekt gezählt werden"""
-    print("\n📊 Verifying statistics...")
+    def test_status_integration(self):
+        """Status-Integration: Überprüfe dass Testdaten korrekte status_type Felder haben"""
+        try:
+            response = self.session.get(f"{self.backend_url}/bookmarks")
+            
+            if response.status_code == 200:
+                bookmarks = response.json()
+                
+                if not isinstance(bookmarks, list):
+                    self.log_test("Status Integration", False, "Response ist keine Liste")
+                    return False
+                
+                # Zähle Status-Typen
+                status_counts = {}
+                dead_links_with_correct_status = 0
+                total_bookmarks = len(bookmarks)
+                
+                for bookmark in bookmarks:
+                    status_type = bookmark.get('status_type', 'unknown')
+                    status_counts[status_type] = status_counts.get(status_type, 0) + 1
+                    
+                    # Überprüfe dass tote Links status_type='dead' haben
+                    if bookmark.get('is_dead_link', False) and status_type == 'dead':
+                        dead_links_with_correct_status += 1
+                
+                # Validiere dass wir 100 Bookmarks haben
+                if total_bookmarks != 100:
+                    self.log_test(
+                        "Status Integration", 
+                        False, 
+                        f"Erwartet 100 Bookmarks, erhalten {total_bookmarks}"
+                    )
+                    return False
+                
+                # Überprüfe Status-Verteilung
+                expected_dead = 15
+                actual_dead = status_counts.get('dead', 0)
+                
+                if actual_dead != expected_dead:
+                    self.log_test(
+                        "Status Integration", 
+                        False, 
+                        f"Erwartet {expected_dead} dead links, erhalten {actual_dead}. Status-Verteilung: {status_counts}"
+                    )
+                    return False
+                
+                self.log_test(
+                    "Status Integration", 
+                    True, 
+                    f"✅ Status-Integration korrekt: {total_bookmarks} Bookmarks, Status-Verteilung: {status_counts}",
+                    {"total_bookmarks": total_bookmarks, "status_counts": status_counts}
+                )
+                return True
+                
+            else:
+                self.log_test("Status Integration", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Status Integration", False, f"Exception: {str(e)}")
+            return False
     
-    try:
-        response = requests.get(f"{BACKEND_URL}/statistics")
-        if response.status_code == 200:
-            stats = response.json()
+    def test_statistics_update(self):
+        """Statistiken-Update: Verificiere dass GET /api/statistics die neuen 100 Testdaten korrekt zählt"""
+        try:
+            response = self.session.get(f"{self.backend_url}/statistics")
             
-            print("📈 STATISTICS VERIFICATION:")
-            print(f"   📊 Total Bookmarks: {stats.get('total_bookmarks', 0)}")
-            print(f"   📁 Total Categories: {stats.get('total_categories', 0)}")
-            print(f"   ✅ Active Links: {stats.get('active_links', 0)}")
-            print(f"   ❌ Dead Links: {stats.get('dead_links', 0)}")
-            print(f"   🏠 Localhost Links: {stats.get('localhost_links', 0)}")
-            print(f"   🔄 Duplicate Links: {stats.get('duplicate_links', 0)}")
-            print(f"   🔒 Locked Links: {stats.get('locked_links', 0)}")
-            print(f"   ⏱️ Timeout Links: {stats.get('timeout_links', 0)}")
-            print(f"   ❓ Unchecked Links: {stats.get('unchecked_links', 0)}")
+            if response.status_code == 200:
+                stats = response.json()
+                
+                # Validiere Hauptfelder
+                total_bookmarks = stats.get('total_bookmarks', 0)
+                dead_links = stats.get('dead_links', 0)
+                active_links = stats.get('active_links', 0)
+                duplicate_links = stats.get('duplicate_links', 0)
+                
+                validation_errors = []
+                
+                # total_bookmarks sollte 100 sein
+                if total_bookmarks != 100:
+                    validation_errors.append(f"total_bookmarks: erwartet 100, erhalten {total_bookmarks}")
+                
+                # dead_links sollte 15 sein
+                if dead_links != 15:
+                    validation_errors.append(f"dead_links: erwartet 15, erhalten {dead_links}")
+                
+                # Überprüfe dass Summe stimmt
+                counted_total = active_links + dead_links + stats.get('localhost_links', 0) + duplicate_links + stats.get('locked_links', 0) + stats.get('unchecked_links', 0)
+                if counted_total != total_bookmarks:
+                    validation_errors.append(f"Status-Summe ({counted_total}) stimmt nicht mit total_bookmarks ({total_bookmarks}) überein")
+                
+                if validation_errors:
+                    self.log_test(
+                        "Statistiken Update", 
+                        False, 
+                        f"Validierung fehlgeschlagen: {'; '.join(validation_errors)}",
+                        stats
+                    )
+                    return False
+                
+                self.log_test(
+                    "Statistiken Update", 
+                    True, 
+                    f"✅ Statistiken korrekt: {total_bookmarks} total, {dead_links} dead, {active_links} active, {duplicate_links} duplicate",
+                    {
+                        "total_bookmarks": total_bookmarks,
+                        "dead_links": dead_links,
+                        "active_links": active_links,
+                        "duplicate_links": duplicate_links
+                    }
+                )
+                return True
+                
+            else:
+                self.log_test("Statistiken Update", False, f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Statistiken Update", False, f"Exception: {str(e)}")
+            return False
+    
+    def test_lock_unlock_functionality(self):
+        """Lock/Unlock Funktionalität: Teste PUT /api/bookmarks/{id}/lock"""
+        try:
+            # Erst ein Bookmark holen
+            response = self.session.get(f"{self.backend_url}/bookmarks")
+            if response.status_code != 200:
+                self.log_test("Lock/Unlock Funktionalität", False, "Konnte keine Bookmarks abrufen")
+                return False
             
-            # Kategorien-Verteilung
-            categories_dist = stats.get('categories_distribution', {})
-            print(f"\n📂 CATEGORIES DISTRIBUTION:")
-            for category, count in sorted(categories_dist.items(), key=lambda x: x[1], reverse=True):
-                print(f"   {category}: {count} bookmarks")
+            bookmarks = response.json()
+            if not bookmarks:
+                self.log_test("Lock/Unlock Funktionalität", False, "Keine Bookmarks verfügbar")
+                return False
             
-            # Top Kategorien mit Unterkategorien
-            top_categories = stats.get('top_categories', [])
-            print(f"\n🏆 TOP CATEGORIES WITH SUBCATEGORIES:")
-            for cat in top_categories[:6]:
-                print(f"   {cat['name']}: {cat['count']} bookmarks ({cat['percentage']}%)")
-                subcats = cat.get('subcategories', {})
-                for subcat, subcount in sorted(subcats.items(), key=lambda x: x[1], reverse=True)[:3]:
-                    print(f"      └─ {subcat}: {subcount}")
+            # Nimm das erste Bookmark
+            test_bookmark = bookmarks[0]
+            bookmark_id = test_bookmark.get('id')
+            
+            if not bookmark_id:
+                self.log_test("Lock/Unlock Funktionalität", False, "Bookmark hat keine ID")
+                return False
+            
+            # Test 1: Bookmark sperren
+            lock_response = self.session.put(f"{self.backend_url}/bookmarks/{bookmark_id}/lock")
+            
+            if lock_response.status_code == 200:
+                lock_data = lock_response.json()
+                
+                # Überprüfe dass is_locked = True
+                if not lock_data.get('is_locked', False):
+                    self.log_test(
+                        "Lock/Unlock Funktionalität", 
+                        False, 
+                        "Bookmark wurde nicht als gesperrt markiert",
+                        lock_data
+                    )
+                    return False
+                
+                # Überprüfe status_type = 'locked'
+                if lock_data.get('status_type') != 'locked':
+                    self.log_test(
+                        "Lock/Unlock Funktionalität", 
+                        False, 
+                        f"status_type ist '{lock_data.get('status_type')}', erwartet 'locked'",
+                        lock_data
+                    )
+                    return False
+                
+                # Test 2: Bookmark entsperren
+                unlock_response = self.session.put(f"{self.backend_url}/bookmarks/{bookmark_id}/unlock")
+                
+                if unlock_response.status_code == 200:
+                    unlock_data = unlock_response.json()
+                    
+                    # Überprüfe dass is_locked = False
+                    if unlock_data.get('is_locked', True):
+                        self.log_test(
+                            "Lock/Unlock Funktionalität", 
+                            False, 
+                            "Bookmark wurde nicht entsperrt",
+                            unlock_data
+                        )
+                        return False
+                    
+                    self.log_test(
+                        "Lock/Unlock Funktionalität", 
+                        True, 
+                        f"✅ Lock/Unlock funktioniert: Bookmark {bookmark_id} erfolgreich gesperrt und entsperrt",
+                        {"lock_data": lock_data, "unlock_data": unlock_data}
+                    )
+                    return True
+                    
+                else:
+                    self.log_test(
+                        "Lock/Unlock Funktionalität", 
+                        False, 
+                        f"Unlock fehlgeschlagen: HTTP {unlock_response.status_code}: {unlock_response.text}"
+                    )
+                    return False
+                    
+            else:
+                self.log_test(
+                    "Lock/Unlock Funktionalität", 
+                    False, 
+                    f"Lock fehlgeschlagen: HTTP {lock_response.status_code}: {lock_response.text}"
+                )
+                return False
+                
+        except Exception as e:
+            self.log_test("Lock/Unlock Funktionalität", False, f"Exception: {str(e)}")
+            return False
+    
+    def test_additional_validations(self):
+        """Zusätzliche Validierungen für Phase 2.5"""
+        try:
+            # Test Link-Validierung
+            validation_response = self.session.post(f"{self.backend_url}/bookmarks/validate")
+            
+            if validation_response.status_code == 200:
+                validation_data = validation_response.json()
+                
+                total_checked = validation_data.get('total_checked', 0)
+                dead_links_found = validation_data.get('dead_links_found', 0)
+                
+                # Sollte 100 Links geprüft haben
+                if total_checked != 100:
+                    self.log_test(
+                        "Link-Validierung", 
+                        False, 
+                        f"Erwartet 100 geprüfte Links, erhalten {total_checked}"
+                    )
+                    return False
+                
+                self.log_test(
+                    "Link-Validierung", 
+                    True, 
+                    f"✅ Link-Validierung erfolgreich: {total_checked} Links geprüft, {dead_links_found} tote Links gefunden",
+                    validation_data
+                )
+                
+            else:
+                self.log_test("Link-Validierung", False, f"HTTP {validation_response.status_code}")
+                return False
+            
+            # Test Duplikat-Erkennung
+            duplicates_response = self.session.post(f"{self.backend_url}/bookmarks/find-duplicates")
+            
+            if duplicates_response.status_code == 200:
+                duplicates_data = duplicates_response.json()
+                
+                duplicate_groups = duplicates_data.get('duplicate_groups', [])
+                marked_count = duplicates_data.get('marked_count', 0)
+                
+                # Sollte Duplikate finden (20 Duplikate erwartet)
+                if marked_count < 15:  # Mindestens 15 Duplikate erwartet
+                    self.log_test(
+                        "Duplikat-Erkennung", 
+                        False, 
+                        f"Zu wenige Duplikate gefunden: {marked_count}, erwartet mindestens 15"
+                    )
+                    return False
+                
+                self.log_test(
+                    "Duplikat-Erkennung", 
+                    True, 
+                    f"✅ Duplikat-Erkennung erfolgreich: {len(duplicate_groups)} Gruppen, {marked_count} Duplikate markiert",
+                    duplicates_data
+                )
+                
+            else:
+                self.log_test("Duplikat-Erkennung", False, f"HTTP {duplicates_response.status_code}")
+                return False
             
             return True
-        else:
-            print(f"❌ Failed to get statistics: {response.status_code}")
+            
+        except Exception as e:
+            self.log_test("Zusätzliche Validierungen", False, f"Exception: {str(e)}")
             return False
-    except Exception as e:
-        print(f"❌ Error getting statistics: {e}")
-        return False
-
-def main():
-    """Hauptfunktion für German Review Request Testing"""
-    print("🎯 FavOrg Backend Test - German Review Request")
-    print("=" * 60)
-    print("ANFORDERUNG: 100 Datensätze mit ALLEN Kategorien vermengen")
-    print("=" * 60)
     
-    # Test API-Verbindung
-    if not test_api_connection():
-        print("❌ Cannot proceed without API connection")
-        return
-    
-    # 1. Lösche alle bestehenden Bookmarks
-    if not delete_all_bookmarks():
-        print("❌ Failed to delete existing bookmarks")
-        return
-    
-    # 2. Erstelle 100 diverse Bookmarks
-    success_count, failed_count = create_comprehensive_test_data()
-    
-    if success_count == 0:
-        print("❌ No bookmarks were created successfully")
-        return
-    
-    # Kurze Pause für Database-Updates
-    print("\n⏳ Waiting for database updates...")
-    time.sleep(2)
-    
-    # 6. Prüfe Statistics API
-    if verify_statistics():
-        print("\n🎉 GERMAN REVIEW REQUEST TESTING COMPLETED SUCCESSFULLY!")
-        print(f"✅ Created {success_count} comprehensive test bookmarks")
-        print("✅ All categories and status types distributed correctly")
-        print("✅ Statistics API verification passed")
-    else:
-        print("\n⚠️ Testing completed but statistics verification failed")
-    
-    print("\n" + "=" * 60)
-    print("🎯 FavOrg Test Data Creation Complete")
-    print("=" * 60)
+    def run_all_tests(self):
+        """Alle Phase 2.5 Tests ausführen"""
+        print("🎯 PHASE 2.5 BACKEND TESTING GESTARTET")
+        print(f"Backend URL: {self.backend_url}")
+        print("=" * 80)
+        
+        # Test-Reihenfolge für Phase 2.5
+        tests = [
+            ("Daten löschen", self.test_clear_existing_data),
+            ("100 Testdaten erstellen", self.test_create_100_test_data),
+            ("Status-Integration", self.test_status_integration),
+            ("Statistiken-Update", self.test_statistics_update),
+            ("Lock/Unlock Funktionalität", self.test_lock_unlock_functionality),
+            ("Zusätzliche Validierungen", self.test_additional_validations)
+        ]
+        
+        passed_tests = 0
+        total_tests = len(tests)
+        
+        for test_name, test_func in tests:
+            print(f"\n🔍 Testing: {test_name}")
+            try:
+                if test_func():
+                    passed_tests += 1
+                time.sleep(1)  # Kurze Pause zwischen Tests
+            except Exception as e:
+                print(f"❌ Test {test_name} failed with exception: {e}")
+        
+        # Zusammenfassung
+        print("\n" + "=" * 80)
+        print("🎯 PHASE 2.5 TESTING ZUSAMMENFASSUNG")
+        print("=" * 80)
+        
+        success_rate = (passed_tests / total_tests) * 100
+        print(f"Tests bestanden: {passed_tests}/{total_tests} ({success_rate:.1f}%)")
+        
+        if success_rate >= 90:
+            print("✅ PHASE 2.5 FIXES ERFOLGREICH - Alle kritischen Tests bestanden!")
+        elif success_rate >= 70:
+            print("⚠️  PHASE 2.5 FIXES TEILWEISE ERFOLGREICH - Einige Tests fehlgeschlagen")
+        else:
+            print("❌ PHASE 2.5 FIXES FEHLGESCHLAGEN - Kritische Probleme gefunden")
+        
+        # Detaillierte Ergebnisse
+        print("\nDetaillierte Test-Ergebnisse:")
+        for result in self.test_results:
+            status = "✅" if result["success"] else "❌"
+            print(f"{status} {result['test']}: {result['details']}")
+        
+        return success_rate >= 90
 
 if __name__ == "__main__":
-    main()
+    tester = Phase25BackendTester()
+    success = tester.run_all_tests()
+    
+    if success:
+        print("\n🎉 ALLE PHASE 2.5 ANFORDERUNGEN ERFÜLLT!")
+    else:
+        print("\n⚠️  PHASE 2.5 BENÖTIGT WEITERE FIXES")
