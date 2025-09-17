@@ -11,7 +11,7 @@ const ComprehensiveHelpDialog = ({ isOpen, onClose }) => {
         <DialogHeader>
           <DialogTitle className="help-title-inline">
             <HelpCircle className="w-5 h-5 mr-2" />
-            FavOrg - ❓ Hilfe & Anleitung (V2.3.0)
+            FavOrg - Hilfe & Anleitung (V2.3.0)
           </DialogTitle>
         </DialogHeader>
         
