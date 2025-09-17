@@ -822,8 +822,192 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
-// Temporary placeholder for CategoryManageDialog
+// Live-Editing Category Management Dialog Component
 const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newSubcategoryName, setNewSubcategoryName] = useState('');
+  const [selectedParentCategory, setSelectedParentCategory] = useState('');
+
+  // Organisiere Kategorien hierarchisch
+  const organizeCategories = () => {
+    const categoryMap = new Map();
+    const rootCategories = [];
+    
+    // Erstelle Map aller Kategorien für schnelle Suche
+    categories.forEach(category => {
+      categoryMap.set(category.name, {
+        ...category,
+        children: []
+      });
+    });
+    
+    // Erstelle hierarchische Struktur
+    categories.forEach(category => {
+      const categoryObj = categoryMap.get(category.name);
+      
+      if (!category.parent_category) {
+        // Hauptkategorie
+        rootCategories.push(categoryObj);
+      } else {
+        // Unterkategorie - füge zu Parent hinzu
+        const parent = categoryMap.get(category.parent_category);
+        if (parent) {
+          parent.children.push(categoryObj);
+        } else {
+          // Parent nicht gefunden - wird zu Hauptkategorie
+          rootCategories.push(categoryObj);
+        }
+      }
+    });
+    
+    return rootCategories;
+  };
+
+  const organizedCategories = organizeCategories();
+
+  // Rekursive Funktion zum Rendern von Kategorien aller Ebenen
+  const renderCategoryTree = (cats, level = 0) => {
+    return cats.map(category => (
+      <div key={category.id} className="category-live-group">
+        {/* Hauptkategorie */}
+        <div className="category-live-item main-category" style={{ marginLeft: `${level * 20}px` }}>
+          <div className="category-live-info">
+            <span className="category-level-icon">
+              {level === 0 ? '📁' : `${'└─'.repeat(level)}📂`}
+            </span>
+            {editingCategory === category.id ? (
+              <Input
+                defaultValue={category.name}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleRenameCategory(category, e.target.value);
+                  } else if (e.key === 'Escape') {
+                    setEditingCategory(null);
+                  }
+                }}
+                onBlur={(e) => handleRenameCategory(category, e.target.value)}
+                className="category-edit-input"
+                autoFocus
+              />
+            ) : (
+              <span 
+                className="category-name-editable"
+                onClick={() => setEditingCategory(category.id)}
+              >
+                {category.name} ({category.bookmark_count || 0})
+              </span>
+            )}
+          </div>
+          <div className="category-live-actions">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setEditingCategory(category.id)}
+              className="edit-category-btn-live"
+              title="Bearbeiten"
+            >
+              <Edit2 className="w-3 h-3" />
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => handleDeleteCategory(category)}
+              className="delete-category-btn-live"
+              title="Löschen"
+            >
+              <Trash2 className="w-3 h-3" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Rekursiv Kinder rendern */}
+        {category.children && category.children.length > 0 && 
+          renderCategoryTree(category.children, level + 1)
+        }
+      </div>
+    ));
+  };
+
+  // Live-Editing: Neue Kategorie erstellen
+  const handleCreateCategory = async (e) => {
+    if (e.key === 'Enter' && newCategoryName.trim()) {
+      try {
+        const favoritesService = new FavoritesService();
+        const newCategory = {
+          name: newCategoryName.trim(),
+          parent_category: null
+        };
+        
+        await favoritesService.createCategory(newCategory);
+        toast.success(`Neue Kategorie "${newCategoryName}" erstellt`);
+        setNewCategoryName('');
+        await onSave(); // Kategorien neu laden
+      } catch (error) {
+        console.error('Create category error:', error);
+        toast.error('Fehler beim Erstellen der Kategorie: ' + error.message);
+      }
+    }
+  };
+
+  // Live-Editing: Neue Unterkategorie erstellen
+  const handleCreateSubcategory = async (e) => {
+    if (e.key === 'Enter' && newSubcategoryName.trim() && selectedParentCategory) {
+      try {
+        const favoritesService = new FavoritesService();
+        const newSubcategory = {
+          name: newSubcategoryName.trim(),
+          parent_category: selectedParentCategory
+        };
+        
+        await favoritesService.createCategory(newSubcategory);
+        toast.success(`Neue Unterkategorie "${newSubcategoryName}" unter "${selectedParentCategory}" erstellt`);
+        setNewSubcategoryName('');
+        setSelectedParentCategory('');
+        await onSave(); // Kategorien neu laden
+      } catch (error) {
+        console.error('Create subcategory error:', error);
+        toast.error('Fehler beim Erstellen der Unterkategorie: ' + error.message);
+      }
+    }
+  };
+
+  // Live-Editing: Kategorie umbenennen
+  const handleRenameCategory = async (category, newName) => {
+    if (newName.trim() && newName !== category.name) {
+      try {
+        const favoritesService = new FavoritesService();
+        const updatedCategory = {
+          ...category,
+          name: newName.trim()
+        };
+        
+        await favoritesService.updateCategory(category.id, updatedCategory);
+        toast.success(`Kategorie "${category.name}" zu "${newName}" umbenannt`);
+        setEditingCategory(null);
+        await onSave(); // Kategorien neu laden
+      } catch (error) {
+        console.error('Rename category error:', error);
+        toast.error('Fehler beim Umbenennen der Kategorie: ' + error.message);
+      }
+    }
+  };
+
+  // Live-Editing: Kategorie löschen
+  const handleDeleteCategory = async (category) => {
+    if (window.confirm(`Sind Sie sicher, dass Sie die Kategorie "${category.name}" löschen möchten? Alle Lesezeichen werden auf "Nicht zugeordnet" verschoben.`)) {
+      try {
+        const favoritesService = new FavoritesService();
+        await favoritesService.deleteCategory(category.id);
+        toast.success(`Kategorie "${category.name}" gelöscht`);
+        await onSave(); // Kategorien neu laden
+      } catch (error) {
+        console.error('Delete category error:', error);
+        toast.error('Fehler beim Löschen der Kategorie: ' + error.message);
+      }
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="category-manage-dialog-live">
@@ -832,10 +1016,66 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
             🏷️ Kategorien verwalten
           </DialogTitle>
           <p className="category-manage-subtitle">
-            Kategorie-Management wird demnächst implementiert.
+            Live-Bearbeitung - Änderungen mit Enter bestätigen
           </p>
         </DialogHeader>
         
+        <div className="category-manage-live-content">
+          {/* Neue Kategorie erstellen */}
+          <div className="new-category-section">
+            <div className="new-category-row">
+              <div className="new-category-icon">➕</div>
+              <Input
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                onKeyDown={handleCreateCategory}
+                placeholder="+ Neue Kategorie (Enter zum Erstellen)"
+                className="new-category-input"
+              />
+            </div>
+          </div>
+
+          {/* Neue Unterkategorie erstellen */}
+          <div className="new-subcategory-section">
+            <div className="new-subcategory-row">
+              <div className="new-subcategory-icon">└─➕</div>
+              <Select 
+                value={selectedParentCategory} 
+                onValueChange={setSelectedParentCategory}
+              >
+                <SelectTrigger className="parent-category-select">
+                  <SelectValue placeholder="Übergeordnete Kategorie wählen" />
+                </SelectTrigger>
+                <SelectContent>
+                  {/* Alle Kategorien flach für Parent-Auswahl */}
+                  {categories.map(cat => (
+                    <SelectItem key={cat.name} value={cat.name}>
+                      {cat.parent_category ? `${cat.parent_category} → ${cat.name}` : cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Input
+                value={newSubcategoryName}
+                onChange={(e) => setNewSubcategoryName(e.target.value)}
+                onKeyDown={handleCreateSubcategory}
+                placeholder="+ Neue Unterkategorie (Enter zum Erstellen)"
+                className="new-subcategory-input"
+                disabled={!selectedParentCategory}
+              />
+            </div>
+          </div>
+
+          {/* Bestehende Kategorien */}
+          <div className="existing-categories-section">
+            <h4 className="section-title">Bestehende Kategorien</h4>
+            <div className="categories-live-list">
+              {renderCategoryTree(organizedCategories)}
+            </div>
+          </div>
+        </div>
+        
+        {/* Minimale Aktionen - nur Schließen Button */}
         <div className="dialog-actions-minimal">
           <Button onClick={onClose} className="close-dialog-btn">
             <X className="w-4 h-4 mr-2" />
