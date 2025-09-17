@@ -223,7 +223,34 @@ class FavoritesService {
       const response = await axios.get(`${this.baseURL}/api/categories`);
       return response.data;
     } catch (error) {
-      throw new Error('Failed to fetch categories');
+      throw new Error('Failed to get categories');
+    }
+  }
+
+  async createCategory(categoryData) {
+    try {
+      const response = await axios.post(`${this.baseURL}/api/categories`, categoryData);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to create category');
+    }
+  }
+
+  async updateCategory(categoryId, categoryData) {
+    try {
+      const response = await axios.put(`${this.baseURL}/api/categories/${categoryId}`, categoryData);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to update category');
+    }
+  }
+
+  async deleteCategory(categoryId) {
+    try {
+      const response = await axios.delete(`${this.baseURL}/api/categories/${categoryId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to delete category');
     }
   }
 
