@@ -3627,6 +3627,12 @@ function App() {
         onClose={() => setShowImpressum(false)}
       />
 
+      {/* Easter Egg Game */}
+      <EnhancedCatchMouseGame
+        isOpen={showEasterEgg}
+        onClose={() => setShowEasterEgg(false)}
+      />
+
       {/* Hidden file input */}
       <input
         type="file"
