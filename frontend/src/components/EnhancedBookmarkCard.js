@@ -105,17 +105,21 @@ const EnhancedBookmarkCard = ({
                 </Button>
               )}
               
-              {/* Lock/Unlock Button - links neben dem Mülleimer */}
+              {/* Lock/Unlock Button - Immer sichtbar */}
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={() => onToggleLock && onToggleLock(bookmark.id, !isLocked)}
                 className="h-8 w-8 p-0"
                 title={isLocked ? "Entsperren" : "Sperren"}
+                style={{
+                  backgroundColor: isLocked ? '#fee2e2' : '#dcfce7', /* Hellrot für gesperrt, Hellgrün für offen */
+                  border: isLocked ? '1px solid #f87171' : '1px solid #34d399'
+                }}
               >
                 {isLocked ? 
-                  <LockKeyholeOpen className="w-4 h-4 text-green-600" /> : 
-                  <LockKeyhole className="w-4 h-4 text-gray-600" />
+                  <LockKeyhole className="w-4 h-4 text-red-600" /> : 
+                  <LockKeyholeOpen className="w-4 h-4 text-green-600" />
                 }
               </Button>
               
