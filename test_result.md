@@ -559,7 +559,41 @@ metadata:
         agent: "testing"
         comment: "✅ DATABASE CLEANUP FUNKTIONIERT: POST /api/categories/cleanup Endpoint erfolgreich getestet und funktional. Cleanup entfernt kontinuierlich leere Kategorien (3 leere Kategorien pro Aufruf entfernt). MINOR: Eine persistente leere Kategorie (parent: Development) wird kontinuierlich neu erstellt, aber Cleanup-Mechanismus funktioniert korrekt. Database-Cleanup ist operativ und kann bei Bedarf ausgeführt werden."
 
-  - task: "Status Filter Query Parameters"
+  - task: "Dead Links Counter Problem (German Review Request)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎯 DEAD LINKS COUNTER PROBLEM VOLLSTÄNDIG GELÖST: Umfassende Tests der Statistics API durchgeführt gemäß German Review-Request. ✅ PROBLEM BEHOBEN: Dead Links Counter zeigt NICHT mehr fälschlicherweise 15 an - Counter funktioniert korrekt (Initial: 0, nach manueller Erstellung: 1, nach Validierung: 23, nach Entfernung: 0) ✅ GET /api/statistics Counter sind korrekt: dead_links, duplicate_links, active_links, localhost_links, locked_links, unchecked_links alle korrekt gezählt ✅ Manuell erstelltes Bookmark mit status_type='dead' wird sofort korrekt im Counter reflektiert ✅ Statistics API vor und nach jeder Operation konsistent und korrekt aktualisiert. DEAD LINKS COUNTER PROBLEM VOLLSTÄNDIG BEHOBEN!"
+
+  - task: "Dead Links Manual Assignment and Removal (German Review Request)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎯 MANUELL ZUGEORDNETE TOTE LINKS FUNKTIONALITÄT VOLLSTÄNDIG GETESTET: Alle Aspekte der manuellen Dead Links Zuordnung und Entfernung erfolgreich validiert. ✅ MANUELLE ZUORDNUNG: Bookmark mit status_type='dead' manuell erstellt und sofort korrekt in Statistics gezählt (Dead Links Counter von 0→1) ✅ POST /api/bookmarks/validate: Funktioniert perfekt (44 Links geprüft, 23 tote Links gefunden), korrekte Response-Struktur mit total_checked, dead_links_found, message ✅ DELETE /api/bookmarks/dead-links: Entfernt manuell zugeordnete tote Links korrekt (23 Dead Links entfernt), localhost Links werden korrekt verschont (1 localhost Link blieb erhalten) ✅ STATUS-FELDER KORREKT: status_type='dead' und is_dead_link Konsistenz gewährleistet, alle Status-Übergänge funktionieren ✅ VERSCHIEDENE URL-TYPEN: Tote URLs, gültige URLs (google.com), localhost URLs alle korrekt behandelt. MANUELL ZUGEORDNETE TOTE LINKS FUNKTIONIEREN EINWANDFREI!"
+
+  - task: "Duplicates Function Complete Testing (German Review Request)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎯 DUPLIKATE FUNKTION VOLLSTÄNDIG GETESTET: Kompletter Duplikat-Workflow gemäß German Review-Request erfolgreich validiert (100% Success Rate). ✅ DUPLIKAT-ERSTELLUNG: 3 Test-Duplikate mit identischer URL erstellt für umfassende Tests ✅ POST /api/bookmarks/find-duplicates: Funktioniert perfekt (2 Duplikat-Gruppen gefunden, 3 Duplikate markiert), korrekte Response-Struktur mit duplicate_groups, marked_count, message ✅ DELETE /api/bookmarks/duplicates: Entfernt alle markierten Duplikate korrekt (3 Duplikate gelöscht), korrekte Response mit removed_count ✅ STATISTICS INTEGRATION: duplicate_links Counter wird korrekt aktualisiert (0→3→0), total_bookmarks korrekt reduziert nach Duplikat-Entfernung ✅ URL-NORMALISIERUNG: Duplikat-Erkennung funktioniert korrekt mit URL-Normalisierung ✅ WORKFLOW find-duplicates → delete-duplicates: Kompletter Workflow funktioniert einwandfrei, alle Duplikate werden erkannt und entfernt. DUPLIKATE FUNKTION VOLLSTÄNDIG FUNKTIONAL!"
     implemented: true
     working: true
     file: "backend/server.py"
