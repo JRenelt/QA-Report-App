@@ -5,16 +5,15 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   // Sicherstellen, dass statistics nie null ist
   const safeStats = statistics || {};
   
-  // Status-Icon als Inline-SVG basierend auf dem angehängten Bild
+  // Status-Icon als schwarz-weiße Lucide-ähnliche Grafik
   const StatusIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 32 16" className="status-filter-icon">
-      {/* Roter Bereich mit X */}
-      <rect x="0" y="0" width="16" height="16" fill="#dc2626" rx="2"/>
-      <path d="M4 4 L12 12 M12 4 L4 12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+    <svg width="16" height="16" viewBox="0 0 16 16" className="status-filter-icon" fill="currentColor">
+      {/* Schwarz-weiße Lucide-ähnliche Darstellung */}
+      <circle cx="4" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+      <path d="M2.5 8L4 9.5L5.5 8" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
       
-      {/* Grüner Bereich mit Häkchen */}
-      <rect x="16" y="0" width="16" height="16" fill="#16a34a" rx="2"/>
-      <path d="M20 8 L24 12 L30 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      <circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+      <path d="M10.5 7.5L11.5 8.5L13.5 6.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
   
