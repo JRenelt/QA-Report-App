@@ -2407,37 +2407,6 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
 
 
 
-// BookmarkList Component für die Karten-Ansicht
-const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus }) => {
-  if (!bookmarks || bookmarks.length === 0) {
-    return (
-      <div className="empty-state">
-        <div className="empty-state-content">
-          <BookOpen className="w-12 h-12 text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-600 mb-2">Keine Favoriten gefunden</h3>
-          <p className="text-gray-500">
-            Importieren Sie Ihre Browser-Favoriten oder erstellen Sie neue Lesezeichen.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bookmark-grid">
-      {bookmarks.map((bookmark) => (
-        <BookmarkCard
-          key={bookmark.id}
-          bookmark={bookmark}
-          onDelete={onDeleteBookmark}
-          onEdit={onEditBookmark}
-          onToggleStatus={onToggleStatus}
-        />
-      ))}
-    </div>
-  );
-};
-
 // BookmarkCard Component für einzelne Bookmark-Karten
 const BookmarkCard = ({ bookmark, onDelete, onEdit, onToggleStatus }) => {
   const getStatusColor = (bookmark) => {
