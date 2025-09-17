@@ -1437,6 +1437,60 @@ async def update_bookmark(bookmark_id: str, update_data: BookmarkUpdate):
     """Bookmark aktualisieren"""
     return await bookmark_manager.update_bookmark(bookmark_id, update_data)
 
+@api_router.put("/bookmarks/{bookmark_id}/lock")
+async def lock_bookmark(bookmark_id: str):
+    """Bookmark sperren"""
+    try:
+        # Find the bookmark
+        bookmark = await db.bookmarks.find_one({"id": bookmark_id})
+        if not bookmark:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
+        
+        # Update to locked status
+        result = await db.bookmarks.update_one(
+            {"id": bookmark_id},
+            {"$set": {"is_locked": True, "status_type": "locked"}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
+        
+        # Return updated bookmark
+        updated_bookmark = await db.bookmarks.find_one({"id": bookmark_id})
+        return Bookmark(**updated_bookmark)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error locking bookmark: {str(e)}")
+
+@api_router.put("/bookmarks/{bookmark_id}/unlock")
+async def unlock_bookmark(bookmark_id: str):
+    """Bookmark entsperren"""
+    try:
+        # Find the bookmark
+        bookmark = await db.bookmarks.find_one({"id": bookmark_id})
+        if not bookmark:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
+        
+        # Update to unlocked status (set to active)
+        result = await db.bookmarks.update_one(
+            {"id": bookmark_id},
+            {"$set": {"is_locked": False, "status_type": "active"}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
+        
+        # Return updated bookmark
+        updated_bookmark = await db.bookmarks.find_one({"id": bookmark_id})
+        return Bookmark(**updated_bookmark)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error unlocking bookmark: {str(e)}")
+
 @api_router.post("/bookmarks/move")
 async def move_bookmarks(move_data: BookmarkMove):
     """Bookmarks in andere Kategorie verschieben"""
