@@ -456,6 +456,11 @@ const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkC
               onClick={onRemoveLocalhostClick} 
               className="action-btn localhost-btn"
               size="sm"
+              style={{ 
+                backgroundColor: 'white', 
+                color: 'black', 
+                border: '1px solid #ccc' 
+              }}
             >
               <Monitor className="w-4 h-4 mr-2" />
               {localhostCount > 0 ? `Localhost [${localhostCount}]` : 'Localhost'}
