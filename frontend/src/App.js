@@ -451,6 +451,15 @@ const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkC
               <Copy className="w-4 h-4 mr-2" />
               {duplicateCount > 0 ? `Duplikate [${duplicateCount}]` : 'Duplikate'}
             </Button>
+            
+            <Button 
+              onClick={onRemoveLocalhostClick} 
+              className="action-btn localhost-btn"
+              size="sm"
+            >
+              <Monitor className="w-4 h-4 mr-2" />
+              {localhostCount > 0 ? `Localhost [${localhostCount}]` : 'Localhost'}
+            </Button>
           </div>
         </div>
 
