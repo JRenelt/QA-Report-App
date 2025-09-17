@@ -3038,6 +3038,19 @@ function App() {
     }
   };
 
+  const handleToggleLock = async (bookmarkId, isCurrentlyLocked) => {
+    try {
+      const newLockStatus = !isCurrentlyLocked;
+      await favoritesService.updateBookmarkLock(bookmarkId, newLockStatus);
+      showSuccess(`Favorit ${newLockStatus ? 'gesperrt' : 'entsperrt'}`);
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error toggling lock:', error);
+      showError('Fehler beim Ändern des Sperr-Status');
+    }
+  };
+
   const handleRemoveDuplicates = async () => {
     // Wenn bereits Duplikate gefunden wurden, frage nach
     if (duplicateCount > 0) {
