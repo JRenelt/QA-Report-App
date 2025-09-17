@@ -919,7 +919,8 @@ class BookmarkManager:
                 "category": bookmark_data["category"],
                 "subcategory": bookmark_data.get("subcategory", ""),
                 "created_at": datetime.utcnow(),
-                "is_dead_link": bookmark_data.get("is_dead", False)
+                "is_dead_link": bookmark_data.get("is_dead", False),
+                "status_type": bookmark_data.get("status_type", "active" if not bookmark_data.get("is_dead", False) else "dead")
             }
             
             # Check if this is a duplicate
@@ -944,10 +945,10 @@ class BookmarkManager:
             "duplicates": duplicates_count,
             "dead_links": dead_links_count,
             "details": {
-                "normal_links": 25,
-                "duplicate_links": 10, 
+                "normal_links": 65,
+                "duplicate_links": 20, 
                 "dead_links": 15,
-                "total": 50
+                "total": 100
             }
         }
     
