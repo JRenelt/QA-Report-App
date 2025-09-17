@@ -619,8 +619,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Status Filter Query Parameters"
-    - "Bookmark Move Counter Update"
+    - "Phase 2.5 Frontend Fixes - All Tests Completed"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
