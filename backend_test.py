@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """
-FavOrg Link-Validierung Test
-Teste die Link-Validierung der FavOrg-App gemäß German Review-Request
+FavOrg Backend Testing - German Review Request
+Teste ausführlich TOTE Links und Duplikate Funktionen der FavOrg-App
 
-Fokus:
-- POST /api/bookmarks/validate Endpunkt
-- Response-Format mit "total_checked", "dead_links_found" etc.
-- Teste mit vorhandenen Testdaten aus der Datenbank
-- Backend URL aus .env-Datei verwenden
+PROBLEME zu untersuchen:
+1. TOTE Links Counter zeigt 15 an obwohl keine toten Links vorhanden sind
+2. TOTE Links Funktion soll manuell zugeordnete tote Links korrekt löschen
+3. Duplikate Funktion vollständig testen
 """
 
 import requests
-import sys
 import json
-import io
+import time
 from datetime import datetime
+import uuid
 
 # Backend URL aus Frontend .env laden
 def get_backend_url():
@@ -28,882 +27,363 @@ def get_backend_url():
     except:
         return "http://localhost:8001/api"  # Fallback
 
-def test_link_validation():
-    """
-    Teste POST /api/bookmarks/validate Endpunkt
-    Fokus auf Response-Format und Validierungslogik
-    """
-    BACKEND_URL = get_backend_url()
-    print(f"🔗 Backend URL: {BACKEND_URL}")
-    
-    print("\n" + "="*60)
-    print("🔍 LINK-VALIDIERUNG TEST")
-    print("="*60)
-    
-    try:
-        # 1. Erst prüfen ob Bookmarks vorhanden sind
-        print("\n1️⃣ Prüfe vorhandene Bookmarks...")
-        bookmarks_response = requests.get(f"{BACKEND_URL}/bookmarks", timeout=30)
+class FavOrgTester:
+    def __init__(self):
+        self.backend_url = get_backend_url()
+        self.session = requests.Session()
+        self.session.headers.update({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        })
         
-        if bookmarks_response.status_code != 200:
-            print(f"❌ Fehler beim Abrufen der Bookmarks: {bookmarks_response.status_code}")
-            return False
-            
-        bookmarks = bookmarks_response.json()
-        print(f"✅ {len(bookmarks)} Bookmarks in der Datenbank gefunden")
+    def log(self, message):
+        """Log mit Timestamp"""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        print(f"[{timestamp}] {message}")
         
-        if len(bookmarks) == 0:
-            print("⚠️ Keine Bookmarks zum Testen vorhanden")
-            return False
-        
-        # Zeige einige Beispiel-URLs
-        print("\n📋 Beispiel-URLs in der Datenbank:")
-        for i, bookmark in enumerate(bookmarks[:5]):
-            print(f"   {i+1}. {bookmark.get('title', 'Ohne Titel')}: {bookmark.get('url', 'Keine URL')}")
-        if len(bookmarks) > 5:
-            print(f"   ... und {len(bookmarks) - 5} weitere")
-        
-        # 2. Link-Validierung durchführen
-        print(f"\n2️⃣ Starte Link-Validierung für {len(bookmarks)} Links...")
-        validation_response = requests.post(f"{BACKEND_URL}/bookmarks/validate", timeout=60)
-        
-        if validation_response.status_code != 200:
-            print(f"❌ Link-Validierung fehlgeschlagen: {validation_response.status_code}")
-            print(f"Response: {validation_response.text}")
-            return False
-        
-        validation_result = validation_response.json()
-        print("✅ Link-Validierung erfolgreich abgeschlossen")
-        
-        # 3. Response-Format prüfen
-        print("\n3️⃣ Prüfe Response-Format...")
-        required_fields = ["total_checked", "dead_links_found", "message"]
-        
-        print("📊 Validierungs-Ergebnis:")
-        for field in required_fields:
-            if field in validation_result:
-                print(f"   ✅ {field}: {validation_result[field]}")
-            else:
-                print(f"   ❌ Fehlendes Feld: {field}")
-        
-        # Zusätzliche Felder anzeigen
-        print("\n📋 Vollständige Response:")
-        for key, value in validation_result.items():
-            if key not in required_fields:
-                print(f"   📌 {key}: {value}")
-        
-        # 4. Validierung der Ergebnisse
-        print("\n4️⃣ Validiere Ergebnisse...")
-        total_checked = validation_result.get("total_checked", 0)
-        dead_links_found = validation_result.get("dead_links_found", 0)
-        
-        if total_checked > 0:
-            print(f"✅ {total_checked} Links wurden geprüft")
-        else:
-            print("❌ Keine Links wurden geprüft")
-            return False
-        
-        if dead_links_found >= 0:
-            print(f"✅ {dead_links_found} tote Links gefunden")
-            if dead_links_found > 0:
-                print(f"   📊 Dead Link Rate: {(dead_links_found/total_checked)*100:.1f}%")
-        else:
-            print("❌ Ungültige Anzahl toter Links")
-            return False
-        
-        # 5. Prüfe ob Bookmarks aktualisiert wurden
-        print("\n5️⃣ Prüfe Bookmark-Updates nach Validierung...")
-        updated_bookmarks_response = requests.get(f"{BACKEND_URL}/bookmarks", timeout=30)
-        
-        if updated_bookmarks_response.status_code == 200:
-            updated_bookmarks = updated_bookmarks_response.json()
-            
-            # Zähle Status-Typen
-            status_counts = {}
-            for bookmark in updated_bookmarks:
-                status = bookmark.get('status_type', 'unknown')
-                status_counts[status] = status_counts.get(status, 0) + 1
-            
-            print("📊 Status-Verteilung nach Validierung:")
-            for status, count in status_counts.items():
-                print(f"   📌 {status}: {count}")
-            
-            # Prüfe ob last_checked aktualisiert wurde
-            checked_count = sum(1 for b in updated_bookmarks if b.get('last_checked'))
-            print(f"✅ {checked_count} Bookmarks haben last_checked Timestamp")
-        
-        print(f"\n🎯 LINK-VALIDIERUNG TEST ERFOLGREICH")
-        print(f"   📊 Geprüfte Links: {total_checked}")
-        print(f"   ❌ Tote Links: {dead_links_found}")
-        print(f"   ✅ Success Rate: {((total_checked-dead_links_found)/total_checked)*100:.1f}%")
-        
-        return True
-        
-    except requests.exceptions.Timeout:
-        print("❌ Timeout bei Link-Validierung (>60s)")
-        return False
-    except requests.exceptions.ConnectionError:
-        print(f"❌ Verbindungsfehler zu {BACKEND_URL}")
-        return False
-    except Exception as e:
-        print(f"❌ Unerwarteter Fehler: {str(e)}")
-        return False
-
-def test_statistics_after_validation():
-    """
-    Teste ob Statistiken nach Link-Validierung korrekt aktualisiert werden
-    """
-    BACKEND_URL = get_backend_url()
-    
-    print("\n" + "="*60)
-    print("📊 STATISTIKEN NACH VALIDIERUNG TEST")
-    print("="*60)
-    
-    try:
-        response = requests.get(f"{BACKEND_URL}/statistics", timeout=30)
-        
-        if response.status_code != 200:
-            print(f"❌ Statistiken-Endpunkt fehlgeschlagen: {response.status_code}")
-            return False
-        
-        stats = response.json()
-        
-        print("📊 Aktuelle Statistiken:")
-        print(f"   📌 Gesamt Bookmarks: {stats.get('total_bookmarks', 0)}")
-        print(f"   ✅ Aktive Links: {stats.get('active_links', 0)}")
-        print(f"   ❌ Tote Links: {stats.get('dead_links', 0)}")
-        print(f"   🏠 Localhost Links: {stats.get('localhost_links', 0)}")
-        print(f"   🔄 Duplikate: {stats.get('duplicate_links', 0)}")
-        print(f"   🔒 Gesperrt: {stats.get('locked_links', 0)}")
-        print(f"   ⏱️ Timeout: {stats.get('timeout_links', 0)}")
-        print(f"   ❓ Ungeprüft: {stats.get('unchecked_links', 0)}")
-        
-        # Validiere dass Statistiken sinnvoll sind
-        total = stats.get('total_bookmarks', 0)
-        sum_status = (stats.get('active_links', 0) + 
-                     stats.get('dead_links', 0) + 
-                     stats.get('localhost_links', 0) + 
-                     stats.get('duplicate_links', 0) + 
-                     stats.get('locked_links', 0) + 
-                     stats.get('timeout_links', 0) + 
-                     stats.get('unchecked_links', 0))
-        
-        if total > 0:
-            print(f"\n✅ Statistiken-Konsistenz: {sum_status}/{total} Links kategorisiert")
-            if sum_status == total:
-                print("✅ Alle Links sind korrekt kategorisiert")
-            else:
-                print(f"⚠️ {total - sum_status} Links nicht kategorisiert")
-        
-        return True
-        
-    except Exception as e:
-        print(f"❌ Fehler bei Statistiken-Test: {str(e)}")
-        return False
-
-def main():
-    """
-    Hauptfunktion für Link-Validierung Tests gemäß German Review-Request
-    """
-    print("🚀 FavOrg Link-Validierung Test Suite")
-    print(f"⏰ Gestartet: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    
-    success_count = 0
-    total_tests = 2
-    
-    # Test 1: Link-Validierung
-    if test_link_validation():
-        success_count += 1
-    
-    # Test 2: Statistiken nach Validierung
-    if test_statistics_after_validation():
-        success_count += 1
-    
-    # Zusammenfassung
-    print("\n" + "="*60)
-    print("📋 TEST ZUSAMMENFASSUNG")
-    print("="*60)
-    print(f"✅ Erfolgreiche Tests: {success_count}/{total_tests}")
-    print(f"📊 Success Rate: {(success_count/total_tests)*100:.1f}%")
-    
-    if success_count == total_tests:
-        print("🎉 ALLE TESTS ERFOLGREICH - Link-Validierung funktioniert einwandfrei!")
-        return True
-    else:
-        print("❌ EINIGE TESTS FEHLGESCHLAGEN - Link-Validierung benötigt Aufmerksamkeit")
-        return False
-
-class FavLinkBackendTester:
-    def __init__(self, base_url="https://bookmark-rescue.preview.emergentagent.com"):
-        self.base_url = base_url
-        self.api_url = f"{base_url}/api"
-        self.tests_run = 0
-        self.tests_passed = 0
-
-    def run_test(self, name, method, endpoint, expected_status, data=None, files=None, expect_json=True):
-        """Run a single API test"""
-        url = f"{self.api_url}/{endpoint}"
-        headers = {}
-        
-        if not files:
-            headers['Content-Type'] = 'application/json'
-
-        self.tests_run += 1
-        print(f"\n🔍 Testing {name}...")
-        print(f"   URL: {url}")
+    def test_api_endpoint(self, method, endpoint, data=None, expected_status=200):
+        """Generische API-Test-Funktion"""
+        url = f"{self.backend_url}{endpoint}"
+        self.log(f"Testing {method} {endpoint}")
         
         try:
-            if method == 'GET':
-                response = requests.get(url, headers=headers)
-            elif method == 'POST':
-                if files:
-                    response = requests.post(url, files=files)
-                else:
-                    response = requests.post(url, json=data, headers=headers)
-            elif method == 'PUT':
-                response = requests.put(url, json=data, headers=headers)
-            elif method == 'DELETE':
-                response = requests.delete(url, headers=headers)
-
-            success = response.status_code == expected_status
-            if success:
-                self.tests_passed += 1
-                print(f"✅ Passed - Status: {response.status_code}")
-                if expect_json:
-                    try:
-                        response_data = response.json()
-                        print(f"   Response: {json.dumps(response_data, indent=2)[:200]}...")
-                        return success, response_data
-                    except:
-                        print(f"   Response: {response.text[:200]}...")
-                        return success, {}
-                else:
-                    print(f"   Response: {response.text[:200]}...")
-                    return success, response.text
+            if method.upper() == "GET":
+                response = self.session.get(url, timeout=30)
+            elif method.upper() == "POST":
+                response = self.session.post(url, json=data, timeout=30)
+            elif method.upper() == "PUT":
+                response = self.session.put(url, json=data, timeout=30)
+            elif method.upper() == "DELETE":
+                response = self.session.delete(url, timeout=30)
             else:
-                print(f"❌ Failed - Expected {expected_status}, got {response.status_code}")
-                print(f"   Response: {response.text[:300]}...")
-                return success, {}
-
+                raise ValueError(f"Unsupported method: {method}")
+                
+            self.log(f"Response: {response.status_code}")
+            
+            if response.status_code == expected_status:
+                try:
+                    return response.json()
+                except:
+                    return response.text
+            else:
+                self.log(f"❌ FEHLER: Expected {expected_status}, got {response.status_code}")
+                self.log(f"Response: {response.text}")
+                return None
+                
         except Exception as e:
-            print(f"❌ Failed - Error: {str(e)}")
-            return False, {}
-
-    def create_sample_html_file(self):
-        """Create a sample HTML bookmarks file for testing"""
-        html_content = """<!DOCTYPE NETSCAPE-Bookmark-file-1>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-<TITLE>Bookmarks</TITLE>
-<H1>Bookmarks Menu</H1>
-
-<DL><p>
-    <DT><H3>Development</H3>
-    <DL><p>
-        <DT><A HREF="https://github.com/">GitHub</A>
-        <DT><A HREF="https://stackoverflow.com/">Stack Overflow</A>
-    </DL><p>
+            self.log(f"❌ EXCEPTION: {str(e)}")
+            return None
     
-    <DT><H3>News</H3>
-    <DL><p>
-        <DT><A HREF="https://news.ycombinator.com/">Hacker News</A>
-        <DT><A HREF="https://www.reddit.com/">Reddit</A>
-    </DL><p>
+    def get_statistics(self):
+        """Hole aktuelle Statistiken"""
+        return self.test_api_endpoint("GET", "/statistics")
     
-    <DT><H3>Tools</H3>
-    <DL><p>
-        <DT><A HREF="https://www.google.com/">Google</A>
-        <DT><A HREF="https://www.wikipedia.org/">Wikipedia</A>
-    </DL><p>
-</DL><p>"""
-        return html_content
-
-    def create_sample_json_file(self):
-        """Create a sample JSON bookmarks file for testing"""
-        json_content = {
-            "children": [
-                {
-                    "name": "Social Media",
-                    "children": [
-                        {"name": "Twitter", "url": "https://twitter.com/"},
-                        {"name": "LinkedIn", "url": "https://linkedin.com/"}
-                    ]
-                },
-                {
-                    "name": "Entertainment", 
-                    "children": [
-                        {"name": "YouTube", "url": "https://youtube.com/"},
-                        {"name": "Netflix", "url": "https://netflix.com/"}
-                    ]
-                }
-            ]
-        }
-        return json.dumps(json_content)
-
-    def test_import_html_bookmarks(self):
-        """Test HTML bookmarks import"""
-        html_content = self.create_sample_html_file()
-        files = {'file': ('bookmarks.html', html_content, 'text/html')}
-        
-        success, response = self.run_test(
-            "Import HTML Bookmarks",
-            "POST",
-            "bookmarks/import",
-            200,
-            files=files
-        )
-        return success, response
-
-    def test_import_json_bookmarks(self):
-        """Test JSON bookmarks import"""
-        json_content = self.create_sample_json_file()
-        files = {'file': ('bookmarks.json', json_content, 'application/json')}
-        
-        success, response = self.run_test(
-            "Import JSON Bookmarks", 
-            "POST",
-            "bookmarks/import",
-            200,
-            files=files
-        )
-        return success, response
-
-    def test_get_all_bookmarks(self):
-        """Test getting all bookmarks"""
-        success, response = self.run_test(
-            "Get All Bookmarks",
-            "GET", 
-            "bookmarks",
-            200
-        )
-        return success, response
-
-    def test_get_categories(self):
-        """Test getting all categories"""
-        success, response = self.run_test(
-            "Get All Categories",
-            "GET",
-            "categories", 
-            200
-        )
-        return success, response
-
-    def test_get_bookmarks_by_category(self, category="Development"):
-        """Test getting bookmarks by category"""
-        success, response = self.run_test(
-            f"Get Bookmarks by Category ({category})",
-            "GET",
-            f"bookmarks/category/{category}",
-            200
-        )
-        return success, response
-
-    def test_search_bookmarks(self, query="GitHub"):
-        """Test bookmark search functionality"""
-        success, response = self.run_test(
-            f"Search Bookmarks ({query})",
-            "GET",
-            f"bookmarks/search/{query}",
-            200
-        )
-        return success, response
-
-    def test_validate_links(self):
-        """Test link validation (dead link check)"""
-        success, response = self.run_test(
-            "Validate Links (Dead Link Check)",
-            "POST",
-            "bookmarks/validate",
-            200
-        )
-        return success, response
-
-    def test_remove_duplicates(self):
-        """Test duplicate removal"""
-        success, response = self.run_test(
-            "Remove Duplicates",
-            "POST", 
-            "bookmarks/remove-duplicates",
-            200
-        )
-        return success, response
-
-    def test_create_single_bookmark(self):
-        """Test creating a single bookmark"""
+    def create_test_bookmark(self, title, url, category="Testing", status_type="active", is_dead_link=False):
+        """Erstelle Test-Bookmark"""
         bookmark_data = {
-            "title": "Test Bookmark",
-            "url": "https://example.com/test",
-            "category": "Testing"
+            "title": title,
+            "url": url,
+            "category": category,
+            "status_type": status_type
         }
-        
-        success, response = self.run_test(
-            "Create Single Bookmark",
-            "POST",
-            "bookmarks",
-            200,
-            data=bookmark_data
-        )
-        return success, response
-
-    def test_delete_single_bookmark(self, bookmark_id):
-        """Test deleting a single bookmark"""
-        success, response = self.run_test(
-            f"Delete Single Bookmark ({bookmark_id})",
-            "DELETE",
-            f"bookmarks/{bookmark_id}",
-            200
-        )
-        return success, response
-
-    def test_delete_all_bookmarks(self):
-        """Test deleting all bookmarks"""
-        success, response = self.run_test(
-            "Delete All Bookmarks",
-            "DELETE",
-            "bookmarks/all",
-            200
-        )
-        return success, response
-
-    def test_update_bookmark(self, bookmark_id, update_data):
-        """Test updating a bookmark"""
-        success, response = self.run_test(
-            f"Update Bookmark ({bookmark_id})",
-            "PUT",
-            f"bookmarks/{bookmark_id}",
-            200,
-            data=update_data
-        )
-        return success, response
-
-    def test_move_bookmarks(self, bookmark_ids, target_category, target_subcategory=None):
-        """Test moving bookmarks to different category"""
-        move_data = {
-            "bookmark_ids": bookmark_ids,
-            "target_category": target_category,
-            "target_subcategory": target_subcategory
-        }
-        
-        success, response = self.run_test(
-            f"Move Bookmarks to {target_category}",
-            "POST",
-            "bookmarks/move",
-            200,
-            data=move_data
-        )
-        return success, response
-
-    def test_export_xml(self, category=None):
-        """Test XML export functionality"""
-        export_data = {"format": "xml"}
-        if category:
-            export_data["category"] = category
-            
-        success, response = self.run_test(
-            f"Export XML{' (Category: ' + category + ')' if category else ''}",
-            "POST",
-            "export",
-            200,
-            data=export_data,
-            expect_json=False
-        )
-        return success, response
-
-    def test_export_csv(self, category=None):
-        """Test CSV export functionality"""
-        export_data = {"format": "csv"}
-        if category:
-            export_data["category"] = category
-            
-        success, response = self.run_test(
-            f"Export CSV{' (Category: ' + category + ')' if category else ''}",
-            "POST",
-            "export",
-            200,
-            data=export_data,
-            expect_json=False
-        )
-        return success, response
-
-    def test_get_statistics(self):
-        """Test statistics endpoint"""
-        success, response = self.run_test(
-            "Get Statistics",
-            "GET",
-            "statistics",
-            200
-        )
-        return success, response
-
-    def test_download_collector_zip(self):
-        """Test downloading collector scripts as ZIP"""
-        success, response = self.run_test(
-            "Download Collector ZIP",
-            "GET",
-            "download/collector",
-            200,
-            expect_json=False
-        )
-        return success, response
-
-    def test_create_sample_bookmarks(self):
-        """Test creating sample bookmarks"""
-        success, response = self.run_test(
-            "Create Sample Bookmarks",
-            "POST",
-            "bookmarks/create-samples",
-            200
-        )
-        return success, response
-
-    def test_remove_dead_links(self):
-        """Test removing all dead links (NEW FEATURE)"""
-        success, response = self.run_test(
-            "Remove Dead Links (NEW)",
-            "DELETE",
-            "bookmarks/dead-links",
-            200
-        )
-        return success, response
-
-    def test_status_management(self):
-        """Test new status management features"""
-        print("\n🔄 Testing Status Management Features...")
-        
-        # First get a bookmark to test with
-        success, bookmarks = self.test_get_all_bookmarks()
-        if not success or not bookmarks:
-            print("❌ No bookmarks available for status testing")
-            return False, "No bookmarks available"
-        
-        bookmark_id = bookmarks[0]['id']
-        print(f"   Using bookmark ID: {bookmark_id}")
-        
-        # Test all status types
-        status_types = ['active', 'dead', 'localhost', 'duplicate', 'unchecked']
-        
-        for status_type in status_types:
-            status_data = {"status_type": status_type}
-            success, response = self.run_test(
-                f"Update Status to {status_type}",
-                "PUT",
-                f"bookmarks/{bookmark_id}/status",
-                200,
-                data=status_data
-            )
-            if not success:
-                return False, f"Failed to set status to {status_type}"
-        
-        return True, "All status types tested successfully"
-
-    def test_duplicate_workflow(self):
-        """Test complete duplicate workflow: Find → Mark → Delete"""
-        print("\n🔄 Testing Duplicate Workflow...")
-        
-        # Step 1: Find and mark duplicates
-        success, find_response = self.run_test(
-            "Find and Mark Duplicates",
-            "POST",
-            "bookmarks/find-duplicates",
-            200
-        )
-        if not success:
-            return False, "Failed to find duplicates"
-        
-        duplicate_groups = find_response.get('duplicate_groups', 0)
-        marked_count = find_response.get('marked_count', 0)
-        print(f"   Found {duplicate_groups} duplicate groups, marked {marked_count} duplicates")
-        
-        # Step 2: Delete marked duplicates
-        success, delete_response = self.run_test(
-            "Delete Marked Duplicates",
-            "DELETE",
-            "bookmarks/duplicates",
-            200
-        )
-        if not success:
-            return False, "Failed to delete duplicates"
-        
-        removed_count = delete_response.get('removed_count', 0)
-        print(f"   Removed {removed_count} duplicate bookmarks")
-        
-        return True, {
-            "duplicate_groups": duplicate_groups,
-            "marked_count": marked_count,
-            "removed_count": removed_count
-        }
-
-    def test_statistics_comprehensive(self):
-        """Test statistics endpoint with comprehensive field validation for new vertical layout"""
-        success, response = self.run_test(
-            "Get Comprehensive Statistics",
-            "GET",
-            "statistics",
-            200
-        )
-        
-        if success:
-            # Validate all required fields for the new vertical layout
-            required_fields = [
-                'total_bookmarks', 'total_categories', 'active_links', 
-                'dead_links', 'localhost_links', 'duplicate_links', 
-                'timeout_links', 'unchecked_links'
-            ]
-            
-            missing_fields = []
-            for field in required_fields:
-                if field not in response:
-                    missing_fields.append(field)
-            
-            if missing_fields:
-                print(f"   ⚠️  Missing fields for vertical layout: {missing_fields}")
-                return False, f"Missing required fields: {missing_fields}"
-            else:
-                print("   ✅ All required statistics fields present for vertical layout")
-                print(f"   📊 Statistics: {response['total_bookmarks']} total, {response['active_links']} active, {response['dead_links']} dead")
-                return True, response
-        
-        return success, response
-
-    def test_integration_workflow(self):
-        """Test the complete integration workflow: Validate → Check Dead Links → Remove → Update Statistics"""
-        print("\n🔄 Starting Integration Workflow Test...")
-        
-        # Step 1: Get initial statistics
-        print("   Step 1: Getting initial statistics...")
-        stats_success, initial_stats = self.test_get_statistics()
-        if not stats_success:
-            return False, "Failed to get initial statistics"
-        
-        initial_dead_links = initial_stats.get('dead_links', 0)
-        initial_total = initial_stats.get('total_bookmarks', 0)
-        print(f"   Initial state: {initial_total} total bookmarks, {initial_dead_links} dead links")
-        
-        # Step 2: Validate all links
-        print("   Step 2: Validating all links...")
-        validate_success, validate_response = self.test_validate_links()
-        if not validate_success:
-            return False, "Link validation failed"
-        
-        dead_links_found = validate_response.get('dead_links_found', 0)
-        print(f"   Validation result: {dead_links_found} dead links found")
-        
-        # Step 3: Get updated statistics after validation
-        print("   Step 3: Getting statistics after validation...")
-        stats_success, post_validate_stats = self.test_get_statistics()
-        if not stats_success:
-            return False, "Failed to get post-validation statistics"
-        
-        post_validate_dead_links = post_validate_stats.get('dead_links', 0)
-        print(f"   Post-validation: {post_validate_dead_links} dead links in statistics")
-        
-        # Step 4: Remove dead links if any exist
-        if post_validate_dead_links > 0:
-            print("   Step 4: Removing dead links...")
-            remove_success, remove_response = self.test_remove_dead_links()
-            if not remove_success:
-                return False, "Dead links removal failed"
-            
-            removed_count = remove_response.get('removed_count', 0)
-            print(f"   Removal result: {removed_count} dead links removed")
-            
-            # Step 5: Get final statistics
-            print("   Step 5: Getting final statistics...")
-            stats_success, final_stats = self.test_get_statistics()
-            if not stats_success:
-                return False, "Failed to get final statistics"
-            
-            final_dead_links = final_stats.get('dead_links', 0)
-            final_total = final_stats.get('total_bookmarks', 0)
-            print(f"   Final state: {final_total} total bookmarks, {final_dead_links} dead links")
-            
-            # Verify the workflow worked correctly
-            expected_total = initial_total - removed_count
-            if final_total == expected_total and final_dead_links == 0:
-                print("   ✅ Integration workflow completed successfully!")
-                return True, {
-                    "initial_total": initial_total,
-                    "initial_dead_links": initial_dead_links,
-                    "dead_links_found": dead_links_found,
-                    "removed_count": removed_count,
-                    "final_total": final_total,
-                    "final_dead_links": final_dead_links
-                }
-            else:
-                return False, f"Workflow verification failed: expected {expected_total} total, got {final_total}; expected 0 dead links, got {final_dead_links}"
-        else:
-            print("   No dead links found, workflow completed without removal")
-            return True, {
-                "initial_total": initial_total,
-                "initial_dead_links": initial_dead_links,
-                "dead_links_found": dead_links_found,
-                "removed_count": 0,
-                "final_total": initial_total,
-                "final_dead_links": 0
-            }
-
-    def test_dead_links_error_handling(self):
-        """Test error handling when removing dead links with none present"""
-        # First ensure no dead links exist by running the removal
-        self.test_remove_dead_links()
-        
-        # Now test removing dead links when none exist
-        success, response = self.run_test(
-            "Remove Dead Links (No Dead Links Present)",
-            "DELETE",
-            "bookmarks/dead-links",
-            200
-        )
-        
-        if success:
-            removed_count = response.get('removed_count', 0)
-            if removed_count == 0:
-                print("   ✅ Correctly handled case with no dead links to remove")
-                return True, response
-            else:
-                print(f"   ⚠️  Unexpected: {removed_count} links removed when none should exist")
-                return False, response
-        
-        return success, response
+        return self.test_api_endpoint("POST", "/bookmarks", bookmark_data, 200)
+    
+    def update_bookmark_status(self, bookmark_id, status_type):
+        """Update Bookmark Status"""
+        status_data = {"status_type": status_type}
+        return self.test_api_endpoint("PUT", f"/bookmarks/{bookmark_id}/status", status_data)
+    
+    def validate_links(self):
+        """Validiere alle Links"""
+        return self.test_api_endpoint("POST", "/bookmarks/validate")
+    
+    def remove_dead_links(self):
+        """Entferne tote Links"""
+        return self.test_api_endpoint("DELETE", "/bookmarks/dead-links")
+    
+    def find_duplicates(self):
+        """Finde Duplikate"""
+        return self.test_api_endpoint("POST", "/bookmarks/find-duplicates")
+    
+    def delete_duplicates(self):
+        """Lösche Duplikate"""
+        return self.test_api_endpoint("DELETE", "/bookmarks/duplicates")
+    
+    def get_all_bookmarks(self):
+        """Hole alle Bookmarks"""
+        return self.test_api_endpoint("GET", "/bookmarks")
+    
+    def delete_bookmark(self, bookmark_id):
+        """Lösche einzelnes Bookmark"""
+        return self.test_api_endpoint("DELETE", f"/bookmarks/{bookmark_id}")
 
 def main():
-    print("🚀 Starting FavLink Manager Backend API Tests")
-    print("🎯 FOCUS: Comprehensive Backend Testing nach Frontend Updates")
-    print("🇩🇪 Teste das FavOrg Backend nach den aktuellen Frontend-Updates")
-    print("=" * 70)
+    tester = FavOrgTester()
     
-    tester = FavLinkBackendTester()
+    print("=" * 80)
+    print("🎯 FAVORG BACKEND TESTING - GERMAN REVIEW REQUEST")
+    print("Teste TOTE Links und Duplikate Funktionen")
+    print("=" * 80)
     
-    # Test sequence - prioritizing Statistics and Status Management as requested
-    print("\n📋 Phase 1: 🎯 PRIORITY - Statistics Endpoint (für vertikales Layout)")
-    print("   Testing statistics endpoint for new vertical layout requirements")
-    stats_success, stats_response = tester.test_statistics_comprehensive()
+    # TEST 1: Aktuelle Statistiken prüfen
+    print("\n📊 TEST 1: AKTUELLE STATISTIKEN PRÜFEN")
+    print("-" * 50)
     
-    print("\n📋 Phase 2: Categories Endpoint (für verbesserte Tooltip-Funktionalität)")
-    categories_success, categories_response = tester.test_get_categories()
-    
-    print("\n📋 Phase 3: CRUD Operations (Basis-Operationen)")
-    # Create
-    create_success, create_response = tester.test_create_single_bookmark()
-    bookmark_id = None
-    if create_success and 'id' in create_response:
-        bookmark_id = create_response['id']
+    initial_stats = tester.get_statistics()
+    if initial_stats:
+        tester.log("✅ Statistics API erreichbar")
+        tester.log(f"📊 Gesamt Bookmarks: {initial_stats.get('total_bookmarks', 'N/A')}")
+        tester.log(f"✅ Aktive Links: {initial_stats.get('active_links', 'N/A')}")
+        tester.log(f"❌ Tote Links: {initial_stats.get('dead_links', 'N/A')}")
+        tester.log(f"🏠 Localhost Links: {initial_stats.get('localhost_links', 'N/A')}")
+        tester.log(f"🔄 Duplikat Links: {initial_stats.get('duplicate_links', 'N/A')}")
+        tester.log(f"🔒 Gesperrte Links: {initial_stats.get('locked_links', 'N/A')}")
+        tester.log(f"❓ Ungeprüfte Links: {initial_stats.get('unchecked_links', 'N/A')}")
         
-        # Read
-        tester.test_get_all_bookmarks()
-        tester.test_get_bookmarks_by_category("Development")
-        
-        # Update
-        update_data = {
-            "title": "Updated Test Bookmark für Backend Test",
-            "category": "Testing"
-        }
-        tester.test_update_bookmark(bookmark_id, update_data)
-        
-        # Move
-        tester.test_move_bookmarks([bookmark_id], "Development")
-        
-        # Delete (will be done at end)
-    
-    print("\n📋 Phase 4: 🎯 Status Management (alle status_type Operationen)")
-    status_success, status_response = tester.test_status_management()
-    
-    print("\n📋 Phase 5: Export-Funktionalität (XML/CSV)")
-    xml_success, xml_response = tester.test_export_xml()
-    csv_success, csv_response = tester.test_export_csv()
-    # Test with category filter
-    tester.test_export_xml("Development")
-    tester.test_export_csv("Development")
-    
-    print("\n📋 Phase 6: Link-Validierung (POST /api/bookmarks/validate)")
-    validation_success, validation_response = tester.test_validate_links()
-    
-    print("\n📋 Phase 7: 🎯 Duplikat-Management (Find und Delete Operationen)")
-    duplicate_success, duplicate_response = tester.test_duplicate_workflow()
-    
-    print("\n📋 Phase 8: Dead Links Removal & Integration Workflow")
-    workflow_success, workflow_result = tester.test_integration_workflow()
-    tester.test_dead_links_error_handling()
-    
-    print("\n📋 Phase 9: Scripts Download (ZIP)")
-    scripts_success, scripts_response = tester.test_download_collector_zip()
-    
-    print("\n📋 Phase 10: Final Verification")
-    # Get final statistics to verify everything is consistent
-    final_stats_success, final_stats = tester.test_get_statistics()
-    
-    # Cleanup - Delete the test bookmark if it was created
-    if bookmark_id:
-        tester.test_delete_single_bookmark(bookmark_id)
-    
-    # Print final results
-    print("\n" + "=" * 70)
-    print(f"📊 FINAL RESULTS - Backend Testing nach Frontend Updates")
-    print(f"Tests Run: {tester.tests_run}")
-    print(f"Tests Passed: {tester.tests_passed}")
-    print(f"Tests Failed: {tester.tests_run - tester.tests_passed}")
-    print(f"Success Rate: {(tester.tests_passed/tester.tests_run)*100:.1f}%")
-    
-    # Detailed results for key areas
-    print(f"\n🎯 KEY AREAS STATUS:")
-    print(f"✅ Statistics Endpoint (vertikales Layout): {'PASS' if stats_success else 'FAIL'}")
-    print(f"✅ Categories Endpoint (Tooltip): {'PASS' if categories_success else 'FAIL'}")
-    print(f"✅ CRUD Operations: {'PASS' if create_success else 'FAIL'}")
-    print(f"✅ Status Management: {'PASS' if status_success else 'FAIL'}")
-    print(f"✅ Export Functionality: {'PASS' if xml_success and csv_success else 'FAIL'}")
-    print(f"✅ Link Validation: {'PASS' if validation_success else 'FAIL'}")
-    print(f"✅ Duplicate Management: {'PASS' if duplicate_success else 'FAIL'}")
-    print(f"✅ Scripts Download: {'PASS' if scripts_success else 'FAIL'}")
-    
-    # Critical issues check
-    critical_failures = []
-    if not stats_success:
-        critical_failures.append("Statistics Endpoint")
-    if not categories_success:
-        critical_failures.append("Categories Endpoint")
-    if not create_success:
-        critical_failures.append("CRUD Operations")
-    
-    if critical_failures:
-        print(f"\n❌ CRITICAL FAILURES: {', '.join(critical_failures)}")
-        print("   These failures could impact frontend functionality!")
-    
-    if tester.tests_passed == tester.tests_run:
-        print("\n🎉 All tests passed! Backend API is fully functional nach Frontend Updates.")
-        print("🎯 Alle kritischen Endpunkte funktionieren einwandfrei!")
-        return 0
+        # PROBLEM 1 CHECK: Zeigt Counter 15 tote Links obwohl keine vorhanden?
+        dead_links_count = initial_stats.get('dead_links', 0)
+        if dead_links_count > 0:
+            tester.log(f"⚠️  PROBLEM ERKANNT: Dead Links Counter zeigt {dead_links_count} an!")
+        else:
+            tester.log("✅ Dead Links Counter korrekt bei 0")
     else:
-        print(f"\n⚠️  {tester.tests_run - tester.tests_passed} tests failed. Check the output above for details.")
-        return 1
+        tester.log("❌ FEHLER: Statistics API nicht erreichbar")
+        return
+    
+    # TEST 2: Manuell totes Bookmark erstellen und prüfen
+    print("\n🔴 TEST 2: MANUELL TOTES BOOKMARK ERSTELLEN")
+    print("-" * 50)
+    
+    # Erstelle Bookmark mit status_type="dead"
+    dead_bookmark = tester.create_test_bookmark(
+        title="Manuell totes Bookmark",
+        url="https://dead-link-test-12345.invalid",
+        status_type="dead"
+    )
+    
+    if dead_bookmark:
+        dead_bookmark_id = dead_bookmark.get('id')
+        tester.log(f"✅ Totes Bookmark erstellt: ID {dead_bookmark_id}")
+        
+        # Prüfe Statistiken nach Erstellung
+        stats_after_dead = tester.get_statistics()
+        if stats_after_dead:
+            new_dead_count = stats_after_dead.get('dead_links', 0)
+            tester.log(f"📊 Dead Links nach Erstellung: {new_dead_count}")
+            
+            if new_dead_count > dead_links_count:
+                tester.log("✅ Dead Links Counter wurde korrekt erhöht")
+            else:
+                tester.log("❌ PROBLEM: Dead Links Counter nicht erhöht!")
+    else:
+        tester.log("❌ FEHLER: Konnte totes Bookmark nicht erstellen")
+        dead_bookmark_id = None
+    
+    # TEST 3: Link-Validierung testen
+    print("\n🔍 TEST 3: LINK-VALIDIERUNG TESTEN")
+    print("-" * 50)
+    
+    # Erstelle verschiedene Test-Bookmarks
+    test_bookmarks = []
+    
+    # Gültiger Link
+    valid_bookmark = tester.create_test_bookmark(
+        title="Gültiger Link Test",
+        url="https://www.google.com",
+        status_type="active"
+    )
+    if valid_bookmark:
+        test_bookmarks.append(valid_bookmark)
+        tester.log("✅ Gültiges Test-Bookmark erstellt")
+    
+    # Localhost Link
+    localhost_bookmark = tester.create_test_bookmark(
+        title="Localhost Test",
+        url="http://localhost:3000",
+        status_type="localhost"
+    )
+    if localhost_bookmark:
+        test_bookmarks.append(localhost_bookmark)
+        tester.log("✅ Localhost Test-Bookmark erstellt")
+    
+    # Toter Link
+    dead_test_bookmark = tester.create_test_bookmark(
+        title="Toter Link Test",
+        url="https://nonexistent-domain-12345.com",
+        status_type="active"  # Wird durch Validierung auf dead gesetzt
+    )
+    if dead_test_bookmark:
+        test_bookmarks.append(dead_test_bookmark)
+        tester.log("✅ Toter Link Test-Bookmark erstellt")
+    
+    # Führe Link-Validierung durch
+    tester.log("🔍 Starte Link-Validierung...")
+    validation_result = tester.validate_links()
+    
+    if validation_result:
+        tester.log("✅ Link-Validierung erfolgreich")
+        tester.log(f"📊 Geprüfte Links: {validation_result.get('total_checked', 'N/A')}")
+        tester.log(f"❌ Gefundene tote Links: {validation_result.get('dead_links_found', 'N/A')}")
+        tester.log(f"💬 Nachricht: {validation_result.get('message', 'N/A')}")
+    else:
+        tester.log("❌ FEHLER: Link-Validierung fehlgeschlagen")
+    
+    # Prüfe Statistiken nach Validierung
+    stats_after_validation = tester.get_statistics()
+    if stats_after_validation:
+        tester.log(f"📊 Dead Links nach Validierung: {stats_after_validation.get('dead_links', 'N/A')}")
+    
+    # TEST 4: Tote Links entfernen
+    print("\n🗑️  TEST 4: TOTE LINKS ENTFERNEN")
+    print("-" * 50)
+    
+    # Hole alle Bookmarks vor Entfernung
+    bookmarks_before = tester.get_all_bookmarks()
+    if bookmarks_before:
+        total_before = len(bookmarks_before)
+        dead_before = len([b for b in bookmarks_before if b.get('status_type') == 'dead'])
+        tester.log(f"📊 Bookmarks vor Entfernung: {total_before} (davon {dead_before} tote)")
+    
+    # Entferne tote Links
+    removal_result = tester.remove_dead_links()
+    if removal_result:
+        tester.log("✅ Tote Links Entfernung erfolgreich")
+        tester.log(f"🗑️  Entfernte Links: {removal_result.get('removed_count', 'N/A')}")
+        tester.log(f"💬 Nachricht: {removal_result.get('message', 'N/A')}")
+    else:
+        tester.log("❌ FEHLER: Tote Links Entfernung fehlgeschlagen")
+    
+    # Prüfe Statistiken nach Entfernung
+    stats_after_removal = tester.get_statistics()
+    if stats_after_removal:
+        tester.log(f"📊 Dead Links nach Entfernung: {stats_after_removal.get('dead_links', 'N/A')}")
+        tester.log(f"📊 Gesamt Bookmarks nach Entfernung: {stats_after_removal.get('total_bookmarks', 'N/A')}")
+    
+    # Prüfe ob localhost Links verschont wurden
+    bookmarks_after = tester.get_all_bookmarks()
+    if bookmarks_after:
+        localhost_after = len([b for b in bookmarks_after if b.get('status_type') == 'localhost'])
+        tester.log(f"🏠 Localhost Links nach Entfernung: {localhost_after}")
+        if localhost_after > 0:
+            tester.log("✅ Localhost Links wurden korrekt verschont")
+    
+    # TEST 5: Duplikate-Workflow testen
+    print("\n🔄 TEST 5: DUPLIKATE-WORKFLOW TESTEN")
+    print("-" * 50)
+    
+    # Erstelle Duplikate für Test
+    duplicate_url = "https://example-duplicate-test.com"
+    
+    duplicate1 = tester.create_test_bookmark(
+        title="Duplikat 1",
+        url=duplicate_url,
+        category="Duplicate Test"
+    )
+    
+    duplicate2 = tester.create_test_bookmark(
+        title="Duplikat 2",
+        url=duplicate_url,
+        category="Duplicate Test"
+    )
+    
+    duplicate3 = tester.create_test_bookmark(
+        title="Duplikat 3",
+        url=duplicate_url,
+        category="Duplicate Test"
+    )
+    
+    if duplicate1 and duplicate2 and duplicate3:
+        tester.log("✅ Test-Duplikate erstellt")
+        
+        # Prüfe Statistiken vor Duplikat-Suche
+        stats_before_duplicates = tester.get_statistics()
+        if stats_before_duplicates:
+            tester.log(f"📊 Duplikat Links vor Suche: {stats_before_duplicates.get('duplicate_links', 'N/A')}")
+        
+        # Finde Duplikate
+        find_result = tester.find_duplicates()
+        if find_result:
+            tester.log("✅ Duplikat-Suche erfolgreich")
+            tester.log(f"🔄 Gefundene Duplikat-Gruppen: {find_result.get('duplicate_groups', 'N/A')}")
+            tester.log(f"🏷️  Markierte Duplikate: {find_result.get('marked_count', 'N/A')}")
+            tester.log(f"💬 Nachricht: {find_result.get('message', 'N/A')}")
+        else:
+            tester.log("❌ FEHLER: Duplikat-Suche fehlgeschlagen")
+        
+        # Prüfe Statistiken nach Duplikat-Markierung
+        stats_after_find = tester.get_statistics()
+        if stats_after_find:
+            tester.log(f"📊 Duplikat Links nach Markierung: {stats_after_find.get('duplicate_links', 'N/A')}")
+        
+        # Lösche Duplikate
+        delete_result = tester.delete_duplicates()
+        if delete_result:
+            tester.log("✅ Duplikat-Löschung erfolgreich")
+            tester.log(f"🗑️  Gelöschte Duplikate: {delete_result.get('removed_count', 'N/A')}")
+            tester.log(f"💬 Nachricht: {delete_result.get('message', 'N/A')}")
+        else:
+            tester.log("❌ FEHLER: Duplikat-Löschung fehlgeschlagen")
+        
+        # Finale Statistiken nach Duplikat-Entfernung
+        stats_after_delete = tester.get_statistics()
+        if stats_after_delete:
+            tester.log(f"📊 Duplikat Links nach Löschung: {stats_after_delete.get('duplicate_links', 'N/A')}")
+            tester.log(f"📊 Gesamt Bookmarks nach Duplikat-Löschung: {stats_after_delete.get('total_bookmarks', 'N/A')}")
+    else:
+        tester.log("❌ FEHLER: Konnte Test-Duplikate nicht erstellen")
+    
+    # TEST 6: Status-Felder Konsistenz prüfen
+    print("\n🔍 TEST 6: STATUS-FELDER KONSISTENZ PRÜFEN")
+    print("-" * 50)
+    
+    # Erstelle Bookmark und teste verschiedene Status-Updates
+    status_test_bookmark = tester.create_test_bookmark(
+        title="Status Test Bookmark",
+        url="https://status-test-example.com",
+        status_type="active"
+    )
+    
+    if status_test_bookmark:
+        bookmark_id = status_test_bookmark.get('id')
+        tester.log(f"✅ Status-Test-Bookmark erstellt: ID {bookmark_id}")
+        
+        # Teste verschiedene Status-Übergänge
+        status_transitions = [
+            ("dead", "Setze auf tot"),
+            ("localhost", "Setze auf localhost"),
+            ("duplicate", "Setze auf duplikat"),
+            ("active", "Setze zurück auf aktiv")
+        ]
+        
+        for status, description in status_transitions:
+            tester.log(f"🔄 {description}")
+            update_result = tester.update_bookmark_status(bookmark_id, status)
+            if update_result:
+                tester.log(f"✅ Status erfolgreich auf '{status}' gesetzt")
+            else:
+                tester.log(f"❌ FEHLER: Status-Update auf '{status}' fehlgeschlagen")
+            
+            # Kurze Pause zwischen Updates
+            time.sleep(0.5)
+    
+    # FINALE STATISTIKEN
+    print("\n📊 FINALE STATISTIKEN")
+    print("-" * 50)
+    
+    final_stats = tester.get_statistics()
+    if final_stats:
+        tester.log("✅ Finale Statistiken:")
+        tester.log(f"📊 Gesamt Bookmarks: {final_stats.get('total_bookmarks', 'N/A')}")
+        tester.log(f"✅ Aktive Links: {final_stats.get('active_links', 'N/A')}")
+        tester.log(f"❌ Tote Links: {final_stats.get('dead_links', 'N/A')}")
+        tester.log(f"🏠 Localhost Links: {final_stats.get('localhost_links', 'N/A')}")
+        tester.log(f"🔄 Duplikat Links: {final_stats.get('duplicate_links', 'N/A')}")
+        tester.log(f"🔒 Gesperrte Links: {final_stats.get('locked_links', 'N/A')}")
+        tester.log(f"❓ Ungeprüfte Links: {final_stats.get('unchecked_links', 'N/A')}")
+    
+    print("\n" + "=" * 80)
+    print("🎯 FAVORG BACKEND TESTING ABGESCHLOSSEN")
+    print("=" * 80)
 
 if __name__ == "__main__":
-    # Run the focused link validation test as requested in German review
-    print("🎯 GERMAN REVIEW-REQUEST: Link-Validierung Test")
-    print("Fokus: POST /api/bookmarks/validate Endpunkt")
-    
-    # Run the focused link validation tests
-    success = main()
-    
-    # Also run the comprehensive backend tests
-    print("\n" + "="*70)
-    print("🔄 ZUSÄTZLICH: Comprehensive Backend Tests")
-    
-    # Initialize comprehensive tester
-    tester = FavLinkBackendTester()
-    
-    # Quick validation of key endpoints
-    print("\n📋 Schnelle Validierung der Haupt-Endpunkte:")
-    bookmarks_success, _ = tester.test_get_all_bookmarks()
-    stats_success, _ = tester.test_get_statistics()
-    categories_success, _ = tester.test_get_categories()
-    
-    print(f"\n📊 Schnell-Check Ergebnisse:")
-    print(f"   Bookmarks Endpunkt: {'✅ OK' if bookmarks_success else '❌ FEHLER'}")
-    print(f"   Statistics Endpunkt: {'✅ OK' if stats_success else '❌ FEHLER'}")
-    print(f"   Categories Endpunkt: {'✅ OK' if categories_success else '❌ FEHLER'}")
-    
-    if success and bookmarks_success and stats_success:
-        print("\n🎉 ALLE TESTS ERFOLGREICH - Link-Validierung und Backend funktionieren einwandfrei!")
-        sys.exit(0)
-    else:
-        print("\n❌ EINIGE TESTS FEHLGESCHLAGEN - Siehe Details oben")
-        sys.exit(1)
+    main()
