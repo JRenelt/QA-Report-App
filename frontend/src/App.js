@@ -2506,6 +2506,16 @@ const BookmarkCard = ({ bookmark, onDelete, onEdit, onToggleStatus }) => {
             <Button
               variant="ghost"
               size="sm"
+              onClick={() => onToggleLock(bookmark.id, bookmark.is_locked)}
+              className={`lock-btn ${bookmark.is_locked ? 'locked' : 'unlocked'}`}
+              title={bookmark.is_locked ? "Entsperren" : "Sperren"}
+            >
+              {bookmark.is_locked ? <Lock className="w-4 h-4" /> : <Lock className="w-4 h-4 text-gray-400" />}
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => onEdit(bookmark)}
               className="edit-btn"
               title="Bearbeiten"
