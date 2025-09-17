@@ -1987,7 +1987,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
         <DialogHeader className="settings-header">
           <DialogTitle className="settings-title">
             <Settings className="w-5 h-5 mr-2" />
-            🔧 System-Einstellungen
+            System-Einstellungen
           </DialogTitle>
         </DialogHeader>
         
