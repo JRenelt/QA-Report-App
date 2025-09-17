@@ -1186,16 +1186,8 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
             marginBottom: '8px'
           }}>
             <BarChart3 className="w-5 h-5 mr-2" />
-            Statistiken
-          </DialogTitle>
-          <div style={{ 
-            fontSize: '16px', 
-            color: 'var(--text-secondary)',
-            display: 'flex',
-            alignItems: 'center'
-          }}>
             📊 Statistiken
-          </div>
+          </DialogTitle>
         </DialogHeader>
         
         <div className="statistics-content" style={{
