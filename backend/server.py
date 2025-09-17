@@ -1057,7 +1057,15 @@ class BookmarkManager:
         
         removed_count = 0
         for duplicate_group in duplicates:
-            sorted_group = sorted(duplicate_group, key=lambda x: x.date_added, reverse=True)
+            # Fix datetime comparison issue by normalizing timezones
+            def get_comparable_date(bookmark):
+                date = bookmark.date_added
+                if date.tzinfo is None:
+                    # Make timezone-naive datetime timezone-aware (UTC)
+                    return date.replace(tzinfo=timezone.utc)
+                return date
+            
+            sorted_group = sorted(duplicate_group, key=get_comparable_date, reverse=True)
             for bookmark in sorted_group[1:]:
                 await self.db.bookmarks.delete_one({"id": bookmark.id})
                 removed_count += 1
