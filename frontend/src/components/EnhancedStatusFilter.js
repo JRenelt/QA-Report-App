@@ -5,15 +5,28 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   // Sicherstellen, dass statistics nie null ist
   const safeStats = statistics || {};
   
+  // Status-Icon als Inline-SVG basierend auf dem angehängten Bild
+  const StatusIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 32 16" className="status-filter-icon">
+      {/* Roter Bereich mit X */}
+      <rect x="0" y="0" width="16" height="16" fill="#dc2626" rx="2"/>
+      <path d="M4 4 L12 12 M12 4 L4 12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+      
+      {/* Grüner Bereich mit Häkchen */}
+      <rect x="16" y="0" width="16" height="16" fill="#16a34a" rx="2"/>
+      <path d="M20 8 L24 12 L30 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+    </svg>
+  );
+  
   const statusOptions = [
-    { value: 'all', label: 'Alle Status', icon: '📊', count: safeStats.total_bookmarks || 0 },
-    { value: 'active', label: 'Aktiv', icon: '✅', count: safeStats.active_links || 0 }, 
-    { value: 'dead', label: 'Tot', icon: '❌', count: safeStats.dead_links || 0 },
-    { value: 'localhost', label: 'Localhost', icon: '🏠', count: safeStats.localhost_links || 0 },
-    { value: 'duplicate', label: 'Duplikate', icon: '🔄', count: safeStats.duplicate_links || 0 },
-    { value: 'locked', label: 'Gesperrt', icon: '🔒', count: safeStats.locked_links || 0 },
-    { value: 'timeout', label: 'Timeout', icon: '⏱️', count: safeStats.timeout_links || 0 },
-    { value: 'unchecked', label: 'Ungeprüft', icon: '❓', count: safeStats.unchecked_links || 0 }
+    { value: 'all', label: 'Status', icon: <StatusIcon />, showCount: false },
+    { value: 'active', label: 'Aktiv', icon: '✅', showCount: false }, 
+    { value: 'dead', label: 'Tot', icon: '❌', showCount: false },
+    { value: 'localhost', label: 'Localhost', icon: '🏠', showCount: false },
+    { value: 'duplicate', label: 'Duplikate', icon: '🔄', showCount: false },
+    { value: 'locked', label: 'Gesperrt', icon: '🔒', showCount: false },
+    { value: 'timeout', label: 'Timeout', icon: '⏱️', showCount: false },
+    { value: 'unchecked', label: 'Ungeprüft', icon: '❓', showCount: false }
   ];
 
   return (
@@ -26,14 +39,7 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
           <SelectItem key={option.value} value={option.value}>
             <span className="flex items-center gap-2">
               <span>{option.icon}</span>
-              <span>
-                {option.label}
-                {option.count !== null && option.count >= 0 && (
-                  <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
-                    [{option.count}]
-                  </span>
-                )}
-              </span>
+              <span>{option.label}</span>
             </span>
           </SelectItem>
         ))}
