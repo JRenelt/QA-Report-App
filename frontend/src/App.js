@@ -3445,13 +3445,14 @@ function App() {
 
   // Filter bookmarks based on search and status
   const filteredBookmarks = bookmarks.filter(bookmark => {
-    // Search filter
+    // Search filter - durchsucht Titel, URL, Kategorie und Beschreibung
     if (searchQuery) {
       const searchLower = searchQuery.toLowerCase();
       const matchesSearch = 
         bookmark.title?.toLowerCase().includes(searchLower) ||
         bookmark.url?.toLowerCase().includes(searchLower) ||
-        bookmark.category?.toLowerCase().includes(searchLower);
+        bookmark.category?.toLowerCase().includes(searchLower) ||
+        bookmark.description?.toLowerCase().includes(searchLower);
       
       if (!matchesSearch) return false;
     }
