@@ -2076,7 +2076,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
               <div className="bookmark-title-section">
                 <GripVertical className="drag-handle bookmark-drag" />
                 <CardTitle className="bookmark-title">
-                  {bookmark.title}
+                  {highlightSearchTerm ? highlightSearchTerm(bookmark.title, searchQuery) : bookmark.title}
                 </CardTitle>
               </div>
               <div className="bookmark-actions">
