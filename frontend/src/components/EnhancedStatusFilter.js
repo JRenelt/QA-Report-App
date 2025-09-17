@@ -18,14 +18,14 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   );
   
   const statusOptions = [
-    { value: 'all', label: 'Status', icon: <StatusIcon />, showCount: false },
-    { value: 'active', label: 'Aktiv', icon: '✅', showCount: false }, 
-    { value: 'dead', label: 'Tot', icon: '❌', showCount: false },
-    { value: 'localhost', label: 'Localhost', icon: '🏠', showCount: false },
-    { value: 'duplicate', label: 'Duplikate', icon: '🔄', showCount: false },
-    { value: 'locked', label: 'Gesperrt', icon: '🔒', showCount: false },
-    { value: 'timeout', label: 'Timeout', icon: '⏱️', showCount: false },
-    { value: 'unchecked', label: 'Ungeprüft', icon: '❓', showCount: false }
+    { value: 'all', label: 'Status', icon: <StatusIcon />, count: safeStats.total_bookmarks || 0 },
+    { value: 'active', label: 'Aktiv', icon: '✅', count: safeStats.active_links || 0 }, 
+    { value: 'dead', label: 'Tot', icon: '❌', count: safeStats.dead_links || 0 },
+    { value: 'localhost', label: 'Localhost', icon: '🏠', count: safeStats.localhost_links || 0 },
+    { value: 'duplicate', label: 'Duplikate', icon: '🔄', count: safeStats.duplicate_links || 0 },
+    { value: 'locked', label: 'Gesperrt', icon: '🔒', count: safeStats.locked_links || 0 },
+    { value: 'timeout', label: 'Timeout', icon: '⏱️', count: safeStats.timeout_links || 0 },
+    { value: 'unchecked', label: 'Ungeprüft', icon: '❓', count: safeStats.unchecked_links || 0 }
   ];
 
   return (
@@ -38,7 +38,14 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
           <SelectItem key={option.value} value={option.value}>
             <span className="flex items-center gap-2">
               <span>{option.icon}</span>
-              <span>{option.label}</span>
+              <span>
+                {option.label}
+                {option.count !== null && option.count >= 0 && (
+                  <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
+                    [{option.count}]
+                  </span>
+                )}
+              </span>
             </span>
           </SelectItem>
         ))}
