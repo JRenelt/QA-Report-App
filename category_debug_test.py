@@ -2,7 +2,7 @@ import requests
 import json
 
 def debug_category_operations():
-    base_url = "https://bookmark-rescue.preview.emergentagent.com/api"
+    base_url = "https://bookmark-hub-4.preview.emergentagent.com/api"
     
     print("🔍 DEBUGGING CATEGORY OPERATIONS")
     print("=" * 50)

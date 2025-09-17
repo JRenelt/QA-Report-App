@@ -115,8 +115,8 @@ def comprehensive_testdata_diagnosis():
         frontend_headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Origin': 'https://bookmark-rescue.preview.emergentagent.com',
-            'Referer': 'https://bookmark-rescue.preview.emergentagent.com/',
+            'Origin': 'https://bookmark-hub-4.preview.emergentagent.com',
+            'Referer': 'https://bookmark-hub-4.preview.emergentagent.com/',
             'User-Agent': 'Mozilla/5.0 (Frontend Simulation)'
         }
         

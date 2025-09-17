@@ -13,7 +13,7 @@ import random
 from datetime import datetime, timezone
 
 # Backend URL aus .env-Datei
-BACKEND_URL = "https://bookmark-rescue.preview.emergentagent.com/api"
+BACKEND_URL = "https://bookmark-hub-4.preview.emergentagent.com/api"
 
 def test_api_connection():
     """Test API-Verbindung"""
