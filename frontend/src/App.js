@@ -254,6 +254,17 @@ class FavoritesService {
     }
   }
 
+  async updateBookmarkLock(bookmarkId, isLocked) {
+    try {
+      const response = await axios.put(`${this.baseURL}/api/bookmarks/${bookmarkId}/lock`, {
+        is_locked: isLocked
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to update bookmark lock status');
+    }
+  }
+
   async moveBookmarks(bookmarkIds, targetCategory, targetSubcategory = null) {
     try {
       const response = await axios.post(`${this.baseURL}/api/bookmarks/move`, {
