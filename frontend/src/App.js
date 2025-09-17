@@ -847,7 +847,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
         <DialogHeader>
           <DialogTitle className="help-title-inline">
             <HelpCircle className="w-5 h-5 mr-2" />
-            FavOrg - ❓ Hilfe & Anleitung
+            FavOrg - Hilfe & Anleitung
           </DialogTitle>
         </DialogHeader>
         
