@@ -3600,6 +3600,7 @@ function App() {
           viewMode={viewMode}
           onViewModeChange={handleViewModeChange}
           statistics={statistics}
+          highlightSearchTerm={highlightSearchTerm}
         />
       </div>
 
