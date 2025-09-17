@@ -75,6 +75,41 @@ body {
   background: var(--bg-primary);
 }
 
+/* App Container - Hauptlayout */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+}
+
+/* App Body - Horizontales Layout für Sidebar + Main Content */
+.app-body {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 80px); /* Header-Höhe abziehen */
+  margin-top: 80px; /* Header-Offset */
+}
+
+/* Category Sidebar */
+.category-sidebar {
+  flex: 0 0 280px; /* Feste Breite, kein Grow/Shrink */
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-primary);
+  overflow-y: auto;
+  height: calc(100vh - 80px);
+}
+
+/* Main Content neben der Sidebar */
+.main-content {
+  flex: 1; /* Nimmt restlichen Platz ein */
+  padding: 20px;
+  overflow-y: auto;
+  min-width: 0;
+  height: calc(100vh - 80px);
+  background: var(--bg-primary);
+}
+
 /* Header - Improved Layout */
 .header-fixed {
   position: fixed;
