@@ -1177,65 +1177,80 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
         border: '1px solid var(--border-primary)'
       }}>
         <DialogHeader>
-          <DialogTitle className="dialog-title" style={{ color: 'var(--text-primary)' }}>
+          <DialogTitle className="dialog-title" style={{ 
+            color: 'var(--text-primary)',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '8px'
+          }}>
             <BarChart3 className="w-5 h-5 mr-2" />
-            📊 Statistiken
+            Statistiken
           </DialogTitle>
+          <div style={{ 
+            fontSize: '16px', 
+            color: 'var(--text-secondary)',
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+            📊 Statistiken
+          </div>
         </DialogHeader>
         
         <div className="statistics-content" style={{
           backgroundColor: 'var(--bg-primary)',
           color: 'var(--text-primary)'
         }}>
-          {/* Statistiken als vertikale Liste */}
-          <div className="stats-vertical-list">
-            <div className="stat-line">
+          {/* Statistiken als vertikale Liste mit größeren Fonts */}
+          <div className="stats-vertical-list" style={{ marginBottom: '24px' }}>
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '8px' }}>
               <span className="stat-icon-text">📊</span>
               <span className="stat-text">Gesamt Favoriten [{statistics.total_bookmarks}]</span>
             </div>
             
-            <div className="stat-line">
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '8px' }}>
               <span className="stat-icon-text">📁</span>
               <span className="stat-text">Kategorien [{statistics.total_categories}]</span>
             </div>
             
-            <div className="stat-line">
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '8px' }}>
               <span className="stat-icon-text">📈</span>
               <span className="stat-text">Status-Verteilung []</span>
             </div>
             
-            <div className="stat-line">
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '8px' }}>
               <span className="stat-icon-text">✅</span>
               <span className="stat-text">Aktiv [{statistics.active_links}]</span>
             </div>
             
-            <div className="stat-line">
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '8px' }}>
               <span className="stat-icon-text">❌</span>
               <span className="stat-text">Tot [{statistics.dead_links}]</span>
             </div>
             
-            <div className="stat-line">
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '8px' }}>
               <span className="stat-icon-text">🏠</span>
               <span className="stat-text">Localhost [{statistics.localhost_links || 0}]</span>
             </div>
             
-            <div className="stat-line">
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '8px' }}>
               <span className="stat-icon-text">🔄</span>
               <span className="stat-text">Duplikate [{statistics.duplicate_links || 0}]</span>
             </div>
             
-            <div className="stat-line">
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '8px' }}>
               <span className="stat-icon-text">⏱️</span>
               <span className="stat-text">Timeout [{statistics.timeout_links}]</span>
             </div>
             
-            <div className="stat-line">
+            <div className="stat-line" style={{ fontSize: '16px', marginBottom: '24px' }}>
               <span className="stat-icon-text">❓</span>
               <span className="stat-text">Ungeprüft [{statistics.unchecked_links}]</span>
             </div>
           </div>
           
-          <div className="dialog-actions">
+          <div className="dialog-actions" style={{ display: 'flex', gap: '12px' }}>
             <Button
               onClick={onRefresh}
               className="stats-refresh-btn"
