@@ -3031,6 +3031,54 @@ function App() {
         />
       </div>
 
+      {/* App-Fußzeile */}
+      <footer className="app-footer">
+        <div className="footer-content">
+          <div className="footer-left">
+            <span className="footer-logo">📚 FavOrg</span>
+            <span className="footer-version">V2.3.0</span>
+            <span className="footer-separator">•</span>
+            <span className="footer-bookmarks">
+              {bookmarks ? bookmarks.length : 0} Favoriten verwaltet
+            </span>
+          </div>
+          
+          <div className="footer-center">
+            <span className="footer-stats">
+              {statistics ? (
+                <>
+                  {statistics.active_links || 0} Aktiv • 
+                  {statistics.dead_links || 0} Tot • 
+                  {statistics.total_categories || 0} Kategorien
+                </>
+              ) : (
+                'Lade Statistiken...'
+              )}
+            </span>
+          </div>
+          
+          <div className="footer-right">
+            <button 
+              onClick={() => setShowHelp(true)}
+              className="footer-link"
+              title="Hilfe"
+            >
+              <HelpCircle className="w-4 h-4 mr-1" />
+              Hilfe
+            </button>
+            <span className="footer-separator">•</span>
+            <button 
+              onClick={() => setShowSettings(true)}
+              className="footer-link"
+              title="Einstellungen"
+            >
+              <Settings className="w-4 h-4 mr-1" />
+              Einstellungen
+            </button>
+          </div>
+        </div>
+      </footer>
+
       {/* Dialoge */}
       <BookmarkDialog
         isOpen={showBookmarkDialog}
