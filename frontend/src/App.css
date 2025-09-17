@@ -333,13 +333,13 @@ body {
 }
 
 .check-btn {
-  background: var(--cyan-400);
-  color: white;
+  background: #fca5a5; /* Hellrot für TOTE Links */
+  color: #7f1d1d; /* Dunkelrotes Text für Kontrast */
   border: none;
 }
 
 .check-btn:hover {
-  background: var(--cyan-500);
+  background: #f87171; /* Etwas dunkler beim Hover */
 }
 
 .duplicate-btn {
