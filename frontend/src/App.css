@@ -343,13 +343,13 @@ body {
 }
 
 .duplicate-btn {
-  background: var(--orange-500);
-  color: white;
+  background: #fed7aa; /* Orange für Duplikate */
+  color: #9a3412; /* Dunkelorange Text für Kontrast */
   border: none;
 }
 
 .duplicate-btn:hover {
-  background: #ea580c;
+  background: #fdba74; /* Etwas dunkler beim Hover */
 }
 
 .cleanup-btn {
