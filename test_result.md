@@ -637,6 +637,90 @@ test_plan:
         agent: "testing"
         comment: "🎯 MELDUNGEN DELAY FUNKTIONALITÄT VOLLSTÄNDIG GETESTET UND FUNKTIONAL: Umfassende Tests der Toast-System Funktionalität gemäß German Review-Request durchgeführt (100% Success Rate). ✅ SYSTEM-EINSTELLUNGEN: 'Meldungen Delay' Checkbox im Darstellung-Tab gefunden und funktional, Einstellung wird korrekt in localStorage gespeichert ✅ TOAST MIT MELDUNGEN DELAY = TRUE: Toast erscheint mit X-Button (closeButton: true), bleibt dauerhaft sichtbar (duration: Infinity), verschwindet NICHT automatisch nach 10+ Sekunden, X-Button funktional und schließt Toast manuell ✅ TOAST MIT MELDUNGEN DELAY = FALSE: Toast erscheint ohne permanente Anzeige, Standard-Verhalten aktiviert ✅ LINK-VALIDIERUNG INTEGRATION: 'Prüfen' Button löst korrekt Toast-Nachrichten aus mit Validierungsergebnissen ('Validierung abgeschlossen: X tote Links gefunden von Y geprüften Links') ✅ TOAST-KONFIGURATION: showSuccess() und showError() Funktionen konfigurieren Toast korrekt basierend auf appSettings.melungenDelay, Toaster-Komponente erhält closeButton-Property dynamisch ✅ VERSCHIEDENE TOAST-TYPEN: Success-Toasts (grün) und Error-Toasts (rot) beide mit korrekter X-Button Funktionalität getestet. ALLE ERWARTETEN ERGEBNISSE DER REVIEW-REQUEST VOLLSTÄNDIG ERFÜLLT!"
 
+  - task: "Phase 2.5 Frontend Fixes - Funnel Symbol Fix"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ FUNNEL-SYMBOL FIX GETESTET: 'Alle' Filter hat korrekterweise kein Funnel-Icon, andere Filter (TOT, LOCALHOST, DUPLIKAT) haben Icons wie erwartet. Filter-Icon-Konsistenz erfolgreich implementiert."
+
+  - task: "Phase 2.5 Frontend Fixes - 100 Test Data Generation"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ 100 TESTDATEN-GENERIERUNG ERFOLGREICH: Exakt 100 Bookmarks im System vorhanden (Header zeigt [100]), Settings → Erweitert Tab mit Testdaten-Button gefunden und funktional."
+
+  - task: "Phase 2.5 Frontend Fixes - Lock/Unlock Feature Visibility"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ LOCK/UNLOCK FEATURES SICHTBAR: Lock-Buttons in Bookmark-Cards sichtbar und funktional, Farbwechsel bei Toggle funktioniert (grün=entsperrt, rot=gesperrt)."
+
+  - task: "Phase 2.5 Frontend Fixes - Button Colors"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js, frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ BUTTON-FARBEN KORREKT IMPLEMENTIERT: TOTE Links Button ist hellrot (rgb(252, 165, 165)), Duplikate Button ist orange (rgb(254, 215, 170)) - beide Farben entsprechen den Anforderungen."
+
+  - task: "Phase 2.5 Frontend Fixes - Search with Yellow Highlighting"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ SUCHFUNKTIONALITÄT MIT GELBER MARKIERUNG: GitHub-Suche funktioniert perfekt, '2 Treffer' Anzeige neben Tabellen-Ansicht sichtbar, gelbe Hervorhebung in Suchergebnissen aktiv."
+
+  - task: "Phase 2.5 Frontend Fixes - Easter Egg Game"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ EASTER EGG ERFOLGREICH: Copyright-Text 'Made with Emergent' Klick öffnet erfolgreich 'Fang die Maus' Spiel, Screenshot des geöffneten Spiels erstellt, Spiel vollständig funktional."
+
+  - task: "Phase 2.5 Frontend Fixes - Counter Validation"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COUNTER-VALIDIERUNG ERFOLGREICH: Alle Counter konsistent - Header [100], Sidebar-Kategorien (Alle: 100, Development: 25, News: 11, etc.), Filter-Buttons (TOTE Links [27], Duplikate [20]) - alle Zahlen korrekt und konsistent."
+
   - task: "Test Data Creation API Endpoints"
     implemented: true
     working: true
