@@ -2407,6 +2407,244 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
 
 
 
+// BookmarkList Component für die Karten-Ansicht
+const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus }) => {
+  if (!bookmarks || bookmarks.length === 0) {
+    return (
+      <div className="empty-state">
+        <div className="empty-state-content">
+          <BookOpen className="w-12 h-12 text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-gray-600 mb-2">Keine Favoriten gefunden</h3>
+          <p className="text-gray-500">
+            Importieren Sie Ihre Browser-Favoriten oder erstellen Sie neue Lesezeichen.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bookmark-grid">
+      {bookmarks.map((bookmark) => (
+        <BookmarkCard
+          key={bookmark.id}
+          bookmark={bookmark}
+          onDelete={onDeleteBookmark}
+          onEdit={onEditBookmark}
+          onToggleStatus={onToggleStatus}
+        />
+      ))}
+    </div>
+  );
+};
+
+// BookmarkCard Component für einzelne Bookmark-Karten
+const BookmarkCard = ({ bookmark, onDelete, onEdit, onToggleStatus }) => {
+  const getStatusColor = (bookmark) => {
+    if (bookmark.is_locked) return 'text-yellow-600';
+    if (bookmark.status_type === 'dead' || bookmark.is_dead_link) return 'text-red-600';
+    if (bookmark.status_type === 'localhost') return 'text-gray-600';
+    if (bookmark.status_type === 'duplicate') return 'text-orange-600';
+    return 'text-green-600';
+  };
+
+  const getStatusIcon = (bookmark) => {
+    if (bookmark.is_locked) return <Lock className="w-4 h-4" />;
+    if (bookmark.status_type === 'dead' || bookmark.is_dead_link) return <XCircle className="w-4 h-4" />;
+    if (bookmark.status_type === 'localhost') return <Monitor className="w-4 h-4" />;
+    if (bookmark.status_type === 'duplicate') return <Copy className="w-4 h-4" />;
+    return <CheckCircle className="w-4 h-4" />;
+  };
+
+  const handleStatusToggle = () => {
+    if (bookmark.is_locked) return; // Gesperrte Bookmarks können nicht geändert werden
+    
+    const currentStatus = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
+    const newStatus = currentStatus === 'dead' ? 'localhost' : 'dead';
+    onToggleStatus(bookmark.id, currentStatus);
+  };
+
+  return (
+    <Card className="bookmark-card">
+      <CardContent className="bookmark-card-content">
+        <div className="bookmark-header">
+          <div className="bookmark-title">
+            <a 
+              href={bookmark.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bookmark-link"
+              title={bookmark.url}
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              {bookmark.title || 'Untitled'}
+            </a>
+          </div>
+          
+          <div className="bookmark-actions">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleStatusToggle}
+              className={`status-btn ${getStatusColor(bookmark)}`}
+              title={`Status: ${bookmark.status_type || 'active'}`}
+              disabled={bookmark.is_locked}
+            >
+              {getStatusIcon(bookmark)}
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onEdit(bookmark)}
+              className="edit-btn"
+              title="Bearbeiten"
+            >
+              <Edit className="w-4 h-4" />
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onDelete(bookmark.id)}
+              className="delete-btn"
+              title="Löschen"
+              disabled={bookmark.is_locked}
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+        
+        <div className="bookmark-meta">
+          <div className="bookmark-category">
+            <Folder className="w-3 h-3 mr-1" />
+            {bookmark.category || 'Uncategorized'}
+          </div>
+          <div className="bookmark-url">
+            {bookmark.url}
+          </div>
+        </div>
+        
+        {bookmark.description && (
+          <div className="bookmark-description">
+            {bookmark.description}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+// TableView Component für die Tabellen-Ansicht
+const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, headerButtons }) => {
+  if (!bookmarks || bookmarks.length === 0) {
+    return (
+      <div className="empty-state">
+        <div className="empty-state-content">
+          <Table className="w-12 h-12 text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-gray-600 mb-2">Keine Favoriten gefunden</h3>
+          <p className="text-gray-500">
+            Importieren Sie Ihre Browser-Favoriten oder erstellen Sie neue Lesezeichen.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="table-view">
+      {headerButtons}
+      
+      <div className="table-container">
+        <table className="bookmarks-table">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Titel</th>
+              <th>URL</th>
+              <th>Kategorie</th>
+              <th>Aktionen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookmarks.map((bookmark) => (
+              <tr key={bookmark.id}>
+                <td>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      if (!bookmark.is_locked) {
+                        const currentStatus = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
+                        onToggleStatus(bookmark.id, currentStatus);
+                      }
+                    }}
+                    className={`status-btn ${
+                      bookmark.is_locked ? 'text-yellow-600' :
+                      bookmark.status_type === 'dead' || bookmark.is_dead_link ? 'text-red-600' :
+                      bookmark.status_type === 'localhost' ? 'text-gray-600' :
+                      bookmark.status_type === 'duplicate' ? 'text-orange-600' :
+                      'text-green-600'
+                    }`}
+                    disabled={bookmark.is_locked}
+                  >
+                    {bookmark.is_locked ? <Lock className="w-4 h-4" /> :
+                     bookmark.status_type === 'dead' || bookmark.is_dead_link ? <XCircle className="w-4 h-4" /> :
+                     bookmark.status_type === 'localhost' ? <Monitor className="w-4 h-4" /> :
+                     bookmark.status_type === 'duplicate' ? <Copy className="w-4 h-4" /> :
+                     <CheckCircle className="w-4 h-4" />}
+                  </Button>
+                </td>
+                <td>
+                  <a 
+                    href={bookmark.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bookmark-link"
+                  >
+                    {bookmark.title || 'Untitled'}
+                  </a>
+                </td>
+                <td className="url-cell">
+                  {bookmark.url}
+                </td>
+                <td>
+                  <span className="category-tag">
+                    {bookmark.category || 'Uncategorized'}
+                  </span>
+                </td>
+                <td>
+                  <div className="table-actions">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onEditBookmark(bookmark)}
+                      title="Bearbeiten"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onDeleteBookmark(bookmark.id)}
+                      className="delete-btn"
+                      title="Löschen"
+                      disabled={bookmark.is_locked}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onFileSelected, viewMode, onViewModeChange, onBookmarkReorder, onHelpClick, onStatsToggle, onSettingsClick, onDeleteAllClick }) => {
   return (
     <main className="main-content">
@@ -2459,6 +2697,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
                 <SelectItem value="dead">Nur tote</SelectItem>
                 <SelectItem value="localhost">Nur localhost</SelectItem>
                 <SelectItem value="duplicate">Nur Duplikate</SelectItem>
+                <SelectItem value="locked">Nur gesperrt</SelectItem>
                 <SelectItem value="unchecked">Nur ungeprüfte</SelectItem>
               </SelectContent>
             </Select>
@@ -2541,6 +2780,14 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             onToggleStatus={onToggleStatus}
             onBookmarkReorder={onBookmarkReorder}
           />
+        )}
+        
+        {bookmarks && bookmarks.length > 0 && (
+          <div className="content-footer">
+            <p className="bookmark-count">
+              {bookmarks.length} Favoriten angezeigt
+            </p>
+          </div>
         )}
       </div>
     </main>
