@@ -3113,6 +3113,7 @@ function App() {
   // Calculate counts for various statuses
   const deadLinksCount = bookmarks.filter(b => b.status_type === 'dead' || b.is_dead_link).length;
   const duplicateCount = bookmarks.filter(b => b.status_type === 'duplicate').length;
+  const localhostCount = bookmarks.filter(b => b.status_type === 'localhost').length;
   const lockedCount = bookmarks.filter(b => b.is_locked).length;
   
   // Check if duplicates have been marked
