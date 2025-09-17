@@ -3486,18 +3486,6 @@ function App() {
     }
   };
 
-  const handleToggleLock = async (bookmarkId, isLocked) => {
-    try {
-      await favoritesService.updateBookmarkLock(bookmarkId, isLocked);
-      showSuccess(isLocked ? 'Favorit gesperrt' : 'Favorit entsperrt');
-      await loadBookmarks();
-      await loadStatistics();
-    } catch (error) {
-      console.error('Error toggling bookmark lock:', error);
-      showError('Fehler beim Ändern des Sperrtstatus');
-    }
-  };
-
   const handleCategoryChange = (category, subcategory = null) => {
     setActiveCategory(category);
     setActiveSubcategory(subcategory);
