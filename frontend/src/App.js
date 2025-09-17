@@ -2894,6 +2894,27 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               <Table className="w-4 h-4" />
             </button>
           </div>
+          
+          {/* Treffer-Anzahl neben Tabellen Ansicht Button */}
+          {searchQuery && (
+            <div className="search-results-count" style={{
+              marginLeft: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '14px',
+              color: 'var(--text-secondary)',
+              background: 'var(--bg-secondary)',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              border: '1px solid var(--border-primary)'
+            }}>
+              <Search className="w-4 h-4" />
+              <span style={{ color: '#fbbf24', fontWeight: '500' }}>
+                {bookmarks.length} Treffer
+              </span>
+            </div>
+          )}
         </div>
         
         {viewMode === 'table' ? (
