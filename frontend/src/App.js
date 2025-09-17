@@ -2914,22 +2914,28 @@ function App() {
   };
 
   const handleValidateLinks = async () => {
-    // Wenn bereits tote Links gefunden wurden, entferne sie
+    // Wenn bereits tote Links gefunden wurden, frage nach
     if (deadLinksCount > 0) {
-      try {
-        setIsLoading(true);
-        const result = await favoritesService.removeDeadLinks();
-        showSuccess(`${result.removed_count} tote Links erfolgreich entfernt`);
-        await loadBookmarks();
-        await loadStatistics();
-      } catch (error) {
-        console.error('Error removing dead links:', error);
-        showError('Fehler beim Entfernen toter Links');
-      } finally {
-        setIsLoading(false);
+      const confirmed = window.confirm(
+        `Es wurden ${deadLinksCount} tote Links gefunden.\n\nMöchten Sie diese jetzt löschen?`
+      );
+      
+      if (confirmed) {
+        try {
+          setIsLoading(true);
+          const result = await favoritesService.removeDeadLinks();
+          showSuccess(`${result.removed_count} tote Links erfolgreich entfernt`);
+          await loadBookmarks();
+          await loadStatistics();
+        } catch (error) {
+          console.error('Error removing dead links:', error);
+          showError('Fehler beim Entfernen toter Links');
+        } finally {
+          setIsLoading(false);
+        }
       }
     } else {
-      // Sonst führe Validierung durch
+      // Sonst führe Validierung durch (sortiert ein, löscht NICHT)
       try {
         setIsLoading(true);
         const result = await favoritesService.validateLinks();
@@ -2946,32 +2952,37 @@ function App() {
   };
 
   const handleRemoveDuplicates = async () => {
-    // Wenn bereits Duplikate gefunden wurden, entferne sie
+    // Wenn bereits Duplikate gefunden wurden, frage nach
     if (duplicateCount > 0) {
-      try {
-        const result = await favoritesService.removeDuplicates();
-        showSuccess(`${result.removed_count} Duplikate erfolgreich entfernt`);
-        await loadBookmarks();
-        await loadStatistics();
-      } catch (error) {
-        console.error('Error removing duplicates:', error);
-        showError('Fehler beim Entfernen der Duplikate');
+      const confirmed = window.confirm(
+        `Es wurden ${duplicateCount} Duplikate gefunden.\n\nMöchten Sie diese jetzt löschen?`
+      );
+      
+      if (confirmed) {
+        try {
+          const result = await favoritesService.removeDuplicates();
+          showSuccess(`${result.removed_count} Duplikate erfolgreich entfernt`);
+          await loadBookmarks();
+          await loadStatistics();
+        } catch (error) {
+          console.error('Error removing duplicates:', error);
+          showError('Fehler beim Entfernen der Duplikate');
+        }
       }
     } else {
-      // Sonst führe Duplikat-Suche durch (falls Backend das unterstützt)
+      // Sonst führe Duplikat-Suche durch (sortiert ein, löscht NICHT)
       try {
-        // Für jetzt führen wir direkt die Entfernung durch, da das Backend beides macht
         const result = await favoritesService.removeDuplicates();
         if (result.removed_count > 0) {
-          showSuccess(`${result.removed_count} Duplikate erfolgreich entfernt`);
+          showSuccess(`${result.removed_count} Duplikate gefunden und markiert`);
         } else {
           showSuccess('Keine Duplikate gefunden');
         }
         await loadBookmarks();
         await loadStatistics();
       } catch (error) {
-        console.error('Error removing duplicates:', error);
-        showError('Fehler beim Entfernen der Duplikate');
+        console.error('Error finding duplicates:', error);
+        showError('Fehler bei der Duplikat-Suche');
       }
     }
   };
