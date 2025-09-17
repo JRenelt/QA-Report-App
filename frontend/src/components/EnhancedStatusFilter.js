@@ -1,26 +1,17 @@
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Filter } from 'lucide-react';
 
 const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   // Sicherstellen, dass statistics nie null ist
   const safeStats = statistics || {};
   
-  // Status-Icon als schwarz-weiße Lucide-ähnliche Grafik (nochmal doppelt so groß = 64x64)
-  const StatusIcon = () => (
-    <svg width="64" height="64" viewBox="0 0 64 64" className="status-filter-icon" fill="currentColor">
-      {/* Schwarz-weiße Lucide-ähnliche Darstellung - sehr groß */}
-      <circle cx="16" cy="32" r="12" fill="none" stroke="currentColor" strokeWidth="3"/>
-      <path d="M10 32L16 38L22 32" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-      
-      <circle cx="48" cy="32" r="12" fill="none" stroke="currentColor" strokeWidth="3"/>
-      <path d="M42 30L46 34L54 26" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-  
   const statusOptions = [
-    // Status-Titel (OHNE Anzahl) bleibt erhalten
-    { value: 'all', label: 'Status', icon: <StatusIcon />, showCount: false },
-    // Nur die 7 verschiedenen Status-Optionen mit [Anzahl]
+    // Status-Titel mit Funnel-Symbol (OHNE Anzahl)
+    { value: 'all', label: 'Status', icon: <Filter className="w-8 h-8" />, showCount: false },
+    // "Alle" Option als erste Status-Option (MIT Anzahl)
+    { value: 'all-items', label: 'Alle', icon: <Filter className="w-4 h-4" />, count: safeStats.total_bookmarks || 0 },
+    // Die 7 verschiedenen Status-Optionen mit [Anzahl]
     { value: 'active', label: 'Aktiv', icon: '✅', count: safeStats.active_links || 0 }, 
     { value: 'dead', label: 'Tot', icon: '❌', count: safeStats.dead_links || 0 },
     { value: 'localhost', label: 'Localhost', icon: '🏠', count: safeStats.localhost_links || 0 },
