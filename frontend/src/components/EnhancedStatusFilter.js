@@ -18,7 +18,7 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   );
   
   const statusOptions = [
-    { value: 'all', label: 'Status', icon: <StatusIcon />, count: safeStats.total_bookmarks || 0 },
+    // Nur die 7 verschiedenen Status-Optionen (OHNE "Status" Titel)
     { value: 'active', label: 'Aktiv', icon: '✅', count: safeStats.active_links || 0 }, 
     { value: 'dead', label: 'Tot', icon: '❌', count: safeStats.dead_links || 0 },
     { value: 'localhost', label: 'Localhost', icon: '🏠', count: safeStats.localhost_links || 0 },
@@ -31,7 +31,7 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="status-filter-select w-48">
-        <SelectValue placeholder="Status wählen" />
+        <SelectValue placeholder="Status" />
       </SelectTrigger>
       <SelectContent>
         {statusOptions.map(option => (
@@ -40,11 +40,9 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
               <span>{option.icon}</span>
               <span>
                 {option.label}
-                {option.count !== null && option.count >= 0 && (
-                  <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
-                    [{option.count}]
-                  </span>
-                )}
+                <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
+                  [{option.count}]
+                </span>
               </span>
             </span>
           </SelectItem>
