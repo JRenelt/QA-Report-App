@@ -106,8 +106,97 @@ body {
   padding: 20px;
   overflow-y: auto;
   min-width: 0;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 80px - 50px); /* Header + Footer abziehen */
   background: var(--bg-primary);
+}
+
+/* App-Fußzeile */
+.app-footer {
+  flex: 0 0 50px; /* Feste Höhe, kein Grow/Shrink */
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-primary);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-logo {
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.footer-version {
+  background: var(--accent-primary);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.footer-separator {
+  color: var(--text-muted);
+  margin: 0 4px;
+}
+
+.footer-bookmarks,
+.footer-stats {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  transition: all 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+  }
+  
+  .app-footer {
+    flex: 0 0 auto;
+    min-height: 60px;
+  }
+  
+  .main-content {
+    height: calc(100vh - 80px - 60px);
+  }
 }
 
 /* Header - Improved Layout */
