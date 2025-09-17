@@ -213,14 +213,14 @@ class Phase25BackendTester:
                 if total_bookmarks != 100:
                     validation_errors.append(f"total_bookmarks: erwartet 100, erhalten {total_bookmarks}")
                 
-                # dead_links sollte 15 sein
-                if dead_links != 15:
-                    validation_errors.append(f"dead_links: erwartet 15, erhalten {dead_links}")
+                # dead_links sollte mindestens 15 sein (kann mehr sein nach Validierung)
+                if dead_links < 15:
+                    validation_errors.append(f"dead_links: erwartet mindestens 15, erhalten {dead_links}")
                 
                 # Überprüfe dass Summe stimmt
                 counted_total = active_links + dead_links + stats.get('localhost_links', 0) + duplicate_links + stats.get('locked_links', 0) + stats.get('unchecked_links', 0)
-                if abs(counted_total - total_bookmarks) > 5:  # Allow small variance due to status changes during validation
-                    validation_errors.append(f"Status-Summe ({counted_total}) weicht zu stark von total_bookmarks ({total_bookmarks}) ab")
+                if counted_total != total_bookmarks:
+                    validation_errors.append(f"Status-Summe ({counted_total}) stimmt nicht mit total_bookmarks ({total_bookmarks}) überein")
                 
                 if validation_errors:
                     self.log_test(
