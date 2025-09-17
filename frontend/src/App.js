@@ -2969,21 +2969,21 @@ function App() {
       
       if (confirmed) {
         try {
-          const result = await favoritesService.removeDuplicates();
+          const result = await favoritesService.deleteDuplicates();
           showSuccess(`${result.removed_count} Duplikate erfolgreich entfernt`);
           await loadBookmarks();
           await loadStatistics();
         } catch (error) {
-          console.error('Error removing duplicates:', error);
+          console.error('Error deleting duplicates:', error);
           showError('Fehler beim Entfernen der Duplikate');
         }
       }
     } else {
       // Sonst führe Duplikat-Suche durch (sortiert ein, löscht NICHT)
       try {
-        const result = await favoritesService.removeDuplicates();
-        if (result.removed_count > 0) {
-          showSuccess(`${result.removed_count} Duplikate gefunden und markiert`);
+        const result = await favoritesService.findDuplicates();
+        if (result.marked_count > 0) {
+          showSuccess(`${result.marked_count} Duplikate gefunden und markiert`);
         } else {
           showSuccess('Keine Duplikate gefunden');
         }
