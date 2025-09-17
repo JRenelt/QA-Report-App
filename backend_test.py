@@ -382,8 +382,14 @@ class Phase25BackendTester:
             if duplicates_response.status_code == 200:
                 duplicates_data = duplicates_response.json()
                 
-                duplicate_groups = duplicates_data.get('duplicate_groups', [])
+                duplicate_groups = duplicates_data.get('duplicate_groups', 0)
                 marked_count = duplicates_data.get('marked_count', 0)
+                
+                # Handle both integer count and list format for duplicate_groups
+                if isinstance(duplicate_groups, int):
+                    group_count = duplicate_groups
+                else:
+                    group_count = len(duplicate_groups)
                 
                 # Sollte Duplikate finden (20 Duplikate erwartet)
                 if marked_count < 15:  # Mindestens 15 Duplikate erwartet
@@ -397,7 +403,7 @@ class Phase25BackendTester:
                 self.log_test(
                     "Duplikat-Erkennung", 
                     True, 
-                    f"✅ Duplikat-Erkennung erfolgreich: {len(duplicate_groups)} Gruppen, {marked_count} Duplikate markiert",
+                    f"✅ Duplikat-Erkennung erfolgreich: {group_count} Gruppen, {marked_count} Duplikate markiert",
                     duplicates_data
                 )
                 
