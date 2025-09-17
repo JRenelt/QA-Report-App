@@ -87,7 +87,7 @@ body {
 .app-body {
   display: flex;
   flex: 1;
-  min-height: calc(100vh - 80px); /* Header-Höhe abziehen */
+  min-height: calc(100vh - 80px - 50px); /* Header + Footer abziehen */
   margin-top: 80px; /* Header-Offset */
 }
 
@@ -97,7 +97,7 @@ body {
   background: var(--bg-secondary);
   border-right: 1px solid var(--border-primary);
   overflow-y: auto;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 80px - 50px); /* Header + Footer */
 }
 
 /* Main Content neben der Sidebar */
@@ -110,9 +110,13 @@ body {
   background: var(--bg-primary);
 }
 
-/* App-Fußzeile */
+/* App-Fußzeile - Volle Breite unter allem */
 .app-footer {
-  flex: 0 0 50px; /* Feste Höhe, kein Grow/Shrink */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-primary);
   padding: 0 20px;
@@ -120,6 +124,7 @@ body {
   align-items: center;
   font-size: 12px;
   color: var(--text-secondary);
+  z-index: 100;
 }
 
 .footer-content {
@@ -138,18 +143,10 @@ body {
   gap: 8px;
 }
 
-.footer-logo {
-  font-weight: bold;
-  color: var(--text-primary);
-}
-
-.footer-version {
-  background: var(--accent-primary);
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: bold;
+.footer-copyright {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: normal;
 }
 
 .footer-separator {
@@ -157,7 +154,6 @@ body {
   margin: 0 4px;
 }
 
-.footer-bookmarks,
 .footer-stats {
   color: var(--text-secondary);
   font-size: 11px;
@@ -190,10 +186,16 @@ body {
   }
   
   .app-footer {
-    flex: 0 0 auto;
+    height: auto;
     min-height: 60px;
+    position: relative;
   }
   
+  .app-body {
+    min-height: calc(100vh - 80px - 60px);
+  }
+  
+  .category-sidebar,
   .main-content {
     height: calc(100vh - 80px - 60px);
   }
