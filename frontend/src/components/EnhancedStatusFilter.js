@@ -27,7 +27,7 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="status-filter-select" style={{ width: 'auto', minWidth: '120px' }}>
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4" />
+          {currentIcon}
           <SelectValue placeholder="Filter" />
         </div>
       </SelectTrigger>
