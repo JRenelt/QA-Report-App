@@ -3476,13 +3476,25 @@ function App() {
   const handleCreateTestData = async () => {
     try {
       const result = await favoritesService.createTestData();
-      showSuccess(`Testdaten erfolgreich erstellt: ${result.created_count || 50} Favoriten hinzugefügt`);
+      showSuccess(`Testdaten erfolgreich erstellt: ${result.created_count || 100} Favoriten hinzugefügt`);
       await loadBookmarks();
       await refreshCategories();
       await loadStatistics();
     } catch (error) {
       console.error('Error creating test data:', error);
       showError('Fehler beim Erstellen der Testdaten');
+    }
+  };
+
+  const handleToggleLock = async (bookmarkId, isLocked) => {
+    try {
+      await favoritesService.updateBookmarkLock(bookmarkId, isLocked);
+      showSuccess(isLocked ? 'Favorit gesperrt' : 'Favorit entsperrt');
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error toggling bookmark lock:', error);
+      showError('Fehler beim Ändern des Sperrtstatus');
     }
   };
 
