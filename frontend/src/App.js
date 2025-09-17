@@ -2991,6 +2991,8 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             onToggleStatus={onToggleStatus}
             onBookmarkReorder={onBookmarkReorder}
             onToggleLock={onToggleLock}
+            searchQuery={searchQuery}
+            highlightSearchTerm={highlightSearchTerm}
           />
         )}
         
