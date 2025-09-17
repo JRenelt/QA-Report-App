@@ -2575,7 +2575,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   ) : (
                     <Database className="w-4 h-4 mr-2" />
                   )}
-                  50 Testdaten erstellen
+                  100 Testdaten erstellen
                 </Button>
                 
                 <div className="test-data-info">
