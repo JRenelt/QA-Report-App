@@ -1961,7 +1961,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   );
 };
 
-const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onBookmarkReorder, onToggleLock }) => {
+const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onBookmarkReorder, onToggleLock, searchQuery, highlightSearchTerm }) => {
   const [draggedBookmark, setDraggedBookmark] = useState(null);
   const [dragOverBookmark, setDragOverBookmark] = useState(null);
 
