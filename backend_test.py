@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 """
-FavOrg Backend Testing - German Review Request
-Teste ausführlich TOTE Links und Duplikate Funktionen der FavOrg-App
+FavOrg Backend Test - German Review Request
+Erstelle 100 umfangreiche Testdatensätze für FavOrg
 
-PROBLEME zu untersuchen:
-1. TOTE Links Counter zeigt 15 an obwohl keine toten Links vorhanden sind
-2. TOTE Links Funktion soll manuell zugeordnete tote Links korrekt löschen
-3. Duplikate Funktion vollständig testen
+ANFORDERUNG: 100 Datensätze mit ALLEN Kategorien vermengen
 """
 
 import requests
