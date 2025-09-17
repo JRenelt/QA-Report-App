@@ -2654,6 +2654,92 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
   );
 };
 
+// Impressum Dialog Component
+const ImpressumDialog = ({ isOpen, onClose }) => {
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="impressum-dialog" style={{
+        backgroundColor: 'var(--bg-primary)',
+        color: 'var(--text-primary)',
+        border: '1px solid var(--border-primary)',
+        maxWidth: '600px'
+      }}>
+        <DialogHeader>
+          <DialogTitle className="dialog-title" style={{ 
+            color: 'var(--text-primary)',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '16px'
+          }}>
+            <FileText className="w-5 h-5 mr-2" />
+            Impressum
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="impressum-content" style={{
+          backgroundColor: 'var(--bg-primary)',
+          color: 'var(--text-primary)',
+          lineHeight: '1.6'
+        }}>
+          <div className="impressum-section" style={{ marginBottom: '20px' }}>
+            <h3 style={{ color: 'var(--text-primary)', fontWeight: 'bold', marginBottom: '8px' }}>
+              Angaben gemäß § 5 TMG
+            </h3>
+            <p style={{ margin: '4px 0' }}>
+              <strong>Jörg Renelt</strong><br/>
+              id2.de<br/>
+              Hamburg<br/>
+              Deutschland
+            </p>
+          </div>
+          
+          <div className="impressum-section" style={{ marginBottom: '20px' }}>
+            <h3 style={{ color: 'var(--text-primary)', fontWeight: 'bold', marginBottom: '8px' }}>
+              Software-Information
+            </h3>
+            <p style={{ margin: '4px 0' }}>
+              <strong>FavOrg</strong> - Bookmark Manager<br/>
+              Version: V2.3.0<br/>
+              Copyright © 2025 Jörg Renelt
+            </p>
+          </div>
+          
+          <div className="impressum-section" style={{ marginBottom: '20px' }}>
+            <h3 style={{ color: 'var(--text-primary)', fontWeight: 'bold', marginBottom: '8px' }}>
+              Haftungsausschluss
+            </h3>
+            <p style={{ margin: '4px 0', fontSize: '14px' }}>
+              Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. 
+              Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte 
+              können wir jedoch keine Gewähr übernehmen.
+            </p>
+          </div>
+          
+          <div className="dialog-actions" style={{ 
+            display: 'flex', 
+            justifyContent: 'flex-end',
+            marginTop: '24px'
+          }}>
+            <Button 
+              onClick={onClose} 
+              className="impressum-close-btn" 
+              style={{
+                backgroundColor: 'var(--bg-secondary)',
+                color: 'var(--text-primary)',
+                borderColor: 'var(--border-primary)'
+              }}
+            >
+              Schließen
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 // Hauptkomponente
 function App() {
   // Core State Management
