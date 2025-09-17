@@ -787,9 +787,9 @@ class BookmarkManager:
         }
 
     async def create_comprehensive_test_data(self):
-        """50 umfassende Testdaten mit Duplikaten und toten Links erstellen"""
+        """100 umfassende Testdaten mit Duplikaten und toten Links erstellen"""
         test_bookmarks = [
-            # Normale funktionale Links (25 Stück)
+            # Normale funktionale Links (65 Stück)
             {"title": "GitHub", "url": "https://github.com", "category": "Development", "subcategory": "Code Hosting"},
             {"title": "GitLab", "url": "https://gitlab.com", "category": "Development", "subcategory": "Code Hosting"},
             {"title": "Stack Overflow", "url": "https://stackoverflow.com", "category": "Development", "subcategory": "Q&A"},
@@ -798,29 +798,76 @@ class BookmarkManager:
             {"title": "Docker Hub", "url": "https://hub.docker.com", "category": "Development", "subcategory": "Container"},
             {"title": "Visual Studio Code", "url": "https://code.visualstudio.com", "category": "Development"},
             {"title": "React Documentation", "url": "https://reactjs.org", "category": "Development", "subcategory": "Documentation"},
+            {"title": "Angular", "url": "https://angular.io", "category": "Development", "subcategory": "Frameworks"},
+            {"title": "Vue.js", "url": "https://vuejs.org", "category": "Development", "subcategory": "Frameworks"},
             {"title": "Node.js", "url": "https://nodejs.org", "category": "Development"},
             {"title": "Python.org", "url": "https://python.org", "category": "Development"},
+            {"title": "TypeScript", "url": "https://www.typescriptlang.org", "category": "Development", "subcategory": "Languages"},
+            {"title": "Rust", "url": "https://www.rust-lang.org", "category": "Development", "subcategory": "Languages"},
+            {"title": "Go", "url": "https://golang.org", "category": "Development", "subcategory": "Languages"},
+            {"title": "MongoDB", "url": "https://www.mongodb.com", "category": "Development", "subcategory": "Databases"},
+            {"title": "PostgreSQL", "url": "https://www.postgresql.org", "category": "Development", "subcategory": "Databases"},
+            {"title": "Redis", "url": "https://redis.io", "category": "Development", "subcategory": "Databases"},
+            {"title": "AWS", "url": "https://aws.amazon.com", "category": "Development", "subcategory": "Cloud"},
+            {"title": "Google Cloud", "url": "https://cloud.google.com", "category": "Development", "subcategory": "Cloud"},
             
             {"title": "BBC News", "url": "https://www.bbc.com/news", "category": "News", "subcategory": "World News"},
             {"title": "TechCrunch", "url": "https://techcrunch.com", "category": "News", "subcategory": "Tech News"},
             {"title": "The Verge", "url": "https://www.theverge.com", "category": "News", "subcategory": "Tech News"},
             {"title": "Ars Technica", "url": "https://arstechnica.com", "category": "News", "subcategory": "Tech News"},
             {"title": "Hacker News", "url": "https://news.ycombinator.com", "category": "News", "subcategory": "Tech News"},
+            {"title": "Reuters", "url": "https://www.reuters.com", "category": "News", "subcategory": "World News"},
+            {"title": "CNN", "url": "https://www.cnn.com", "category": "News", "subcategory": "World News"},
+            {"title": "The Guardian", "url": "https://www.theguardian.com", "category": "News", "subcategory": "World News"},
+            {"title": "Wired", "url": "https://www.wired.com", "category": "News", "subcategory": "Tech News"},
             
             {"title": "LinkedIn", "url": "https://www.linkedin.com", "category": "Social Media", "subcategory": "Professional"},
             {"title": "Twitter", "url": "https://twitter.com", "category": "Social Media"},
             {"title": "Mastodon", "url": "https://mastodon.social", "category": "Social Media", "subcategory": "Decentralized"},
+            {"title": "Reddit", "url": "https://www.reddit.com", "category": "Social Media", "subcategory": "Discussion"},
+            {"title": "Discord", "url": "https://discord.com", "category": "Social Media", "subcategory": "Communication"},
             
             {"title": "Google Drive", "url": "https://drive.google.com", "category": "Tools", "subcategory": "Cloud Storage"},
             {"title": "Dropbox", "url": "https://www.dropbox.com", "category": "Tools", "subcategory": "Cloud Storage"},
             {"title": "Notion", "url": "https://www.notion.so", "category": "Tools", "subcategory": "Productivity"},
             {"title": "Figma", "url": "https://www.figma.com", "category": "Tools", "subcategory": "Design"},
             {"title": "Slack", "url": "https://slack.com", "category": "Tools", "subcategory": "Communication"},
+            {"title": "Trello", "url": "https://trello.com", "category": "Tools", "subcategory": "Project Management"},
+            {"title": "Asana", "url": "https://asana.com", "category": "Tools", "subcategory": "Project Management"},
+            {"title": "Zoom", "url": "https://zoom.us", "category": "Tools", "subcategory": "Communication"},
+            {"title": "Microsoft Teams", "url": "https://teams.microsoft.com", "category": "Tools", "subcategory": "Communication"},
             
             {"title": "YouTube", "url": "https://www.youtube.com", "category": "Entertainment", "subcategory": "Video"},
             {"title": "Spotify", "url": "https://www.spotify.com", "category": "Entertainment", "subcategory": "Music"},
+            {"title": "Netflix", "url": "https://www.netflix.com", "category": "Entertainment", "subcategory": "Video"},
+            {"title": "Twitch", "url": "https://www.twitch.tv", "category": "Entertainment", "subcategory": "Streaming"},
+            {"title": "Apple Music", "url": "https://music.apple.com", "category": "Entertainment", "subcategory": "Music"},
             
-            # Duplikate (10 Stück - gleiche URLs mit leicht anderen Titeln)
+            {"title": "Wikipedia", "url": "https://en.wikipedia.org", "category": "Reference", "subcategory": "Encyclopedia"},
+            {"title": "MDN", "url": "https://developer.mozilla.org", "category": "Reference", "subcategory": "Technical"},
+            {"title": "Can I Use", "url": "https://caniuse.com", "category": "Reference", "subcategory": "Technical"},
+            {"title": "W3Schools", "url": "https://www.w3schools.com", "category": "Reference", "subcategory": "Tutorials"},
+            
+            {"title": "Amazon", "url": "https://www.amazon.com", "category": "Shopping", "subcategory": "General"},
+            {"title": "eBay", "url": "https://www.ebay.com", "category": "Shopping", "subcategory": "Auction"},
+            {"title": "AliExpress", "url": "https://www.aliexpress.com", "category": "Shopping", "subcategory": "International"},
+            
+            {"title": "Coursera", "url": "https://www.coursera.org", "category": "Education", "subcategory": "Online Learning"},
+            {"title": "edX", "url": "https://www.edx.org", "category": "Education", "subcategory": "Online Learning"},
+            {"title": "Khan Academy", "url": "https://www.khanacademy.org", "category": "Education", "subcategory": "Free Learning"},
+            {"title": "MIT OpenCourseWare", "url": "https://ocw.mit.edu", "category": "Education", "subcategory": "University"},
+            
+            {"title": "WebMD", "url": "https://www.webmd.com", "category": "Health", "subcategory": "Medical Info"},
+            {"title": "Mayo Clinic", "url": "https://www.mayoclinic.org", "category": "Health", "subcategory": "Medical Info"},
+            
+            {"title": "Yahoo Finance", "url": "https://finance.yahoo.com", "category": "Finance", "subcategory": "Markets"},
+            {"title": "Coinbase", "url": "https://www.coinbase.com", "category": "Finance", "subcategory": "Cryptocurrency"},
+            
+            {"title": "Booking.com", "url": "https://www.booking.com", "category": "Travel", "subcategory": "Hotels"},
+            {"title": "Airbnb", "url": "https://www.airbnb.com", "category": "Travel", "subcategory": "Accommodation"},
+            {"title": "Google Maps", "url": "https://maps.google.com", "category": "Travel", "subcategory": "Navigation"},
+            
+            # Duplikate (20 Stück - gleiche URLs mit leicht anderen Titeln)
             {"title": "GitHub - Code Repository", "url": "https://github.com", "category": "Development", "subcategory": "Code Hosting"},
             {"title": "GitLab Repository", "url": "https://gitlab.com", "category": "Development", "subcategory": "Code Hosting"},
             {"title": "StackOverflow Q&A", "url": "https://stackoverflow.com", "category": "Development", "subcategory": "Q&A"},
@@ -831,23 +878,33 @@ class BookmarkManager:
             {"title": "LinkedIn Professional Network", "url": "https://www.linkedin.com", "category": "Social Media", "subcategory": "Professional"},
             {"title": "YouTube Video Platform", "url": "https://www.youtube.com", "category": "Entertainment", "subcategory": "Video"},
             {"title": "Spotify Music Streaming", "url": "https://www.spotify.com", "category": "Entertainment", "subcategory": "Music"},
+            {"title": "Google Drive Storage", "url": "https://drive.google.com", "category": "Tools", "subcategory": "Cloud Storage"},
+            {"title": "Notion Workspace", "url": "https://www.notion.so", "category": "Tools", "subcategory": "Productivity"},
+            {"title": "Netflix Streaming", "url": "https://www.netflix.com", "category": "Entertainment", "subcategory": "Video"},
+            {"title": "Wikipedia Encyclopedia", "url": "https://en.wikipedia.org", "category": "Reference", "subcategory": "Encyclopedia"},
+            {"title": "Amazon Shopping", "url": "https://www.amazon.com", "category": "Shopping", "subcategory": "General"},
+            {"title": "Coursera Online Courses", "url": "https://www.coursera.org", "category": "Education", "subcategory": "Online Learning"},
+            {"title": "WebMD Health", "url": "https://www.webmd.com", "category": "Health", "subcategory": "Medical Info"},
+            {"title": "Yahoo Finance Markets", "url": "https://finance.yahoo.com", "category": "Finance", "subcategory": "Markets"},
+            {"title": "Booking Hotels", "url": "https://www.booking.com", "category": "Travel", "subcategory": "Hotels"},
+            {"title": "React Framework", "url": "https://reactjs.org", "category": "Development", "subcategory": "Documentation"}, 
             
             # Tote Links (15 Stück - nicht erreichbare URLs)
-            {"title": "Dead Link Example 1", "url": "https://nonexistentdomain12345.com", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 2", "url": "https://brokenlink98765.org", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 3", "url": "https://deadurl54321.net", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 4", "url": "https://invalidsite11111.com", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 5", "url": "https://notfound22222.org", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 6", "url": "https://broken33333.net", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 7", "url": "https://dead44444.com", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 8", "url": "https://invalid55555.org", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 9", "url": "https://missing66666.net", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 10", "url": "https://gone77777.com", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 11", "url": "https://vanished88888.org", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 12", "url": "https://removed99999.net", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 13", "url": "https://nonexistent00000.com", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 14", "url": "https://brokensite12321.org", "category": "Testing", "is_dead": True},
-            {"title": "Dead Link Example 15", "url": "https://deadpage54345.net", "category": "Testing", "is_dead": True}
+            {"title": "Dead Link Example 1", "url": "https://nonexistentdomain12345.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 2", "url": "https://brokenlink98765.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 3", "url": "https://deadurl54321.net", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 4", "url": "https://invalidsite11111.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 5", "url": "https://notfound22222.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 6", "url": "https://broken33333.net", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 7", "url": "https://dead44444.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 8", "url": "https://invalid55555.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 9", "url": "https://missing66666.net", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 10", "url": "https://gone77777.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 11", "url": "https://vanished88888.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 12", "url": "https://removed99999.net", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 13", "url": "https://nonexistent00000.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 14", "url": "https://brokensite12321.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
+            {"title": "Dead Link Example 15", "url": "https://deadpage54345.net", "category": "Testing", "is_dead": True, "status_type": "dead"}
         ]
         
         created_count = 0
