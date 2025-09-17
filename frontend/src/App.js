@@ -3200,6 +3200,11 @@ function App() {
         onExport={handleExport}
       />
 
+      <ImpressumDialog
+        isOpen={showImpressum}
+        onClose={() => setShowImpressum(false)}
+      />
+
       {/* Hidden file input */}
       <input
         type="file"
