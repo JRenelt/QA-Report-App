@@ -19,6 +19,10 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
     { value: 'unchecked', label: 'Ungeprüft', icon: '❓', count: safeStats.unchecked_links || 0 }
   ];
 
+  // Finde das aktuelle Icon basierend auf dem ausgewählten Wert
+  const currentOption = statusOptions.find(option => option.value === value) || statusOptions[0];
+  const currentIcon = currentOption.icon;
+
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="status-filter-select" style={{ width: 'auto', minWidth: '120px' }}>
