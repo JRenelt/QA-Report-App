@@ -2437,7 +2437,7 @@ const BookmarkCard = ({ bookmark, onDelete, onEdit, onToggleStatus }) => {
     
     const currentStatus = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
     const newStatus = currentStatus === 'dead' ? 'localhost' : 'dead';
-    onToggleStatus(bookmark.id, currentStatus);
+    onToggleStatus(bookmark.id, newStatus);
   };
 
   return (
