@@ -1,14 +1,14 @@
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Filter, FilterX } from 'lucide-react';
+import { Filter } from 'lucide-react';
 
 const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   // Sicherstellen, dass statistics nie null ist
   const safeStats = statistics || {};
   
   const statusOptions = [
-    // "Alle" Option als erste Option (MIT Anzahl) - verwendet funnel-x für Filter-Auflösung
-    { value: 'all', label: 'Alle', icon: <FilterX className="w-4 h-4" />, count: safeStats.total_bookmarks || 0 },
+    // "Alle" Option als erste Option (MIT Anzahl) - verwendet normales Filter-Symbol
+    { value: 'all', label: 'Alle', icon: <Filter className="w-4 h-4" />, count: safeStats.total_bookmarks || 0 },
     // Die 7 verschiedenen Status-Optionen mit [Anzahl]
     { value: 'active', label: 'Aktiv', icon: '✅', count: safeStats.active_links || 0 }, 
     { value: 'dead', label: 'Tot', icon: '❌', count: safeStats.dead_links || 0 },
