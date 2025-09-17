@@ -312,6 +312,15 @@ class FavoritesService {
     }
   }
 
+  async deleteDuplicates() {
+    try {
+      const response = await axios.delete(`${this.baseURL}/api/bookmarks/duplicates`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to delete duplicates');
+    }
+  }
+
   async deleteAllBookmarks() {
     try {
       const response = await axios.delete(`${this.baseURL}/api/bookmarks/all`);
