@@ -2086,7 +2086,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onToggleLock && onToggleLock(bookmark.id, !bookmark.is_locked)}
+                  onClick={() => onToggleLock && onToggleLock(bookmark.id, bookmark.is_locked)}
                   className="lock-btn"
                   title={bookmark.is_locked ? "Entsperren" : "Sperren"}
                   style={{
