@@ -3150,6 +3150,30 @@ function App() {
     loadBookmarks();
   }, [activeCategory, activeSubcategory, statusFilter]);
 
+  // Hilfsfunktion für Suchbegriff-Hervorhebung
+  const highlightSearchTerm = (text, searchTerm) => {
+    if (!searchTerm || !text) return text;
+    
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) =>
+      regex.test(part) ? (
+        <span key={index} style={{ 
+          backgroundColor: '#fbbf24', 
+          color: '#000', 
+          padding: '1px 2px', 
+          borderRadius: '2px',
+          fontWeight: '500'
+        }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
+
   const loadBookmarks = async () => {
     try {
       setIsLoading(true);
