@@ -3538,7 +3538,12 @@ function App() {
       <footer className="app-footer">
         <div className="footer-content">
           <div className="footer-left">
-            <span className="footer-copyright">
+            <span 
+              className="footer-copyright copyright-game-trigger"
+              onClick={() => setShowEasterEgg(true)}
+              style={{ cursor: 'pointer' }}
+              title="Klicken für eine Überraschung..."
+            >
               &copy; Jörg Renelt id2.de Hamburg 2025 Version V2.3.0
             </span>
           </div>
