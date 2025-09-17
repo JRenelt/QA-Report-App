@@ -1,16 +1,14 @@
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Filter } from 'lucide-react';
+import { FilterX } from 'lucide-react';
 
 const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   // Sicherstellen, dass statistics nie null ist
   const safeStats = statistics || {};
   
   const statusOptions = [
-    // Status-Titel mit Funnel-Symbol (OHNE Anzahl)
-    { value: 'all', label: 'Status', icon: <Filter className="w-8 h-8" />, showCount: false },
-    // "Alle" Option als erste Status-Option (MIT Anzahl)
-    { value: 'all-items', label: 'Alle', icon: <Filter className="w-4 h-4" />, count: safeStats.total_bookmarks || 0 },
+    // "Alle" Option als erste Option (MIT Anzahl) - verwendet funnel-x für Filter-Auflösung
+    { value: 'all', label: 'Alle', icon: <FilterX className="w-4 h-4" />, count: safeStats.total_bookmarks || 0 },
     // Die 7 verschiedenen Status-Optionen mit [Anzahl]
     { value: 'active', label: 'Aktiv', icon: '✅', count: safeStats.active_links || 0 }, 
     { value: 'dead', label: 'Tot', icon: '❌', count: safeStats.dead_links || 0 },
@@ -23,8 +21,11 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
 
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="status-filter-select w-48">
-        <SelectValue placeholder="Status" />
+      <SelectTrigger className="status-filter-select" style={{ width: 'auto', minWidth: '120px' }}>
+        <div className="flex items-center gap-2">
+          <FilterX className="w-4 h-4" />
+          <SelectValue placeholder="Filter" />
+        </div>
       </SelectTrigger>
       <SelectContent>
         {statusOptions.map(option => (
@@ -33,11 +34,9 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
               <span>{option.icon}</span>
               <span>
                 {option.label}
-                {option.showCount === false ? '' : (
-                  <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
-                    [{option.count}]
-                  </span>
-                )}
+                <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
+                  [{option.count}]
+                </span>
               </span>
             </span>
           </SelectItem>
