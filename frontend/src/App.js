@@ -2986,6 +2986,8 @@ function App() {
       showError('Fehler beim Ändern des Sperr-Status');
     }
   };
+
+  const handleRemoveLocalhost = async () => {
     // Wenn bereits Localhost-Links gefunden wurden, frage nach
     if (localhostCount > 0) {
       const confirmed = window.confirm(
