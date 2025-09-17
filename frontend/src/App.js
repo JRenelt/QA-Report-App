@@ -2035,23 +2035,6 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
 
                 <div className="setting-item">
                   <div className="setting-info">
-                    <Label className="setting-label">Meldungen Delay</Label>
-                    <span className="setting-description">Meldungen mit X-Button zeigen statt automatisch ausblenden</span>
-                  </div>
-                  <input 
-                    type="checkbox" 
-                    checked={appSettings.melungenDelay}
-                    onChange={(e) => {
-                      const updated = {...appSettings, melungenDelay: e.target.checked};
-                      onSettingsChange(updated);
-                      localStorage.setItem('favorg-app-settings', JSON.stringify(updated));
-                    }}
-                    className="setting-checkbox"
-                  />
-                </div>
-
-                <div className="setting-item">
-                  <div className="setting-info">
                     <Label className="setting-label">Favicons anzeigen</Label>
                     <span className="setting-description">Website-Icons bei Lesezeichen anzeigen</span>
                   </div>
