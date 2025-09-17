@@ -1271,11 +1271,6 @@ body {
   white-space: nowrap;
 }
 
-
-  width: calc(100% - var(--sidebar-width, 280px));
-  transition: width 0.2s ease;
-}
-
 .main-header {
   display: none; /* Verstecken da nur noch das versteckte file input enthält */
 }
