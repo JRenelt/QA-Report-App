@@ -3076,6 +3076,7 @@ function App() {
   const [showCategoryManageDialog, setShowCategoryManageDialog] = useState(false);
   const [showExportDialog, setShowExportDialog] = useState(false);
   const [showImpressum, setShowImpressum] = useState(false);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState(null);
   const [selectedBookmarks, setSelectedBookmarks] = useState(new Set());
 
