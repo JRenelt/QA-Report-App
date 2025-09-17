@@ -2844,7 +2844,7 @@ const BookmarkCard = ({ bookmark, onDelete, onEdit, onToggleStatus, onToggleLock
 
 
 
-const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onFileSelected, viewMode, onViewModeChange, onBookmarkReorder, onHelpClick, onStatsToggle, onSettingsClick, onDeleteAllClick, statistics }) => {
+const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onToggleLock, onFileSelected, viewMode, onViewModeChange, onBookmarkReorder, onHelpClick, onStatsToggle, onSettingsClick, onDeleteAllClick, statistics }) => {
   return (
     <main className="main-content">
       <div className="main-header">
