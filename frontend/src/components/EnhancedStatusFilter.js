@@ -5,15 +5,15 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
   // Sicherstellen, dass statistics nie null ist
   const safeStats = statistics || {};
   
-  // Status-Icon als schwarz-weiße Lucide-ähnliche Grafik (doppelt so groß)
+  // Status-Icon als schwarz-weiße Lucide-ähnliche Grafik (nochmal doppelt so groß = 64x64)
   const StatusIcon = () => (
-    <svg width="32" height="32" viewBox="0 0 32 32" className="status-filter-icon" fill="currentColor">
-      {/* Schwarz-weiße Lucide-ähnliche Darstellung - größer */}
-      <circle cx="8" cy="16" r="6" fill="none" stroke="currentColor" strokeWidth="2"/>
-      <path d="M5 16L8 19L11 16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width="64" height="64" viewBox="0 0 64 64" className="status-filter-icon" fill="currentColor">
+      {/* Schwarz-weiße Lucide-ähnliche Darstellung - sehr groß */}
+      <circle cx="16" cy="32" r="12" fill="none" stroke="currentColor" strokeWidth="3"/>
+      <path d="M10 32L16 38L22 32" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
       
-      <circle cx="24" cy="16" r="6" fill="none" stroke="currentColor" strokeWidth="2"/>
-      <path d="M21 15L23 17L27 13" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="48" cy="32" r="12" fill="none" stroke="currentColor" strokeWidth="3"/>
+      <path d="M42 30L46 34L54 26" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
   
