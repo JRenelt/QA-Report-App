@@ -206,6 +206,9 @@ class Phase25BackendTester:
                 dead_links = stats.get('dead_links', 0)
                 active_links = stats.get('active_links', 0)
                 duplicate_links = stats.get('duplicate_links', 0)
+                localhost_links = stats.get('localhost_links', 0)
+                locked_links = stats.get('locked_links', 0)
+                unchecked_links = stats.get('unchecked_links', 0)
                 
                 validation_errors = []
                 
@@ -218,7 +221,12 @@ class Phase25BackendTester:
                     validation_errors.append(f"dead_links: erwartet mindestens 15, erhalten {dead_links}")
                 
                 # Überprüfe dass Summe stimmt
-                counted_total = active_links + dead_links + stats.get('localhost_links', 0) + duplicate_links + stats.get('locked_links', 0) + stats.get('unchecked_links', 0)
+                counted_total = active_links + dead_links + localhost_links + duplicate_links + locked_links + unchecked_links
+                
+                # Debug output
+                print(f"DEBUG: active={active_links}, dead={dead_links}, localhost={localhost_links}, duplicate={duplicate_links}, locked={locked_links}, unchecked={unchecked_links}")
+                print(f"DEBUG: counted_total={counted_total}, total_bookmarks={total_bookmarks}")
+                
                 if counted_total != total_bookmarks:
                     validation_errors.append(f"Status-Summe ({counted_total}) stimmt nicht mit total_bookmarks ({total_bookmarks}) überein")
                 
