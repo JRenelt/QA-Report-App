@@ -2914,41 +2914,65 @@ function App() {
   };
 
   const handleValidateLinks = async () => {
-    try {
-      setIsLoading(true);
-      const result = await favoritesService.validateLinks();
-      showSuccess(`Validierung abgeschlossen: ${result.dead_links_found} tote Links gefunden von ${result.total_checked} geprüften Links`);
-      await loadBookmarks();
-      await loadStatistics();
-    } catch (error) {
-      console.error('Error validating links:', error);
-      showError('Fehler bei der Link-Validierung');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleRemoveDeadLinks = async () => {
-    try {
-      const result = await favoritesService.removeDeadLinks();
-      showSuccess(`${result.removed_count} tote Links erfolgreich entfernt`);
-      await loadBookmarks();
-      await loadStatistics();
-    } catch (error) {
-      console.error('Error removing dead links:', error);
-      showError('Fehler beim Entfernen toter Links');
+    // Wenn bereits tote Links gefunden wurden, entferne sie
+    if (deadLinksCount > 0) {
+      try {
+        setIsLoading(true);
+        const result = await favoritesService.removeDeadLinks();
+        showSuccess(`${result.removed_count} tote Links erfolgreich entfernt`);
+        await loadBookmarks();
+        await loadStatistics();
+      } catch (error) {
+        console.error('Error removing dead links:', error);
+        showError('Fehler beim Entfernen toter Links');
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      // Sonst führe Validierung durch
+      try {
+        setIsLoading(true);
+        const result = await favoritesService.validateLinks();
+        showSuccess(`Validierung abgeschlossen: ${result.dead_links_found} tote Links gefunden von ${result.total_checked} geprüften Links`);
+        await loadBookmarks();
+        await loadStatistics();
+      } catch (error) {
+        console.error('Error validating links:', error);
+        showError('Fehler bei der Link-Validierung');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
   const handleRemoveDuplicates = async () => {
-    try {
-      const result = await favoritesService.removeDuplicates();
-      showSuccess(`${result.removed_count} Duplikate erfolgreich entfernt`);
-      await loadBookmarks();
-      await loadStatistics();
-    } catch (error) {
-      console.error('Error removing duplicates:', error);
-      showError('Fehler beim Entfernen der Duplikate');
+    // Wenn bereits Duplikate gefunden wurden, entferne sie
+    if (duplicateCount > 0) {
+      try {
+        const result = await favoritesService.removeDuplicates();
+        showSuccess(`${result.removed_count} Duplikate erfolgreich entfernt`);
+        await loadBookmarks();
+        await loadStatistics();
+      } catch (error) {
+        console.error('Error removing duplicates:', error);
+        showError('Fehler beim Entfernen der Duplikate');
+      }
+    } else {
+      // Sonst führe Duplikat-Suche durch (falls Backend das unterstützt)
+      try {
+        // Für jetzt führen wir direkt die Entfernung durch, da das Backend beides macht
+        const result = await favoritesService.removeDuplicates();
+        if (result.removed_count > 0) {
+          showSuccess(`${result.removed_count} Duplikate erfolgreich entfernt`);
+        } else {
+          showSuccess('Keine Duplikate gefunden');
+        }
+        await loadBookmarks();
+        await loadStatistics();
+      } catch (error) {
+        console.error('Error removing duplicates:', error);
+        showError('Fehler beim Entfernen der Duplikate');
+      }
     }
   };
 
