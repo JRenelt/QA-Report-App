@@ -2582,7 +2582,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   <div className="info-item-modern">
                     <Database className="w-4 h-4 text-yellow-500" />
                     <div>
-                      <strong>Testdaten:</strong> 50 Favoriten mit verschiedenen Kategorien, 10 Duplikate und 15 tote Links für umfassende Tests
+                      <strong>Testdaten:</strong> 100 Favoriten mit verschiedenen Kategorien, 20 Duplikate und 15 tote Links für umfassende Tests
                     </div>
                   </div>
                 </div>
