@@ -2678,6 +2678,7 @@ function App() {
   const [showStatistics, setShowStatistics] = useState(false);
   const [showCategoryManageDialog, setShowCategoryManageDialog] = useState(false);
   const [showExportDialog, setShowExportDialog] = useState(false);
+  const [showImpressum, setShowImpressum] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState(null);
   const [selectedBookmarks, setSelectedBookmarks] = useState(new Set());
 
