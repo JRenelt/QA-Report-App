@@ -3056,21 +3056,12 @@ function App() {
           
           <div className="footer-right">
             <button 
-              onClick={() => setShowHelp(true)}
+              onClick={() => setShowImpressum(true)}
               className="footer-link"
-              title="Hilfe"
+              title="Impressum"
             >
-              <HelpCircle className="w-4 h-4 mr-1" />
-              Hilfe
-            </button>
-            <span className="footer-separator">•</span>
-            <button 
-              onClick={() => setShowSettings(true)}
-              className="footer-link"
-              title="Einstellungen"
-            >
-              <Settings className="w-4 h-4 mr-1" />
-              Einstellungen
+              <FileText className="w-4 h-4 mr-1" />
+              Impressum
             </button>
           </div>
         </div>
