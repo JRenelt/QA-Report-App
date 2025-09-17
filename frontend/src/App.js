@@ -2449,7 +2449,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
 
 
 // BookmarkCard Component für einzelne Bookmark-Karten
-const BookmarkCard = ({ bookmark, onDelete, onEdit, onToggleStatus }) => {
+const BookmarkCard = ({ bookmark, onDelete, onEdit, onToggleStatus, onToggleLock }) => {
   const getStatusColor = (bookmark) => {
     if (bookmark.is_locked) return 'text-yellow-600';
     if (bookmark.status_type === 'dead' || bookmark.is_dead_link) return 'text-red-600';
