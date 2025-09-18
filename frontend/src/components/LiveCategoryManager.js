@@ -23,6 +23,15 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
   const [editValue, setEditValue] = useState('');
   const [newCategoryInputs, setNewCategoryInputs] = useState({});
   const [categorySearchTerm, setCategorySearchTerm] = useState('');
+  
+  const handleCreateMainCategory = () => {
+    const newCategoryName = prompt('Name der neuen Hauptkategorie:');
+    if (newCategoryName && newCategoryName.trim()) {
+      // Hier würde normalerweise ein API-Call erfolgen
+      console.log('Creating main category:', newCategoryName.trim());
+      // Nach erfolgreichem Erstellen das Dialog schließen oder aktualisieren
+    }
+  };
 
   useEffect(() => {
     if (categories) {
