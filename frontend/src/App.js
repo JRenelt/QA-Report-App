@@ -2888,27 +2888,6 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               statistics={statistics}
             />
           </div>
-          
-          {/* Treffer-Anzeige rechts in der Suchfeld-Zeile */}
-          {searchQuery && (
-            <div className="search-results-count" style={{
-              marginLeft: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '14px',
-              color: 'var(--text-secondary)',
-              background: 'var(--bg-secondary)',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              border: '1px solid var(--border-primary)'
-            }}>
-              <Search className="w-4 h-4" />
-              <span style={{ color: '#fbbf24', fontWeight: '500' }}>
-                {bookmarks.length} Treffer
-              </span>
-            </div>
-          )}
         </div>
       </div>
 
