@@ -1945,7 +1945,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   const organizedCategories = organizeCategories();
 
   return (
-    <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
+    <div className={`sidebar ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`} style={{ width: `${sidebarWidth}px` }}>
+      {/* Sidebar Toggle Button */}
       <div 
         className="sidebar-resizer"
         onMouseDown={handleMouseDown}
@@ -1953,8 +1954,18 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       ></div>
       <div className="sidebar-content">
         <div className="sidebar-header">
-          <div className="sidebar-title-section">
-            <h3 className="sidebar-title">Kategorien</h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="sidebar-toggle"
+            title={sidebarCollapsed ? 'Sidebar einblenden' : 'Sidebar ausblenden'}
+          >
+            {sidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          </Button>
+          {!sidebarCollapsed && (
+            <div className="sidebar-title-section">
+              <h3 className="sidebar-title">Kategorien</h3>
             <button
               className="category-manage-btn"
               onClick={() => onCategoryManage && onCategoryManage()}
