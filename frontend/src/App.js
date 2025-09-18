@@ -3695,7 +3695,7 @@ function App() {
         onRefresh={loadStatistics}
       />
 
-      <CategoryManageDialog
+      <LiveCategoryManager
         isOpen={showCategoryManageDialog}
         onClose={() => setShowCategoryManageDialog(false)}
         categories={categories}
