@@ -1964,17 +1964,18 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
             {sidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </Button>
           {!sidebarCollapsed && (
-            <div className="sidebar-title-section">
-              <h3 className="sidebar-title">Kategorien</h3>
-            <button
-              className="category-manage-btn"
-              onClick={() => onCategoryManage && onCategoryManage()}
-              title="Kategorien verwalten"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="sidebar-info">
+            <>
+              <div className="sidebar-title-section">
+                <h3 className="sidebar-title">Kategorien</h3>
+                <button
+                  className="category-manage-btn"
+                  onClick={() => onCategoryManage && onCategoryManage()}
+                  title="Kategorien verwalten"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="sidebar-info">
             <button
               className="info-link"
               onClick={handleInfoClick}
