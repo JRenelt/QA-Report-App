@@ -22,6 +22,7 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
   const [editingNode, setEditingNode] = useState(null);
   const [editValue, setEditValue] = useState('');
   const [newCategoryInputs, setNewCategoryInputs] = useState({});
+  const [categorySearchTerm, setCategorySearchTerm] = useState('');
 
   useEffect(() => {
     if (categories) {
