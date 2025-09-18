@@ -470,6 +470,22 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
               border-color: #2563eb;
               transform: translateY(-1px);
             }
+            
+            /* Zurück nach oben Links */
+            .back-to-top {
+              display: inline-block;
+              padding: 6px 12px;
+              background: #10b981;
+              color: white;
+              text-decoration: none;
+              border-radius: 4px;
+              font-size: 0.9em;
+              font-weight: 500;
+              transition: background-color 0.2s;
+            }
+            .back-to-top:hover {
+              background: #059669;
+            }
           </style>
         </head>
         <body>
