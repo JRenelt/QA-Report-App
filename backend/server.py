@@ -107,7 +107,7 @@ class BookmarkParser:
     """Klasse für das Parsen verschiedener Browser-Favoriten-Formate"""
     
     def __init__(self):
-        self.supported_formats = ['html', 'json', 'xml']
+        self.supported_formats = ['html', 'json', 'xml', 'csv']
     
     def parse_html_bookmarks(self, content: str) -> List[Dict[str, Any]]:
         """Parse HTML-Bookmarks (Chrome, Firefox Export)"""
