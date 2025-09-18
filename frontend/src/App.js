@@ -2900,7 +2900,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
           {/* Anzahl rechts neben dem Suchfeld */}
           <div className="search-results-count">
             <span className="results-count-text">
-              [{filteredBookmarks.length} angezeigt]
+              [{bookmarks.length} angezeigt]
             </span>
           </div>
         </div>
