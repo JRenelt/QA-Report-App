@@ -407,7 +407,7 @@ class LockUnlockTester:
             return False
         
         try:
-            # Versuche ein gesperrtes Bookmark zu löschen
+            # Versuche das gesperrte Bookmark zu löschen
             response = requests.delete(f"{self.backend_url}/bookmarks/{test_bookmark_id}", timeout=10)
             
             if response.status_code == 403:
