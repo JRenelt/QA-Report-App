@@ -302,6 +302,140 @@ class BookmarkParser:
         
         extract_bookmarks(data)
         return bookmarks
+    
+    def parse_xml_bookmarks(self, content: str) -> List[Dict[str, Any]]:
+        """Parse XML-Bookmarks"""
+        bookmarks = []
+        
+        try:
+            import xml.etree.ElementTree as ET
+            root = ET.fromstring(content)
+            
+            # Verschiedene XML-Strukturen unterstützen
+            # Standard XML Format: <bookmarks><bookmark><title/><url/><category/></bookmark></bookmarks>
+            for bookmark_elem in root.findall('.//bookmark'):
+                title_elem = bookmark_elem.find('title')
+                url_elem = bookmark_elem.find('url')
+                category_elem = bookmark_elem.find('category')
+                subcategory_elem = bookmark_elem.find('subcategory')
+                description_elem = bookmark_elem.find('description')
+                
+                if title_elem is not None and url_elem is not None:
+                    title = title_elem.text or "Ohne Titel"
+                    url = url_elem.text or ""
+                    category = category_elem.text if category_elem is not None else "Nicht zugeordnet"
+                    subcategory = subcategory_elem.text if subcategory_elem is not None else None
+                    description = description_elem.text if description_elem is not None else None
+                    
+                    if url:  # Nur hinzufügen wenn URL vorhanden
+                        bookmarks.append({
+                            "title": title.strip(),
+                            "url": url.strip(),
+                            "category": category.strip(),
+                            "subcategory": subcategory.strip() if subcategory else None,
+                            "description": description.strip() if description else None
+                        })
+            
+            # Alternative XML-Struktur: <item><name/><href/></item>
+            if not bookmarks:
+                for item_elem in root.findall('.//item'):
+                    name_elem = item_elem.find('name')
+                    href_elem = item_elem.find('href')
+                    
+                    if name_elem is not None and href_elem is not None:
+                        title = name_elem.text or "Ohne Titel"
+                        url = href_elem.text or ""
+                        
+                        if url:
+                            bookmarks.append({
+                                "title": title.strip(),
+                                "url": url.strip(),
+                                "category": "Nicht zugeordnet",
+                                "subcategory": None,
+                                "description": None
+                            })
+                            
+        except ET.ParseError as e:
+            logging.error(f"XML Parse Error: {e}")
+        except Exception as e:
+            logging.error(f"Error parsing XML bookmarks: {e}")
+        
+        return bookmarks
+    
+    def parse_csv_bookmarks(self, content: str) -> List[Dict[str, Any]]:
+        """Parse CSV-Bookmarks"""
+        bookmarks = []
+        
+        try:
+            import csv
+            import io
+            
+            # CSV-Content in StringIO für csv.reader
+            csv_file = io.StringIO(content)
+            reader = csv.reader(csv_file)
+            
+            # Header-Zeile lesen
+            headers = next(reader, None)
+            if not headers:
+                return bookmarks
+            
+            # Headers normalisieren (case-insensitive)
+            headers = [h.strip().lower() for h in headers]
+            
+            # Mapping für verschiedene CSV-Formate
+            field_mapping = {
+                'title': ['title', 'name', 'bookmark name', 'bookmark_name'],
+                'url': ['url', 'link', 'href', 'address', 'bookmark url'],
+                'category': ['category', 'folder', 'group', 'tag'],
+                'subcategory': ['subcategory', 'subfolder', 'subgroup'],
+                'description': ['description', 'note', 'comment', 'remarks']
+            }
+            
+            # Finde Spalten-Indizes
+            column_indices = {}
+            for field, possible_names in field_mapping.items():
+                for i, header in enumerate(headers):
+                    if header in possible_names:
+                        column_indices[field] = i
+                        break
+            
+            # Daten-Zeilen verarbeiten
+            for row_num, row in enumerate(reader, start=2):  # Start at 2 da Header Zeile 1 ist
+                if len(row) == 0:  # Leere Zeile überspringen
+                    continue
+                
+                try:
+                    # Extrahiere Felder basierend auf gefundenen Spalten
+                    title = row[column_indices['title']].strip() if 'title' in column_indices and len(row) > column_indices['title'] else f"Bookmark {row_num}"
+                    url = row[column_indices['url']].strip() if 'url' in column_indices and len(row) > column_indices['url'] else ""
+                    category = row[column_indices['category']].strip() if 'category' in column_indices and len(row) > column_indices['category'] else "Nicht zugeordnet"
+                    subcategory = row[column_indices['subcategory']].strip() if 'subcategory' in column_indices and len(row) > column_indices['subcategory'] else None
+                    description = row[column_indices['description']].strip() if 'description' in column_indices and len(row) > column_indices['description'] else None
+                    
+                    # Validierung
+                    if not url:
+                        continue  # Überspringe Zeilen ohne URL
+                    
+                    # Füge http:// hinzu wenn Schema fehlt
+                    if not url.startswith(('http://', 'https://', 'ftp://')):
+                        url = 'https://' + url
+                    
+                    bookmarks.append({
+                        "title": title or "Ohne Titel",
+                        "url": url,
+                        "category": category or "Nicht zugeordnet",
+                        "subcategory": subcategory if subcategory else None,
+                        "description": description if description else None
+                    })
+                    
+                except (IndexError, AttributeError) as e:
+                    logging.warning(f"Error processing CSV row {row_num}: {e}")
+                    continue
+                    
+        except Exception as e:
+            logging.error(f"Error parsing CSV bookmarks: {e}")
+        
+        return bookmarks
 
 class LinkValidator:
     """Klasse für Link-Validierung und Dead-Link-Erkennung"""
