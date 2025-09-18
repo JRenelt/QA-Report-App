@@ -628,7 +628,7 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
 
         <div className="border-t pt-4 text-center text-sm text-gray-500">
           <p>
-            <strong>Support:</strong> info@id2.de | <strong>Technischer Support:</strong> support@id2.de
+            <strong>Kontakt:</strong> info@id2.de | <strong>Technischer Support:</strong> support@id2.de
           </p>
           <p>© 2025 Jörg Renelt, id2.de Hamburg - FavOrg Version 2.3.0</p>
         </div>
