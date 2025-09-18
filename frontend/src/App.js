@@ -3013,20 +3013,20 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             )}
           </div>
           
-          {/* Filter rechts im Search-Container */}
-          <div className="search-filter-wrapper">
+          {/* Anzahl in der Mitte */}
+          <div className="search-results-count">
+            <span className="results-count-text">
+              [{bookmarks.length} angezeigt]
+            </span>
+          </div>
+          
+          {/* Filter ganz rechts wie im Screenshot */}
+          <div className="search-filter-wrapper-right">
             <EnhancedStatusFilter 
               value={statusFilter}
               onChange={onStatusFilterChange}
               statistics={statistics}
             />
-          </div>
-          
-          {/* Anzahl rechts neben dem Filter */}
-          <div className="search-results-count">
-            <span className="results-count-text">
-              [{bookmarks.length} angezeigt]
-            </span>
           </div>
         </div>
       </div>
