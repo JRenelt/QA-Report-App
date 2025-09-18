@@ -220,7 +220,7 @@ const ImprovedBookmarkDialog = ({
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Keine Unterkategorie</SelectItem>
+                    <SelectItem value="none">Keine Unterkategorie</SelectItem>
                     {availableSubcategories.map(subcat => (
                       <SelectItem key={subcat} value={subcat}>{subcat}</SelectItem>
                     ))}
