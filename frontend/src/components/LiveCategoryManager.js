@@ -338,10 +338,12 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[85vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <FolderPlus className="w-5 h-5" />
-            Live Kategorien-Verwaltung
+          <DialogTitle className="category-manage-title">
+            🏷️ Live Kategorien-Verwaltung
           </DialogTitle>
+          <p className="category-manage-subtitle">
+            Live-Bearbeitung - Änderungen mit Enter bestätigen, CRUD-Operationen verfügbar
+          </p>
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden">
