@@ -1387,6 +1387,42 @@ body {
   min-width: 300px;
 }
 
+/* Sidebar Collapse Funktionalität */
+.sidebar-collapsed {
+  width: 48px !important;
+  min-width: 48px !important;
+}
+
+.sidebar-collapsed .sidebar-content {
+  overflow: hidden;
+}
+
+.sidebar-toggle {
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-primary) !important;
+  color: var(--text-primary) !important;
+  padding: 6px !important;
+  border-radius: 4px !important;
+  margin-bottom: 8px !important;
+}
+
+.sidebar-toggle:hover {
+  background: var(--bg-secondary) !important;
+}
+
+.sidebar-collapsed .sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px !important;
+}
+
+.sidebar-collapsed .sidebar-title-section,
+.sidebar-collapsed .sidebar-info,
+.sidebar-collapsed .category-list {
+  display: none;
+}
+
 /* Filter im Search-Container */
 .search-filter-wrapper {
   flex-shrink: 0;
