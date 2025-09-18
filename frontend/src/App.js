@@ -3353,6 +3353,52 @@ function App() {
     }
   };
 
+  const handleBookmarkToCategory = async (draggedBookmark, targetCategory, isTargetSubcategory = false) => {
+    try {
+      // Bestimme Ziel-Kategorie und Unterkategorie
+      let category, subcategory;
+      
+      if (isTargetSubcategory) {
+        // Wenn es eine Unterkategorie ist, finde die Parent-Kategorie
+        const findParentCategory = (categories, subcatName) => {
+          for (const cat of categories) {
+            if (cat.children && cat.children.some(child => child.name === subcatName)) {
+              return cat.name;
+            }
+          }
+          return null;
+        };
+        
+        category = findParentCategory(organizedCategories, targetCategory.name);
+        subcategory = targetCategory.name;
+      } else {
+        category = targetCategory.name;
+        subcategory = null;
+      }
+      
+      // Spezialbehandlung für "Alle" Kategorie
+      if (category === 'Alle') {
+        // Wenn zu "Alle" verschoben wird, mache es zu einer Hauptkategorie
+        category = 'Nicht zugeordnet';
+        subcategory = null;
+      }
+      
+      // API Call zum Verschieben
+      await favoritesService.moveBookmarkToCategory(draggedBookmark.id, category, subcategory);
+      
+      showSuccess(`Favorit "${draggedBookmark.title}" zu "${category}${subcategory ? '/' + subcategory : ''}" verschoben`);
+      
+      // Reload bookmarks und categories
+      await loadBookmarks();
+      await loadCategories();
+      await loadStatistics();
+      
+    } catch (error) {
+      console.error('Error moving bookmark to category:', error);
+      showError('Fehler beim Verschieben des Favoriten zur Kategorie');
+    }
+  };
+
   const handleBookmarkReorder = async (draggedBookmark, targetBookmark) => {
     try {
       // Finde die Indizes der beiden Bookmarks
