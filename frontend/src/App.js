@@ -3443,7 +3443,7 @@ function App() {
     }
   };
 
-  const handleBookmarkReorder = async (draggedBookmark, targetBookmark) => {
+  const handleBookmarkReorder = async (draggedBookmark, targetBookmark, insertMode = false) => {
     try {
       // Finde die Indizes der beiden Bookmarks
       const draggedIndex = bookmarks.findIndex(b => b.id === draggedBookmark.id);
@@ -3451,23 +3451,41 @@ function App() {
       
       if (draggedIndex === -1 || targetIndex === -1) return;
       
-      // Erstelle neue Reihenfolge
+      // Erstelle neue Reihenfolge basierend auf Modus
       const newBookmarks = [...bookmarks];
       const [removed] = newBookmarks.splice(draggedIndex, 1);
-      newBookmarks.splice(targetIndex, 0, removed);
       
-      // Update State
+      if (insertMode) {
+        // Einfügemodus (Shift): Füge zwischen Bookmarks ein
+        const insertIndex = draggedIndex < targetIndex ? targetIndex : targetIndex + 1;
+        newBookmarks.splice(insertIndex, 0, removed);
+        console.log(`INSERT MODE: Inserting "${removed.title}" at position ${insertIndex}`);
+      } else {
+        // Standardmodus: Ersetze Position
+        newBookmarks.splice(targetIndex, 0, removed);
+        console.log(`REPLACE MODE: Moving "${removed.title}" to position ${targetIndex}`);
+      }
+      
+      // Update State sofort für bessere UX
       setBookmarks(newBookmarks);
       
-      // Backend-Call für persistente Reihenfolge
+      // Backend-Call für persistente Reihenfolge mit Retry-Logik
       const bookmarkIds = newBookmarks.map(b => b.id);
-      await favoritesService.reorderBookmarks(bookmarkIds);
       
-      showSuccess('Favorit erfolgreich verschoben');
+      try {
+        const service = new FavoritesService();
+        await service.reorderBookmarks(bookmarkIds);
+        showSuccess(`Favorit erfolgreich ${insertMode ? 'eingefügt' : 'verschoben'}`);
+      } catch (backendError) {
+        console.error('Backend reorder failed, reverting:', backendError);
+        // Revert changes if backend fails
+        await loadBookmarks();
+        throw new Error('Backend-Synchronisierung fehlgeschlagen');
+      }
       
     } catch (error) {
       console.error('Error reordering bookmarks:', error);
-      toast.error('Fehler beim Verschieben des Favoriten');
+      toast.error('Fehler beim Verschieben des Favoriten: ' + error.message);
       // Reload bookmarks to restore original order
       await loadBookmarks();
     }
