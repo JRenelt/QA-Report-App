@@ -1840,7 +1840,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
               }
               
               // API Call zum Verschieben
-              await favoritesService.moveBookmarkToCategory(draggedBookmark.id, category, subcategory);
+              const service = new FavoritesService();
+              await service.moveBookmarkToCategory(draggedBookmark.id, category, subcategory);
               
               showSuccess(`Favorit "${draggedBookmark.title}" zu "${category}${subcategory ? '/' + subcategory : ''}" verschoben`);
               
