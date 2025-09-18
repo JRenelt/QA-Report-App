@@ -433,6 +433,43 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
             .filter-locked { background: #fce7f3; }
             .filter-timeout { background: #e0e7ff; }
             .filter-unchecked { background: #f3f4f6; }
+            
+            /* Navigation Links */
+            .navigation-index {
+              background: #f8fafc;
+              border: 2px solid #0ea5e9;
+              border-radius: 8px;
+              padding: 20px;
+              margin: 20px 0;
+            }
+            .navigation-index h3 {
+              margin-top: 0;
+              color: #0ea5e9;
+              text-align: center;
+            }
+            .nav-links {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+              gap: 8px;
+              margin-top: 15px;
+            }
+            .nav-link {
+              display: block;
+              padding: 8px 12px;
+              background: #ffffff;
+              border: 1px solid #cbd5e0;
+              border-radius: 4px;
+              text-decoration: none;
+              color: #2563eb;
+              font-weight: 500;
+              transition: all 0.2s;
+              text-align: center;
+            }
+            .nav-link:hover {
+              background: #dbeafe;
+              border-color: #2563eb;
+              transform: translateY(-1px);
+            }
           </style>
         </head>
         <body>
