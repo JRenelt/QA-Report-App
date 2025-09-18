@@ -455,7 +455,7 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           </div>
           
           ${Object.entries(helpSections).map(([key, section]) => `
-            <div class="section">
+            <div class="section" id="section-${key}">
               <h2>${section.content.title}</h2>
               <p><strong>${section.content.description}</strong></p>
               
