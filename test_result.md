@@ -739,7 +739,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Phase 2.5 Frontend Fixes - All Tests Completed"
+    - "Live Category Manager Design Fix"
+    - "Live Category Manager Search Field"
+    - "Live Category Manager CRUD Operations"
+    - "Extended Search (Title, URL, Category, Description)"
+    - "Drag and Drop for Favorites and Categories"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
