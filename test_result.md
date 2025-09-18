@@ -745,7 +745,6 @@ test_plan:
     - "Live Category Manager Design Fix"
     - "Live Category Manager Search Field"
     - "Live Category Manager CRUD Operations"
-    - "Extended Search (Title, URL, Category, Description)"
     - "Drag and Drop for Favorites and Categories"
   stuck_tasks: []
   test_all: false
