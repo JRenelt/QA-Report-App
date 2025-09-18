@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 
 class LockSystemTester:
-    def __init__(self, base_url="https://bookmark-hub-4.preview.emergentagent.com"):
+    def __init__(self, base_url="https://favlinks-2.preview.emergentagent.com"):
         self.base_url = base_url
         self.test_bookmark_id = None
 

@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 
 # Backend URL aus .env
-BACKEND_URL = "https://bookmark-hub-4.preview.emergentagent.com/api"
+BACKEND_URL = "https://favlinks-2.preview.emergentagent.com/api"
 
 class Phase25BackendTester:
     def __init__(self):
