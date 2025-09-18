@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Backend Test Suite für FavLink Manager - Lock/Unlock System Testing
-Teste das Sperre-System (Lock/Unlock Funktionalität) gemäß German Review Request
+Backend Test Suite für FavLink Manager Import-Funktionen
+Testet HTML, JSON, XML und CSV Import gemäß German Review Request
 
-Problem: User berichtet "Die Sperre arbeitet nicht plausibel" und "Entsperren nicht möglich"
+Problem: User berichtet "Der Einzel Import arbeitet nicht korrekt: HTML=Ja, JSON=Ja, XML=NEIN, CSV=NEIN"
 """
 
 import requests
