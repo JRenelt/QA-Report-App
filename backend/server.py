@@ -1129,9 +1129,10 @@ class BookmarkManager:
             bookmark_data = self.parser.parse_html_bookmarks(content)
         elif file_type.lower() == 'json':
             bookmark_data = self.parser.parse_json_bookmarks(content)
-        elif file_type.lower() in ['csv', 'xml']:
-            # CSV/XML Support placeholder
-            bookmark_data = []
+        elif file_type.lower() == 'xml':
+            bookmark_data = self.parser.parse_xml_bookmarks(content)
+        elif file_type.lower() == 'csv':
+            bookmark_data = self.parser.parse_csv_bookmarks(content)
         else:
             raise HTTPException(status_code=400, detail="Unsupported file type")
         
