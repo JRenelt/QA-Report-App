@@ -3000,17 +3000,6 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
           </div>
         </div>
         
-        {/* Filter oberhalb der Favoriten - ganz links positioniert */}
-        <div className="filters-above-content">
-          <div className="status-filter-wrapper-main">
-            <EnhancedStatusFilter 
-              value={statusFilter}
-              onChange={onStatusFilterChange}
-              statistics={statistics}
-            />
-          </div>
-        </div>
-        
         {viewMode === 'table' ? (
           <TableView
             bookmarks={bookmarks}
