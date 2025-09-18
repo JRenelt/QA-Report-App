@@ -1387,6 +1387,39 @@ body {
   min-width: 300px;
 }
 
+/* Drag & Drop Visuelles Feedback */
+.bookmark-card.drag-over:not(.insert-mode) {
+  border: 2px dashed var(--cyan-400) !important;
+  background: var(--bg-tertiary) !important;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3) !important;
+}
+
+.bookmark-card.drag-over.insert-mode {
+  border-top: 4px solid var(--green-500) !important;
+  background: var(--bg-primary) !important;
+}
+
+.bookmark-card.drag-over.insert-mode::before {
+  content: "🔄 Hier einfügen (Shift-Modus)";
+  position: absolute;
+  top: -24px;
+  left: 8px;
+  background: var(--green-500);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  z-index: 1000;
+}
+
+.bookmark-card.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+  border: 2px solid var(--cyan-400);
+}
+
 /* Sidebar Collapse Funktionalität */
 .sidebar-collapsed {
   width: 48px !important;
