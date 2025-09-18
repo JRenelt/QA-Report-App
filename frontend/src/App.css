@@ -2718,6 +2718,30 @@ body {
   background: var(--bg-primary) !important;
 }
 
+/* Comprehensive Help Dialog - Action Buttons */
+.comprehensive-help-dialog .help-action-button {
+  background: var(--cyan-600) !important;
+  color: white !important;
+  border: 1px solid var(--cyan-500) !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  margin-top: 8px !important;
+  cursor: pointer !important;
+  font-weight: 500 !important;
+  transition: background-color 0.2s !important;
+}
+
+.comprehensive-help-dialog .help-action-button:hover {
+  background: var(--cyan-700) !important;
+}
+
+.comprehensive-help-dialog .help-action-description {
+  color: var(--text-secondary) !important;
+  font-size: 0.875rem !important;
+  margin-top: 4px !important;
+  font-style: italic !important;
+}
+
 .comprehensive-help-dialog .version-info {
   background: var(--bg-tertiary) !important;
   border: 1px solid var(--border-primary) !important;
