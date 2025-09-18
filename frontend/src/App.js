@@ -1845,9 +1845,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
               
               toast.success(`Favorit "${draggedBookmark.title}" zu "${category}${subcategory ? '/' + subcategory : ''}" verschoben`);
               
-              // Reload bookmarks und statistics
-              await loadBookmarks();
-              await loadStatistics();
+              // Reload bookmarks und statistics - Using window.location.reload() for simplicity
+              window.location.reload();
               
             } catch (error) {
               console.error('Error moving bookmark to category:', error);
