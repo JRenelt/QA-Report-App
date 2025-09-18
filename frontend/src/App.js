@@ -1808,8 +1808,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       try {
         const draggedBookmark = JSON.parse(bookmarkData);
         if (draggedBookmark && draggedBookmark.id && draggedBookmark.title) {
-          // Call the bookmark to category handler
-          handleBookmarkToCategory(draggedBookmark, targetCategory, isTargetSubcategory);
+          // Handle bookmark to category drag-and-drop
+          handleBookmarkToCategoryMove(draggedBookmark, targetCategory, isTargetSubcategory);
           return;
         }
       } catch (parseError) {
