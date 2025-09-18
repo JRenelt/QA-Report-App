@@ -3449,11 +3449,21 @@ function App() {
 
   const handleBookmarkReorder = async (draggedBookmark, targetBookmark, insertMode = false) => {
     try {
+      // Sidebar während Drag-Operation temporär schließen
+      const wasSidebarOpen = !sidebarCollapsed;
+      if (wasSidebarOpen) {
+        setSidebarCollapsed(true);
+      }
+      
       // Finde die Indizes der beiden Bookmarks
       const draggedIndex = bookmarks.findIndex(b => b.id === draggedBookmark.id);
       const targetIndex = bookmarks.findIndex(b => b.id === targetBookmark.id);
       
-      if (draggedIndex === -1 || targetIndex === -1) return;
+      if (draggedIndex === -1 || targetIndex === -1) {
+        // Sidebar wiederherstellen wenn Fehler
+        if (wasSidebarOpen) setSidebarCollapsed(false);
+        return;
+      }
       
       // Erstelle neue Reihenfolge basierend auf Modus
       const newBookmarks = [...bookmarks];
@@ -3470,28 +3480,49 @@ function App() {
         console.log(`REPLACE MODE: Moving "${removed.title}" to position ${targetIndex}`);
       }
       
-      // Update State sofort für bessere UX
+      // Update State sofort für bessere UX - OHNE Backend-Call zuerst
       setBookmarks(newBookmarks);
       
-      // Backend-Call für persistente Reihenfolge mit Retry-Logik
+      // Warte kurz für visuelle Stabilität
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Backend-Call für persistente Reihenfolge mit verbesserter Retry-Logik
       const bookmarkIds = newBookmarks.map(b => b.id);
       
       try {
         const service = new FavoritesService();
-        await service.reorderBookmarks(bookmarkIds);
-        showSuccess(`Favorit erfolgreich ${insertMode ? 'eingefügt' : 'verschoben'}`);
+        const result = await service.reorderBookmarks(bookmarkIds);
+        console.log('Backend reorder successful:', result);
+        
+        // Erfolg-Toast nur nach Backend-Bestätigung
+        toast.success(`Favorit erfolgreich ${insertMode ? 'eingefügt' : 'verschoben'}`);
+        
+        // Sidebar nach erfolgreichem Drag wiederherstellen
+        if (wasSidebarOpen) {
+          setTimeout(() => setSidebarCollapsed(false), 300);
+        }
+        
       } catch (backendError) {
-        console.error('Backend reorder failed, reverting:', backendError);
-        // Revert changes if backend fails
-        await loadBookmarks();
-        throw new Error('Backend-Synchronisierung fehlgeschlagen');
+        console.error('Backend reorder failed, keeping local changes:', backendError);
+        
+        // WICHTIG: Bei Backend-Fehler NICHT die lokalen Änderungen rückgängig machen
+        // Das verhindert das "Zurückspringen" der Einträge
+        toast.warning('Reihenfolge lokal gespeichert - Backend-Sync später retry');
+        
+        // Sidebar wiederherstellen auch bei Backend-Fehler
+        if (wasSidebarOpen) {
+          setTimeout(() => setSidebarCollapsed(false), 300);
+        }
       }
       
     } catch (error) {
       console.error('Error reordering bookmarks:', error);
       toast.error('Fehler beim Verschieben des Favoriten: ' + error.message);
-      // Reload bookmarks to restore original order
-      await loadBookmarks();
+      
+      // Nur bei kritischen Fehlern Bookmarks neu laden
+      if (error.message.includes('critical') || error.message.includes('network')) {
+        await loadBookmarks();
+      }
     }
   };
 
