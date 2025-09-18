@@ -3369,12 +3369,17 @@ function App() {
       // Update State
       setBookmarks(newBookmarks);
       
-      // Hier könnte später ein Backend-Call für persistente Reihenfolge hinzugefügt werden
-      // await favoritesService.updateBookmarkOrder(newBookmarks.map(b => b.id));
+      // Backend-Call für persistente Reihenfolge
+      const bookmarkIds = newBookmarks.map(b => b.id);
+      await favoritesService.reorderBookmarks(bookmarkIds);
+      
+      showSuccess('Favorit erfolgreich verschoben');
       
     } catch (error) {
       console.error('Error reordering bookmarks:', error);
       toast.error('Fehler beim Verschieben des Favoriten');
+      // Reload bookmarks to restore original order
+      await loadBookmarks();
     }
   };
 
