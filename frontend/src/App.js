@@ -3747,7 +3747,20 @@ function App() {
         hasDuplicatesMarked={hasDuplicatesMarked}
       />
 
-      <div className="app-body">
+      <div className={`app-body ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        {/* Sidebar Toggle Button - sichtbar wenn kollabiert */}
+        {sidebarCollapsed && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleSidebarToggle}
+            className="sidebar-toggle-external"
+            title="Sidebar einblenden"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        )}
+        
         <CategorySidebar
           categories={categories}
           activeCategory={activeCategory}
@@ -3755,6 +3768,8 @@ function App() {
           onCategoryChange={handleCategoryChange}
           statistics={statistics}
           onCategoryManage={() => setShowCategoryManageDialog(true)}
+          sidebarCollapsed={sidebarCollapsed}
+          onSidebarToggle={handleSidebarToggle}
         />
 
         <MainContent
