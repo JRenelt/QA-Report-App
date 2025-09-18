@@ -342,20 +342,57 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
             🏷️ Live Kategorien-Verwaltung
           </DialogTitle>
           <p className="category-manage-subtitle">
-            Live-Bearbeitung - Änderungen mit Enter bestätigen, CRUD-Operationen verfügbar
+            Hierarchische Kategorien mit unbegrenzten Ebenen verwalten
           </p>
+          
+          {/* Help Link und Zurück zur Startseite */}
+          <div className="category-help-links">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => {
+                window.open('#help-categories', '_blank');
+              }}
+              className="help-link-btn"
+            >
+              📚 Handbuch öffnen
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => onClose()}
+              className="home-link-btn"
+            >
+              🏠 Zurück zur Startseite
+            </Button>
+          </div>
         </DialogHeader>
         
-        {/* Suchfeld für interne Kategorie-Suche */}
-        <div className="category-search-section">
-          <div className="category-search-wrapper">
-            <Search className="w-4 h-4 category-search-icon" />
-            <Input
-              value={categorySearchTerm}
-              onChange={(e) => setCategorySearchTerm(e.target.value)}
-              placeholder="Kategorie suchen..."
-              className="category-search-input"
-            />
+        {/* Kompakte Toolbar */}
+        <div className="category-toolbar">
+          {/* Suchfeld (1/3 Platz) */}
+          <div className="category-search-section-compact">
+            <div className="category-search-wrapper">
+              <Search className="w-4 h-4 category-search-icon" />
+              <Input
+                value={categorySearchTerm}
+                onChange={(e) => setCategorySearchTerm(e.target.value)}
+                placeholder="Kategorie suchen..."
+                className="category-search-input-compact"
+              />
+            </div>
+          </div>
+          
+          {/* Neue Hauptkategorie Button (rechts) */}
+          <div className="new-main-category-section">
+            <Button
+              onClick={() => handleCreateMainCategory()}
+              size="sm"
+              className="new-main-category-btn"
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Neue Hauptkategorie
+            </Button>
           </div>
         </div>
 
