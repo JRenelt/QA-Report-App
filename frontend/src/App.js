@@ -3369,7 +3369,7 @@ function App() {
           return null;
         };
         
-        category = findParentCategory(organizedCategories, targetCategory.name);
+        category = findParentCategory(categories, targetCategory.name);
         subcategory = targetCategory.name;
       } else {
         category = targetCategory.name;
