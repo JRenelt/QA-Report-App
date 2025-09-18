@@ -12,7 +12,8 @@ import {
   X, 
   ChevronRight, 
   ChevronDown,
-  Plus
+  Plus,
+  Search
 } from 'lucide-react';
 
 const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
