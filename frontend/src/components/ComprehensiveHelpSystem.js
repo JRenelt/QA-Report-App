@@ -218,6 +218,24 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
         description: 'Importieren Sie Lesezeichen aus verschiedenen Browsern und exportieren Sie in multiple Formate.',
         sections: [
           {
+            title: 'BookmarkBox - Universal Bookmark Collector',
+            steps: [
+              '🎁 Sammelt Bookmarks aus ALLEN gängigen Browsern',
+              '💻 Verfügbar für Windows, macOS und Linux',
+              '📦 Exportiert direkt in FavOrg-kompatibles Format',
+              '🔒 Sicherer Download als verschlüsseltes ZIP'
+            ],
+            action: {
+              label: '📥 BookmarkBox herunterladen',
+              description: 'Passwort: SpendefuerdenEntwickler',
+              onClick: () => {
+                // Download BookmarkBox
+                const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+                window.open(`${backendUrl}/api/bookmarks/download-bookmarkbox`, '_blank');
+              }
+            }
+          },
+          {
             title: 'Unterstützte Import-Formate',
             steps: [
               'HTML: Standard Browser-Export Format',
