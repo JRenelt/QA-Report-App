@@ -526,6 +526,11 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
                   ` : ''}
                 </div>
               `).join('') : ''}
+              
+              <!-- Zurück nach oben Link -->
+              <div style="text-align: center; margin-top: 20px;">
+                <a href="#top" class="back-to-top">⬆️ Zurück zum Inhaltsverzeichnis</a>
+              </div>
             </div>
           `).join('')}
           
