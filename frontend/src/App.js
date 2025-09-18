@@ -2041,6 +2041,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
             />
           ))}
         </div>
+          </>
+        )}
       </div>
     </div>
   );
