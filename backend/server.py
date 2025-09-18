@@ -1145,14 +1145,15 @@ class BookmarkManager:
         }
     
     async def search_bookmarks(self, query: str) -> List[Bookmark]:
-        """Bookmarks durchsuchen"""
+        """Bookmarks durchsuchen - erweitert um Beschreibung"""
         search_regex = {"$regex": query, "$options": "i"}
         bookmarks = await self.db.bookmarks.find({
             "$or": [
                 {"title": search_regex},
                 {"url": search_regex},
                 {"category": search_regex},
-                {"subcategory": search_regex}
+                {"subcategory": search_regex},
+                {"description": search_regex}
             ]
         }).to_list(100000)
         
