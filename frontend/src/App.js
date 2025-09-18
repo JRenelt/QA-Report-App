@@ -2051,6 +2051,25 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
 const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onBookmarkReorder, onToggleLock, searchQuery, highlightSearchTerm }) => {
   const [draggedBookmark, setDraggedBookmark] = useState(null);
   const [dragOverBookmark, setDragOverBookmark] = useState(null);
+  const [shiftPressed, setShiftPressed] = useState(false);
+
+  // Shift-Taste Detection
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Shift') setShiftPressed(true);
+    };
+    const handleKeyUp = (e) => {
+      if (e.key === 'Shift') setShiftPressed(false);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
 
   // Drag & Drop Handlers für Bookmarks
   const handleBookmarkDragStart = (e, bookmark) => {
