@@ -293,6 +293,29 @@ class FavoritesService {
     }
   }
 
+  async moveBookmarkToCategory(bookmarkId, category, subcategory = null) {
+    try {
+      const response = await axios.put(`${this.baseURL}/api/bookmarks/${bookmarkId}/move-to-category`, {
+        category: category,
+        subcategory: subcategory
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to move bookmark to category');
+    }
+  }
+
+  async reorderBookmarks(bookmarkIds) {
+    try {
+      const response = await axios.put(`${this.baseURL}/api/bookmarks/reorder`, {
+        bookmark_ids: bookmarkIds
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to reorder bookmarks');
+    }
+  }
+
   async moveBookmarks(bookmarkIds, targetCategory, targetSubcategory = null) {
     try {
       const response = await axios.post(`${this.baseURL}/api/bookmarks/move`, {
