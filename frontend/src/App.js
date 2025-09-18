@@ -3676,6 +3676,12 @@ function App() {
     localStorage.setItem('favorg-view-mode', mode);
   };
 
+  const handleSidebarToggle = () => {
+    const newCollapsed = !sidebarCollapsed;
+    setSidebarCollapsed(newCollapsed);
+    localStorage.setItem('favorg-sidebar-collapsed', newCollapsed.toString());
+  };
+
   // Filter bookmarks based on search and status
   const filteredBookmarks = bookmarks.filter(bookmark => {
     // Search filter - durchsucht Titel, URL, Kategorie und Beschreibung
