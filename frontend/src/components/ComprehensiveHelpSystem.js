@@ -489,7 +489,7 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           </style>
         </head>
         <body>
-          <div class="header">
+          <div class="header" id="top">
             <h1>📚 FavOrg Benutzerhandbuch</h1>
             <p>Professioneller Bookmark Manager - Version 2.3.0</p>
             <p>Vollständige Dokumentation aller Funktionen</p>
