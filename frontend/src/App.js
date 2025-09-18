@@ -2063,13 +2063,14 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
       {bookmarks.map(bookmark => (
         <Card 
           key={bookmark.id} 
-          className={`bookmark-card draggable ${bookmark.is_dead_link ? 'dead-link' : 'active-link'} ${dragOverBookmark?.id === bookmark.id ? 'drag-over' : ''}`}
-          draggable
-          onDragStart={(e) => handleBookmarkDragStart(e, bookmark)}
-          onDragOver={(e) => handleBookmarkDragOver(e, bookmark)}
+          className={`bookmark-card ${bookmark.is_locked ? 'locked' : 'draggable'} ${bookmark.is_dead_link ? 'dead-link' : 'active-link'} ${dragOverBookmark?.id === bookmark.id ? 'drag-over' : ''}`}
+          draggable={!bookmark.is_locked}
+          onDragStart={(e) => bookmark.is_locked ? e.preventDefault() : handleBookmarkDragStart(e, bookmark)}
+          onDragOver={(e) => bookmark.is_locked ? e.preventDefault() : handleBookmarkDragOver(e, bookmark)}
           onDragLeave={handleBookmarkDragLeave}
-          onDrop={(e) => handleBookmarkDrop(e, bookmark)}
+          onDrop={(e) => bookmark.is_locked ? e.preventDefault() : handleBookmarkDrop(e, bookmark)}
           onDragEnd={handleBookmarkDragEnd}
+          title={bookmark.is_locked ? 'Favorit ist gesperrt - Drag & Drop deaktiviert' : ''}
         >
           <CardHeader className="bookmark-header">
             <div className="bookmark-title-row">
