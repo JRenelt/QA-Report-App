@@ -635,6 +635,21 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
                             ))}
                           </ul>
                         )}
+                        {section.action && (
+                          <div className="mt-4">
+                            <button
+                              onClick={section.action.onClick}
+                              className="help-action-button"
+                            >
+                              {section.action.label}
+                            </button>
+                            {section.action.description && (
+                              <div className="help-action-description">
+                                {section.action.description}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
