@@ -3225,6 +3225,9 @@ function App() {
   const [viewMode, setViewMode] = useState(() => {
     return localStorage.getItem('favorg-view-mode') || 'cards';
   });
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    return localStorage.getItem('favorg-sidebar-collapsed') === 'true';
+  });
 
   // Dialog States
   const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
