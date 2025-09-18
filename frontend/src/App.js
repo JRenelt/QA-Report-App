@@ -23,6 +23,7 @@ import IntegratedFavOrg from "./components/IntegratedFavOrg";
 import EnhancedStatusFilter from "./components/EnhancedStatusFilter";
 import EnhancedBookmarkCard from "./components/EnhancedBookmarkCard";
 import ImprovedBookmarkDialog from "./components/ImprovedBookmarkDialog";
+import EnhancedCatchMouseGame from './components/EnhancedCatchMouseGame';
 import LiveCategoryManager from "./components/LiveCategoryManager";
 import ComprehensiveHelpDialog from "./components/ComprehensiveHelpDialog";
 import { 
