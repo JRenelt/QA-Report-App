@@ -2837,6 +2837,18 @@ body {
   font-style: italic !important;
 }
 
+/* Weiße Hintergründe benötigen schwarze Schrift */
+.comprehensive-help-dialog *[style*="background: #ffffff"],
+.comprehensive-help-dialog *[style*="background: white"],
+.comprehensive-help-dialog .nav-link,
+.comprehensive-help-dialog .back-to-top {
+  color: #000000 !important;
+}
+
+.comprehensive-help-dialog .nav-link:hover {
+  color: #1e40af !important;
+}
+
 .comprehensive-help-dialog .version-info {
   background: var(--bg-tertiary) !important;
   border: 1px solid var(--border-primary) !important;
