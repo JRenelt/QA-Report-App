@@ -4503,7 +4503,46 @@ body {
   background: var(--cyan-500);
 }
 
-/* Live-Editing Category Management Dialog Styles */
+/* Kategorie Such-Sektion */
+.category-search-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.category-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.category-search-icon {
+  position: absolute;
+  left: 8px;
+  color: var(--text-secondary);
+  z-index: 1;
+}
+
+.category-search-input {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+  color: var(--text-primary) !important;
+  padding-left: 32px !important;
+  border-radius: 6px !important;
+}
+
+.category-search-input:focus {
+  border-color: var(--cyan-400) !important;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2) !important;
+}
+
+.category-search-input::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+/* Live Category Manager - Corporate Identity Fix */
 .category-manage-dialog-live {
   background: var(--bg-primary);
   color: var(--text-primary);
