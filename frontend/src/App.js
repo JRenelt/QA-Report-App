@@ -2577,7 +2577,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
               <div id="testdata-section" className="settings-section">
                 <h3 className="section-title">Testdaten</h3>
                 <p className="section-description">
-                  Erstellen Sie Testdaten mit 50 Favoriten (inkl. Duplikate und tote Links) für Entwicklung und Tests.
+                  Erstellen Sie Testdaten mit 100 Favoriten (inkl. 20 Duplikate und 15 tote Links) für Entwicklung und Tests.
                 </p>
                 
                 <Button
