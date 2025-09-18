@@ -1835,9 +1835,8 @@ async def move_bookmark_to_category(bookmark_id: str, move_data: dict):
         if not bookmark:
             raise HTTPException(status_code=404, detail="Bookmark not found")
         
-        # Löschschutz für gesperrte Bookmarks
-        if bookmark.get("is_locked", False):
-            raise HTTPException(status_code=403, detail="Gesperrte Bookmarks können nicht verschoben werden")
+        # Gesperrte Bookmarks können verschoben werden (nur nicht gelöscht/bearbeitet)
+        # Der Lock-Check wird entfernt
         
         # Update Kategorie
         update_data = {
