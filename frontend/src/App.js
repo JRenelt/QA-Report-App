@@ -1808,10 +1808,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       try {
         const draggedBookmark = JSON.parse(bookmarkData);
         if (draggedBookmark && draggedBookmark.id && draggedBookmark.title) {
-          // Call the main component's handler for bookmark to category
-          if (onBookmarkToCategory) {
-            onBookmarkToCategory(draggedBookmark, targetCategory, isTargetSubcategory);
-          }
+          // Call the bookmark to category handler
+          handleBookmarkToCategory(draggedBookmark, targetCategory, isTargetSubcategory);
           return;
         }
       } catch (parseError) {
