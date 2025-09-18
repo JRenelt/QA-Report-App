@@ -4721,6 +4721,64 @@ body {
   background: var(--cyan-500);
 }
 
+/* Live Category Manager - Kompakte Toolbar */
+.category-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-primary);
+  margin-bottom: 16px;
+}
+
+.category-search-section-compact {
+  flex: 1;
+  min-width: 0; /* 1/3 des verfügbaren Platzes */
+}
+
+.category-search-input-compact {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+  color: var(--text-primary) !important;
+  padding-left: 32px !important;
+  border-radius: 6px !important;
+  height: 36px !important;
+}
+
+.new-main-category-section {
+  flex-shrink: 0;
+}
+
+.new-main-category-btn {
+  background: var(--cyan-600) !important;
+  color: white !important;
+  border: 1px solid var(--cyan-500) !important;
+  font-weight: 500 !important;
+}
+
+.new-main-category-btn:hover {
+  background: var(--cyan-700) !important;
+}
+
+/* Help Links */
+.category-help-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.help-link-btn, .home-link-btn {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-secondary) !important;
+  font-size: 0.875rem !important;
+  padding: 4px 8px !important;
+}
+
+.help-link-btn:hover, .home-link-btn:hover {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
 /* Kategorie Such-Sektion */
 .category-search-section {
   background: var(--bg-secondary);
