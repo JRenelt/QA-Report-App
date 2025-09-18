@@ -1144,7 +1144,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="help-dialog">
+      <DialogContent className="comprehensive-help-dialog">
         <DialogHeader>
           <DialogTitle className="help-title-inline">
             <HelpCircle className="w-5 h-5 mr-2" />
