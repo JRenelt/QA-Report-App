@@ -1420,14 +1420,26 @@ body {
   border: 2px solid var(--cyan-400);
 }
 
-/* Sidebar Collapse Funktionalität */
+/* Sidebar Collapse Funktionalität - Vollständig ausblendbar */
 .sidebar-collapsed {
-  width: 48px !important;
-  min-width: 48px !important;
+  width: 0px !important;
+  min-width: 0px !important;
+  overflow: hidden !important;
+  border: none !important;
 }
 
 .sidebar-collapsed .sidebar-content {
-  overflow: hidden;
+  display: none !important;
+}
+
+.sidebar-collapsed .sidebar-resizer {
+  display: none !important;
+}
+
+/* Main Content nimmt vollen Platz ein wenn Sidebar kollabiert */
+.app-layout.sidebar-collapsed .main-content {
+  margin-left: 0px !important;
+  width: 100% !important;
 }
 
 .sidebar-toggle {
