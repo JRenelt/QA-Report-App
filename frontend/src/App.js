@@ -1976,36 +1976,41 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
                 </button>
               </div>
               <div className="sidebar-info">
-            <button
-              className="info-link"
-              onClick={handleInfoClick}
-              title="Information über Kategorien"
-            >
-              <AlertTriangle className="w-4 h-4" />
-            </button>
-            {showBrowserInfo && (
-              <div 
-                className="info-tooltip info-tooltip-positioned"
-                style={{
-                  position: 'fixed',
-                  top: `${tooltipPosition.top}px`,
-                  left: `${tooltipPosition.left}px`,
-                  zIndex: 9999
-                }}
-              >
-                Basierend auf Browser-Ordnern
-                <button 
-                  className="tooltip-close"
-                  onClick={() => setShowBrowserInfo(false)}
+                <button
+                  className="info-link"
+                  onClick={handleInfoClick}
+                  title="Information über Kategorien"
                 >
-                  ×
+                  <AlertTriangle className="w-4 h-4" />
                 </button>
+                {showBrowserInfo && (
+                  <div 
+                    className="info-tooltip info-tooltip-positioned"
+                    style={{
+                      position: 'fixed',
+                      top: `${tooltipPosition.top}px`,
+                      left: `${tooltipPosition.left}px`,
+                      zIndex: 9999
+                    }}
+                  >
+                    Basierend auf Browser-Ordnern
+                    <button 
+                      className="tooltip-close"
+                      onClick={() => setShowBrowserInfo(false)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
         
-        <div className="category-list">
+        {!sidebarCollapsed && (
+          <>
+            {/* Existing sidebar content */}
+            <div className="category-list">
           <div
             className={`category-item main-category ${activeCategory === 'all' ? 'active' : ''}`}
             onClick={() => onCategoryChange('all', null)}
