@@ -3388,9 +3388,8 @@ function App() {
       
       showSuccess(`Favorit "${draggedBookmark.title}" zu "${category}${subcategory ? '/' + subcategory : ''}" verschoben`);
       
-      // Reload bookmarks und categories
+      // Reload bookmarks und statistics
       await loadBookmarks();
-      await loadAllCategories();
       await loadStatistics();
       
     } catch (error) {
