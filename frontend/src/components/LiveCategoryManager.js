@@ -345,6 +345,19 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
             Live-Bearbeitung - Änderungen mit Enter bestätigen, CRUD-Operationen verfügbar
           </p>
         </DialogHeader>
+        
+        {/* Suchfeld für interne Kategorie-Suche */}
+        <div className="category-search-section">
+          <div className="category-search-wrapper">
+            <Search className="w-4 h-4 category-search-icon" />
+            <Input
+              value={categorySearchTerm}
+              onChange={(e) => setCategorySearchTerm(e.target.value)}
+              placeholder="Kategorie suchen..."
+              className="category-search-input"
+            />
+          </div>
+        </div>
 
         <div className="flex-1 overflow-hidden">
           <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-700">
