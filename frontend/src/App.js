@@ -2082,17 +2082,13 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
               <div className="bookmark-actions">
                 {getStatusBadge(bookmark)}
                 
-                {/* Lock/Unlock Button */}
+                {/* Lock/Unlock Button - gleiches Design wie Mülleimer */}
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => onToggleLock && onToggleLock(bookmark.id, bookmark.is_locked)}
                   className="lock-btn"
                   title={bookmark.is_locked ? "Entsperren" : "Sperren"}
-                  style={{
-                    backgroundColor: bookmark.is_locked ? '#fee2e2' : '#dcfce7',
-                    border: bookmark.is_locked ? '1px solid #f87171' : '1px solid #34d399'
-                  }}
                 >
                   {bookmark.is_locked ? 
                     <LockKeyhole className="w-4 h-4 text-red-600" /> : 
