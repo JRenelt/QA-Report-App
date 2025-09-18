@@ -1820,6 +1820,77 @@ FavOrg Version 2.3.0
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating BookmarkBox download: {str(e)}")
 
+@api_router.put("/bookmarks/{bookmark_id}/move-to-category")
+async def move_bookmark_to_category(bookmark_id: str, move_data: dict):
+    """Bookmark in andere Kategorie verschieben"""
+    try:
+        target_category = move_data.get('category')
+        target_subcategory = move_data.get('subcategory')
+        
+        if not target_category:
+            raise HTTPException(status_code=400, detail="Target category is required")
+        
+        # Finde das Bookmark
+        bookmark = await db.bookmarks.find_one({"id": bookmark_id})
+        if not bookmark:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
+        
+        # Löschschutz für gesperrte Bookmarks
+        if bookmark.get("is_locked", False):
+            raise HTTPException(status_code=403, detail="Gesperrte Bookmarks können nicht verschoben werden")
+        
+        # Update Kategorie
+        update_data = {
+            "category": target_category,
+            "updated_at": datetime.utcnow()
+        }
+        
+        if target_subcategory:
+            update_data["subcategory"] = target_subcategory
+        else:
+            update_data["subcategory"] = None
+        
+        result = await db.bookmarks.update_one(
+            {"id": bookmark_id},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
+        
+        # Update category counts
+        await bookmark_manager.category_manager.update_bookmark_counts()
+        
+        # Rückgabe des aktualisierten Bookmarks
+        updated_bookmark = await db.bookmarks.find_one({"id": bookmark_id})
+        return Bookmark(**updated_bookmark)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error moving bookmark: {str(e)}")
+
+@api_router.put("/bookmarks/reorder")
+async def reorder_bookmarks(reorder_data: dict):
+    """Bookmarks in neuer Reihenfolge sortieren"""
+    try:
+        bookmark_ids = reorder_data.get('bookmark_ids', [])
+        
+        if not bookmark_ids:
+            raise HTTPException(status_code=400, detail="Bookmark IDs list is required")
+        
+        # Update die Reihenfolge der Bookmarks
+        for index, bookmark_id in enumerate(bookmark_ids):
+            await db.bookmarks.update_one(
+                {"id": bookmark_id},
+                {"$set": {"order_index": index, "updated_at": datetime.utcnow()}}
+            )
+        
+        return {"message": f"Reordered {len(bookmark_ids)} bookmarks", "reordered_count": len(bookmark_ids)}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reordering bookmarks: {str(e)}")
+
 @api_router.delete("/bookmarks/{bookmark_id}")
 async def delete_bookmark(bookmark_id: str):
     """Einzelnes Bookmark löschen"""
