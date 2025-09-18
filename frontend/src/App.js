@@ -3390,7 +3390,7 @@ function App() {
       
       // Reload bookmarks und categories
       await loadBookmarks();
-      await loadCategories();
+      await loadAllCategories();
       await loadStatistics();
       
     } catch (error) {
