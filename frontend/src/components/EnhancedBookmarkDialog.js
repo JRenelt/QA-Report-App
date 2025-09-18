@@ -180,7 +180,7 @@ const EnhancedBookmarkDialog = ({
                   <SelectValue placeholder="Kategorie auswählen" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Nicht zugeordnet</SelectItem>
+                  <SelectItem value="uncategorized">Nicht zugeordnet</SelectItem>
                   {mainCategories.map(cat => (
                     <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                   ))}
