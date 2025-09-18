@@ -4772,6 +4772,17 @@ body {
   background: var(--cyan-700) !important;
 }
 
+/* Live Category Manager - Weiße Hintergründe schwarze Schrift */
+.category-manage-dialog-live *[style*="background: #ffffff"],
+.category-manage-dialog-live *[style*="background: white"],
+.category-manage-dialog-live input[type="text"]:focus {
+  color: #000000 !important;
+}
+
+.category-manage-dialog-live input[type="text"]::placeholder {
+  color: #6b7280 !important;
+}
+
 /* Help Links */
 .category-help-links {
   display: flex;
