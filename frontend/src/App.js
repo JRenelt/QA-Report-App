@@ -2104,21 +2104,35 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
                 >
                   <ExternalLink className="w-4 h-4" />
                 </Button>
+                
+                {/* Edit Button - deaktiviert wenn gesperrt */}
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onEditBookmark(bookmark)}
-                  className="edit-btn"
+                  onClick={() => bookmark.is_locked ? 
+                    toast.error('Gesperrter Favorit kann nicht bearbeitet werden') : 
+                    onEditBookmark(bookmark)
+                  }
+                  className={`edit-btn ${bookmark.is_locked ? 'disabled' : ''}`}
+                  disabled={bookmark.is_locked}
+                  title={bookmark.is_locked ? 'Favorit ist gesperrt' : 'Favorit bearbeiten'}
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className={`w-4 h-4 ${bookmark.is_locked ? 'text-gray-400' : ''}`} />
                 </Button>
+                
+                {/* Delete Button - deaktiviert wenn gesperrt */}
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onDeleteBookmark(bookmark.id)}
-                  className="delete-btn"
+                  onClick={() => bookmark.is_locked ? 
+                    toast.error('Gesperrter Favorit kann nicht gelöscht werden') : 
+                    onDeleteBookmark(bookmark.id)
+                  }
+                  className={`delete-btn ${bookmark.is_locked ? 'disabled' : ''}`}
+                  disabled={bookmark.is_locked}
+                  title={bookmark.is_locked ? 'Favorit ist gesperrt' : 'Favorit löschen'}
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className={`w-4 h-4 ${bookmark.is_locked ? 'text-gray-400' : ''}`} />
                 </Button>
               </div>
             </div>
