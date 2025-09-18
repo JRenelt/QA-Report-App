@@ -364,6 +364,126 @@ backend:
         comment: "🔒 GESPERRT-FEATURES VOLLSTÄNDIG GETESTET UND FUNKTIONAL: Umfassende Tests aller neuen 'Gesperrt' Features gemäß German Review-Request durchgeführt (12/12 Tests bestanden, 100% Success Rate). ✅ POST /api/bookmarks mit is_locked Parameter: Gesperrte Bookmarks können erstellt werden, status_type wird automatisch auf 'locked' gesetzt ✅ DELETE Protection: HTTP 403 mit korrekter deutscher Fehlermeldung 'Gesperrte Bookmarks können nicht gelöscht werden' ✅ Status Type Consistency: Perfekte Konsistenz zwischen is_locked und status_type Feldern ✅ Bestehende Endpunkte Kompatibilität: GET /api/bookmarks zeigt neue Felder korrekt, 5 gesperrte Bookmarks mit korrekter Konsistenz gefunden ✅ Statistiken Integration: locked_links Feld vorhanden und funktional (6 gesperrte Links gezählt). MINOR: PUT Update setzt status_type nicht automatisch bei is_locked Änderung. ALLE ERWARTETEN ERGEBNISSE DER REVIEW-REQUEST VOLLSTÄNDIG ERFÜLLT!"
 
 frontend:
+  - task: "Live Category Manager Design Fix"
+    implemented: true
+    working: false
+    file: "frontend/src/components/LiveCategoryManager.js, frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet weißer Hintergrund und hellgraue Schrift - Corporate Identity Problem. Auch im Hilfe-System vorhanden."
+      - working: true
+        agent: "main"
+        comment: "Design-Probleme behoben: CSS-Styles für category-search-section hinzugefügt, Corporate Identity mit Dark Theme angepasst. Titel und Subtitle aktualisiert."
+
+  - task: "Live Category Manager Search Field"
+    implemented: true
+    working: true
+    file: "frontend/src/components/LiveCategoryManager.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet fehlendes Suchfeld in Live Kategorien-Verwaltung."
+      - working: true
+        agent: "main"
+        comment: "Suchfeld implementiert: categorySearchTerm State-Variable hinzugefügt, Search-Icon und Input-Feld mit entsprechenden CSS-Klassen."
+
+  - task: "Live Category Manager CRUD Operations"
+    implemented: true
+    working: false
+    file: "frontend/src/components/LiveCategoryManager.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet CRUD ist OFF in Live Kategorien-Verwaltung."
+      - working: false
+        agent: "main"
+        comment: "CRUD-Status unbekannt - muss getestet werden."
+
+  - task: "Extended Search (Title, URL, Category, Description)"
+    implemented: true
+    working: false
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet Suche soll in Titeln, Links, Kategorien UND Beschreibungen suchen."
+      - working: true
+        agent: "main"
+        comment: "Backend-Suchfunktion erweitert: description-Feld zu search_bookmarks() hinzugefügt."
+
+  - task: "Optional Description Display"
+    implemented: false
+    working: false
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet Beschreibung aus 'Main mit Bemerkung.png' muss optional angezeigt werden."
+      - working: false
+        agent: "main"
+        comment: "BookmarkCard.js hat bereits Beschreibungs-Support, aber nicht in App.js integriert."
+
+  - task: "Help System Contact Information"
+    implemented: true
+    working: true
+    file: "frontend/src/components/ComprehensiveHelpSystem.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet Kontakt-Information in Benutzerhandbuch muss korrigiert werden."
+      - working: true
+        agent: "main"
+        comment: "Kontakt-Information korrigiert: 'Support:' zu 'Kontakt:' geändert für korrekte Anzeige."
+
+  - task: "Help System Navigation Links"
+    implemented: false
+    working: false
+    file: "frontend/src/components/ComprehensiveHelpSystem.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet im Benutzerhandbuch sollen Links von Übersicht zu einzelnen Bereichen möglich sein."
+      - working: false
+        agent: "main"
+        comment: "Navigation zwischen Bereichen noch nicht implementiert."
+
+  - task: "Drag and Drop for Favorites and Categories"
+    implemented: true
+    working: false
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet Drag and Drop ist OFF für Favoriten und Sidebar-Kategorien. Zwischen allen Ebenen verschieben soll möglich sein."
+      - working: false
+        agent: "main"
+        comment: "Drag and Drop Code vorhanden (handleBookmarkReorder, onDragStart, onDragOver, onDrop), aber funktioniert möglicherweise nicht korrekt."
+
   - task: "Statistics Dialog Vertical Layout"
     implemented: true
     working: true
