@@ -3320,16 +3320,28 @@ function App() {
     }
   };
 
-  const handleToggleLock = async (bookmarkId, isCurrentlyLocked) => {
+  const handleBookmarkReorder = async (draggedBookmark, targetBookmark) => {
     try {
-      const newLockStatus = !isCurrentlyLocked;
-      await favoritesService.updateBookmarkLock(bookmarkId, newLockStatus);
-      showSuccess(`Favorit ${newLockStatus ? 'gesperrt' : 'entsperrt'}`);
-      await loadBookmarks();
-      await loadStatistics();
+      // Finde die Indizes der beiden Bookmarks
+      const draggedIndex = bookmarks.findIndex(b => b.id === draggedBookmark.id);
+      const targetIndex = bookmarks.findIndex(b => b.id === targetBookmark.id);
+      
+      if (draggedIndex === -1 || targetIndex === -1) return;
+      
+      // Erstelle neue Reihenfolge
+      const newBookmarks = [...bookmarks];
+      const [removed] = newBookmarks.splice(draggedIndex, 1);
+      newBookmarks.splice(targetIndex, 0, removed);
+      
+      // Update State
+      setBookmarks(newBookmarks);
+      
+      // Hier könnte später ein Backend-Call für persistente Reihenfolge hinzugefügt werden
+      // await favoritesService.updateBookmarkOrder(newBookmarks.map(b => b.id));
+      
     } catch (error) {
-      console.error('Error toggling lock:', error);
-      showError('Fehler beim Ändern des Sperr-Status');
+      console.error('Error reordering bookmarks:', error);
+      toast.error('Fehler beim Verschieben des Favoriten');
     }
   };
 
