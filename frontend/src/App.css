@@ -2622,13 +2622,28 @@ body {
   max-width: 400px;
 }
 
-/* Dialog Styles */
+/* Dialog Styles mit Z-Index Fix */
 .settings-dialog, .help-dialog, .bookmark-dialog, .export-dialog {
   max-width: 600px;
   max-height: 80vh;
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   color: var(--text-primary);
+  z-index: 99999 !important;
+  position: fixed !important;
+}
+
+/* Bookmark Dialog spezifische Z-Index Einstellungen */
+.bookmark-dialog {
+  z-index: 100000 !important;
+  position: fixed !important;
+}
+
+.bookmark-dialog .dialog-content {
+  max-width: 600px;
+  width: 600px;
+  z-index: 100001 !important;
+  position: relative !important;
 }
 
 /* Help Dialog - Weitere 30% Verbreiterung */
