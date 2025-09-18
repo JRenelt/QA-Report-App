@@ -1956,7 +1956,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            onClick={() => onSidebarToggle()}
             className="sidebar-toggle"
             title={sidebarCollapsed ? 'Sidebar einblenden' : 'Sidebar ausblenden'}
           >
