@@ -2104,11 +2104,12 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
     e.preventDefault();
     
     if (draggedBookmark && targetBookmark && draggedBookmark.id !== targetBookmark.id) {
-      console.log('Moving bookmark:', draggedBookmark.title, 'to position of', targetBookmark.title);
+      console.log(`Moving bookmark: ${draggedBookmark.title} to position of ${targetBookmark.title}`);
+      console.log(`Mode: ${shiftPressed ? 'INSERT (Shift pressed)' : 'REPLACE (Standard)'}`);
       
-      // Simulate bookmark reorder
       if (onBookmarkReorder) {
-        onBookmarkReorder(draggedBookmark, targetBookmark);
+        // Übergebe den Modus an die Reorder-Funktion
+        onBookmarkReorder(draggedBookmark, targetBookmark, shiftPressed);
       }
       
       toast.success(`Favorit "${draggedBookmark.title}" wurde verschoben`);
