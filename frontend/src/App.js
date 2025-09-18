@@ -1700,6 +1700,7 @@ const CategoryNode = ({ category, level = 0, expandedCategories, onCategoryChang
 // Category Sidebar Component
 const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics, onCategoryReorder, onBookmarkToCategory, onCategoryManage }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
   const [showBrowserInfo, setShowBrowserInfo] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
