@@ -1843,7 +1843,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
               const service = new FavoritesService();
               await service.moveBookmarkToCategory(draggedBookmark.id, category, subcategory);
               
-              showSuccess(`Favorit "${draggedBookmark.title}" zu "${category}${subcategory ? '/' + subcategory : ''}" verschoben`);
+              toast.success(`Favorit "${draggedBookmark.title}" zu "${category}${subcategory ? '/' + subcategory : ''}" verschoben`);
               
               // Reload bookmarks und statistics
               await loadBookmarks();
