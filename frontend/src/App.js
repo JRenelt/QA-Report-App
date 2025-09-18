@@ -1808,8 +1808,53 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       try {
         const draggedBookmark = JSON.parse(bookmarkData);
         if (draggedBookmark && draggedBookmark.id && draggedBookmark.title) {
-          // Handle bookmark to category drag-and-drop
-          handleBookmarkToCategoryMove(draggedBookmark, targetCategory, isTargetSubcategory);
+          // Handle bookmark to category drag-and-drop inline
+          const moveToCategoryAsync = async () => {
+            try {
+              // Bestimme Ziel-Kategorie und Unterkategorie
+              let category, subcategory;
+              
+              if (isTargetSubcategory) {
+                // Wenn es eine Unterkategorie ist, finde die Parent-Kategorie
+                const findParentCategory = (categories, subcatName) => {
+                  for (const cat of categories) {
+                    if (cat.children && cat.children.some(child => child.name === subcatName)) {
+                      return cat.name;
+                    }
+                  }
+                  return null;
+                };
+                
+                category = findParentCategory(categories, targetCategory.name);
+                subcategory = targetCategory.name;
+              } else {
+                category = targetCategory.name;
+                subcategory = null;
+              }
+              
+              // Spezialbehandlung für "Alle" Kategorie
+              if (category === 'Alle') {
+                // Wenn zu "Alle" verschoben wird, mache es zu einer Hauptkategorie
+                category = 'Nicht zugeordnet';
+                subcategory = null;
+              }
+              
+              // API Call zum Verschieben
+              await favoritesService.moveBookmarkToCategory(draggedBookmark.id, category, subcategory);
+              
+              showSuccess(`Favorit "${draggedBookmark.title}" zu "${category}${subcategory ? '/' + subcategory : ''}" verschoben`);
+              
+              // Reload bookmarks und statistics
+              await loadBookmarks();
+              await loadStatistics();
+              
+            } catch (error) {
+              console.error('Error moving bookmark to category:', error);
+              showError('Fehler beim Verschieben des Favoriten zur Kategorie');
+            }
+          };
+          
+          moveToCategoryAsync();
           return;
         }
       } catch (parseError) {
