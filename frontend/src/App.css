@@ -1456,26 +1456,11 @@ body {
   display: none;
 }
 
-/* Filter im Search-Container */
-.search-filter-wrapper {
-  flex-shrink: 0;
-  min-width: 180px;
-}
-
-.search-filter-wrapper .status-filter {
-  min-width: 180px;
-  height: 38px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
-  color: var(--text-primary);
-}
-
-/* Anzahl rechts neben dem Filter */
+/* Anzahl in der Mitte */
 .search-results-count {
-  display: flex;
-  align-items: center;
-  margin-left: 16px;
   flex-shrink: 0;
+  min-width: 120px;
+  text-align: center;
 }
 
 .results-count-text {
@@ -1486,6 +1471,20 @@ body {
   padding: 6px 12px;
   border-radius: 6px;
   border: 1px solid var(--border-primary);
+}
+
+/* Filter ganz rechts wie im Screenshot */
+.search-filter-wrapper-right {
+  flex-shrink: 0;
+  min-width: 160px;
+}
+
+.search-filter-wrapper-right .status-filter {
+  min-width: 160px;
+  height: 38px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
 }
 
 /* Filter oberhalb der Favoriten */
