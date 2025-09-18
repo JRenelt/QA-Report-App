@@ -350,9 +350,6 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
           <DialogTitle className="category-manage-title">
             🏷️ Live Kategorien-Verwaltung
           </DialogTitle>
-          <p className="category-manage-subtitle">
-            Hierarchische Kategorien mit unbegrenzten Ebenen verwalten
-          </p>
           
           {/* Help Link und Zurück zur Startseite */}
           <div className="category-help-links">
@@ -360,7 +357,13 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
               variant="ghost" 
               size="sm"
               onClick={() => {
-                window.open('#help-categories', '_blank');
+                // Öffne Hilfe-Dialog im Parent
+                if (window.parent && window.parent.setShowHelp) {
+                  window.parent.setShowHelp(true);
+                } else {
+                  // Fallback: Neues Fenster
+                  alert('Bitte öffnen Sie das Handbuch über das Hilfe-Menü');
+                }
               }}
               className="help-link-btn"
             >
