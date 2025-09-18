@@ -367,15 +367,44 @@ class LockUnlockTester:
     
     def test_delete_protection(self):
         """6. Löschschutz für gesperrte Bookmarks testen"""
-        if not self.locked_bookmark_ids:
+        # Erstelle ein neues gesperrtes Bookmark für diesen Test
+        if not self.unlocked_bookmark_ids:
             self.log_result(
                 "DELETE Protection - Löschschutz für gesperrte Bookmarks",
                 False,
-                "Keine gesperrten Bookmarks zum Testen verfügbar"
+                "Keine entsperrten Bookmarks zum Sperren und Testen verfügbar"
             )
             return False
         
-        test_bookmark_id = self.locked_bookmark_ids[0]
+        # Verwende ein anderes Bookmark als die bereits getesteten
+        available_bookmarks = [bid for bid in self.unlocked_bookmark_ids if bid not in self.locked_bookmark_ids]
+        if not available_bookmarks:
+            self.log_result(
+                "DELETE Protection - Löschschutz für gesperrte Bookmarks",
+                False,
+                "Keine verfügbaren Bookmarks für Delete Protection Test"
+            )
+            return False
+            
+        test_bookmark_id = available_bookmarks[0]
+        
+        # Erst das Bookmark sperren
+        try:
+            lock_response = requests.put(f"{self.backend_url}/bookmarks/{test_bookmark_id}/lock", timeout=10)
+            if lock_response.status_code != 200:
+                self.log_result(
+                    "DELETE Protection - Löschschutz für gesperrte Bookmarks",
+                    False,
+                    f"Konnte Bookmark {test_bookmark_id} nicht sperren für Test"
+                )
+                return False
+        except Exception as e:
+            self.log_result(
+                "DELETE Protection - Löschschutz für gesperrte Bookmarks",
+                False,
+                f"Exception beim Sperren: {str(e)}"
+            )
+            return False
         
         try:
             # Versuche ein gesperrtes Bookmark zu löschen
