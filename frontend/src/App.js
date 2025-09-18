@@ -3683,7 +3683,7 @@ function App() {
         onSettingsChange={setAppSettings}
       />
 
-      <HelpDialog
+      <ComprehensiveHelpSystem
         isOpen={showHelp}
         onClose={() => setShowHelp(false)}
       />
