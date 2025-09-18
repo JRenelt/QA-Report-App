@@ -35,7 +35,8 @@ const EnhancedStatusFilter = ({ value, onChange, statistics = {} }) => {
         {statusOptions.map(option => (
           <SelectItem key={option.value} value={option.value}>
             <span className="flex items-center gap-2">
-              <span>{option.icon}</span>
+              {/* Icon nur anzeigen wenn es nicht das aktuell ausgewählte ist (vermeidet doppelte Icons) */}
+              {value !== option.value && <span>{option.icon}</span>}
               <span>
                 {option.label}
                 <span className="ml-1 text-xs bg-blue-100 text-blue-800 px-1 rounded">
