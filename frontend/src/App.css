@@ -1437,9 +1437,27 @@ body {
 }
 
 /* Main Content nimmt vollen Platz ein wenn Sidebar kollabiert */
-.app-layout.sidebar-collapsed .main-content {
+.app-body.sidebar-collapsed .main-content {
   margin-left: 0px !important;
   width: 100% !important;
+}
+
+/* Externer Toggle Button */
+.sidebar-toggle-external {
+  position: fixed;
+  top: 120px;
+  left: 8px;
+  z-index: 1000;
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-primary) !important;
+  color: var(--text-primary) !important;
+  padding: 8px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-toggle-external:hover {
+  background: var(--bg-secondary) !important;
 }
 
 .sidebar-toggle {
