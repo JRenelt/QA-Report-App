@@ -440,6 +440,18 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
             <h1>📚 FavOrg Benutzerhandbuch</h1>
             <p>Professioneller Bookmark Manager - Version 2.3.0</p>
             <p>Vollständige Dokumentation aller Funktionen</p>
+            
+            <!-- Navigation Links -->
+            <div class="navigation-index">
+              <h3>📋 Inhaltsverzeichnis - Schnellnavigation</h3>
+              <div class="nav-links">
+                ${Object.entries(helpSections).map(([key, section]) => `
+                  <a href="#section-${key}" class="nav-link">
+                    ${section.content.title}
+                  </a>
+                `).join('')}
+              </div>
+            </div>
           </div>
           
           ${Object.entries(helpSections).map(([key, section]) => `
