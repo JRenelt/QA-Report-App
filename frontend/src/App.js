@@ -2178,7 +2178,9 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
       {bookmarks.map(bookmark => (
         <Card 
           key={bookmark.id} 
-          className={`bookmark-card ${bookmark.is_locked ? 'locked' : 'draggable'} ${bookmark.is_dead_link ? 'dead-link' : 'active-link'} ${dragOverBookmark?.id === bookmark.id ? 'drag-over' : ''}`}
+          className={`bookmark-card ${bookmark.is_locked ? 'locked' : 'draggable'} ${bookmark.is_dead_link ? 'dead-link' : 'active-link'} ${
+            dragOverBookmark?.id === bookmark.id ? `drag-over ${dragOverBookmark.insertMode ? 'insert-mode' : ''}` : ''
+          } ${draggedBookmark?.id === bookmark.id ? 'dragging' : ''}`}
           draggable={!bookmark.is_locked}
           onDragStart={(e) => bookmark.is_locked ? e.preventDefault() : handleBookmarkDragStart(e, bookmark)}
           onDragOver={(e) => bookmark.is_locked ? e.preventDefault() : handleBookmarkDragOver(e, bookmark)}
