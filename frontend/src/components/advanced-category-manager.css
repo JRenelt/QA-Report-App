@@ -1,0 +1,124 @@
+/* Advanced Category Manager Styles */
+
+.category-tree-node {
+  margin-bottom: 2px;
+}
+
+.category-item {
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.category-item:hover {
+  background-color: var(--bg-hover);
+}
+
+.category-item.selected {
+  background-color: var(--bg-selected);
+  border-left: 3px solid var(--primary);
+}
+
+.category-item-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  min-height: 40px;
+}
+
+.expand-btn {
+  padding: 4px;
+  width: 24px;
+  height: 24px;
+}
+
+.category-name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.category-count {
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 2px 6px;
+  border-radius: 12px;
+}
+
+.category-level {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  background: var(--bg-tertiary);
+  padding: 2px 4px;
+  border-radius: 8px;
+}
+
+.category-actions {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.category-item:hover .category-actions {
+  opacity: 1;
+}
+
+.category-actions button {
+  padding: 4px;
+  width: 28px;
+  height: 28px;
+}
+
+.category-children {
+  border-left: 2px solid var(--border-secondary);
+  margin-left: 12px;
+}
+
+.category-creation-section,
+.category-management-section {
+  background: var(--bg-secondary);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-primary);
+}
+
+.category-tree {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-secondary);
+}
+
+/* Level-spezifische Farben */
+.category-item[data-level="1"] .category-name {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.category-item[data-level="2"] .category-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.category-item[data-level="3"] .category-name {
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.category-item[data-level="4"] .category-name {
+  font-weight: 300;
+  color: var(--text-tertiary);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .grid-cols-1.lg\\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .category-creation-section,
+  .category-management-section {
+    padding: 12px;
+  }
+}
