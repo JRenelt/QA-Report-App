@@ -1074,8 +1074,8 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
                   <SelectValue placeholder="Übergeordnete Kategorie wählen" />
                 </SelectTrigger>
                 <SelectContent>
-                  {/* Alle Kategorien flach für Parent-Auswahl */}
-                  {categories.map(cat => (
+                  {/* Alle Kategorien flach für Parent-Auswahl - nur nicht-leere Namen */}
+                  {categories.filter(cat => cat.name && cat.name.trim() !== '').map(cat => (
                     <SelectItem key={cat.name} value={cat.name}>
                       {cat.parent_category ? `${cat.parent_category} → ${cat.name}` : cat.name}
                     </SelectItem>
