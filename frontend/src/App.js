@@ -3345,6 +3345,19 @@ function App() {
     }
   };
 
+  const handleToggleLock = async (bookmarkId, isCurrentlyLocked) => {
+    try {
+      const newLockStatus = !isCurrentlyLocked;
+      await favoritesService.updateBookmarkLock(bookmarkId, newLockStatus);
+      showSuccess(`Favorit ${newLockStatus ? 'gesperrt' : 'entsperrt'}`);
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      console.error('Error toggling lock:', error);
+      showError('Fehler beim Ändern des Sperr-Status');
+    }
+  };
+
   const handleRemoveLocalhost = async () => {
     // Wenn bereits Localhost-Links gefunden wurden, frage nach
     if (localhostCount > 0) {
