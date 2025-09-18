@@ -2083,7 +2083,15 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
   const handleBookmarkDragOver = (e, bookmark) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    setDragOverBookmark(bookmark);
+    
+    // Unterschiedliches visuelles Feedback je nach Modus
+    if (shiftPressed) {
+      // Einfügemodus: Zeige Linie zwischen Bookmarks
+      setDragOverBookmark({ ...bookmark, insertMode: true });
+    } else {
+      // Standardmodus: Zeige Rahmen um Bookmark
+      setDragOverBookmark({ ...bookmark, insertMode: false });
+    }
   };
 
   const handleBookmarkDragLeave = (e) => {
