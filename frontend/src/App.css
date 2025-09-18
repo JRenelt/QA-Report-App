@@ -1502,10 +1502,12 @@ body {
   margin: 0 auto;
 }
 
-/* Bookmark Dialog spezifische Breite */
+/* Bookmark Dialog spezifische Breite - Updated */
 .bookmark-dialog .dialog-content {
   max-width: 600px;
   width: 600px;
+  z-index: 100001 !important;
+  position: relative !important;
 }
 
 /* Form Group - bessere Struktur KRITISCH */
