@@ -908,8 +908,37 @@ class BookmarkManager:
         created_count = 0
         duplicates_count = 0
         dead_links_count = 0
+        locked_count = 0
+        timeout_count = 0
+        unchecked_count = 0
         
-        for bookmark_data in test_bookmarks:
+        for i, bookmark_data in enumerate(test_bookmarks):
+            # Verschiedene Status-Typen zuweisen basierend auf Index
+            if i < 65:  # Normale aktive Links (65)
+                status_type = "active"
+                is_dead = False
+                is_locked = False
+            elif i < 80:  # Tote Links (15)
+                status_type = "dead"
+                is_dead = True
+                is_locked = False
+                dead_links_count += 1
+            elif i < 90:  # Gesperrte Links (10)
+                status_type = "locked"
+                is_dead = False
+                is_locked = True
+                locked_count += 1
+            elif i < 95:  # Timeout Links (5)
+                status_type = "timeout"
+                is_dead = False
+                is_locked = False
+                timeout_count += 1
+            else:  # Ungeprüfte Links (5)
+                status_type = "unchecked"
+                is_dead = False
+                is_locked = False
+                unchecked_count += 1
+            
             bookmark_dict = {
                 "id": str(uuid.uuid4()),
                 "title": bookmark_data["title"],
@@ -917,8 +946,9 @@ class BookmarkManager:
                 "category": bookmark_data["category"],
                 "subcategory": bookmark_data.get("subcategory", ""),
                 "created_at": datetime.utcnow(),
-                "is_dead_link": bookmark_data.get("is_dead", False),
-                "status_type": bookmark_data.get("status_type", "active" if not bookmark_data.get("is_dead", False) else "dead")
+                "is_dead_link": is_dead,
+                "is_locked": is_locked,
+                "status_type": status_type
             }
             
             # Check if this is a duplicate
