@@ -48,6 +48,7 @@ import {
   Plus,
   Folder,
   ChevronRight,
+  ChevronLeft,
   ChevronDown,
   Download,
   FileCheck,
