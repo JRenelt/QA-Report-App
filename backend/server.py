@@ -972,10 +972,16 @@ class BookmarkManager:
             "created_count": created_count,
             "duplicates": duplicates_count,
             "dead_links": dead_links_count,
+            "locked_links": locked_count,
+            "timeout_links": timeout_count,
+            "unchecked_links": unchecked_count,
             "details": {
-                "normal_links": 65,
-                "duplicate_links": 20, 
+                "active_links": 65,
                 "dead_links": 15,
+                "locked_links": 10,
+                "timeout_links": 5,
+                "unchecked_links": 5,
+                "duplicate_links": duplicates_count,
                 "total": 100
             }
         }
