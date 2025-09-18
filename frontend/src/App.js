@@ -1850,7 +1850,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
               
             } catch (error) {
               console.error('Error moving bookmark to category:', error);
-              showError('Fehler beim Verschieben des Favoriten zur Kategorie');
+              toast.error('Fehler beim Verschieben des Favoriten zur Kategorie');
             }
           };
           
