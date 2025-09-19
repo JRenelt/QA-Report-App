@@ -2045,8 +2045,13 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
             {/* Category List */}
             <div className="category-list">
           <div
-            className={`category-item main-category ${activeCategory === 'all' ? 'active' : ''}`}
+            className={`category-item main-category ${activeCategory === 'all' ? 'active' : ''} ${
+              dragOverCategory?.name === 'Alle' ? `drag-over ${dragOverCategory.insertMode ? 'insert-mode' : 'standard-mode'}` : ''
+            }`}
             onClick={() => onCategoryChange('all', null)}
+            onDragOver={(e) => handleCategoryDragOver(e, {name: 'Alle', id: 'alle'}, false)}
+            onDragLeave={handleCategoryDragLeave}
+            onDrop={(e) => handleCategoryDrop(e, {name: 'Alle', id: 'alle'}, false)}
           >
             <div className="category-info">
               <FolderOpen className="category-icon all-icon" />
