@@ -3846,7 +3846,7 @@ function App() {
         await Promise.all([
           loadBookmarks(),
           loadStatistics(),
-          loadCategories() // <- Das fehlte!
+          refreshCategories() // <- Das fehlte!
         ]);
         console.log('✅ Category reorder refresh completed - Categories reloaded!');
         toast.success('Kategorien erfolgreich aktualisiert');
