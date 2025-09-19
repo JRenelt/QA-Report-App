@@ -3392,6 +3392,36 @@ function App() {
     }
   };
 
+  // Intelligenter Update für Kategorien ohne Page Reload
+  const handleSmartCategoryUpdate = async () => {
+    try {
+      console.log('Smart category update started...');
+      
+      // Aktuellen Zustand der erweiterten Kategorien speichern
+      const currentExpandedCategories = new Set(expandedCategories);
+      const currentActiveCategory = activeCategory;
+      const currentActiveSubcategory = activeSubcategory;
+      
+      // Kategorien und Bookmarks neu laden
+      await Promise.all([
+        loadBookmarks(),
+        loadStatistics()
+      ]);
+      
+      // UI-Zustand wiederherstellen nach 100ms Delay
+      setTimeout(() => {
+        setExpandedCategories(currentExpandedCategories);
+        // Active Category bleibt durch die bestehende State-Verwaltung erhalten
+      }, 100);
+      
+      console.log('Smart category update completed - expanded state preserved');
+      
+    } catch (error) {
+      console.error('Error in smart category update:', error);
+      toast.error('Fehler beim Aktualisieren der Kategorien');
+    }
+  };
+
   // Event Handlers
   const handleCreateBookmark = () => {
     setEditingBookmark(null);
