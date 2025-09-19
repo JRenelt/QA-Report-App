@@ -3840,15 +3840,18 @@ function App() {
   // Category Reorder Handler für Drag & Drop Refresh
   const handleCategoryReorder = async (action) => {
     if (action === 'refresh') {
-      console.log('Category reorder refresh requested...');
+      console.log('🔄 Category reorder refresh requested...');
       try {
+        // KRITISCHER FIX: Lade auch Kategorien neu!
         await Promise.all([
           loadBookmarks(),
-          loadStatistics()
+          loadStatistics(),
+          loadCategories() // <- Das fehlte!
         ]);
-        console.log('Category reorder refresh completed');
+        console.log('✅ Category reorder refresh completed - Categories reloaded!');
+        toast.success('Kategorien erfolgreich aktualisiert');
       } catch (error) {
-        console.error('Error in category reorder refresh:', error);
+        console.error('❌ Error in category reorder refresh:', error);
         toast.error('Fehler beim Aktualisieren nach Kategorie-Verschiebung');
       }
     }
