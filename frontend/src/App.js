@@ -1965,16 +1965,18 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
           {!sidebarCollapsed && (
             <>
               <div className="sidebar-title-section">
-                <h3 className="sidebar-title">Kategorien</h3>
-                <div className="sidebar-controls">
-                  {/* Info-Button (Kreis mit i) */}
+                <div className="sidebar-title-with-info">
+                  <h3 className="sidebar-title">Kategorien</h3>
+                  {/* Info-Button direkt neben "Kategorien" */}
                   <button
-                    className="category-info-btn"
+                    className="category-info-btn-inline"
                     onClick={() => alert('Kategorie-Hilfe: Drag & Drop zwischen Ebenen, Shift für Einfügemodus')}
                     title="Kategorie-Hilfe"
                   >
-                    <div className="info-circle">i</div>
+                    <div className="info-circle-large">i</div>
                   </button>
+                </div>
+                <div className="sidebar-controls">
                   {/* Kategorie verwalten Button (Blaues Kreuz rechts) */}
                   <button
                     className="category-manage-btn"
