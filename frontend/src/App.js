@@ -1927,11 +1927,13 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       console.log('Category move successful:', result);
       
       // Success Toast
-      let successMessage = `Kategorie "${draggedCategory.name}" verschoben`;
+      let successMessage = `Kategorie "${draggedCategory.name}"`;
       if (targetLevel === 'child') {
-        successMessage += ` ✓`;
+        successMessage += ` → Unterkategorie von "${targetCategory.name}" ✓`;
       } else if (targetLevel === 'root') {
-        successMessage += ` (→ Hauptkategorie) ✓`;
+        successMessage += ` → Hauptkategorie ✓`;
+      } else {
+        successMessage += ` → sortiert ✓`;
       }
       
       if (dragMode === 'insert') {
