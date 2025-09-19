@@ -1986,34 +1986,13 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
                   </button>
                 </div>
               </div>
-              <div className="sidebar-info">
-                {showBrowserInfo && (
-                  <div 
-                    className="info-tooltip info-tooltip-positioned"
-                    style={{
-                      position: 'fixed',
-                      top: `${tooltipPosition.top}px`,
-                      left: `${tooltipPosition.left}px`,
-                      zIndex: 9999
-                    }}
-                  >
-                    Basierend auf Browser-Ordnern
-                    <button 
-                      className="tooltip-close"
-                      onClick={() => setShowBrowserInfo(false)}
-                    >
-                      ×
-                    </button>
-                  </div>
-                )}
-              </div>
             </>
           )}
         </div>
         
         {!sidebarCollapsed && (
           <>
-            {/* Existing sidebar content */}
+            {/* Category List */}
             <div className="category-list">
           <div
             className={`category-item main-category ${activeCategory === 'all' ? 'active' : ''}`}
