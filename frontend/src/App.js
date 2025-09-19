@@ -3341,9 +3341,30 @@ function App() {
   
   // Load initial data
   useEffect(() => {
-    loadBookmarks();
-    refreshCategories();
-    loadStatistics();
+    const initializeData = async () => {
+      await Promise.all([
+        loadBookmarks(),
+        loadStatistics()
+      ]);
+      refreshCategories();
+    };
+    
+    initializeData();
+    
+    // Event Listener für Category Refresh (ohne Page Reload)
+    const handleCategoryRefresh = async () => {
+      console.log('Received category refresh event - updating data...');
+      await Promise.all([
+        loadBookmarks(),
+        loadStatistics()  
+      ]);
+    };
+    
+    window.addEventListener('refreshCategories', handleCategoryRefresh);
+    
+    return () => {
+      window.removeEventListener('refreshCategories', handleCategoryRefresh);
+    };
   }, []);
 
   // Reload when category or status filter changes
