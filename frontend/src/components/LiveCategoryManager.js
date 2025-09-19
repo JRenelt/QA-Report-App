@@ -97,16 +97,14 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
   };
 
   const saveEdit = async () => {
-    if (!editValue.trim()) {
-      toast.error('Name darf nicht leer sein');
-      return;
-    }
-
+    // Erlaube auch leere Namen, aber normalisiere sie
+    const normalizedValue = editValue.trim() || 'Unbenannt';
+    
     try {
       await onSave({
         action: 'update',
         oldName: editingNode,
-        newName: editValue.trim()
+        newName: normalizedValue
       });
       
       toast.success(`Kategorie umbenannt`);
