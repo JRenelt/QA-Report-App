@@ -3436,25 +3436,6 @@ function App() {
     }
   };
 
-  // Intelligenter Update für Kategorien ohne Page Reload
-  const handleSmartCategoryUpdate = async () => {
-    try {
-      console.log('Smart category update started...');
-      
-      // Kategorien und Bookmarks neu laden ohne State-Reset
-      await Promise.all([
-        loadBookmarks(),
-        loadStatistics()
-      ]);
-      
-      console.log('Smart category update completed - UI state preserved');
-      
-    } catch (error) {
-      console.error('Error in smart category update:', error);
-      toast.error('Fehler beim Aktualisieren der Kategorien');
-    }
-  };
-
   // Event Handlers
   const handleCreateBookmark = () => {
     setEditingBookmark(null);
