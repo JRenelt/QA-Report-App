@@ -1974,14 +1974,41 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       
       toast.success(successMessage);
       
-      // Sofortiger Update mit besserer Fehlerbehandlung
+      // Sofortiger Update mit besserer Fehlerbehandlung + Fokus-Beibehaltung
       try {
         console.log('🔄 Starting immediate category refresh...');
+        
+        // Merke Position der verschobenen Kategorie
+        const movedCategoryName = draggedCategory.name;
         
         // Callback an Parent-Komponente für Daten-Reload
         if (onCategoryReorder) {
           await onCategoryReorder('refresh');
           console.log('✅ Parent callback completed successfully');
+          
+          // Fokus auf verschobene Kategorie nach Update
+          setTimeout(() => {
+            const movedElement = document.querySelector(`[data-category="${movedCategoryName}"]`);
+            if (movedElement) {
+              // Highlight-Animation hinzufügen
+              movedElement.classList.add('recently-moved');
+              
+              // Sanftes Scrollen zur neuen Position
+              movedElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center',
+                inline: 'nearest'
+              });
+              
+              // Animation nach 1.5s entfernen
+              setTimeout(() => {
+                movedElement.classList.remove('recently-moved');
+              }, 1500);
+              
+              console.log(`🎯 Fokus auf verschobene Kategorie "${movedCategoryName}" gesetzt`);
+            }
+          }, 400);
+          
         } else {
           console.warn('⚠️ No onCategoryReorder callback available');
           toast.warning('Kategorie verschoben - bitte Seite manuell aktualisieren');
