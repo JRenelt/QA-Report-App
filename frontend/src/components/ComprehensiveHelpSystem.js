@@ -450,10 +450,14 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           {
             title: 'Erweitert',
             steps: [
-              'Testdaten: 100 Favoriten mit Duplikaten und toten Links',
-              'Link-Validierung: Timeout-Einstellungen',
-              'Duplikat-Behandlung: Ignorieren, Ersetzen oder Beide behalten',
-              'Export-Filter: Status-basierte Export-Optionen'
+              '📊 **Testdaten-Generierung**: 100 Favoriten mit realistischen Daten aus 11 Kategorien',
+              '🎯 **Status-Verteilung**: 54% aktiv, 9% tot, 14% gesperrt, 10% localhost, 7% duplikate',
+              '🌐 **Realistische URLs**: GitHub, Stack Overflow, BBC News, LinkedIn, Netflix, Wikipedia',
+              '📂 **Hierarchische Kategorien**: Development→Frontend/Backend, News→Tech/World, etc.',
+              '⚙️ **Link-Validierung**: Timeout-Einstellungen und Batch-Größe konfigurieren',
+              '🔍 **Duplikat-Behandlung**: Ignorieren, Ersetzen oder Beide behalten Optionen',
+              '📤 **Export-Filter**: Status-basierte Export-Optionen für selektiven Export',
+              '🔧 **Debug-Modus**: Erweiterte Logging-Optionen für Entwickler'
             ]
           }
         ]
