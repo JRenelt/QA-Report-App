@@ -1893,6 +1893,15 @@ FavOrg Version 2.3.0
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating BookmarkBox download: {str(e)}")
 
+@api_router.post("/categories/initialize")
+async def initialize_categories():
+    """Kategorien in der Datenbank basierend auf Bookmarks initialisieren"""
+    try:
+        result = await bookmark_manager.initialize_categories_from_bookmarks()
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error initializing categories: {str(e)}")
+
 @api_router.put("/categories/reorder")
 async def reorder_categories(reorder_data: dict):
     """Kategorien in neuer Reihenfolge sortieren"""
