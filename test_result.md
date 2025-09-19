@@ -864,6 +864,18 @@ test_plan:
         agent: "testing"
         comment: "✅ COUNTER-VALIDIERUNG ERFOLGREICH: Alle Counter konsistent - Header [100], Sidebar-Kategorien (Alle: 100, Development: 25, News: 11, etc.), Filter-Buttons (TOTE Links [27], Duplikate [20]) - alle Zahlen korrekt und konsistent."
 
+  - task: "Phase 2 System Rebuild - Schritt 2: Modulares Category CRUD mit Lock-Funktionalität"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎯 PHASE 2 SYSTEM REBUILD - SCHRITT 2 VOLLSTÄNDIG GETESTET UND FUNKTIONAL: Umfassende Tests des neuen modularen Category CRUD mit Lock-Funktionalität durchgeführt (9/9 Tests bestanden, 100% Success Rate). ✅ CATEGORY LOCK/UNLOCK SYSTEM: PUT /api/categories/{id}/lock und PUT /api/categories/{id}/unlock funktionieren perfekt - Kategorien können gesperrt/entsperrt werden mit korrekter Reason-Tracking ✅ LOCK-STATUS ABRUF: GET /api/categories/with-lock-status liefert korrekte Lock-Informationen mit can_edit und can_delete Flags ✅ LOCK-PROTECTION CRUD: PUT /api/categories/{id}/update-protected und DELETE /api/categories/{id}/delete-protected geben korrekt HTTP 403 mit deutschen Fehlermeldungen 'Gesperrte Kategorie kann nicht bearbeitet/gelöscht werden' ✅ CREATE WITH LOCK: POST /api/categories/create-with-lock erstellt sowohl gesperrte als auch entsperrte Kategorien korrekt ✅ OBJEKTORIENTIERTE STRUKTUR: ModularCategoryManager mit Timestamp-Management (created_at, updated_at, locked_at) funktioniert einwandfrei ✅ BOOKMARK-SCHUTZ: Beim Löschen von Kategorien werden Bookmarks korrekt zu 'Uncategorized' verschoben ✅ DEUTSCHE FEHLERMELDUNGEN: Alle Fehlermeldungen korrekt auf Deutsch implementiert ✅ CRITICAL FIX: Category Pydantic Model um Lock-Felder erweitert (is_locked, lock_reason, locked_at, updated_at) - Lock-Status wird jetzt korrekt persistiert und abgerufen. ALLE 6 NEUE API-ENDPUNKTE VOLLSTÄNDIG FUNKTIONAL - PHASE 2 SYSTEM REBUILD SCHRITT 2 ERFOLGREICH ABGESCHLOSSEN!"
+
   - task: "Test Data Creation API Endpoints"
     implemented: true
     working: true
