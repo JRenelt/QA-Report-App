@@ -745,6 +745,7 @@ class ModularCategoryManager:
     async def create_category(self, name: str, parent_category: Optional[str] = None, is_locked: bool = False, lock_reason: str = "") -> Category:
         """Neue Kategorie oder Unterkategorie mit Lock-Option erstellen"""
         category_dict = {
+            "id": str(uuid.uuid4()),
             "name": name, 
             "parent_category": parent_category,
             "is_locked": is_locked,
