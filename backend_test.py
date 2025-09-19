@@ -1,550 +1,517 @@
 #!/usr/bin/env python3
 """
-Backend Test Suite für FavLink Manager Drag & Drop System
-Testet Kategorie Drag & Drop System umfassend gemäß German Review Request
+PHASE 2 SYSTEM REBUILD - Schritt 1 Testing
+Teste das neue modulare Testdaten-System mit exakten Status-Zahlen
 
-Problem: User berichtet Verschieben funktioniert nicht (OF) und "Alle" Cross-Over funktioniert nicht.
+German Review Request Testing:
+- Testdaten-Generierung: POST /api/bookmarks/create-test-data
+- Status-Konsistenz prüfen
+- Statistiken validieren: GET /api/statistics
+- Kategorie-Integration testen
 """
 
-import requests
+import asyncio
+import aiohttp
 import json
-import sys
+import os
 from datetime import datetime
-import uuid
+from typing import Dict, List, Any
 
-# Backend URL aus .env Datei
-BACKEND_URL = "https://favorg-rebuild.preview.emergentagent.com/api"
-
-class DragDropTester:
+class Phase2TestDataValidator:
     def __init__(self):
-        self.backend_url = BACKEND_URL
-        self.test_results = []
-        self.available_categories = []
+        # Use backend URL from environment
+        self.base_url = os.getenv('REACT_APP_BACKEND_URL', 'https://favorg-rebuild.preview.emergentagent.com')
+        self.api_url = f"{self.base_url}/api"
+        self.session = None
         
-    def log_result(self, test_name, success, details="", response_data=None):
-        """Protokolliert Testergebnisse"""
+        # Expected exact counts for Phase 2 modular system
+        self.expected_counts = {
+            "total_bookmarks": 70,
+            "active": 10,
+            "dead": 10, 
+            "localhost": 10,
+            "duplicate": 10,
+            "locked": 10,
+            "timeout": 10,
+            "checked": 10
+        }
+        
+        self.test_results = []
+        
+    async def __aenter__(self):
+        self.session = aiohttp.ClientSession()
+        return self
+        
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if self.session:
+            await self.session.close()
+    
+    def log_test(self, test_name: str, success: bool, message: str, details: Dict = None):
+        """Log test result"""
         result = {
             "test": test_name,
             "success": success,
-            "details": details,
-            "timestamp": datetime.now().isoformat(),
-            "response_data": response_data
+            "message": message,
+            "details": details or {},
+            "timestamp": datetime.now().isoformat()
         }
         self.test_results.append(result)
-        
         status = "✅" if success else "❌"
-        print(f"{status} {test_name}: {details}")
-        
-        if response_data and not success:
-            print(f"   Response: {response_data}")
+        print(f"{status} {test_name}: {message}")
+        if details:
+            print(f"   Details: {details}")
     
-    def test_categories_database_check(self):
-        """1. Kategorien-Datenbank Prüfung - GET /api/categories"""
+    async def test_create_modular_test_data(self):
+        """Test POST /api/bookmarks/create-test-data - Haupttest für Phase 2"""
         try:
-            response = requests.get(f"{self.backend_url}/categories", timeout=10)
+            print("\n🎯 PHASE 2 SYSTEM REBUILD - TESTDATEN-GENERIERUNG")
+            print("=" * 60)
             
-            if response.status_code == 200:
-                categories = response.json()
-                self.available_categories = categories
-                
-                if len(categories) == 0:
-                    self.log_result(
-                        "GET /api/categories - Kategorien-Datenbank Prüfung",
+            # Clear existing data first
+            await self.clear_existing_data()
+            
+            # Create modular test data
+            async with self.session.post(f"{self.api_url}/bookmarks/create-test-data") as response:
+                if response.status != 200:
+                    error_text = await response.text()
+                    self.log_test(
+                        "Modular Test Data Creation",
                         False,
-                        "Kategorien-Datenbank ist leer - Initialisierung erforderlich",
-                        {"categories_count": 0, "needs_initialization": True}
+                        f"HTTP {response.status}: {error_text}"
                     )
                     return False
-                else:
-                    # Analysiere Kategorien-Struktur
-                    root_categories = [c for c in categories if not c.get('parent_category')]
-                    sub_categories = [c for c in categories if c.get('parent_category')]
-                    
-                    self.log_result(
-                        "GET /api/categories - Kategorien-Datenbank Prüfung",
-                        True,
-                        f"Kategorien gefunden: {len(categories)} total ({len(root_categories)} Hauptkategorien, {len(sub_categories)} Unterkategorien)",
-                        {
-                            "total_categories": len(categories),
-                            "root_categories": len(root_categories),
-                            "sub_categories": len(sub_categories),
-                            "category_names": [c.get('name', 'Unknown') for c in categories[:5]]  # Erste 5 für Debug
-                        }
+                
+                data = await response.json()
+                
+                # Validate response structure
+                required_fields = ["message", "created_count", "status_distribution", "details"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if missing_fields:
+                    self.log_test(
+                        "Response Structure Validation",
+                        False,
+                        f"Missing fields: {missing_fields}",
+                        {"response": data}
                     )
-                    return True
-            else:
-                self.log_result(
-                    "GET /api/categories - Kategorien-Datenbank Prüfung",
-                    False,
-                    f"HTTP {response.status_code}",
-                    response.text
+                    return False
+                
+                # Check total count
+                created_count = data.get("created_count", 0)
+                if created_count != self.expected_counts["total_bookmarks"]:
+                    self.log_test(
+                        "Total Bookmark Count",
+                        False,
+                        f"Expected {self.expected_counts['total_bookmarks']}, got {created_count}",
+                        {"expected": self.expected_counts["total_bookmarks"], "actual": created_count}
+                    )
+                    return False
+                
+                self.log_test(
+                    "Total Bookmark Count",
+                    True,
+                    f"Exactly {created_count} bookmarks created as expected"
                 )
-                return False
+                
+                # Validate status distribution
+                status_dist = data.get("status_distribution", {})
+                all_status_correct = True
+                
+                for status_type, expected_count in self.expected_counts.items():
+                    if status_type == "total_bookmarks":
+                        continue
+                        
+                    actual_count = status_dist.get(status_type, 0)
+                    if actual_count != expected_count:
+                        self.log_test(
+                            f"Status Count - {status_type}",
+                            False,
+                            f"Expected {expected_count}, got {actual_count}",
+                            {"status": status_type, "expected": expected_count, "actual": actual_count}
+                        )
+                        all_status_correct = False
+                    else:
+                        self.log_test(
+                            f"Status Count - {status_type}",
+                            True,
+                            f"Exactly {actual_count} {status_type} bookmarks"
+                        )
+                
+                if all_status_correct:
+                    self.log_test(
+                        "Status Distribution Validation",
+                        True,
+                        "All status groups have exactly 10 bookmarks each",
+                        {"distribution": status_dist}
+                    )
+                
+                return all_status_correct
                 
         except Exception as e:
-            self.log_result(
-                "GET /api/categories - Kategorien-Datenbank Prüfung",
+            self.log_test(
+                "Modular Test Data Creation",
                 False,
                 f"Exception: {str(e)}"
             )
             return False
     
-    def test_categories_initialization(self):
-        """2. Kategorien-Initialisierung - POST /api/categories/initialize"""
-        if len(self.available_categories) > 0:
-            self.log_result(
-                "POST /api/categories/initialize - Kategorien-Initialisierung",
-                True,
-                "Kategorien bereits vorhanden - Initialisierung übersprungen",
-                {"categories_count": len(self.available_categories)}
-            )
-            return True
-        
+    async def clear_existing_data(self):
+        """Clear existing bookmarks and categories for clean test"""
         try:
-            response = requests.post(f"{self.backend_url}/categories/initialize", timeout=15)
-            
-            if response.status_code == 200:
-                result = response.json()
-                
-                # Prüfe erneut die Kategorien nach Initialisierung
-                verify_response = requests.get(f"{self.backend_url}/categories", timeout=10)
-                if verify_response.status_code == 200:
-                    self.available_categories = verify_response.json()
-                    
-                    self.log_result(
-                        "POST /api/categories/initialize - Kategorien-Initialisierung",
-                        True,
-                        f"Kategorien erfolgreich initialisiert: {result.get('message', 'Success')}",
-                        {
-                            "initialization_result": result,
-                            "categories_after_init": len(self.available_categories)
-                        }
-                    )
-                    return True
-                else:
-                    self.log_result(
-                        "POST /api/categories/initialize - Kategorien-Initialisierung",
-                        False,
-                        "Initialisierung erfolgreich, aber Verifikation fehlgeschlagen"
-                    )
-                    return False
-            else:
-                self.log_result(
-                    "POST /api/categories/initialize - Kategorien-Initialisierung",
-                    False,
-                    f"HTTP {response.status_code}",
-                    response.text
-                )
-                return False
+            # Clear bookmarks
+            async with self.session.delete(f"{self.api_url}/bookmarks/all") as response:
+                if response.status == 200:
+                    data = await response.json()
+                    print(f"🧹 Cleared {data.get('deleted_count', 0)} existing bookmarks")
                 
         except Exception as e:
-            self.log_result(
-                "POST /api/categories/initialize - Kategorien-Initialisierung",
+            print(f"⚠️ Warning: Could not clear existing data: {e}")
+    
+    async def test_status_consistency(self):
+        """Test status field consistency (status_type, is_dead_link, is_locked)"""
+        try:
+            print("\n🔍 STATUS-KONSISTENZ PRÜFUNG")
+            print("=" * 40)
+            
+            # Get all bookmarks
+            async with self.session.get(f"{self.api_url}/bookmarks") as response:
+                if response.status != 200:
+                    self.log_test(
+                        "Status Consistency Check",
+                        False,
+                        f"Failed to fetch bookmarks: HTTP {response.status}"
+                    )
+                    return False
+                
+                bookmarks = await response.json()
+                
+                if len(bookmarks) != 70:
+                    self.log_test(
+                        "Bookmark Count for Consistency Check",
+                        False,
+                        f"Expected 70 bookmarks, found {len(bookmarks)}"
+                    )
+                    return False
+                
+                # Check consistency for each status type
+                consistency_errors = []
+                status_counts = {}
+                
+                for bookmark in bookmarks:
+                    status_type = bookmark.get("status_type", "unknown")
+                    is_dead_link = bookmark.get("is_dead_link", False)
+                    is_locked = bookmark.get("is_locked", False)
+                    
+                    # Count status types
+                    status_counts[status_type] = status_counts.get(status_type, 0) + 1
+                    
+                    # Validate consistency rules
+                    if status_type == "active":
+                        if is_dead_link or is_locked:
+                            consistency_errors.append(f"Active bookmark {bookmark['id']} has is_dead_link={is_dead_link} or is_locked={is_locked}")
+                    
+                    elif status_type == "dead":
+                        if not is_dead_link or is_locked:
+                            consistency_errors.append(f"Dead bookmark {bookmark['id']} has is_dead_link={is_dead_link}, is_locked={is_locked}")
+                    
+                    elif status_type == "localhost":
+                        if is_dead_link or is_locked:
+                            consistency_errors.append(f"Localhost bookmark {bookmark['id']} has is_dead_link={is_dead_link} or is_locked={is_locked}")
+                    
+                    elif status_type == "duplicate":
+                        if is_dead_link or is_locked:
+                            consistency_errors.append(f"Duplicate bookmark {bookmark['id']} has is_dead_link={is_dead_link} or is_locked={is_locked}")
+                    
+                    elif status_type == "locked":
+                        if is_dead_link or not is_locked:
+                            consistency_errors.append(f"Locked bookmark {bookmark['id']} has is_dead_link={is_dead_link}, is_locked={is_locked}")
+                    
+                    elif status_type == "timeout":
+                        if is_dead_link or is_locked:
+                            consistency_errors.append(f"Timeout bookmark {bookmark['id']} has is_dead_link={is_dead_link} or is_locked={is_locked}")
+                    
+                    elif status_type == "checked":
+                        if is_dead_link or is_locked:
+                            consistency_errors.append(f"Checked bookmark {bookmark['id']} has is_dead_link={is_dead_link} or is_locked={is_locked}")
+                
+                if consistency_errors:
+                    self.log_test(
+                        "Status Field Consistency",
+                        False,
+                        f"Found {len(consistency_errors)} consistency errors",
+                        {"errors": consistency_errors[:5], "total_errors": len(consistency_errors)}
+                    )
+                    return False
+                
+                self.log_test(
+                    "Status Field Consistency",
+                    True,
+                    "All status fields are consistent with status_type",
+                    {"status_counts": status_counts}
+                )
+                
+                return True
+                
+        except Exception as e:
+            self.log_test(
+                "Status Consistency Check",
                 False,
                 f"Exception: {str(e)}"
             )
             return False
     
-    def test_cross_level_sort_to_root(self):
-        """3. Cross-Level Sort API Test - Verschiebung auf "root" level"""
-        if len(self.available_categories) == 0:
-            self.log_result(
-                "PUT /api/categories/cross-level-sort - Verschiebung auf Root Level",
-                False,
-                "Keine Kategorien verfügbar für Test"
-            )
-            return False
-        
-        # Finde eine geeignete Kategorie zum Verschieben (bevorzugt Unterkategorie)
-        test_category = None
-        for category in self.available_categories:
-            if category.get('parent_category'):  # Unterkategorie
-                test_category = category
-                break
-        
-        if not test_category:
-            # Falls keine Unterkategorie, nimm erste verfügbare
-            test_category = self.available_categories[0]
-        
-        test_payload = {
-            "dragged_category": test_category.get('name', 'Testing'),
-            "target_category": "Alle",
-            "operation_mode": "standard",
-            "target_level": "root"
-        }
-        
+    async def test_statistics_validation(self):
+        """Test GET /api/statistics for exact numbers"""
         try:
-            response = requests.put(
-                f"{self.backend_url}/categories/cross-level-sort",
-                json=test_payload,
-                timeout=10
-            )
+            print("\n📊 STATISTIKEN VALIDIERUNG")
+            print("=" * 30)
             
-            if response.status_code == 200:
-                result = response.json()
-                
-                # Verifikation: Prüfe ob Kategorie tatsächlich auf Root-Level verschoben wurde
-                verify_response = requests.get(f"{self.backend_url}/categories", timeout=10)
-                if verify_response.status_code == 200:
-                    updated_categories = verify_response.json()
-                    moved_category = next((c for c in updated_categories if c.get('name') == test_category.get('name')), None)
-                    
-                    if moved_category and not moved_category.get('parent_category'):
-                        self.log_result(
-                            "PUT /api/categories/cross-level-sort - Verschiebung auf Root Level",
-                            True,
-                            f"Kategorie '{test_category.get('name')}' erfolgreich auf Root-Level verschoben",
-                            {
-                                "test_payload": test_payload,
-                                "api_response": result,
-                                "verification": "Category moved to root level successfully"
-                            }
-                        )
-                        return True
-                    else:
-                        self.log_result(
-                            "PUT /api/categories/cross-level-sort - Verschiebung auf Root Level",
-                            False,
-                            f"Kategorie '{test_category.get('name')}' wurde nicht korrekt auf Root-Level verschoben",
-                            {
-                                "test_payload": test_payload,
-                                "api_response": result,
-                                "moved_category": moved_category
-                            }
-                        )
-                        return False
-                else:
-                    self.log_result(
-                        "PUT /api/categories/cross-level-sort - Verschiebung auf Root Level",
+            async with self.session.get(f"{self.api_url}/statistics") as response:
+                if response.status != 200:
+                    self.log_test(
+                        "Statistics API",
                         False,
-                        "API-Aufruf erfolgreich, aber Verifikation fehlgeschlagen"
+                        f"HTTP {response.status}"
                     )
                     return False
-            else:
-                self.log_result(
-                    "PUT /api/categories/cross-level-sort - Verschiebung auf Root Level",
-                    False,
-                    f"HTTP {response.status_code}",
-                    {"test_payload": test_payload, "response": response.text}
-                )
-                return False
                 
-        except Exception as e:
-            self.log_result(
-                "PUT /api/categories/cross-level-sort - Verschiebung auf Root Level",
-                False,
-                f"Exception: {str(e)}",
-                {"test_payload": test_payload}
-            )
-            return False
-    
-    def test_standard_drag_drop(self):
-        """4. Standard Drag & Drop Test - Normale Kategorie-Verschiebung zwischen Ebenen"""
-        if len(self.available_categories) < 2:
-            self.log_result(
-                "PUT /api/categories/cross-level-sort - Standard Drag & Drop",
-                False,
-                "Mindestens 2 Kategorien erforderlich für Standard Drag & Drop Test"
-            )
-            return False
-        
-        # Finde zwei verschiedene Kategorien für den Test
-        dragged_category = None
-        target_category = None
-        
-        for category in self.available_categories:
-            if not dragged_category:
-                dragged_category = category
-            elif category.get('name') != dragged_category.get('name'):
-                target_category = category
-                break
-        
-        if not dragged_category or not target_category:
-            self.log_result(
-                "PUT /api/categories/cross-level-sort - Standard Drag & Drop",
-                False,
-                "Konnte keine geeigneten Kategorien für Test finden"
-            )
-            return False
-        
-        test_payload = {
-            "dragged_category": dragged_category.get('name'),
-            "target_category": target_category.get('name'),
-            "operation_mode": "standard",
-            "target_level": "child"
-        }
-        
-        try:
-            response = requests.put(
-                f"{self.backend_url}/categories/cross-level-sort",
-                json=test_payload,
-                timeout=10
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
+                stats = await response.json()
                 
-                # Verifikation: Prüfe ob Kategorie als Unterkategorie verschoben wurde
-                verify_response = requests.get(f"{self.backend_url}/categories", timeout=10)
-                if verify_response.status_code == 200:
-                    updated_categories = verify_response.json()
-                    moved_category = next((c for c in updated_categories if c.get('name') == dragged_category.get('name')), None)
-                    
-                    if moved_category and moved_category.get('parent_category') == target_category.get('name'):
-                        self.log_result(
-                            "PUT /api/categories/cross-level-sort - Standard Drag & Drop",
-                            True,
-                            f"Kategorie '{dragged_category.get('name')}' erfolgreich als Unterkategorie von '{target_category.get('name')}' verschoben",
-                            {
-                                "test_payload": test_payload,
-                                "api_response": result,
-                                "verification": f"Category moved as child of {target_category.get('name')}"
-                            }
-                        )
-                        return True
-                    else:
-                        self.log_result(
-                            "PUT /api/categories/cross-level-sort - Standard Drag & Drop",
-                            False,
-                            f"Kategorie '{dragged_category.get('name')}' wurde nicht korrekt als Unterkategorie verschoben",
-                            {
-                                "test_payload": test_payload,
-                                "api_response": result,
-                                "moved_category": moved_category,
-                                "expected_parent": target_category.get('name'),
-                                "actual_parent": moved_category.get('parent_category') if moved_category else None
-                            }
-                        )
-                        return False
-                else:
-                    self.log_result(
-                        "PUT /api/categories/cross-level-sort - Standard Drag & Drop",
+                # Validate total bookmarks
+                total_bookmarks = stats.get("total_bookmarks", 0)
+                if total_bookmarks != 70:
+                    self.log_test(
+                        "Statistics Total Bookmarks",
                         False,
-                        "API-Aufruf erfolgreich, aber Verifikation fehlgeschlagen"
+                        f"Expected 70, got {total_bookmarks}",
+                        {"expected": 70, "actual": total_bookmarks}
                     )
                     return False
-            else:
-                self.log_result(
-                    "PUT /api/categories/cross-level-sort - Standard Drag & Drop",
-                    False,
-                    f"HTTP {response.status_code}",
-                    {"test_payload": test_payload, "response": response.text}
-                )
-                return False
                 
-        except Exception as e:
-            self.log_result(
-                "PUT /api/categories/cross-level-sort - Standard Drag & Drop",
-                False,
-                f"Exception: {str(e)}",
-                {"test_payload": test_payload}
-            )
-            return False
-    
-    def test_debug_backend_logs(self):
-        """5. Debug Backend Logs - Prüfe Debug-Ausgaben in cross_level_sort_categories"""
-        # Führe eine weitere Cross-Level Sort Operation durch und prüfe die Logs
-        if len(self.available_categories) == 0:
-            self.log_result(
-                "Debug Backend Logs - Cross-Level Sort Debug-Ausgaben",
-                False,
-                "Keine Kategorien verfügbar für Debug-Test"
-            )
-            return False
-        
-        test_category = self.available_categories[0]
-        
-        test_payload = {
-            "dragged_category": test_category.get('name'),
-            "target_category": "Alle",
-            "operation_mode": "standard",
-            "target_level": "root"
-        }
-        
-        try:
-            # Führe Operation durch und prüfe Response für Debug-Informationen
-            response = requests.put(
-                f"{self.backend_url}/categories/cross-level-sort",
-                json=test_payload,
-                timeout=10
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
+                # Validate each status count
+                status_mapping = {
+                    "active_links": "active",
+                    "dead_links": "dead", 
+                    "localhost_links": "localhost",
+                    "duplicate_links": "duplicate",
+                    "locked_links": "locked",
+                    "timeout_links": "timeout",
+                    "unchecked_links": "checked"  # checked maps to unchecked in stats
+                }
                 
-                # Prüfe ob alle erwarteten Debug-Felder in der Response vorhanden sind
-                expected_fields = ['message', 'operation_mode', 'target_level', 'new_parent', 'new_position']
-                missing_fields = [field for field in expected_fields if field not in result]
+                all_stats_correct = True
                 
-                if len(missing_fields) == 0:
-                    self.log_result(
-                        "Debug Backend Logs - Cross-Level Sort Debug-Ausgaben",
+                for stats_field, status_type in status_mapping.items():
+                    expected = self.expected_counts[status_type]
+                    actual = stats.get(stats_field, 0)
+                    
+                    if actual != expected:
+                        self.log_test(
+                            f"Statistics {stats_field}",
+                            False,
+                            f"Expected {expected}, got {actual}",
+                            {"field": stats_field, "expected": expected, "actual": actual}
+                        )
+                        all_stats_correct = False
+                    else:
+                        self.log_test(
+                            f"Statistics {stats_field}",
+                            True,
+                            f"Correct count: {actual}"
+                        )
+                
+                if all_stats_correct:
+                    self.log_test(
+                        "Statistics Validation Complete",
                         True,
-                        f"Debug-Informationen vollständig: {result}",
-                        {
-                            "test_payload": test_payload,
-                            "debug_response": result,
-                            "all_fields_present": True
-                        }
+                        "All statistics show exact expected numbers",
+                        {"total_bookmarks": total_bookmarks, "all_counts_correct": True}
                     )
-                    return True
-                else:
-                    self.log_result(
-                        "Debug Backend Logs - Cross-Level Sort Debug-Ausgaben",
-                        False,
-                        f"Debug-Informationen unvollständig - fehlende Felder: {missing_fields}",
-                        {
-                            "test_payload": test_payload,
-                            "debug_response": result,
-                            "missing_fields": missing_fields
-                        }
-                    )
-                    return False
-            else:
-                self.log_result(
-                    "Debug Backend Logs - Cross-Level Sort Debug-Ausgaben",
-                    False,
-                    f"HTTP {response.status_code}",
-                    {"test_payload": test_payload, "response": response.text}
-                )
-                return False
+                
+                return all_stats_correct
                 
         except Exception as e:
-            self.log_result(
-                "Debug Backend Logs - Cross-Level Sort Debug-Ausgaben",
+            self.log_test(
+                "Statistics Validation",
                 False,
-                f"Exception: {str(e)}",
-                {"test_payload": test_payload}
+                f"Exception: {str(e)}"
             )
             return False
     
-    def test_alle_cross_over_functionality(self):
-        """6. "Alle" Cross-Over Funktionalität - Spezialtest für "Alle" als target_category"""
-        if len(self.available_categories) == 0:
-            self.log_result(
-                '"Alle" Cross-Over Funktionalität - Spezialtest',
-                False,
-                "Keine Kategorien verfügbar für 'Alle' Cross-Over Test"
-            )
-            return False
-        
-        # Teste verschiedene Kombinationen mit "Alle" als Target
-        test_scenarios = [
-            {
-                "name": "Alle → Root Level",
-                "payload": {
-                    "dragged_category": self.available_categories[0].get('name'),
-                    "target_category": "Alle",
-                    "operation_mode": "standard",
-                    "target_level": "root"
-                }
-            },
-            {
-                "name": "Alle → Same Level",
-                "payload": {
-                    "dragged_category": self.available_categories[0].get('name'),
-                    "target_category": "Alle",
-                    "operation_mode": "standard",
-                    "target_level": "same"
-                }
-            }
-        ]
-        
-        successful_scenarios = 0
-        total_scenarios = len(test_scenarios)
-        
-        for scenario in test_scenarios:
-            try:
-                response = requests.put(
-                    f"{self.backend_url}/categories/cross-level-sort",
-                    json=scenario["payload"],
-                    timeout=10
+    async def test_category_integration(self):
+        """Test category system integration"""
+        try:
+            print("\n📁 KATEGORIE-INTEGRATION TEST")
+            print("=" * 35)
+            
+            # Get categories
+            async with self.session.get(f"{self.api_url}/categories") as response:
+                if response.status != 200:
+                    self.log_test(
+                        "Categories API",
+                        False,
+                        f"HTTP {response.status}"
+                    )
+                    return False
+                
+                categories = await response.json()
+                
+                if not categories:
+                    self.log_test(
+                        "Category Creation",
+                        False,
+                        "No categories found after test data creation"
+                    )
+                    return False
+                
+                # Check if categories have bookmark counts
+                categories_with_counts = [cat for cat in categories if cat.get("bookmark_count", 0) > 0]
+                
+                if not categories_with_counts:
+                    self.log_test(
+                        "Category Bookmark Counts",
+                        False,
+                        "No categories have bookmark counts updated"
+                    )
+                    return False
+                
+                total_bookmarks_in_categories = sum(cat.get("bookmark_count", 0) for cat in categories_with_counts)
+                
+                self.log_test(
+                    "Category Integration",
+                    True,
+                    f"Found {len(categories)} categories with {total_bookmarks_in_categories} total bookmark assignments",
+                    {
+                        "total_categories": len(categories),
+                        "categories_with_bookmarks": len(categories_with_counts),
+                        "total_bookmark_assignments": total_bookmarks_in_categories
+                    }
                 )
                 
-                if response.status_code == 200:
-                    result = response.json()
-                    successful_scenarios += 1
-                    print(f"  ✅ {scenario['name']}: {result.get('message', 'Success')}")
-                else:
-                    print(f"  ❌ {scenario['name']}: HTTP {response.status_code}")
-                    
-            except Exception as e:
-                print(f"  ❌ {scenario['name']}: Exception {str(e)}")
-        
-        success = successful_scenarios == total_scenarios
-        self.log_result(
-            '"Alle" Cross-Over Funktionalität - Spezialtest',
-            success,
-            f"'Alle' Cross-Over Tests: {successful_scenarios}/{total_scenarios} erfolgreich",
-            {
-                "successful_scenarios": successful_scenarios,
-                "total_scenarios": total_scenarios,
-                "success_rate": f"{(successful_scenarios/total_scenarios)*100:.1f}%"
-            }
-        )
-        return success
+                return True
+                
+        except Exception as e:
+            self.log_test(
+                "Category Integration Test",
+                False,
+                f"Exception: {str(e)}"
+            )
+            return False
     
-    def run_all_tests(self):
-        """Führt alle Drag & Drop Tests durch"""
-        print("🎯 DRAG & DROP SYSTEM TESTING - German Review Request")
+    async def test_duplicate_validation(self):
+        """Test that duplicates are correctly created with identical URLs"""
+        try:
+            print("\n🔄 DUPLIKAT-VALIDIERUNG")
+            print("=" * 25)
+            
+            # Get all bookmarks
+            async with self.session.get(f"{self.api_url}/bookmarks") as response:
+                if response.status != 200:
+                    return False
+                
+                bookmarks = await response.json()
+                
+                # Find duplicate status bookmarks
+                duplicate_bookmarks = [b for b in bookmarks if b.get("status_type") == "duplicate"]
+                
+                if len(duplicate_bookmarks) != 10:
+                    self.log_test(
+                        "Duplicate Count",
+                        False,
+                        f"Expected 10 duplicate bookmarks, found {len(duplicate_bookmarks)}"
+                    )
+                    return False
+                
+                # Check for actual URL duplicates
+                url_counts = {}
+                for bookmark in duplicate_bookmarks:
+                    url = bookmark.get("url", "")
+                    url_counts[url] = url_counts.get(url, 0) + 1
+                
+                # Should have URLs that appear multiple times
+                actual_duplicates = {url: count for url, count in url_counts.items() if count > 1}
+                
+                if not actual_duplicates:
+                    self.log_test(
+                        "Duplicate URL Validation",
+                        False,
+                        "No actual duplicate URLs found among duplicate status bookmarks"
+                    )
+                    return False
+                
+                self.log_test(
+                    "Duplicate Validation",
+                    True,
+                    f"Found {len(actual_duplicates)} sets of duplicate URLs",
+                    {"duplicate_urls": actual_duplicates}
+                )
+                
+                return True
+                
+        except Exception as e:
+            self.log_test(
+                "Duplicate Validation",
+                False,
+                f"Exception: {str(e)}"
+            )
+            return False
+    
+    async def run_comprehensive_phase2_tests(self):
+        """Run all Phase 2 System Rebuild tests"""
+        print("🚀 PHASE 2 SYSTEM REBUILD - SCHRITT 1 TESTING")
         print("=" * 70)
-        print(f"Backend URL: {self.backend_url}")
-        print(f"Test Start: {datetime.now().isoformat()}")
-        print()
-        print("Problem: User berichtet Verschieben funktioniert nicht (OF) und 'Alle' Cross-Over funktioniert nicht.")
-        print()
+        print("Teste das neue modulare Testdaten-System mit exakten Status-Zahlen")
+        print(f"Backend URL: {self.api_url}")
+        print("=" * 70)
         
-        # Test-Sequenz
-        tests = [
-            ("1. Kategorien-Datenbank Prüfung", self.test_categories_database_check),
-            ("2. Kategorien-Initialisierung (falls erforderlich)", self.test_categories_initialization),
-            ("3. Cross-Level Sort auf Root Level", self.test_cross_level_sort_to_root),
-            ("4. Standard Drag & Drop zwischen Ebenen", self.test_standard_drag_drop),
-            ("5. Debug Backend Logs prüfen", self.test_debug_backend_logs),
-            ("6. 'Alle' Cross-Over Funktionalität", self.test_alle_cross_over_functionality)
+        test_functions = [
+            self.test_create_modular_test_data,
+            self.test_status_consistency,
+            self.test_statistics_validation,
+            self.test_category_integration,
+            self.test_duplicate_validation
         ]
         
         passed_tests = 0
-        total_tests = len(tests)
+        total_tests = len(test_functions)
         
-        for test_name, test_func in tests:
-            print(f"\n--- {test_name} ---")
+        for test_func in test_functions:
             try:
-                if test_func():
+                result = await test_func()
+                if result:
                     passed_tests += 1
             except Exception as e:
-                print(f"❌ Test failed with exception: {e}")
+                print(f"❌ Test {test_func.__name__} failed with exception: {e}")
         
-        # Zusammenfassung
+        # Final summary
         print("\n" + "=" * 70)
-        print("🎯 DRAG & DROP SYSTEM TEST ZUSAMMENFASSUNG")
+        print("🎯 PHASE 2 SYSTEM REBUILD - TEST ERGEBNISSE")
         print("=" * 70)
-        print(f"Tests bestanden: {passed_tests}/{total_tests}")
-        print(f"Success Rate: {(passed_tests/total_tests)*100:.1f}%")
+        
+        success_rate = (passed_tests / total_tests) * 100
+        print(f"Tests bestanden: {passed_tests}/{total_tests} ({success_rate:.1f}%)")
         
         if passed_tests == total_tests:
-            print("✅ ALLE TESTS BESTANDEN - Drag & Drop System funktioniert korrekt")
-            print("   - Kategorien existieren in DB oder wurden initialisiert")
-            print("   - Cross-Level Sort APIs funktionieren")
-            print("   - MongoDB Updates werden korrekt ausgeführt")
-            print("   - 'Alle' als target_category wird korrekt behandelt")
+            print("✅ ALLE PHASE 2 TESTS ERFOLGREICH!")
+            print("✅ Modulares Testdaten-System funktioniert einwandfrei")
+            print("✅ Exakte Status-Verteilung: 7 Gruppen à 10 Bookmarks")
+            print("✅ Status-Konsistenz gewährleistet")
+            print("✅ Statistiken zeigen korrekte Zahlen")
+            print("✅ Kategorie-Integration funktional")
         else:
-            print("❌ TESTS FEHLGESCHLAGEN - Drag & Drop System hat Probleme")
-            print("\nFEHLERHAFTE TESTS:")
-            for result in self.test_results:
-                if not result['success']:
-                    print(f"  - {result['test']}: {result['details']}")
+            print("❌ PHASE 2 TESTS TEILWEISE FEHLGESCHLAGEN")
+            print("❌ Modulares System benötigt Nachbesserungen")
         
-        print(f"\nTest Ende: {datetime.now().isoformat()}")
+        print("=" * 70)
+        
         return passed_tests == total_tests
 
-def main():
-    """Hauptfunktion"""
-    tester = DragDropTester()
-    success = tester.run_all_tests()
-    
-    # Exit code für CI/CD
-    sys.exit(0 if success else 1)
+async def main():
+    """Main test execution"""
+    async with Phase2TestDataValidator() as validator:
+        success = await validator.run_comprehensive_phase2_tests()
+        return success
 
 if __name__ == "__main__":
-    main()
+    result = asyncio.run(main())
+    exit(0 if result else 1)
