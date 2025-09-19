@@ -338,13 +338,17 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
             title: 'Testdaten-Import (100 Bookmarks)',
             steps: [
               '🎯 **Vollständiger Testsatz**: 100 diverse Bookmarks für alle Features',
-              '✅ **65 Aktive**: Funktionierende Bookmarks verschiedener Kategorien',
-              '💀 **15 Tote Links**: Für Dead-Link-Testing',
-              '🔒 **10 Gesperrt**: Für Sperr-System Testing',
-              '⏱️ **5 Timeout**: Für Verbindungsproblem-Testing',
-              '❓ **5 Ungeprüft**: Für Status-System Testing',
-              '📂 **20+ Kategorien**: Development, Entertainment, News, Tools, etc.',
-              '🏷️ **Unterkategorien**: Mehrere Hierarchie-Ebenen für Drag & Drop Tests'
+              '✅ **54 Aktive (54%)**: Funktionierende URLs von GitHub, Stack Overflow, BBC News, etc.',
+              '💀 **9 Tote Links (9%)**: Nicht erreichbare URLs für Dead-Link-Testing',
+              '🔒 **14 Gesperrt (14%)**: Schreibgeschützte Bookmarks über alle Kategorien verteilt',
+              '⏱️ **Timeout Links**: URLs mit Verbindungsproblemen für Timeout-Testing',
+              '🏠 **10 Localhost (10%)**: Lokale Entwicklungs-URLs (127.0.0.1, localhost)',
+              '📋 **7 Duplikate (7%)**: Mehrfach vorhandene URLs für Duplikat-Testing',
+              '❓ **100 Ungeprüft (100%)**: Alle initial als ungeprüft markiert',
+              '📂 **11 Hauptkategorien**: Development (20), News (15), Tools (15), Social Media (12), Entertainment (10), Reference (8), Shopping (6), Education (6), Health (4), Finance (2), Travel (2)',
+              '🏷️ **49 Unterkategorien**: Frontend, Backend, JavaScript, Python für Development; DevOps, Mobile, etc.',
+              '🔄 **Realistische URLs**: GitHub, LinkedIn, Netflix, Wikipedia, Amazon, Coursera, WebMD, Yahoo Finance, Booking.com',
+              '📝 **Beschreibungen**: Jeder Bookmark hat aussagekräftige Beschreibung für Suchfunktion'
             ]
           },
           {
