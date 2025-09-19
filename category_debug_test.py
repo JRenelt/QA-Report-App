@@ -2,7 +2,7 @@ import requests
 import json
 
 def debug_category_operations():
-    base_url = "https://favlinks-2.preview.emergentagent.com/api"
+    base_url = "https://favorg-rebuild.preview.emergentagent.com/api"
     
     print("🔍 DEBUGGING CATEGORY OPERATIONS")
     print("=" * 50)

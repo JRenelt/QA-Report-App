@@ -6,7 +6,7 @@ from datetime import datetime
 import re
 
 class ExportFunctionalityTester:
-    def __init__(self, base_url="https://favlinks-2.preview.emergentagent.com"):
+    def __init__(self, base_url="https://favorg-rebuild.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0

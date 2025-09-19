@@ -13,7 +13,7 @@ from datetime import datetime
 import uuid
 
 # Backend URL aus .env Datei
-BACKEND_URL = "https://favlinks-2.preview.emergentagent.com/api"
+BACKEND_URL = "https://favorg-rebuild.preview.emergentagent.com/api"
 
 class DragDropTester:
     def __init__(self):

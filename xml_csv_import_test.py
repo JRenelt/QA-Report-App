@@ -19,7 +19,7 @@ import os
 from datetime import datetime
 
 # Backend URL aus .env
-BACKEND_URL = "https://favlinks-2.preview.emergentagent.com/api"
+BACKEND_URL = "https://favorg-rebuild.preview.emergentagent.com/api"
 
 class XMLCSVImportTester:
     def __init__(self):
