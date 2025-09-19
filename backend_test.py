@@ -33,7 +33,7 @@ class Phase2TestDataValidator:
             "duplicate": 10,
             "locked": 10,
             "timeout": 10,
-            "checked": 10
+            "checked": 10  # This maps to 'unchecked' in statistics
         }
         
         self.test_results = []
