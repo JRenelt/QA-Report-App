@@ -2678,6 +2678,112 @@ async def cleanup_empty_categories():
     await bookmark_manager.category_manager.update_bookmark_counts()
     return {"message": f"{result.deleted_count} leere Kategorien entfernt"}
 
+# ================================
+# Phase 2: Category Lock-System API Endpunkte
+# ================================
+
+@api_router.put("/categories/{category_id}/lock")
+async def lock_category(category_id: str, lock_data: dict = Body(...)):
+    """🔒 Kategorie sperren - Phase 2 Modulares Lock-System"""
+    lock_reason = lock_data.get("lock_reason", "Administrativ gesperrt")
+    
+    try:
+        result = await bookmark_manager.category_manager.lock_category(category_id, lock_reason)
+        return result
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Sperren der Kategorie: {str(e)}")
+
+@api_router.put("/categories/{category_id}/unlock")
+async def unlock_category(category_id: str):
+    """🔓 Kategorie entsperren - Phase 2 Modulares Lock-System"""
+    try:
+        result = await bookmark_manager.category_manager.unlock_category(category_id)
+        return result
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Entsperren der Kategorie: {str(e)}")
+
+@api_router.get("/categories/with-lock-status")
+async def get_categories_with_lock_status():
+    """📋 Alle Kategorien mit Lock-Status abrufen - Phase 2"""
+    try:
+        categories = await bookmark_manager.category_manager.get_all_categories()
+        
+        # Erweitere um Lock-Informationen für das Frontend
+        enhanced_categories = []
+        for category in categories:
+            category_dict = category.dict()
+            category_dict["lock_info"] = {
+                "is_locked": category_dict.get("is_locked", False),
+                "lock_reason": category_dict.get("lock_reason", ""),
+                "locked_at": category_dict.get("locked_at"),
+                "can_edit": not category_dict.get("is_locked", False),
+                "can_delete": not category_dict.get("is_locked", False)
+            }
+            enhanced_categories.append(category_dict)
+        
+        return {
+            "categories": enhanced_categories,
+            "total_count": len(enhanced_categories),
+            "locked_count": len([cat for cat in enhanced_categories if cat["lock_info"]["is_locked"]])
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Abrufen der Kategorien: {str(e)}")
+
+@api_router.put("/categories/{category_id}/update-protected")
+async def update_category_protected(category_id: str, update_data: dict = Body(...)):
+    """✏️ Kategorie mit Lock-Protection aktualisieren - Phase 2"""
+    try:
+        result = await bookmark_manager.category_manager.update_category(category_id, update_data)
+        return result
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Aktualisieren der Kategorie: {str(e)}")
+
+@api_router.delete("/categories/{category_id}/delete-protected")
+async def delete_category_protected(category_id: str):
+    """🗑️ Kategorie mit Lock-Protection löschen - Phase 2"""
+    try:
+        result = await bookmark_manager.category_manager.delete_category(category_id)
+        return result
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Löschen der Kategorie: {str(e)}")
+
+@api_router.post("/categories/create-with-lock")
+async def create_category_with_lock(category_data: dict = Body(...)):
+    """➕ Neue Kategorie mit optionaler Lock-Funktion erstellen - Phase 2"""
+    try:
+        name = category_data.get("name")
+        parent_category = category_data.get("parent_category")
+        is_locked = category_data.get("is_locked", False)
+        lock_reason = category_data.get("lock_reason", "")
+        
+        if not name:
+            raise HTTPException(status_code=400, detail="Kategorie-Name ist erforderlich")
+        
+        result = await bookmark_manager.category_manager.create_category(
+            name=name,
+            parent_category=parent_category,
+            is_locked=is_locked,
+            lock_reason=lock_reason
+        )
+        
+        return {
+            "message": f"Kategorie '{name}' erfolgreich erstellt",
+            "category": result.dict(),
+            "is_locked": is_locked
+        }
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler beim Erstellen der Kategorie: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
