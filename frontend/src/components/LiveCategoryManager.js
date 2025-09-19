@@ -328,7 +328,7 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
               </div>
             ) : (
               <span className="flex-1 font-medium">
-                {node.name}
+                {renderHighlightedText(node.name, categorySearchTerm)}
                 <span className="ml-2 text-xs text-gray-500">
                   ({node.count || 0})
                 </span>
