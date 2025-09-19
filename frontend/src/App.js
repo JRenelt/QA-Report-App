@@ -1860,8 +1860,15 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
 
   const handleCategoryDragOver = (e, category, isSubcategory = false) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    setDragOverCategory({...category, isSubcategory});
+    e.dataTransfer.dropEffect = shiftPressed ? 'copy' : 'move';
+    
+    // Unterschiedliches visuelles Feedback je nach Modus
+    setDragOverCategory({
+      ...category,
+      isSubcategory,
+      insertMode: shiftPressed,
+      dragMode: dragMode
+    });
   };
 
   const handleCategoryDragLeave = (e) => {
