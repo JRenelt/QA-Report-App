@@ -1017,8 +1017,8 @@ class BookmarkManager:
             {"title": "Slow Server 10", "url": "https://slowserver10.timeout", "category": "Finance", "description": "Slow financial service"}
         ]
         
-        # 10 Überprüft (checked - geprüfte aber inaktive)
-        checked_bookmarks = [
+        # 10 Ungeprüft (unchecked - noch nicht validierte Links)
+        unchecked_bookmarks = [
             {"title": "Checked Link 1", "url": "https://checked1.example", "category": "Development", "description": "Previously checked development link"},
             {"title": "Checked Link 2", "url": "https://checked2.example", "category": "News", "description": "Previously checked news link"},
             {"title": "Checked Link 3", "url": "https://checked3.example", "category": "Tools", "description": "Previously checked tool"},
@@ -1039,7 +1039,7 @@ class BookmarkManager:
             (duplicate_bookmarks, "duplicate", False, False),
             (locked_bookmarks, "locked", False, True),
             (timeout_bookmarks, "timeout", False, False),
-            (checked_bookmarks, "checked", False, False)
+            (unchecked_bookmarks, "checked", False, False)
         ]
         
         total_created = 0
