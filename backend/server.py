@@ -1825,6 +1825,271 @@ FavOrg Version 2.3.0
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating BookmarkBox download: {str(e)}")
 
+@api_router.get("/documentation/download-nomenklatur")
+async def download_nomenklatur():
+    """FavOrg UI-Nomenklatur als PDF herunterladen"""
+    try:
+        from reportlab.lib.pagesizes import A4
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.lib.units import cm
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+        from reportlab.lib import colors
+        from io import BytesIO
+        
+        # PDF Buffer erstellen
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
+        
+        # Styles definieren
+        styles = getSampleStyleSheet()
+        title_style = ParagraphStyle(
+            'CustomTitle',
+            parent=styles['Title'],
+            fontSize=24,
+            spaceAfter=30,
+            textColor=colors.HexColor('#0ea5e9')
+        )
+        
+        heading_style = ParagraphStyle(
+            'CustomHeading',
+            parent=styles['Heading1'],
+            fontSize=16,
+            spaceAfter=12,
+            textColor=colors.HexColor('#1e40af')
+        )
+        
+        subheading_style = ParagraphStyle(
+            'CustomSubHeading',
+            parent=styles['Heading2'],
+            fontSize=14,
+            spaceAfter=8,
+            textColor=colors.HexColor('#059669')
+        )
+        
+        # Content aufbauen
+        story = []
+        
+        # Titel
+        story.append(Paragraph("📋 FavOrg UI-Bereichs-Nomenklatur", title_style))
+        story.append(Paragraph("Version 2.3.0 - Professioneller Bookmark Manager", styles['Normal']))
+        story.append(Spacer(1, 20))
+        
+        # Hauptbereiche
+        story.append(Paragraph("🔸 Hauptbereiche", heading_style))
+        
+        main_areas_data = [
+            ['Bereich', 'Position', 'Inhalt', 'Eigenschaften'],
+            ['Kopf (Header)', 'TOP Website, 3 DIVs je 33,33%', 'Firmenlogo, Toolbar, Systemsteuerung', 'Fix positioniert'],
+            ['Firmenlogo', 'LEFT Kopf', '[Grafik] FavOrg + Untertitel', 'Klickbar'],
+            ['Toolbar (Funktionsbutton)', 'CENTER Kopf', '6 Action-Buttons', 'Farb-kodiert'],
+            ['Systemsteuerung', 'RIGHT Kopf', '4 System-Symbole', 'Interaktiv'],
+            ['Kategorie-Sidebar', 'LEFT Website, ~20% Breite', 'Verzeichnisstruktur', 'Ausblendbar, Resizable'],
+            ['Hauptbereich (Main-Content)', 'CENTER Website', 'Bookmark-Darstellung', 'Responsive'],
+            ['Footer', 'BOTTOM Website, 3 DIVs je 33,33%', 'Copyright, Infos, Impressum', 'Fix positioniert']
+        ]
+        
+        main_table = Table(main_areas_data, colWidths=[4*cm, 4*cm, 5*cm, 3*cm])
+        main_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#0ea5e9')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        story.append(main_table)
+        story.append(Spacer(1, 20))
+        
+        # Detailbereiche
+        story.append(Paragraph("🔸 Detailbereiche", heading_style))
+        
+        detail_areas_data = [
+            ['Bereich', 'Position', 'Funktion'],
+            ['Suchleiste (Search-Bar)', 'TOP Hauptbereich', 'Suchfeld + Anzahl + Filter'],
+            ['Ansicht-Steuerung', 'Unter Suchleiste, LEFT', 'Karten/Tabellen-Toggle'],
+            ['Bookmark-Container', 'CENTER Hauptbereich', 'Grid/Liste der Bookmarks'],
+            ['Dialog-Overlay', 'CENTER Website (Modal)', 'Hilfe, Settings, Bookmark-Dialogs']
+        ]
+        
+        detail_table = Table(detail_areas_data, colWidths=[5*cm, 5*cm, 6*cm])
+        detail_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#059669')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.lightgrey),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        story.append(detail_table)
+        story.append(Spacer(1, 20))
+        
+        # Positionsterminologie
+        story.append(Paragraph("🔸 Positionsterminologie", heading_style))
+        story.append(Paragraph("Für jedes DIV verwenden wir HTML-Standard Begriffe:", styles['Normal']))
+        story.append(Spacer(1, 10))
+        
+        pos_data = [
+            ['Begriff', 'Bedeutung', 'Beispiel'],
+            ['TOP [DIV-Name]', 'Oberer Rand', 'TOP Kopf = Oberkante Header'],
+            ['BOTTOM [DIV-Name]', 'Unterer Rand', 'BOTTOM Footer = Unterkante'],
+            ['LEFT [DIV-Name]', 'Linker Rand', 'LEFT Kategorie-Sidebar'],
+            ['RIGHT [DIV-Name]', 'Rechter Rand', 'RIGHT Systemsteuerung'],
+            ['CENTER [DIV-Name]', 'Mitte', 'CENTER Hauptbereich']
+        ]
+        
+        pos_table = Table(pos_data, colWidths=[4*cm, 5*cm, 7*cm])
+        pos_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7c3aed')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.lavender),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        story.append(pos_table)
+        story.append(Spacer(1, 20))
+        
+        # Container vs Content
+        story.append(Paragraph("🔸 Container vs. Content Unterscheidung", heading_style))
+        story.append(Paragraph("Wichtige Unterscheidung für präzise Kommunikation:", styles['Normal']))
+        story.append(Spacer(1, 10))
+        
+        container_data = [
+            ['Typ', 'Definition', 'Beispiel'],
+            ['[Bereich]-Container', 'Das äußere DIV/Fenster', 'Sidebar-Container = Rahmen, Breite, Position'],
+            ['[Bereich]-Content', 'Der Inhalt im DIV', 'Sidebar-Content = Kategorien, Buttons, Text']
+        ]
+        
+        container_table = Table(container_data, colWidths=[4*cm, 6*cm, 6*cm])
+        container_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#dc2626')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.mistyrose),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        story.append(container_table)
+        story.append(Spacer(1, 20))
+        
+        # Glossar
+        story.append(Paragraph("📚 Technisches Glossar", heading_style))
+        
+        glossar_data = [
+            ['Begriff', 'Definition', 'Anwendung in FavOrg'],
+            ['CRUD', 'Create, Read, Update, Delete', 'Grundoperationen für Bookmarks/Kategorien'],
+            ['Comprehensive Testing', 'Vollständige End-to-End Tests', 'Automatisierte Playwright-Tests aller Features'],
+            ['Excel-Funktionalität', 'Drag & Drop wie Excel-Tabellen', 'Zeilen verschieben, einfügen zwischen Positionen'],
+            ['Standardmodus (Drag)', 'Verschieben ohne Shift-Taste', 'Element an neue Position verschieben'],
+            ['Einfügemodus (Shift+Drag)', 'Verschieben mit Shift-Taste', 'Element zwischen bestehende einfügen'],
+            ['Reparenting', 'Kategorie-Hierarchie ändern', 'Hauptkategorie zu Unterkategorie machen'],
+            ['Cross-Level Sorting', 'Zwischen Ebenen verschieben', 'Von Level 1 zu Level 2 oder umgekehrt'],
+            ['Tree Reordering', 'Baum-Struktur neu ordnen', 'Hierarchische Kategorien sortieren'],
+            ['Search-Container', 'Suchleisten-Bereich', 'DIV mit Suchfeld, Anzahl und Filter']
+        ]
+        
+        glossar_table = Table(glossar_data, colWidths=[4*cm, 6*cm, 6*cm])
+        glossar_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#059669')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.lightgreen),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP')
+        ]))
+        story.append(glossar_table)
+        story.append(Spacer(1, 20))
+        
+        # Footer
+        story.append(Paragraph("© 2025 Jörg Renelt, id2.de Hamburg - FavOrg Version 2.3.0", styles['Normal']))
+        story.append(Paragraph("Erstellt: " + str(datetime.now(timezone.utc).strftime('%d.%m.%Y %H:%M UTC')), styles['Normal']))
+        
+        # PDF generieren
+        doc.build(story)
+        
+        pdf_data = buffer.getvalue()
+        buffer.close()
+        
+        from fastapi.responses import Response
+        
+        return Response(
+            content=pdf_data,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": "attachment; filename=FavOrg_UI_Nomenklatur_v2.3.0.pdf",
+                "Content-Length": str(len(pdf_data))
+            }
+        )
+        
+    except ImportError:
+        # Fallback: Text-Version wenn reportlab nicht verfügbar
+        nomenklatur_text = """
+📋 FavOrg UI-Bereichs-Nomenklatur
+Version 2.3.0 - Professioneller Bookmark Manager
+
+🔸 HAUPTBEREICHE:
+- Kopf (Header): TOP Website, 3 DIVs je 33,33%
+- Firmenlogo: LEFT Kopf - [Grafik] FavOrg + Untertitel
+- Toolbar: CENTER Kopf - 6 Action-Buttons (farbkodiert)
+- Systemsteuerung: RIGHT Kopf - 4 System-Symbole
+- Kategorie-Sidebar: LEFT Website, ~20% Breite (ausblendbar)
+- Hauptbereich: CENTER Website - Bookmark-Darstellung
+- Footer: BOTTOM Website, 3 DIVs je 33,33%
+
+🔸 DETAILBEREICHE:
+- Suchleiste: TOP Hauptbereich - Suchfeld + Anzahl + Filter
+- Ansicht-Steuerung: Unter Suchleiste - Karten/Tabellen-Toggle
+- Bookmark-Container: CENTER Hauptbereich - Grid/Liste
+- Dialog-Overlay: CENTER Website (Modal) - Verschiedene Dialogs
+
+🔸 POSITIONSTERMINOLOGIE:
+- TOP [DIV-Name] = Oberer Rand
+- BOTTOM [DIV-Name] = Unterer Rand  
+- LEFT [DIV-Name] = Linker Rand
+- RIGHT [DIV-Name] = Rechter Rand
+- CENTER [DIV-Name] = Mitte
+
+🔸 CONTAINER vs. CONTENT:
+- [Bereich]-Container = Das äußere DIV/Fenster
+- [Bereich]-Content = Der Inhalt im DIV
+
+📚 TECHNISCHES GLOSSAR:
+- CRUD: Create, Read, Update, Delete
+- Comprehensive Testing: Vollständige End-to-End Tests
+- Excel-Funktionalität: Drag & Drop wie Excel-Tabellen
+- Standardmodus: Verschieben ohne Shift-Taste
+- Einfügemodus: Verschieben mit Shift-Taste
+- Reparenting: Kategorie-Hierarchie ändern
+- Cross-Level Sorting: Zwischen Ebenen verschieben
+- Tree Reordering: Baum-Struktur neu ordnen
+- Search-Container: Suchleisten-Bereich
+
+© 2025 Jörg Renelt, id2.de Hamburg - FavOrg Version 2.3.0
+        """
+        
+        return Response(
+            content=nomenklatur_text.encode('utf-8'),
+            media_type="text/plain; charset=utf-8",
+            headers={
+                "Content-Disposition": "attachment; filename=FavOrg_UI_Nomenklatur_v2.3.0.txt",
+                "Content-Length": str(len(nomenklatur_text.encode('utf-8')))
+            }
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating nomenklatur download: {str(e)}")
+
 @api_router.put("/bookmarks/{bookmark_id}/move-to-category")
 async def move_bookmark_to_category(bookmark_id: str, move_data: dict):
     """Bookmark in andere Kategorie verschieben"""
