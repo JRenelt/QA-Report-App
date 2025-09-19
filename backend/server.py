@@ -718,22 +718,132 @@ class ExportManager:
         
         return json.dumps(root, indent=2, ensure_ascii=False)
 
-class CategoryManager:
-    """Klasse für Kategorie-Verwaltung mit Unterkategorien"""
+class ModularCategoryManager:
+    """Phase 2: Objektorientierte Kategorie-Verwaltung mit Lock-Funktionalität"""
     
     def __init__(self, database):
         self.db = database
     
     async def get_all_categories(self) -> List[Category]:
-        """Alle Kategorien mit Hierarchie abrufen"""
+        """Alle Kategorien mit Hierarchie und Lock-Status abrufen"""
         categories = await self.db.categories.find().to_list(100000)
-        return [Category(**cat) for cat in categories]
+        
+        # Erweitere jede Kategorie um Lock-Informationen
+        enhanced_categories = []
+        for cat in categories:
+            # Füge Lock-Status hinzu falls nicht vorhanden
+            cat["is_locked"] = cat.get("is_locked", False)
+            cat["lock_reason"] = cat.get("lock_reason", "")
+            enhanced_categories.append(Category(**cat))
+        
+        return enhanced_categories
     
-    async def create_category(self, name: str, parent_category: Optional[str] = None) -> Category:
-        """Neue Kategorie oder Unterkategorie erstellen"""
-        category = Category(name=name, parent_category=parent_category)
+    async def create_category(self, name: str, parent_category: Optional[str] = None, is_locked: bool = False, lock_reason: str = "") -> Category:
+        """Neue Kategorie oder Unterkategorie mit Lock-Option erstellen"""
+        category_dict = {
+            "name": name, 
+            "parent_category": parent_category,
+            "is_locked": is_locked,
+            "lock_reason": lock_reason,
+            "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc)
+        }
+        category = Category(**category_dict)
         await self.db.categories.insert_one(category.dict())
         return category
+    
+    async def update_category(self, category_id: str, update_data: dict) -> dict:
+        """Aktualisiere Kategorie mit Lock-Protection"""
+        # Prüfe Lock-Status
+        existing_category = await self.db.categories.find_one({"id": category_id})
+        if not existing_category:
+            raise HTTPException(status_code=404, detail="Category not found")
+        
+        if existing_category.get("is_locked", False):
+            raise HTTPException(
+                status_code=403, 
+                detail=f"Gesperrte Kategorie kann nicht bearbeitet werden: {existing_category.get('lock_reason', 'Kategorie ist geschützt')}"
+            )
+        
+        # Update durchführen
+        update_doc = {k: v for k, v in update_data.items() if v is not None}
+        update_doc["updated_at"] = datetime.now(timezone.utc)
+        
+        result = await self.db.categories.update_one(
+            {"id": category_id},
+            {"$set": update_doc}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Category not found or no changes made")
+        
+        return {"message": "Category updated successfully", "modified_count": result.modified_count}
+    
+    async def delete_category(self, category_id: str) -> dict:
+        """Lösche Kategorie mit Lock-Protection"""
+        # Prüfe Lock-Status
+        existing_category = await self.db.categories.find_one({"id": category_id})
+        if not existing_category:
+            raise HTTPException(status_code=404, detail="Category not found")
+        
+        if existing_category.get("is_locked", False):
+            raise HTTPException(
+                status_code=403, 
+                detail=f"Gesperrte Kategorie kann nicht gelöscht werden: {existing_category.get('lock_reason', 'Kategorie ist geschützt')}"
+            )
+        
+        category_name = existing_category["name"]
+        
+        # Verschiebe Bookmarks zu "Uncategorized"
+        moved_bookmarks = await self.db.bookmarks.update_many(
+            {"category": category_name},
+            {"$set": {"category": "Uncategorized", "subcategory": ""}}
+        )
+        
+        # Lösche Kategorie
+        await self.db.categories.delete_one({"id": category_id})
+        
+        # Update Counts
+        await self.update_bookmark_counts()
+        
+        return {
+            "message": f"Category '{category_name}' deleted and {moved_bookmarks.modified_count} bookmarks moved to Uncategorized",
+            "moved_bookmarks": moved_bookmarks.modified_count
+        }
+    
+    async def lock_category(self, category_id: str, lock_reason: str = "") -> dict:
+        """Sperre Kategorie vor Änderungen"""
+        result = await self.db.categories.update_one(
+            {"id": category_id},
+            {"$set": {
+                "is_locked": True,
+                "lock_reason": lock_reason or "Kategorie administrativ gesperrt",
+                "locked_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            }}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Category not found")
+        
+        return {"message": f"Category successfully locked: {lock_reason}", "is_locked": True}
+    
+    async def unlock_category(self, category_id: str) -> dict:
+        """Entsperre Kategorie"""
+        result = await self.db.categories.update_one(
+            {"id": category_id},
+            {"$set": {
+                "is_locked": False,
+                "lock_reason": "",
+                "locked_at": None,
+                "updated_at": datetime.now(timezone.utc)
+            }}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Category not found")
+        
+        return {"message": "Category successfully unlocked", "is_locked": False}
     
     async def update_bookmark_counts(self):
         """Bookmark-Anzahl für alle Kategorien und Unterkategorien aktualisieren"""
@@ -852,7 +962,7 @@ class BookmarkManager:
         self.parser = BookmarkParser()
         self.validator = LinkValidator()
         self.duplicate_detector = DuplicateDetector()
-        self.category_manager = CategoryManager(database)
+        self.category_manager = ModularCategoryManager(database)
         self.statistics_manager = StatisticsManager(database)
         self.export_manager = ExportManager()
     
