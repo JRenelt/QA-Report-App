@@ -182,6 +182,101 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
         ]
       }
     },
+    lock: {
+      icon: '🔒',
+      title: 'Sperr-System',
+      description: 'CRUD-Schutz für wichtige Bookmarks mit visuellen Indikatoren.',
+      content: {
+        title: 'Bookmark-Sperr-System',
+        description: 'Schützen Sie wichtige Bookmarks vor versehentlichem Löschen oder Bearbeiten.',
+        features: [
+          '🔒 Ein-Klick Sperren/Entsperren von Bookmarks',
+          '🛡️ CRUD-Schutz: Gesperrte Bookmarks können nicht gelöscht/bearbeitet werden',
+          '🔄 Drag & Drop erlaubt: Verschieben zwischen Kategorien möglich',
+          '👁️ Visuelle Indikatoren: Schloss-Symbol und spezielle Styling',
+          '📊 Status-Filter: Separate Anzeige gesperrter Bookmarks',
+          '🎯 Bulk-Operationen: Mehrere Bookmarks gleichzeitig sperren'
+        ],
+        sections: [
+          {
+            title: 'Bookmark sperren/entsperren',
+            steps: [
+              '🔒 **Sperren**: Klick auf Schloss-Symbol (offen) in der Bookmark-Karte',
+              '🔓 **Entsperren**: Klick auf Schloss-Symbol (geschlossen)',
+              '👁️ **Visueller Status**: Gesperrte Bookmarks haben dunkles Schloss-Symbol',
+              '⚠️ **CRUD-Schutz**: Edit/Delete-Buttons sind deaktiviert bei gesperrten Bookmarks'
+            ]
+          },
+          {
+            title: 'Was ist bei gesperrten Bookmarks möglich?',
+            steps: [
+              '✅ **Verschieben**: Zwischen Kategorien per Drag & Drop',
+              '✅ **Anzeigen**: Normales Öffnen der Links',
+              '✅ **Status ändern**: Von aktiv zu tot, timeout, etc.',
+              '❌ **Löschen**: Nicht möglich - HTTP 403 Fehler',
+              '❌ **Bearbeiten**: Nicht möglich - Buttons deaktiviert'
+            ]
+          },
+          {
+            title: 'Gesperrte Bookmarks finden',
+            steps: [
+              '🔍 **Status-Filter**: "Gesperrt" im Filter-Dropdown wählen',
+              '📊 **Statistik**: Anzahl gesperrter Bookmarks im Dashboard',
+              '🎯 **Suche**: Gesperrte Bookmarks durchsuchbar wie normale',
+              '📱 **Tabellen-Ansicht**: Schloss-Symbol in separater Spalte'
+            ]
+          }
+        ]
+      }
+    },
+    status: {
+      icon: '📊',
+      title: 'Status-System',
+      description: 'Umfassendes Status-Management mit 7 verschiedenen Bookmark-Zuständen.',
+      content: {
+        title: 'Bookmark Status-Verwaltung',
+        description: 'FavOrg verwaltet automatisch verschiedene Bookmark-Zustände für bessere Organisation.',
+        features: [
+          '✅ **Aktiv**: Funktionierende, geprüfte Bookmarks',
+          '💀 **Tote Links**: Nicht erreichbare URLs (404, DNS-Fehler)',
+          '🔒 **Gesperrt**: Schreibgeschützte, wichtige Bookmarks',
+          '⏱️ **Timeout**: URLs mit Verbindungsproblemen',
+          '❓ **Ungeprüft**: Noch nicht validierte Bookmarks',
+          '🏠 **Localhost**: Lokale Entwicklungs-URLs',
+          '📋 **Duplikate**: Mehrfach vorhandene URLs'
+        ],
+        sections: [
+          {
+            title: 'Automatische Status-Erkennung',
+            steps: [
+              '🔍 **Link-Prüfung**: Automatische Validierung beim Import',
+              '⏱️ **Timeout-Erkennung**: URLs die zu lange zum Laden brauchen',
+              '💀 **Dead-Link-Detection**: 404, 500, DNS-Fehler automatisch erkannt',
+              '🏠 **Localhost-Filter**: 127.0.0.1, localhost automatisch kategorisiert',
+              '📋 **Duplikat-Suche**: Identische URLs werden markiert'
+            ]
+          },
+          {
+            title: 'Status-Filter & Navigation',
+            steps: [
+              '🎛️ **Filter-Dropdown**: Rechts in der Suchleiste',
+              '📊 **Live-Zählung**: Anzahl pro Status in Klammern',
+              '🔍 **Kombinierte Suche**: Status + Textsuche möglich',
+              '⚡ **Schnellfilter**: Ein-Klick Zugriff auf problematische Links'
+            ]
+          },
+          {
+            title: 'Status-Management Aktionen',
+            steps: [
+              '🗑️ **Tote Links löschen**: Bulk-Aktion über "TOTE Links" Button',
+              '🏠 **Localhost entfernen**: "localhost" Button für lokale URLs',
+              '📋 **Duplikate bereinigen**: "Duplikate" Button findet & entfernt',
+              '🔄 **Status manuell ändern**: Dropdown in Bookmark-Details'
+            ]
+          }
+        ]
+      }
+    },
     validation: {
       title: 'Link-Validierung',
       icon: <Globe className="w-5 h-5" />,
