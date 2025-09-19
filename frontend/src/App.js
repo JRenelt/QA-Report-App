@@ -1848,6 +1848,9 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
 
   // Drag & Drop Handlers für Kategorien - Excel-ähnliche Funktionalität
   const handleCategoryDragStart = (e, category, isSubcategory = false) => {
+    e.stopPropagation();
+    console.log(`🚀 DRAG START: ${category.name}, isSubcategory: ${isSubcategory}, shiftPressed: ${shiftPressed}`);
+    
     setDraggedCategory({
       ...category, 
       isSubcategory,
@@ -1855,13 +1858,22 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       originalIndex: category.order_index || 0
     });
     
-    // Visuelles Feedback für Drag Start
+    // Setze Drag-Daten für bessere Kompatibilität
+    e.dataTransfer.setData('text/plain', category.name);
     e.dataTransfer.effectAllowed = shiftPressed ? 'copy' : 'move';
-    console.log(`Category Drag Started: ${category.name}, Mode: ${dragMode}, Shift: ${shiftPressed}`);
+    
+    console.log(`✅ Drag started successfully for: ${category.name}`);
   };
 
   const handleCategoryDragOver = (e, category, isSubcategory = false) => {
     e.preventDefault();
+    e.stopPropagation();
+    
+    // Debug: Zeige Drag Over Events  
+    if (draggedCategory) {
+      console.log(`🎯 DRAG OVER: ${draggedCategory.name} over ${category.name}, mode: ${dragMode}`);
+    }
+    
     e.dataTransfer.dropEffect = shiftPressed ? 'copy' : 'move';
     
     // Unterschiedliches visuelles Feedback je nach Modus
@@ -1874,6 +1886,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   };
 
   const handleCategoryDragLeave = (e) => {
+    e.stopPropagation();
     // Nur entfernen wenn wirklich das Element verlassen wird
     if (!e.currentTarget.contains(e.relatedTarget)) {
       setDragOverCategory(null);
@@ -1882,18 +1895,25 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
 
   const handleCategoryDrop = async (e, targetCategory, isTargetSubcategory = false) => {
     e.preventDefault();
+    e.stopPropagation();
     
-    if (!draggedCategory || !targetCategory) return;
+    console.log(`💫 DROP EVENT: ${draggedCategory?.name} -> ${targetCategory.name}`);
+    
+    if (!draggedCategory || !targetCategory) {
+      console.log('❌ Drop cancelled: Missing dragged or target category');
+      return;
+    }
     
     // Verhindere Drop auf sich selbst
     if (draggedCategory.name === targetCategory.name) {
+      console.log('❌ Drop cancelled: Cannot drop on self');
       setDraggedCategory(null);
       setDragOverCategory(null);
       return;
     }
     
-    console.log(`Category Drop: ${draggedCategory.name} -> ${targetCategory.name}`);
-    console.log(`Mode: ${dragMode}, Shift: ${shiftPressed}, Target is Subcategory: ${isTargetSubcategory}`);
+    console.log(`🎯 Processing drop: ${draggedCategory.name} -> ${targetCategory.name}`);
+    console.log(`   Mode: ${dragMode}, Shift: ${shiftPressed}, Target is Subcategory: ${isTargetSubcategory}`);
     
     try {
       // Bestimme Ziel-Level basierend auf Drop-Position
@@ -1902,18 +1922,18 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       // Spezialbehandlung für "Alle" -> macht jede Kategorie zu Hauptkategorie
       if (targetCategory.name === 'Alle') {
         targetLevel = 'root';
-        console.log(`Special handling: Moving ${draggedCategory.name} to ROOT level via "Alle"`);
+        console.log(`🏠 SPECIAL: Moving ${draggedCategory.name} to ROOT level via "Alle"`);
       } else if (isTargetSubcategory) {
         // Drop auf Unterkategorie = gleiche Ebene
         targetLevel = 'same';
+        console.log(`📂 SAME LEVEL: Moving to same level as subcategory ${targetCategory.name}`);
       } else {
         // Drop auf Hauptkategorie = wird zu Unterkategorie
         targetLevel = 'child';
+        console.log(`📁 CHILD LEVEL: Moving to child of ${targetCategory.name}`);
       }
       
-      // Debug Output
-      console.log(`Target Level determined: ${targetLevel}`);
-      console.log(`Target Category: ${targetCategory.name}, Is Subcategory: ${isTargetSubcategory}`);
+      console.log(`🎮 Final target level: ${targetLevel}`);
       
       // API Call zum Verschieben
       const service = new FavoritesService();
@@ -1924,16 +1944,16 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
         targetLevel // 'same', 'child', 'root'
       );
       
-      console.log('Category move successful:', result);
+      console.log('✅ Backend move successful:', result);
       
       // Success Toast
       let successMessage = `Kategorie "${draggedCategory.name}"`;
       if (targetLevel === 'child') {
-        successMessage += ` → Unterkategorie von "${targetCategory.name}" ✓`;
+        successMessage += ` → Unterkategorie von "${targetCategory.name}" ✅`;
       } else if (targetLevel === 'root') {
-        successMessage += ` → Hauptkategorie ✓`;
+        successMessage += ` → Hauptkategorie ✅`;
       } else {
-        successMessage += ` → sortiert ✓`;
+        successMessage += ` → sortiert ✅`;
       }
       
       if (dragMode === 'insert') {
@@ -1944,22 +1964,22 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       
       // Selektiver Update - trigger Parent-Komponente für Reload
       try {
-        console.log('Triggering parent reload via callback...');
+        console.log('🔄 Triggering parent reload via callback...');
         
         // Callback an Parent-Komponente für Daten-Reload
         if (onCategoryReorder) {
           await onCategoryReorder('refresh');
         }
         
-        console.log('Parent callback completed');
+        console.log('✅ Parent callback completed');
         
       } catch (updateError) {
-        console.error('Error refreshing categories:', updateError);
+        console.error('❌ Error refreshing categories:', updateError);
         toast.error('Fehler beim Aktualisieren der Kategorien: ' + updateError.message);
       }
       
     } catch (error) {
-      console.error('Error moving category:', error);
+      console.error('❌ Error moving category:', error);
       toast.error('Fehler beim Verschieben der Kategorie: ' + error.message);
     }
     
@@ -1969,6 +1989,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   };
 
   const handleCategoryDragEnd = () => {
+    console.log('🏁 Drag ended, cleaning up...');
     setDraggedCategory(null);
     setDragOverCategory(null);
   };
