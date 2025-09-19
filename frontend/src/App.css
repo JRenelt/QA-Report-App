@@ -2866,7 +2866,7 @@ body {
   min-width: 1014px;
 }
 
-/* Comprehensive Help Dialog - Dunkel Design - Erweitert */
+/* Comprehensive Help Dialog - System Theme Support */
 .comprehensive-help-dialog {
   background: var(--bg-primary) !important;
   border: 1px solid var(--border-primary) !important;
@@ -2893,9 +2893,40 @@ body {
   color: var(--text-primary) !important;
 }
 
-/* Alle Help-System Elemente auf Dark Theme umstellen */
+/* System Dark/Light Theme Support */
+@media (prefers-color-scheme: dark) {
+  .comprehensive-help-dialog {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  .comprehensive-help-dialog .navigation-index {
+    background: var(--bg-tertiary) !important;
+    border: 2px solid var(--cyan-500) !important;
+  }
+  
+  .comprehensive-help-dialog .nav-link {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-primary) !important;
+    color: var(--text-primary) !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .comprehensive-help-dialog .navigation-index {
+    background: #f8fafc !important;
+    border: 2px solid #0ea5e9 !important;
+  }
+  
+  .comprehensive-help-dialog .nav-link {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e0 !important;
+    color: #1e40af !important;
+  }
+}
+
+/* Alle Help-System Elemente folgen System-Theme */
 .comprehensive-help-dialog * {
-  background-color: inherit !important;
   color: inherit !important;
 }
 
