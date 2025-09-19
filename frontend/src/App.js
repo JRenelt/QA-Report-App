@@ -1926,19 +1926,19 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       // Success Toast
       let successMessage = `Kategorie "${draggedCategory.name}" verschoben`;
       if (targetLevel === 'child') {
-        successMessage += ` (wird Unterkategorie von "${targetCategory.name}")`;
+        successMessage += ` ✓`;
       } else if (targetLevel === 'root') {
-        successMessage += ` (wird Hauptkategorie)`;
+        successMessage += ` (→ Hauptkategorie) ✓`;
       }
       
       if (dragMode === 'insert') {
-        successMessage += ` (eingefügt)`;
+        successMessage += ` [eingefügt]`;
       }
       
       toast.success(successMessage);
       
-      // Reload categories
-      window.location.reload(); // Temporary - später durch selective reload ersetzen
+      // Intelligenter Update statt Page Reload
+      await handleSmartCategoryUpdate();
       
     } catch (error) {
       console.error('Error moving category:', error);
