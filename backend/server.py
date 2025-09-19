@@ -1124,6 +1124,74 @@ class BookmarkManager:
                 "total": 100
             }
         }
+
+    async def initialize_categories_from_bookmarks(self):
+        """Erstelle Kategorie-Entitäten in der Datenbank basierend auf bestehenden Bookmarks"""
+        try:
+            # Hole alle einzigartigen Kategorien aus Bookmarks
+            pipeline = [
+                {"$group": {
+                    "_id": {
+                        "category": "$category",
+                        "subcategory": "$subcategory"
+                    },
+                    "count": {"$sum": 1}
+                }}
+            ]
+            
+            category_data = await self.db.bookmarks.aggregate(pipeline).to_list(None)
+            
+            # Erstelle Kategorie-Dokumente
+            categories_to_insert = []
+            main_categories = set()
+            
+            for item in category_data:
+                category = item["_id"]["category"]
+                subcategory = item["_id"]["subcategory"]
+                count = item["count"]
+                
+                # Hauptkategorie
+                if category and category not in main_categories:
+                    main_categories.add(category)
+                    categories_to_insert.append({
+                        "name": category,
+                        "parent_category": None,
+                        "order_index": len([c for c in categories_to_insert if c.get("parent_category") is None]),
+                        "bookmark_count": 0,  # Wird später aktualisiert
+                        "created_at": datetime.now(timezone.utc),
+                        "updated_at": datetime.now(timezone.utc)
+                    })
+                
+                # Unterkategorie
+                if subcategory and subcategory.strip():
+                    categories_to_insert.append({
+                        "name": subcategory,
+                        "parent_category": category,
+                        "order_index": len([c for c in categories_to_insert if c.get("parent_category") == category]),
+                        "bookmark_count": count,
+                        "created_at": datetime.now(timezone.utc),
+                        "updated_at": datetime.now(timezone.utc)
+                    })
+            
+            # Lösche bestehende Kategorien
+            await self.db.categories.delete_many({})
+            
+            # Füge neue Kategorien hinzu
+            if categories_to_insert:
+                await self.db.categories.insert_many(categories_to_insert)
+            
+            # Update bookmark counts
+            await self.category_manager.update_bookmark_counts()
+            
+            return {
+                "message": f"Initialized {len(categories_to_insert)} categories",
+                "main_categories": len(main_categories),
+                "total_categories": len(categories_to_insert)
+            }
+            
+        except Exception as e:
+            print(f"Error initializing categories: {e}")
+            return {"error": str(e)}
     
     async def import_bookmarks(self, content: str, file_type: str) -> Dict[str, Any]:
         """Importiert Bookmarks aus verschiedenen Formaten"""
