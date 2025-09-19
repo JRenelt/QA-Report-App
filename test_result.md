@@ -760,10 +760,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Live Category Manager Design Fix"
-    - "Live Category Manager Search Field"
-    - "Live Category Manager CRUD Operations"
-    - "Drag and Drop for Favorites and Categories"
+    - "Phase 2 System Rebuild - Schritt 2: Modulares Category CRUD mit Lock-Funktionalität"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
