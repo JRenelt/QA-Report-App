@@ -3785,6 +3785,23 @@ function App() {
     localStorage.setItem('favorg-sidebar-collapsed', newCollapsed.toString());
   };
 
+  // Category Reorder Handler für Drag & Drop Refresh
+  const handleCategoryReorder = async (action) => {
+    if (action === 'refresh') {
+      console.log('Category reorder refresh requested...');
+      try {
+        await Promise.all([
+          loadBookmarks(),
+          loadStatistics()
+        ]);
+        console.log('Category reorder refresh completed');
+      } catch (error) {
+        console.error('Error in category reorder refresh:', error);
+        toast.error('Fehler beim Aktualisieren nach Kategorie-Verschiebung');
+      }
+    }
+  };
+
   // Filter bookmarks based on search and status
   const filteredBookmarks = bookmarks.filter(bookmark => {
     // Search filter - durchsucht Titel, URL, Kategorie und Beschreibung
