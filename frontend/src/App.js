@@ -1872,6 +1872,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   };
 
   const handleCategoryDragLeave = (e) => {
+    // Nur entfernen wenn wirklich das Element verlassen wird
     if (!e.currentTarget.contains(e.relatedTarget)) {
       setDragOverCategory(null);
     }
