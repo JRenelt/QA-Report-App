@@ -1974,20 +1974,34 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       
       toast.success(successMessage);
       
-      // Selektiver Update - trigger Parent-Komponente für Reload
+      // Sofortiger Update mit besserer Fehlerbehandlung
       try {
-        console.log('🔄 Triggering parent reload via callback...');
+        console.log('🔄 Starting immediate category refresh...');
         
         // Callback an Parent-Komponente für Daten-Reload
         if (onCategoryReorder) {
           await onCategoryReorder('refresh');
+          console.log('✅ Parent callback completed successfully');
+        } else {
+          console.warn('⚠️ No onCategoryReorder callback available');
+          toast.warning('Kategorie verschoben - bitte Seite manuell aktualisieren');
         }
         
-        console.log('✅ Parent callback completed');
+        // Force Re-render nach 300ms für bessere UX
+        setTimeout(() => {
+          console.log('🔄 Forcing component re-render...');
+          window.dispatchEvent(new CustomEvent('categoryDataChanged'));
+        }, 300);
         
       } catch (updateError) {
         console.error('❌ Error refreshing categories:', updateError);
-        toast.error('Fehler beim Aktualisieren der Kategorien: ' + updateError.message);
+        toast.error('Kategorie verschoben, aber Anzeige-Update fehlgeschlagen: ' + updateError.message);
+        
+        // Fallback: Page Reload nach 2 Sekunden wenn alles andere fehlschlägt
+        setTimeout(() => {
+          console.log('🔄 Fallback: Triggering page reload...');
+          window.location.reload();
+        }, 2000);
       }
       
     } catch (error) {
