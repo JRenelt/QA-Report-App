@@ -409,16 +409,21 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
         </div>
 
         <div className="flex-1 overflow-hidden">
-          <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-700">
-            <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
-              🚀 Live-Bearbeitung Features:
-            </h3>
-            <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-              <li>• <strong>+ Symbol</strong>: Neue Unterkategorie direkt unter jeder Kategorie</li>
-              <li>• <strong>Live Edit</strong>: Klick auf Edit-Symbol für Inline-Bearbeitung</li>
-              <li>• <strong>X Ebenen</strong>: Unbegrenzte Kategorie-Hierarchie möglich</li>
-              <li>• <strong>Enter/Escape</strong>: Speichern/Abbrechen mit Tastatur</li>
-            </ul>
+          {/* Hyperlink zum Handbuch statt Text */}
+          <div className="mb-4 p-2 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-700">
+            <div className="text-center">
+              <a 
+                href="#help-categories" 
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 hover:underline font-medium"
+                onClick={(e) => {
+                  e.preventDefault();
+                  // Öffne Hilfe-Dialog
+                  alert('Handbuch wird geöffnet - Live-Bearbeitung Features erklärt');
+                }}
+              >
+                📚 Live-Bearbeitung Features im Handbuch nachlesen
+              </a>
+            </div>
           </div>
 
           <div className="flex items-center justify-between mb-4">
