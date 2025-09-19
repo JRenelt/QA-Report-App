@@ -527,7 +527,8 @@ class Phase2TestDataValidator:
             self.test_status_consistency,
             self.test_statistics_validation,
             self.test_category_integration,
-            self.test_duplicate_validation
+            self.test_duplicate_validation,
+            self.test_backend_bug_analysis
         ]
         
         passed_tests = 0
