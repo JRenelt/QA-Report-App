@@ -4884,6 +4884,16 @@ body {
   color: #6b7280 !important;
 }
 
+/* Live Category Manager - Hellgraue Schrift bei weißem Hintergrund Fix */
+.category-manage-dialog-live *[style*="background: #f8fafc"],
+.category-manage-dialog-live *[style*="background: #ffffff"] {
+  color: #374151 !important; /* Dunkelgrau statt hellgrau */
+}
+
+.category-manage-dialog-live .category-live-content {
+  color: var(--text-primary) !important;
+}
+
 /* Help Links */
 .category-help-links {
   display: flex;
