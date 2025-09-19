@@ -1050,7 +1050,8 @@ class BookmarkManager:
             "duplicate": 0,
             "locked": 0,
             "timeout": 0,
-            "checked": 0
+            "checked": 0,
+            "unchecked": 0
         }
         
         for bookmark_group, status_type, is_dead, is_locked in all_bookmark_groups:
