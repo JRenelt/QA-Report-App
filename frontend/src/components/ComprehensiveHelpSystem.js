@@ -463,6 +463,82 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
         ]
       }
     },
+    testdata: {
+      title: 'Testdaten-System',
+      icon: <Grid className="w-5 h-5" />,
+      content: {
+        title: '📊 Umfassende Testdaten-Generierung',
+        description: 'Das integrierte Testdaten-System erstellt 100 realistische Bookmarks zur Demonstration aller FavOrg-Features.',
+        sections: [
+          {
+            title: 'Automatische Testdaten-Erstellung',
+            steps: [
+              '🎯 **Ein-Klick-Generation**: Button "Testdaten generieren" in Einstellungen → Erweitert',
+              '🗑️ **Bereinigung**: Löscht automatisch alle bestehenden Bookmarks vor Erstellung',
+              '✨ **100 Bookmarks**: Exakte Anzahl für umfassende Tests',
+              '🔄 **Wiederholbar**: Jederzeit neue Testdaten generieren möglich'
+            ]
+          },
+          {
+            title: 'Realistische Datenstruktur',
+            steps: [
+              '🌐 **Echte URLs**: GitHub, Stack Overflow, BBC News, LinkedIn, Netflix, Wikipedia',
+              '🏢 **Bekannte Services**: Amazon, Coursera, WebMD, Yahoo Finance, Booking.com',
+              '📝 **Beschreibungen**: Jeder Bookmark hat sinnvolle, durchsuchbare Beschreibung',
+              '🏷️ **Kategorien**: Realistische Zuordnung (GitHub zu Development/Frontend)',
+              '📅 **Timestamps**: Verschiedene Erstellungsdaten für zeitbasierte Tests'
+            ]
+          },
+          {
+            title: 'Status-Verteilung (Excel-Funktionalität)',
+            steps: [
+              '✅ **54 Aktive (54%)**: Funktionierende URLs für normalen Betrieb',
+              '💀 **9 Tote Links (9%)**: Nicht erreichbare URLs für Dead-Link-Testing',
+              '🔒 **14 Gesperrt (14%)**: Schreibgeschützte Bookmarks gleichmäßig verteilt',
+              '🏠 **10 Localhost (10%)**: 127.0.0.1, localhost URLs für Entwicklung',
+              '📋 **7 Duplikate (7%)**: Identische URLs für Duplikat-Erkennung',
+              '❓ **100 Ungeprüft (100%)**: Alle initial ungeprüft für Validierungs-Tests',
+              '⏱️ **Timeout**: Dynamisch generiert bei Validierung langsamer URLs'
+            ]
+          },
+          {
+            title: 'Hierarchische Kategorie-Struktur',
+            steps: [
+              '📂 **11 Hauptkategorien**: Development (20), News (15), Tools (15), Social Media (12)',
+              '🎯 **Entertainment (10)**: Netflix, YouTube, Gaming-Plattformen',
+              '📚 **Reference (8)**: Wikipedia, Dokumentationen, Nachschlagewerke',
+              '🛒 **Shopping (6)**: Amazon, E-Commerce, Online-Shops',
+              '🎓 **Education (6)**: Coursera, Online-Lernen, Tutorials',
+              '🏥 **Health (4)**: WebMD, Gesundheits-Portale',
+              '💰 **Finance (2)**: Yahoo Finance, Banking, Finanz-Tools',
+              '✈️ **Travel (2)**: Booking.com, Reise-Portale'
+            ]
+          },
+          {
+            title: '49 Unterkategorien für Drag & Drop',
+            steps: [
+              '💻 **Development**: Frontend, Backend, JavaScript, Python, DevOps, Mobile',
+              '📰 **News**: Tech News, World News, Local News, Sports',
+              '🔧 **Tools**: Productivity, Design, Development Tools, Analytics',
+              '📱 **Social Media**: Professional (LinkedIn), Personal (Facebook), Media (Instagram)',
+              '🎮 **Entertainment**: Streaming, Gaming, Music, Videos',
+              '📖 **Reference**: Documentation, Wikis, Guides, Standards'
+            ]
+          },
+          {
+            title: 'Test-Szenarien abgedeckt',
+            steps: [
+              '🔍 **Suchfunktion**: Verschiedene Begriffe in Titel, URL, Beschreibung, Kategorie',
+              '📊 **Status-Filter**: Alle Status-Typen mit realistischen Zahlen',
+              '🎯 **Drag & Drop**: Cross-Level-Verschiebung zwischen allen Hierarchie-Ebenen',
+              '🔒 **Lock-System**: Gesperrte Bookmarks über alle Kategorien verteilt',
+              '🗑️ **Bulk-Aktionen**: Genügend tote/doppelte Links für Bulk-Löschung',
+              '📤 **Export-Tests**: Alle Formate (HTML, JSON, XML, CSV) mit realistischen Daten'
+            ]
+          }
+        ]
+      }
+    },
     easter: {
       title: 'Easter Egg',
       icon: <Play className="w-5 h-5" />,
