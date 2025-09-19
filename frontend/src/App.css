@@ -1460,6 +1460,61 @@ body {
   background: var(--bg-secondary) !important;
 }
 
+/* Sidebar Title Section - Neues Design */
+.sidebar-title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.sidebar-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Info Button - Kreis mit i */
+.category-info-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.info-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.info-circle:hover {
+  background: var(--bg-secondary);
+}
+
+/* Kategorie verwalten Button - Blaues Kreuz rechts */
+.category-manage-btn {
+  background: var(--cyan-600) !important;
+  color: white !important;
+  border: 1px solid var(--cyan-500) !important;
+  padding: 4px !important;
+  border-radius: 4px !important;
+  cursor: pointer;
+}
+
+.category-manage-btn:hover {
+  background: var(--cyan-700) !important;
+}
+
+/* Sidebar Toggle */
 .sidebar-toggle {
   background: var(--bg-tertiary) !important;
   border: 1px solid var(--border-primary) !important;
