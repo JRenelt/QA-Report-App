@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Backend Test Suite für FavLink Manager Import-Funktionen
-Testet HTML, JSON, XML und CSV Import gemäß German Review Request
+Backend Test Suite für FavLink Manager Drag & Drop System
+Testet Kategorie Drag & Drop System umfassend gemäß German Review Request
 
-Problem: User berichtet "Der Einzel Import arbeitet nicht korrekt: HTML=Ja, JSON=Ja, XML=NEIN, CSV=NEIN"
+Problem: User berichtet Verschieben funktioniert nicht (OF) und "Alle" Cross-Over funktioniert nicht.
 """
 
 import requests
