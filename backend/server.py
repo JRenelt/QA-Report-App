@@ -1969,6 +1969,16 @@ async def cross_level_sort_categories(sort_data: dict):
             }}
         )
         
+        # Debug: Log the operation
+        print(f"Cross-level sort operation:")
+        print(f"  Dragged: {dragged_category}")
+        print(f"  Target: {target_category}") 
+        print(f"  Target Level: {target_level}")
+        print(f"  New Parent: {new_parent}")
+        print(f"  New Position: {new_position}")
+        print(f"  Operation Mode: {operation_mode}")
+        print(f"  MongoDB Result: matched={result.matched_count}, modified={result.modified_count}")
+        
         # Update category counts
         await bookmark_manager.category_manager.update_bookmark_counts()
         
