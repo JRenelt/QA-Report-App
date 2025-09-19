@@ -902,6 +902,11 @@ class BookmarkManager:
             {"title": "Wikipedia DE", "url": "https://de.wikipedia.org", "category": "Reference"},
             {"title": "Archive.org", "url": "https://archive.org", "category": "Reference"},
             
+            # Test-Fälle für leere/problematische Kategorienamen
+            {"title": "Bookmark ohne Kategorie", "url": "https://example1.com", "category": ""},
+            {"title": "Bookmark mit leerem Subcategory", "url": "https://example2.com", "category": "Test", "subcategory": ""},
+            {"title": "Nur Leerzeichen Kategorie", "url": "https://example3.com", "category": "   ", "subcategory": None},
+            
             # Dead Links für Tests
             {"title": "Dead Link 1", "url": "https://this-domain-does-not-exist-12345.com", "category": "Testing"},
             {"title": "Dead Link 2", "url": "https://broken-url-test.invalid", "category": "Testing"},
