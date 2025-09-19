@@ -1878,103 +1878,72 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     }
   };
 
-  const handleCategoryDrop = (e, targetCategory, isTargetSubcategory = false) => {
+  const handleCategoryDrop = async (e, targetCategory, isTargetSubcategory = false) => {
     e.preventDefault();
     
-    // Check if dragging a bookmark from main area to category
-    const bookmarkData = e.dataTransfer.getData('application/json');
-    if (bookmarkData) {
-      try {
-        const draggedBookmark = JSON.parse(bookmarkData);
-        if (draggedBookmark && draggedBookmark.id && draggedBookmark.title) {
-          // Handle bookmark to category drag-and-drop inline
-          const moveToCategoryAsync = async () => {
-            try {
-              // Bestimme Ziel-Kategorie und Unterkategorie
-              let category, subcategory;
-              
-              if (isTargetSubcategory) {
-                // Wenn es eine Unterkategorie ist, finde die Parent-Kategorie
-                const findParentCategory = (categories, subcatName) => {
-                  for (const cat of categories) {
-                    if (cat.children && cat.children.some(child => child.name === subcatName)) {
-                      return cat.name;
-                    }
-                  }
-                  return null;
-                };
-                
-                category = findParentCategory(categories, targetCategory.name);
-                subcategory = targetCategory.name;
-              } else {
-                category = targetCategory.name;
-                subcategory = null;
-              }
-              
-              // Spezialbehandlung für "Alle" Kategorie
-              if (category === 'Alle') {
-                // Wenn zu "Alle" verschoben wird, mache es zu einer Hauptkategorie
-                category = 'Nicht zugeordnet';
-                subcategory = null;
-              }
-              
-              // API Call zum Verschieben
-              const service = new FavoritesService();
-              await service.moveBookmarkToCategory(draggedBookmark.id, category, subcategory);
-              
-              toast.success(`Favorit "${draggedBookmark.title}" zu "${category}${subcategory ? '/' + subcategory : ''}" verschoben`);
-              
-              // Reload bookmarks und statistics - Using window.location.reload() for simplicity
-              window.location.reload();
-              
-            } catch (error) {
-              console.error('Error moving bookmark to category:', error);
-              toast.error('Fehler beim Verschieben des Favoriten zur Kategorie');
-            }
-          };
-          
-          moveToCategoryAsync();
-          return;
-        }
-      } catch (parseError) {
-        console.log('Not a bookmark drag operation, checking for category...');
-      }
+    if (!draggedCategory || !targetCategory) return;
+    
+    // Verhindere Drop auf sich selbst
+    if (draggedCategory.name === targetCategory.name) {
+      setDraggedCategory(null);
+      setDragOverCategory(null);
+      return;
     }
     
-    // Original category-to-category logic
-    if (draggedCategory && targetCategory && draggedCategory.id !== targetCategory.id) {
-      // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
-      // Für jetzt loggen wir die Aktion
-      const draggedType = draggedCategory.isSubcategory ? 'Unterkategorie' : 'Kategorie';
-      const targetType = isTargetSubcategory ? 'Unterkategorie' : 'Kategorie';
+    console.log(`Category Drop: ${draggedCategory.name} -> ${targetCategory.name}`);
+    console.log(`Mode: ${dragMode}, Shift: ${shiftPressed}, Target is Subcategory: ${isTargetSubcategory}`);
+    
+    try {
+      // Bestimme Ziel-Level basierend auf Drop-Position
+      let targetLevel = 'same';
       
-      console.log(`${draggedType} "${draggedCategory.name}" zu ${targetType} "${targetCategory.name}" verschoben`);
-      
-      // Erweiterte Logik für alle Verschiebungs-Szenarien
-      let moveDescription = '';
-      
-      if (draggedCategory.isSubcategory && isTargetSubcategory) {
-        // Unterkategorie zu Unterkategorie
-        moveDescription = `Unterkategorie "${draggedCategory.name}" zwischen Unterkategorien zu "${targetCategory.name}" verschoben`;
-      } else if (draggedCategory.isSubcategory && !isTargetSubcategory) {
-        // Unterkategorie zu Hauptkategorie
-        moveDescription = `Unterkategorie "${draggedCategory.name}" zur Hauptkategorie "${targetCategory.name}" verschoben`;
-      } else if (!draggedCategory.isSubcategory && isTargetSubcategory) {
-        // Hauptkategorie zu Unterkategorie (wird zur Unterkategorie der Parent-Kategorie)
-        moveDescription = `Kategorie "${draggedCategory.name}" zur Unterkategorie unter "${targetCategory.parent_category || 'Unbekannt'}" verschoben`;
+      if (isTargetSubcategory) {
+        // Drop auf Unterkategorie = gleiche Ebene
+        targetLevel = 'same';
       } else {
-        // Hauptkategorie zu Hauptkategorie
-        moveDescription = `Kategorie "${draggedCategory.name}" zu Kategorie "${targetCategory.name}" verschoben`;
+        // Drop auf Hauptkategorie = wird zu Unterkategorie
+        targetLevel = 'child';
       }
       
-      // Simulate category reorder
-      if (onCategoryReorder) {
-        onCategoryReorder(draggedCategory, targetCategory);
+      // Spezialbehandlung für "Alle" -> macht Unterkategorie zu Hauptkategorie
+      if (targetCategory.name === 'Alle') {
+        targetLevel = 'root';
       }
       
-      toast.success(moveDescription);
+      // API Call zum Verschieben
+      const service = new FavoritesService();
+      const result = await service.crossLevelSortCategories(
+        draggedCategory.name,
+        targetCategory.name,
+        dragMode, // 'standard' oder 'insert'
+        targetLevel // 'same', 'child', 'root'
+      );
+      
+      console.log('Category move successful:', result);
+      
+      // Success Toast
+      let successMessage = `Kategorie "${draggedCategory.name}" verschoben`;
+      if (targetLevel === 'child') {
+        successMessage += ` (wird Unterkategorie von "${targetCategory.name}")`;
+      } else if (targetLevel === 'root') {
+        successMessage += ` (wird Hauptkategorie)`;
+      }
+      
+      if (dragMode === 'insert') {
+        successMessage += ` (eingefügt)`;
+      }
+      
+      toast.success(successMessage);
+      
+      // Reload categories
+      window.location.reload(); // Temporary - später durch selective reload ersetzen
+      
+    } catch (error) {
+      console.error('Error moving category:', error);
+      toast.error('Fehler beim Verschieben der Kategorie: ' + error.message);
     }
     
+    // Cleanup
     setDraggedCategory(null);
     setDragOverCategory(null);
   };
