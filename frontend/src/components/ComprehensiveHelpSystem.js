@@ -53,38 +53,60 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
       }
     },
     categories: {
+      icon: '🏷️',
       title: 'Kategorien-Verwaltung',
-      icon: <FolderPlus className="w-5 h-5" />,
+      description: 'Hierarchische Organisation mit unbegrenzten Ebenen und Excel-ähnlichem Drag & Drop.',
       content: {
-        title: 'Erweiterte Kategorien-Verwaltung',
-        description: 'Organisieren Sie Ihre Lesezeichen in unbegrenzten Hierarchie-Ebenen mit der Live-Kategorien-Verwaltung.',
+        title: 'Hierarchische Kategorien-Verwaltung',
+        description: 'Organisieren Sie Ihre Bookmarks in einer unbegrenzten Kategorie-Hierarchie mit Excel-ähnlichen Drag & Drop Funktionen.',
+        features: [
+          '🏷️ Unbegrenzte Kategorie-Ebenen (Haupt- und Unterkategorien)',
+          '🔄 Excel-ähnliches Drag & Drop zwischen allen Ebenen',
+          '⌨️ Shift-Modus für präzises Einfügen zwischen Kategorien',
+          '📊 Live-Bearbeitung mit sofortiger Aktualisierung',
+          '🔍 Suchfunktion innerhalb der Kategorie-Verwaltung',
+          '🎯 Cross-Level Verschiebung (Unterkategorie ↔ Hauptkategorie)',
+          '📍 "Alle" als Root-Drop-Ziel für Hauptkategorien-Erstellung'
+        ],
         sections: [
           {
-            title: 'Kategorien erstellen',
+            title: 'Excel-ähnliches Drag & Drop System',
             steps: [
-              'Klicken Sie auf das Kategorien-Symbol im Header',
-              'Wählen Sie "Neue Hauptkategorie" für Level 1 Kategorien',
-              'Verwenden Sie das + Symbol für Unterkategorien',
-              'Geben Sie den Namen ein und drücken Sie Enter'
+              '🖱️ **Standardmodus (ohne Shift)**: Kategorie greifen und an neue Position ziehen',
+              '📂 **Hauptkategorie → Unterkategorie**: Auf andere Hauptkategorie ziehen',
+              '📁 **Unterkategorie → Hauptkategorie**: Auf "Alle" ziehen',
+              '🔄 **Cross-Level**: Zwischen allen Ebenen frei verschieben',
+              '📍 **Erste Position**: Verschobene Kategorien erscheinen an erster Stelle'
             ]
           },
           {
-            title: 'Live-Bearbeitung',
+            title: 'Shift-Modus (Excel-Einfügen)',
             steps: [
-              'Klicken Sie auf das Edit-Symbol (✏️) neben einer Kategorie',
-              'Bearbeiten Sie den Namen direkt inline',
-              'Drücken Sie Enter zum Speichern oder Escape zum Abbrechen',
-              'Änderungen werden sofort übernommen'
+              '⌨️ **Shift gedrückt halten** während des Ziehens',
+              '📏 **Grüne Linie erscheint**: Zeigt exakte Einfügeposition',
+              '📋 **Einfügen zwischen Kategorien**: Bestehende rutschen nach unten',
+              '🎯 **Präzise Positionierung**: Wie Excel-Zeilen einfügen'
             ]
           },
           {
-            title: 'Hierarchische Struktur',
+            title: 'Live Kategorien-Verwaltung',
             steps: [
-              'Level 1: Hauptkategorien (z.B. "Development")',
-              'Level 2: Unterkategorien (z.B. "Frontend")',
-              'Level 3: Unter-Unterkategorien (z.B. "React")',
-              'Unbegrenzte weitere Ebenen möglich',
-              'Jede Ebene hat ein + Symbol für neue Unterkategorien'
+              '🏷️ **Dialog öffnen**: Plus-Symbol neben "Kategorien" in Sidebar',
+              '🔍 **Interne Suche**: Suchfeld für schnelles Finden von Kategorien',
+              '✏️ **Live-Edit**: Klick auf Edit-Symbol für Inline-Bearbeitung',
+              '➕ **Neue Kategorien**: "Neue Hauptkategorie" Button',
+              '🗑️ **CRUD-Operationen**: Create, Read, Update, Delete',
+              '💾 **Enter/Escape**: Speichern oder Abbrechen'
+            ]
+          },
+          {
+            title: 'Kategorie-Sidebar Features',
+            steps: [
+              '👁️ **Ein-/Ausblendbar**: Toggle-Button für mehr Platz',
+              '📏 **Größe anpassbar**: Ziehen am rechten Rand zum Vergrößern',
+              '🔍 **Vollständiges Scrolling**: Alle Kategorien erreichbar',
+              'ℹ️ **Info-Button**: Hilfe direkt neben "Kategorien" Titel',
+              '🎯 **Drop-Zonen**: "Alle" und alle Kategorien als Drop-Targets'
             ]
           }
         ]
