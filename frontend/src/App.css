@@ -1387,7 +1387,89 @@ body {
   min-width: 300px;
 }
 
-/* Drag & Drop Visuelles Feedback */
+/* Kategorie Drag & Drop Visuelles Feedback - Excel-ähnlich */
+.category-item.dragging {
+  opacity: 0.6;
+  transform: rotate(1deg) scale(0.98);
+  border: 2px dashed var(--cyan-400);
+  background: var(--bg-tertiary);
+  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3);
+}
+
+.category-item.drag-over:not(.insert-mode) {
+  border: 2px dashed var(--cyan-400) !important;
+  background: var(--bg-tertiary) !important;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.4) !important;
+}
+
+.category-item.drag-over.insert-mode {
+  border-top: 4px solid var(--green-500) !important;
+  background: var(--bg-primary) !important;
+  position: relative;
+}
+
+.category-item.drag-over.insert-mode::before {
+  content: "📋 Hier einfügen (Shift-Modus)";
+  position: absolute;
+  top: -28px;
+  left: 8px;
+  background: var(--green-500);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  z-index: 1000;
+  white-space: nowrap;
+}
+
+/* Standard Drag Mode Visual */
+.category-item.drag-over.standard-mode {
+  border: 2px dashed var(--cyan-400) !important;
+  background: linear-gradient(45deg, var(--bg-tertiary), var(--bg-secondary)) !important;
+}
+
+.category-item.drag-over.standard-mode::after {
+  content: "↻ Verschieben";
+  position: absolute;
+  top: -24px;
+  right: 8px;
+  background: var(--cyan-600);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  z-index: 999;
+}
+
+/* Reparenting Visual Indicators */
+.category-item.will-become-child::after {
+  content: "→ wird Unterkategorie";
+  background: var(--purple-600) !important;
+}
+
+.category-item.will-become-parent::after {
+  content: "↑ wird Hauptkategorie";
+  background: var(--green-600) !important;
+}
+
+/* Excel-ähnliche Sortier-Linie für Insert-Mode */
+.category-insert-line {
+  height: 3px;
+  background: linear-gradient(90deg, var(--green-400), var(--green-600));
+  margin: 2px 0;
+  border-radius: 2px;
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+/* Drag & Drop Visuelles Feedback für Bookmarks */
 .bookmark-card.drag-over:not(.insert-mode) {
   border: 2px dashed var(--cyan-400) !important;
   background: var(--bg-tertiary) !important;
