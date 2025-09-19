@@ -1899,7 +1899,11 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       // Bestimme Ziel-Level basierend auf Drop-Position
       let targetLevel = 'same';
       
-      if (isTargetSubcategory) {
+      // Spezialbehandlung für "Alle" -> macht jede Kategorie zu Hauptkategorie
+      if (targetCategory.name === 'Alle') {
+        targetLevel = 'root';
+        console.log(`Special handling: Moving ${draggedCategory.name} to ROOT level via "Alle"`);
+      } else if (isTargetSubcategory) {
         // Drop auf Unterkategorie = gleiche Ebene
         targetLevel = 'same';
       } else {
@@ -1907,10 +1911,9 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
         targetLevel = 'child';
       }
       
-      // Spezialbehandlung für "Alle" -> macht Unterkategorie zu Hauptkategorie
-      if (targetCategory.name === 'Alle') {
-        targetLevel = 'root';
-      }
+      // Debug Output
+      console.log(`Target Level determined: ${targetLevel}`);
+      console.log(`Target Category: ${targetCategory.name}, Is Subcategory: ${isTargetSubcategory}`);
       
       // API Call zum Verschieben
       const service = new FavoritesService();
