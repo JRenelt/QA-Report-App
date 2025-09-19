@@ -3397,24 +3397,13 @@ function App() {
     try {
       console.log('Smart category update started...');
       
-      // Aktuellen Zustand der erweiterten Kategorien speichern
-      const currentExpandedCategories = new Set(expandedCategories);
-      const currentActiveCategory = activeCategory;
-      const currentActiveSubcategory = activeSubcategory;
-      
-      // Kategorien und Bookmarks neu laden
+      // Kategorien und Bookmarks neu laden ohne State-Reset
       await Promise.all([
         loadBookmarks(),
         loadStatistics()
       ]);
       
-      // UI-Zustand wiederherstellen nach 100ms Delay
-      setTimeout(() => {
-        setExpandedCategories(currentExpandedCategories);
-        // Active Category bleibt durch die bestehende State-Verwaltung erhalten
-      }, 100);
-      
-      console.log('Smart category update completed - expanded state preserved');
+      console.log('Smart category update completed - UI state preserved');
       
     } catch (error) {
       console.error('Error in smart category update:', error);
