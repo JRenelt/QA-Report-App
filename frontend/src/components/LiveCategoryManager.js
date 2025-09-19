@@ -81,6 +81,52 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
     return rootCategories;
   };
 
+  // Filter-Funktion für Kategorien basierend auf Suchterm
+  const filterCategories = (categories, searchTerm) => {
+    if (!searchTerm.trim()) return categories;
+    
+    const searchLower = searchTerm.toLowerCase();
+    
+    const filterNode = (node) => {
+      const nameMatches = node.name.toLowerCase().includes(searchLower);
+      const filteredChildren = node.children ? node.children.map(filterNode).filter(Boolean) : [];
+      
+      // Zeige Node wenn Name matcht oder wenn Kinder matchen
+      if (nameMatches || filteredChildren.length > 0) {
+        return {
+          ...node,
+          children: filteredChildren,
+          isHighlighted: nameMatches // Für gelbe Markierung
+        };
+      }
+      
+      return null;
+    };
+    
+    return categories.map(filterNode).filter(Boolean);
+  };
+
+  // Highlighted Text Renderer
+  const renderHighlightedText = (text, searchTerm) => {
+    if (!searchTerm.trim()) return text;
+    
+    const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
+    return (
+      <span>
+        {parts.map((part, index) =>
+          part.toLowerCase() === searchTerm.toLowerCase() ? (
+            <span key={index} className="bg-yellow-200 dark:bg-yellow-600 px-1 rounded">
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </span>
+    );
+  };
+  };
+
   const toggleExpanded = (nodeName) => {
     const newExpanded = new Set(expandedNodes);
     if (newExpanded.has(nodeName)) {
