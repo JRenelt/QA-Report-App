@@ -1039,7 +1039,7 @@ class BookmarkManager:
             (duplicate_bookmarks, "duplicate", False, False),
             (locked_bookmarks, "locked", False, True),
             (timeout_bookmarks, "timeout", False, False),
-            (unchecked_bookmarks, "checked", False, False)
+            (unchecked_bookmarks, "unchecked", False, False)
         ]
         
         total_created = 0
