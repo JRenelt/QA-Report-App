@@ -1939,28 +1939,20 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       
       // Selektiver Update ohne Page Reload - Zustand bleibt erhalten
       try {
-        // Nur die benötigten Daten neu laden
-        console.log('Refreshing categories without state reset...');
+        // Immediate UI feedback - zeige Änderung sofort
+        console.log('Triggering immediate category refresh...');
         
-        // Kategorien werden durch das nächste loadBookmarks() automatisch aktualisiert
-        // da sie von den Bookmark-Daten abgeleitet werden
+        // Direkter Aufruf der Reload-Funktionen 
+        await Promise.all([
+          loadBookmarks(),
+          loadStatistics()
+        ]);
         
-        // Kurze Pause für UX
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
-        // Zeige visuelles Feedback dass Update läuft
-        const originalMessage = successMessage;
-        toast.info('Kategorien werden aktualisiert...');
-        
-        // Force refresh durch Parent-Komponente trigger 
-        // Das löst loadBookmarks() aus ohne Page Reload
-        window.dispatchEvent(new CustomEvent('refreshCategories'));
-        
-        console.log('Category refresh completed - expanded state preserved');
+        console.log('Direct category refresh completed');
         
       } catch (updateError) {
         console.error('Error refreshing categories:', updateError);
-        toast.warning('Kategorie verschoben, aber Anzeige muss manuell aktualisiert werden');
+        toast.error('Fehler beim Aktualisieren der Kategorien: ' + updateError.message);
       }
       
     } catch (error) {
