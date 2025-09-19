@@ -1987,13 +1987,6 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
                 </div>
               </div>
               <div className="sidebar-info">
-                <button
-                  className="info-link"
-                  onClick={handleInfoClick}
-                  title="Information über Kategorien"
-                >
-                  <AlertTriangle className="w-4 h-4" />
-                </button>
                 {showBrowserInfo && (
                   <div 
                     className="info-tooltip info-tooltip-positioned"
