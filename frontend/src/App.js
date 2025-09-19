@@ -1916,21 +1916,33 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     console.log(`   Mode: ${dragMode}, Shift: ${shiftPressed}, Target is Subcategory: ${isTargetSubcategory}`);
     
     try {
-      // Bestimme Ziel-Level basierend auf Drop-Position
+      // Bestimme Ziel-Level basierend auf Drop-Position - KORRIGIERTE LOGIC
       let targetLevel = 'same';
       
       // Spezialbehandlung für "Alle" -> macht jede Kategorie zu Hauptkategorie
       if (targetCategory.name === 'Alle') {
         targetLevel = 'root';
         console.log(`🏠 SPECIAL: Moving ${draggedCategory.name} to ROOT level via "Alle"`);
-      } else if (isTargetSubcategory) {
-        // Drop auf Unterkategorie = gleiche Ebene
-        targetLevel = 'same';
-        console.log(`📂 SAME LEVEL: Moving to same level as subcategory ${targetCategory.name}`);
-      } else {
-        // Drop auf Hauptkategorie = wird zu Unterkategorie
+      } 
+      // KORRIGIERT: Unterkategorie zu Unterkategorie = wird Unterkategorie der PARENT-Kategorie
+      else if (draggedCategory.isSubcategory && isTargetSubcategory) {
+        targetLevel = 'same'; // Gleiche Ebene wie Ziel-Unterkategorie
+        console.log(`📂 SUBCATEGORY TO SUBCATEGORY: Moving ${draggedCategory.name} to same level as ${targetCategory.name}`);
+      }
+      // Hauptkategorie zu Unterkategorie = wird Unterkategorie der PARENT-Kategorie  
+      else if (!draggedCategory.isSubcategory && isTargetSubcategory) {
+        targetLevel = 'same'; // Gleiche Ebene wie Ziel-Unterkategorie
+        console.log(`📁 MAIN TO SUBCATEGORY: Moving ${draggedCategory.name} to same level as subcategory ${targetCategory.name}`);
+      }
+      // Drop auf Hauptkategorie = wird zu Unterkategorie
+      else if (!isTargetSubcategory) {
         targetLevel = 'child';
-        console.log(`📁 CHILD LEVEL: Moving to child of ${targetCategory.name}`);
+        console.log(`📁 TO CHILD: Moving ${draggedCategory.name} to child of main category ${targetCategory.name}`);
+      }
+      else {
+        // Fallback
+        targetLevel = 'same';
+        console.log(`📂 FALLBACK: Moving ${draggedCategory.name} to same level as ${targetCategory.name}`);
       }
       
       console.log(`🎮 Final target level: ${targetLevel}`);
