@@ -1089,7 +1089,7 @@ class BookmarkManager:
                 "duplicate_links": status_counts["duplicate"],
                 "locked_links": status_counts["locked"],
                 "timeout_links": status_counts["timeout"],
-                "checked_links": status_counts["checked"],
+                "unchecked_links": status_counts["unchecked"],
                 "total": total_created
             }
         }
