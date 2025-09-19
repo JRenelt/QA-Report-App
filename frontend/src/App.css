@@ -1404,27 +1404,53 @@ body {
 }
 
 .category-item.drag-over.insert-mode {
-  border-top: 4px solid var(--green-500) !important;
+  border: none !important;
   background: var(--bg-primary) !important;
   position: relative;
 }
 
 .category-item.drag-over.insert-mode::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 10px;
+  right: 10px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green-500), var(--green-400), var(--green-500));
+  border-radius: 2px;
+  z-index: 1000;
+  animation: pulse-line 1s ease-in-out infinite alternate;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.category-item.drag-over.insert-mode::after {
   content: "📋 Hier einfügen (Shift-Modus)";
   position: absolute;
-  top: -28px;
-  left: 8px;
+  top: -32px;
+  left: 15px;
   background: var(--green-500);
   color: white;
   padding: 3px 8px;
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 500;
-  z-index: 1000;
+  z-index: 1001;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Standard Drag Mode Visual */
+@keyframes pulse-line {
+  from { 
+    opacity: 0.7; 
+    transform: scaleX(0.95);
+  }
+  to { 
+    opacity: 1; 
+    transform: scaleX(1);
+  }
+}
+
+/* Excel-ähnliche Sortier-Linie für Insert-Mode - Entfernt, ersetzt durch ::before */
 .category-item.drag-over.standard-mode {
   border: 2px dashed var(--cyan-400) !important;
   background: linear-gradient(45deg, var(--bg-tertiary), var(--bg-secondary)) !important;
