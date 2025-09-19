@@ -2023,34 +2023,77 @@ async def cross_level_sort_categories(sort_data: dict):
         new_position = 0
         
         if target_level == 'child':
-            # Dragged wird Unterkategorie von Target
+            # Dragged wird Unterkategorie von Target - an ERSTE Position
             new_parent = target_category
-            new_position = 0  # Erste Position unter Parent
+            new_position = 0  # ERSTE Position unter Parent
+            
+            # Verschiebe andere Unterkategorien nach unten
+            await db.categories.update_many(
+                {
+                    "parent_category": target_category,
+                    "name": {"$ne": dragged_category}  # Nicht die verschobene Kategorie
+                },
+                {"$inc": {"order_index": 1}}  # Alle anderen um 1 nach unten
+            )
+            
         elif target_level == 'root':
-            # Dragged wird Root-Kategorie (auch bei "Alle" als Target)
+            # Dragged wird Root-Kategorie - an ERSTE Position
             new_parent = None
-            new_position = 0  # Erste Position auf Root-Level
+            new_position = 0  # ERSTE Position auf Root-Level
+            
+            # Verschiebe andere Root-Kategorien nach unten
+            await db.categories.update_many(
+                {
+                    "parent_category": None,
+                    "name": {"$ne": dragged_category}  # Nicht die verschobene Kategorie
+                },
+                {"$inc": {"order_index": 1}}  # Alle anderen um 1 nach unten
+            )
+            
         elif target_level == 'same':
             # Dragged bleibt auf gleicher Ebene wie Target
             if target_category == "Alle":
-                # Wenn Target "Alle" ist, wird es Root-Level
+                # Wenn Target "Alle" ist, wird es Root-Level - ERSTE Position
                 new_parent = None
                 new_position = 0
+                
+                # Verschiebe andere Root-Kategorien nach unten
+                await db.categories.update_many(
+                    {
+                        "parent_category": None,
+                        "name": {"$ne": dragged_category}
+                    },
+                    {"$inc": {"order_index": 1}}
+                )
             else:
                 new_parent = target.get("parent_category") if target else None
                 target_position = target.get("order_index", 0) if target else 0
-                new_position = target_position if operation_mode == 'standard' else target_position + 1
-        
-        # Verschiebe andere Kategorien nach unten wenn Insert-Modus
-        if operation_mode == 'insert':
-            await db.categories.update_many(
-                {
-                    "parent_category": new_parent,
-                    "order_index": {"$gte": new_position},
-                    "name": {"$ne": dragged_category}  # Nicht die verschobene Kategorie
-                },
-                {"$inc": {"order_index": 1}}
-            )
+                
+                if operation_mode == 'insert':
+                    # Insert-Modus: Füge zwischen bestehende ein
+                    new_position = target_position + 1
+                    
+                    # Verschiebe Kategorien nach der Insert-Position nach unten
+                    await db.categories.update_many(
+                        {
+                            "parent_category": new_parent,
+                            "order_index": {"$gte": new_position},
+                            "name": {"$ne": dragged_category}
+                        },
+                        {"$inc": {"order_index": 1}}
+                    )
+                else:
+                    # Standard-Modus: Ersetze Position - aber an ERSTE Position
+                    new_position = 0  # ERSTE Position
+                    
+                    # Verschiebe alle anderen nach unten
+                    await db.categories.update_many(
+                        {
+                            "parent_category": new_parent,
+                            "name": {"$ne": dragged_category}
+                        },
+                        {"$inc": {"order_index": 1}}
+                    )
         
         # Update der verschobenen Kategorie
         result = await db.categories.update_one(
