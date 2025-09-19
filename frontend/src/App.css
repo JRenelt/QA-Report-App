@@ -1440,6 +1440,23 @@ body {
 .app-body.sidebar-collapsed .main-content {
   margin-left: 0px !important;
   width: 100% !important;
+  flex: 1 !important;
+}
+
+/* App-Body Layout für Sidebar Collapse */
+.app-body {
+  display: flex;
+  width: 100%;
+}
+
+.app-body.sidebar-collapsed {
+  flex-direction: row;
+}
+
+.app-body.sidebar-collapsed .main-content {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Externer Toggle Button */
