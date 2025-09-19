@@ -486,16 +486,25 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
               {/* New Root Category Input */}
               <NewCategoryInput level={1} />
               
-              {/* Existing Categories */}
-              {treeData.length > 0 ? (
-                treeData.map(node => renderCategoryNode(node, 1))
-              ) : (
-                <div className="text-center py-8 text-gray-500">
-                  <Folder className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                  <p>Keine Kategorien vorhanden</p>
-                  <p className="text-sm">Klicken Sie oben auf "Neue Hauptkategorie"</p>
-                </div>
-              )}
+              {/* Existing Categories - mit Suchfilter */}
+              {(() => {
+                const filteredData = filterCategories(treeData, categorySearchTerm);
+                return filteredData.length > 0 ? (
+                  filteredData.map(node => renderCategoryNode(node, 1))
+                ) : categorySearchTerm.trim() ? (
+                  <div className="text-center py-8 text-yellow-600 dark:text-yellow-400">
+                    <Search className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                    <p>Keine Kategorien für "{categorySearchTerm}" gefunden</p>
+                    <p className="text-sm">Versuchen Sie einen anderen Suchbegriff</p>
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <Folder className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                    <p>Keine Kategorien vorhanden</p>
+                    <p className="text-sm">Klicken Sie oben auf "Neue Hauptkategorie"</p>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
