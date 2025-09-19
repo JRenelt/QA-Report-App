@@ -1082,6 +1082,89 @@ body {
   transition: var(--transition-colors);
   font-size: 0.875rem;
   font-weight: 500;
+  position: relative;
+  border: 2px solid transparent;
+}
+
+/* HIERARCHIE-EBENEN KLAR ABGRENZEN */
+.category-item[data-level="0"] {
+  border-left: 4px solid var(--cyan-500);
+  background: var(--bg-tertiary);
+  font-weight: 600;
+  margin: 3px 0;
+}
+
+.category-item[data-level="1"] {
+  border-left: 3px solid var(--blue-500);
+  margin-left: 16px;
+  background: var(--bg-secondary);
+  font-weight: 500;
+}
+
+.category-item[data-level="2"] {
+  border-left: 2px solid var(--green-500);
+  margin-left: 32px;
+  background: var(--bg-accent);
+  font-weight: 400;
+}
+
+/* DRAG & DROP VISUAL FEEDBACK */
+.category-item.dragging {
+  opacity: 0.7;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--cyan-400);
+  z-index: 1000;
+  background: var(--bg-accent) !important;
+}
+
+.category-item.drag-over {
+  border: 3px solid var(--cyan-400) !important;
+  background: rgba(34, 211, 238, 0.15) !important;
+  transform: scale(1.01);
+}
+
+.category-item.drag-over-invalid {
+  border: 3px solid var(--red-500) !important;
+  background: rgba(239, 68, 68, 0.15) !important;
+}
+
+/* DROP POSITION INDICATOR */
+.drop-indicator {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: var(--cyan-400);
+  box-shadow: 0 0 4px var(--cyan-400);
+  z-index: 999;
+  animation: dropPulse 0.8s infinite alternate;
+}
+
+.drop-indicator.top { top: -1px; }
+.drop-indicator.bottom { bottom: -1px; }
+
+@keyframes dropPulse {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+/* FOKUS NACH VERSCHIEBUNG BEHALTEN */
+.category-item.recently-moved {
+  animation: moveHighlight 1.5s ease-out;
+  scroll-margin-top: 100px; /* Verhindert Viewport-Sprünge */
+}
+
+@keyframes moveHighlight {
+  0% { 
+    background: var(--cyan-400) !important;
+    transform: scale(1.05);
+    border-color: var(--cyan-500);
+  }
+  100% { 
+    background: var(--bg-secondary);
+    transform: scale(1);
+  }
 }
 /* Kategorie-Verwaltung - Corporate Design (Dunkles Theme) */
 .category-manage-dialog-corporate {
