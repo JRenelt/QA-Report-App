@@ -1937,18 +1937,16 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       
       toast.success(successMessage);
       
-      // Selektiver Update ohne Page Reload - Zustand bleibt erhalten
+      // Selektiver Update - trigger Parent-Komponente für Reload
       try {
-        // Immediate UI feedback - zeige Änderung sofort
-        console.log('Triggering immediate category refresh...');
+        console.log('Triggering parent reload via callback...');
         
-        // Direkter Aufruf der Reload-Funktionen 
-        await Promise.all([
-          loadBookmarks(),
-          loadStatistics()
-        ]);
+        // Callback an Parent-Komponente für Daten-Reload
+        if (onCategoryReorder) {
+          await onCategoryReorder('refresh');
+        }
         
-        console.log('Direct category refresh completed');
+        console.log('Parent callback completed');
         
       } catch (updateError) {
         console.error('Error refreshing categories:', updateError);
