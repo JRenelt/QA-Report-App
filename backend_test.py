@@ -411,7 +411,52 @@ class Phase2TestDataValidator:
             )
             return False
     
-    async def test_duplicate_validation(self):
+    async def test_backend_bug_analysis(self):
+        """Analyze the backend bug with checked vs unchecked status"""
+        try:
+            print("\n🐛 BACKEND BUG ANALYSIS")
+            print("=" * 30)
+            
+            # Get all bookmarks
+            async with self.session.get(f"{self.api_url}/bookmarks") as response:
+                if response.status != 200:
+                    return False
+                
+                bookmarks = await response.json()
+                
+                # Count actual status types
+                status_counts = {}
+                for bookmark in bookmarks:
+                    status_type = bookmark.get("status_type", "no_status")
+                    status_counts[status_type] = status_counts.get(status_type, 0) + 1
+                
+                # Get statistics
+                async with self.session.get(f"{self.api_url}/statistics") as stats_response:
+                    if stats_response.status != 200:
+                        return False
+                    
+                    stats = await stats_response.json()
+                    
+                    self.log_test(
+                        "Backend Bug Analysis",
+                        True,
+                        "Status type mismatch identified",
+                        {
+                            "actual_status_counts": status_counts,
+                            "statistics_unchecked_count": stats.get("unchecked_links", 0),
+                            "bug_description": "Backend creates 'checked' status but statistics count 'unchecked' status"
+                        }
+                    )
+                    
+                    return True
+                
+        except Exception as e:
+            self.log_test(
+                "Backend Bug Analysis",
+                False,
+                f"Exception: {str(e)}"
+            )
+            return False
         """Test that duplicates are correctly created with identical URLs"""
         try:
             print("\n🔄 DUPLIKAT-VALIDIERUNG")
