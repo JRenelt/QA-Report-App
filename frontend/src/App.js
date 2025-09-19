@@ -1642,6 +1642,8 @@ const CategoryNode = ({ category, level = 0, expandedCategories, onCategoryChang
           dragOverCategory?.id === category.id ? `drag-over ${dragOverCategory.insertMode ? 'insert-mode' : 'standard-mode'}` : ''
         } ${dragOverCategory?.name === category.name && dragOverCategory?.dragMode === 'insert' ? 'insert-mode' : ''}`}
         style={{ marginLeft: `${level * 20}px` }}
+        data-level={level}
+        data-category={category.name}
         onClick={() => {
           if (level === 0) {
             onCategoryChange(category.name, null);
