@@ -3888,6 +3888,7 @@ function App() {
           onCategoryChange={handleCategoryChange}
           statistics={statistics}
           onCategoryManage={() => setShowCategoryManageDialog(true)}
+          onCategoryReorder={handleCategoryReorder}
           sidebarCollapsed={sidebarCollapsed}
           onSidebarToggle={handleSidebarToggle}
         />
