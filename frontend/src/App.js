@@ -1844,11 +1844,18 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     setShowBrowserInfo(!showBrowserInfo);
   };
 
-  // Drag & Drop Handlers für Kategorien
+  // Drag & Drop Handlers für Kategorien - Excel-ähnliche Funktionalität
   const handleCategoryDragStart = (e, category, isSubcategory = false) => {
-    setDraggedCategory({...category, isSubcategory});
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', category.id);
+    setDraggedCategory({
+      ...category, 
+      isSubcategory,
+      originalParent: category.parent_category,
+      originalIndex: category.order_index || 0
+    });
+    
+    // Visuelles Feedback für Drag Start
+    e.dataTransfer.effectAllowed = shiftPressed ? 'copy' : 'move';
+    console.log(`Category Drag Started: ${category.name}, Mode: ${dragMode}, Shift: ${shiftPressed}`);
   };
 
   const handleCategoryDragOver = (e, category, isSubcategory = false) => {
