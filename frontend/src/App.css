@@ -599,10 +599,11 @@ body {
 }
 
 .sidebar-content {
-  padding: 20px;
+  padding: 20px 20px 0 20px; /* Kein bottom padding */
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Verhindert Scroll auf Container-Level */
 }
 
 .sidebar-header {
@@ -610,6 +611,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  flex-shrink: 0; /* Header bleibt fix */
 }
 
 .sidebar-title {
@@ -618,6 +620,35 @@ body {
   color: var(--text-primary);
   margin: 0;
   font-family: var(--font-family);
+}
+
+/* Category List mit korrektem Scrolling */
+.category-list {
+  flex: 1; /* Nimmt verfügbaren Platz ein */
+  overflow-y: auto; /* Scrollbar nur hier */
+  overflow-x: hidden;
+  padding: 8px 0;
+  margin-right: -20px; /* Kompensiert Parent Padding */
+  padding-right: 20px; /* Stellt Padding wieder her */
+}
+
+/* Scrollbar Styling für bessere UX */
+.category-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.category-list::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.category-list::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 4px;
+}
+
+.category-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }
 
 .sidebar-info {
