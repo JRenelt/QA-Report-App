@@ -1825,7 +1825,167 @@ FavOrg Version 2.3.0
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating BookmarkBox download: {str(e)}")
 
-@api_router.get("/documentation/download-nomenklatur")
+@api_router.put("/categories/reorder")
+async def reorder_categories(reorder_data: dict):
+    """Kategorien in neuer Reihenfolge sortieren"""
+    try:
+        category_ids = reorder_data.get('category_ids', [])
+        parent_category = reorder_data.get('parent_category', None)
+        
+        if not category_ids:
+            raise HTTPException(status_code=400, detail="Category IDs list is required")
+        
+        # Update die Reihenfolge der Kategorien
+        for index, category_name in enumerate(category_ids):
+            update_data = {
+                "order_index": index, 
+                "updated_at": datetime.utcnow()
+            }
+            
+            # Wenn parent_category gesetzt ist, update auch die Hierarchie
+            if parent_category is not None:
+                update_data["parent_category"] = parent_category if parent_category != "root" else None
+            
+            await db.categories.update_one(
+                {"name": category_name},
+                {"$set": update_data}
+            )
+        
+        # Update category counts
+        await bookmark_manager.category_manager.update_bookmark_counts()
+        
+        return {
+            "message": f"Reordered {len(category_ids)} categories", 
+            "reordered_count": len(category_ids),
+            "parent_category": parent_category
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reordering categories: {str(e)}")
+
+@api_router.put("/categories/{category_name}/reparent")
+async def reparent_category(category_name: str, reparent_data: dict):
+    """Kategorie in andere Hierarchie-Ebene verschieben (Reparenting)"""
+    try:
+        new_parent = reparent_data.get('new_parent')  # None für Root-Level
+        target_position = reparent_data.get('target_position', 0)  # Position in neuer Hierarchie
+        
+        # Finde die Kategorie
+        category = await db.categories.find_one({"name": category_name})
+        if not category:
+            raise HTTPException(status_code=404, detail="Category not found")
+        
+        # Prüfe auf zirkuläre Referenzen
+        if new_parent and new_parent == category_name:
+            raise HTTPException(status_code=400, detail="Cannot make category its own parent")
+        
+        # Update der Kategorie
+        update_data = {
+            "parent_category": new_parent,
+            "order_index": target_position,
+            "updated_at": datetime.utcnow()
+        }
+        
+        result = await db.categories.update_one(
+            {"name": category_name},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Category not found")
+        
+        # Update category counts und Hierarchie
+        await bookmark_manager.category_manager.update_bookmark_counts()
+        
+        # Rückgabe der aktualisierten Kategorie-Info
+        return {
+            "message": f"Category '{category_name}' reparented successfully",
+            "category_name": category_name,
+            "old_parent": category.get("parent_category"),
+            "new_parent": new_parent,
+            "target_position": target_position
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error reparenting category: {str(e)}")
+
+@api_router.put("/categories/cross-level-sort")
+async def cross_level_sort_categories(sort_data: dict):
+    """Cross-Level Sortierung für Excel-ähnliche Drag & Drop Funktionalität"""
+    try:
+        dragged_category = sort_data.get('dragged_category')
+        target_category = sort_data.get('target_category')
+        operation_mode = sort_data.get('operation_mode', 'standard')  # 'standard' oder 'insert'
+        target_level = sort_data.get('target_level', 'same')  # 'same', 'child', 'parent', 'root'
+        
+        if not dragged_category or not target_category:
+            raise HTTPException(status_code=400, detail="Dragged and target categories are required")
+        
+        # Finde beide Kategorien
+        dragged = await db.categories.find_one({"name": dragged_category})
+        target = await db.categories.find_one({"name": target_category})
+        
+        if not dragged or not target:
+            raise HTTPException(status_code=404, detail="One or both categories not found")
+        
+        # Bestimme neue Hierarchie basierend auf target_level
+        new_parent = None
+        new_position = 0
+        
+        if target_level == 'child':
+            # Dragged wird Unterkategorie von Target
+            new_parent = target_category
+            new_position = 0  # Erste Position unter Parent
+        elif target_level == 'root':
+            # Dragged wird Root-Kategorie
+            new_parent = None
+            new_position = 0  # Erste Position auf Root-Level
+        elif target_level == 'same':
+            # Dragged bleibt auf gleicher Ebene wie Target
+            new_parent = target.get("parent_category")
+            target_position = target.get("order_index", 0)
+            new_position = target_position if operation_mode == 'standard' else target_position + 1
+        
+        # Verschiebe andere Kategorien nach unten wenn Insert-Modus
+        if operation_mode == 'insert':
+            await db.categories.update_many(
+                {
+                    "parent_category": new_parent,
+                    "order_index": {"$gte": new_position},
+                    "name": {"$ne": dragged_category}  # Nicht die verschobene Kategorie
+                },
+                {"$inc": {"order_index": 1}}
+            )
+        
+        # Update der verschobenen Kategorie
+        result = await db.categories.update_one(
+            {"name": dragged_category},
+            {"$set": {
+                "parent_category": new_parent,
+                "order_index": new_position,
+                "updated_at": datetime.utcnow()
+            }}
+        )
+        
+        # Update category counts
+        await bookmark_manager.category_manager.update_bookmark_counts()
+        
+        return {
+            "message": f"Category '{dragged_category}' moved successfully",
+            "operation_mode": operation_mode,
+            "target_level": target_level,
+            "new_parent": new_parent,
+            "new_position": new_position
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error in cross-level sort: {str(e)}")
+
+@api_router.put("/documentation/download-nomenklatur")
 async def download_nomenklatur():
     """FavOrg UI-Nomenklatur als PDF herunterladen"""
     try:
