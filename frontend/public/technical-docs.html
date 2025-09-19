@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FavOrg - Technische Dokumentation & Nomenklatur</title>
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #3b82f6;
+            --accent-color: #06b6d4;
+            --text-color: #1f2937;
+            --bg-color: #f8fafc;
+            --border-color: #e5e7eb;
+            --code-bg: #f1f5f9;
+            --warning-color: #f59e0b;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .nav-menu {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .nav-grid a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-grid a:hover {
+            background-color: var(--code-bg);
+        }
+
+        .section {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .section h3 {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .section h4 {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .card {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .card h5 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .code-inline {
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0.2rem;
+        }
+
+        .badge-primary { background: var(--primary-color); color: white; }
+        .badge-secondary { background: var(--secondary-color); color: white; }
+        .badge-accent { background: var(--accent-color); color: white; }
+        .badge-warning { background: var(--warning-color); color: white; }
+        .badge-success { background: var(--success-color); color: white; }
+        .badge-error { background: var(--error-color); color: white; }
+
+        .status-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .status-table th,
+        .status-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .status-table th {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .status-table tr:nth-child(even) {
+            background: var(--code-bg);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .api-endpoint {
+            background: var(--code-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .api-method {
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .method-get { color: var(--success-color); }
+        .method-post { color: var(--warning-color); }
+        .method-put { color: var(--secondary-color); }
+        .method-delete { color: var(--error-color); }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header" id="top">
+            <h1>🔧 FavOrg - Technische Dokumentation</h1>
+            <p>Interne Entwickler-Referenz • Nomenklatur • Glossar • API-Dokumentation</p>
+            <p><strong>Version 2.3.0</strong> • Letzte Aktualisierung: <span id="last-updated"></span></p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <h3>📑 Schnellnavigation</h3>
+            <div class="nav-grid">
+                <a href="#nomenklatur">🏷️ UI-Nomenklatur</a>
+                <a href="#glossar">📚 Technisches Glossar</a>
+                <a href="#architektur">🏗️ System-Architektur</a>
+                <a href="#api-docs">🔌 API-Dokumentation</a>
+                <a href="#status-system">📊 Status-System</a>
+                <a href="#drag-drop">🖱️ Drag & Drop System</a>
+                <a href="#testdaten">🧪 Testdaten-System</a>
+                <a href="#components">⚙️ Frontend-Komponenten</a>
+                <a href="#database">🗄️ Datenbank-Schema</a>
+                <a href="#environment">🌍 Environment Setup</a>
+            </div>
+        </div>
+
+        <!-- UI-Nomenklatur Section -->
+        <div class="section" id="nomenklatur">
+            <h2>🏷️ UI-Nomenklatur</h2>
+            <p>Vollständige Terminologie aller Benutzeroberflächen-Bereiche in FavOrg.</p>
+
+            <h3>Hauptbereiche</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>Header-Bereich</h5>
+                    <ul>
+                        <li><code>header-fixed</code> - Fixierter Kopfbereich</li>
+                        <li><code>logo-section</code> - Logo mit Bookmark-Anzahl</li>
+                        <li><code>action-buttons</code> - Aktions-Buttons (Neu, Datei wählen, etc.)</li>
+                        <li><code>header-icons</code> - Rechte Icon-Leiste (Hilfe, Statistik, Einstellungen)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Sidebar-Bereich</h5>
+                    <ul>
+                        <li><code>sidebar</code> - Linke Kategorien-Sidebar</li>
+                        <li><code>sidebar-header</code> - "Kategorien" Titel mit Collapse-Button</li>
+                        <li><code>category-list</code> - Kategorien-Auflistung</li>
+                        <li><code>sidebar-resizer</code> - Größenänderungs-Handle</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Content-Bereiche</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>Search-Section</h5>
+                    <ul>
+                        <li><code>search-section</code> - Suchbereich oberhalb Content</li>
+                        <li><code>search-input</code> - Suchfeld</li>
+                        <li><code>filter-dropdown</code> - Status-Filter Dropdown</li>
+                        <li><code>view-toggle</code> - Karten/Tabellen-Ansicht Umschalter</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Main-Content</h5>
+                    <ul>
+                        <li><code>bookmarks-container</code> - Haupt-Content-Bereich</li>
+                        <li><code>bookmark-grid</code> - Karten-Ansicht Grid</li>
+                        <li><code>bookmark-table</code> - Tabellen-Ansicht</li>
+                        <li><code>bookmark-card</code> - Einzelne Bookmark-Karte</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Dialog-Systeme</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <h5>Bookmark-Dialog</h5>
+                    <ul>
+                        <li><code>bookmark-dialog</code> - Neu/Edit Bookmark Modal</li>
+                        <li><code>form-section</code> - Formular-Bereiche</li>
+                        <li><code>category-selector</code> - Kategorie-Auswahl</li>
+                        <li><code>subcategory-manager</code> - Unterkategorie-Verwaltung</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Settings-Dialog</h5>
+                    <ul>
+                        <li><code>settings-dialog-modern</code> - Einstellungen Modal</li>
+                        <li><code>settings-tabs</code> - Tab-Navigation</li>
+                        <li><code>danger-zone</code> - Gefährliche Aktionen Bereich</li>
+                        <li><code>export-section</code> - Export-Optionen</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Help-System</h5>
+                    <ul>
+                        <li><code>help-dialog</code> - Hilfe-System Modal</li>
+                        <li><code>help-navigation</code> - Linke Navigation</li>
+                        <li><code>help-content</code> - Rechter Content-Bereich</li>
+                        <li><code>help-search</code> - Hilfe-Suchfeld</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Spezielle UI-Elemente</h3>
+            <table class="status-table">
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>CSS-Klasse</th>
+                        <th>Beschreibung</th>
+                        <th>Verwendung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Drag Handle</td>
+                        <td><code>drag-handle</code></td>
+                        <td>Zieh-Icon für D&D</td>
+                        <td>Bookmarks & Kategorien</td>
+                    </tr>
+                    <tr>
+                        <td>Lock Button</td>
+                        <td><code>lock-button</code></td>
+                        <td>Sperr/Entsperr-Button</td>
+                        <td>Bookmark-Karten</td>
+                    </tr>
+                    <tr>
+                        <td>Status Badge</td>
+                        <td><code>status-badge</code></td>
+                        <td>Status-Anzeige</td>
+                        <td>Aktiv, Tot, Gesperrt, etc.</td>
+                    </tr>
+                    <tr>
+                        <td>Drop Zone</td>
+                        <td><code>drop-zone</code></td>
+                        <td>D&D Ziel-Bereich</td>
+                        <td>Kategorie-Bereiche</td>
+                    </tr>
+                    <tr>
+                        <td>Toast Message</td>
+                        <td><code>sonner-toast</code></td>
+                        <td>System-Benachrichtigungen</td>
+                        <td>Erfolg/Fehler-Meldungen</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Technisches Glossar -->
+        <div class="section" id="glossar">
+            <h2>📚 Technisches Glossar</h2>
+            <p>Definitionen aller technischen Begriffe und Konzepte in FavOrg.</p>
+
+            <div class="grid-2">
+                <div>
+                    <h3>Core-Konzepte</h3>
+                    <div class="card">
+                        <h5>CRUD</h5>
+                        <p><strong>Create, Read, Update, Delete</strong> - Grundlegende Datenbankoperationen für Bookmarks und Kategorien.</p>
+                    </div>
+                    <div class="card">
+                        <h5>Excel-Funktionalität</h5>
+                        <p><strong>Drag & Drop System</strong> - Bezeichnung für das intuitive Verschieben von Bookmarks zwischen Kategorien, ähnlich Excel-Zellen.</p>
+                    </div>
+                    <div class="card">
+                        <h5>Cross-Level Movement</h5>
+                        <p><strong>Ebenenübergreifende Verschiebung</strong> - Drag & Drop zwischen verschiedenen Hierarchie-Ebenen der Kategorien.</p>
+                    </div>
+                    <div class="card">
+                        <h5>Lock System</h5>
+                        <p><strong>Sperr-System</strong> - Schreibschutz für wichtige Bookmarks, verhindert versehentliches Löschen oder Bearbeiten.</p>
+                    </div>
+                </div>
+                <div>
+                    <h3>Status-Terminologie</h3>
+                    <div class="card">
+                        <h5>Dead Links</h5>
+                        <p><strong>Tote Links</strong> - URLs die HTTP 404, 500 oder DNS-Fehler zurückgeben.</p>
+                    </div>
+                    <div class="card">
+                        <h5>Timeout Links</h5>
+                        <p><strong>Zeitüberschreitung</strong> - URLs die zu lange zum Laden brauchen (>30s).</p>
+                    </div>
+                    <div class="card">
+                        <h5>Localhost Links</h5>
+                        <p><strong>Lokale URLs</strong> - Entwicklungs-URLs (127.0.0.1, localhost) die separat behandelt werden.</p>
+                    </div>
+                    <div class="card">
+                        <h5>Duplicate Detection</h5>
+                        <p><strong>Duplikat-Erkennung</strong> - URL-Normalisierung zur Identifikation identischer Links.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Frontend-Terminologie</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <h5>Toast System</h5>
+                    <p><strong>Meldungen-System</strong> - Temporäre Benachrichtigungen mit <code>sonner</code> Library. "Meldungen Delay" = permanente Anzeige mit X-Button.</p>
+                </div>
+                <div class="card">
+                    <h5>Responsive Breakpoints</h5>
+                    <p><strong>Bildschirm-Anpassung</strong> - Desktop (>1200px), Tablet (768-1200px), Mobile (<768px).</p>
+                </div>
+                <div class="card">
+                    <h5>Dark Theme</h5>
+                    <p><strong>Dunkles Design</strong> - CSS-Variablen basiertes Theme-System mit <code>--bg-primary: #1a1f2e</code>.</p>
+                </div>
+            </div>
+
+            <h3>Backend-Terminologie</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <h5>Upsert Logic</h5>
+                    <p><strong>Update oder Insert</strong> - Kategorien werden aktualisiert falls vorhanden, sonst neu erstellt.</p>
+                </div>
+                <div class="card">
+                    <h5>URL Normalization</h5>
+                    <p><strong>URL-Normalisierung</strong> - Entfernung von Trailing Slashes, Query Parameters für Duplikat-Erkennung.</p>
+                </div>
+                <div class="card">
+                    <h5>Async Validation</h5>
+                    <p><strong>Asynchrone Validierung</strong> - Parallele Link-Prüfung mit <code>aiohttp</code> für bessere Performance.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- System-Architektur -->
+        <div class="section" id="architektur">
+            <h2>🏗️ System-Architektur</h2>
+            <p>Technische Architektur und Komponenten-Struktur von FavOrg.</p>
+
+            <h3>Technology Stack</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <h5>Frontend</h5>
+                    <span class="badge badge-primary">React 18</span>
+                    <span class="badge badge-secondary">Tailwind CSS</span>
+                    <span class="badge badge-accent">Shadcn/ui</span>
+                    <span class="badge badge-warning">Sonner Toasts</span>
+                    <span class="badge badge-success">Lucide Icons</span>
+                </div>
+                <div class="card">
+                    <h5>Backend</h5>
+                    <span class="badge badge-primary">FastAPI</span>
+                    <span class="badge badge-secondary">Python 3.11+</span>
+                    <span class="badge badge-accent">Motor (MongoDB)</span>
+                    <span class="badge badge-warning">Pydantic</span>
+                    <span class="badge badge-success">aiohttp</span>
+                </div>
+                <div class="card">
+                    <h5>Database</h5>
+                    <span class="badge badge-primary">MongoDB</span>
+                    <span class="badge badge-secondary">UUID Primary Keys</span>
+                    <span class="badge badge-accent">JSON Schema</span>
+                    <span class="badge badge-warning">Aggregation Pipeline</span>
+                </div>
+            </div>
+
+            <h3>Ordner-Struktur</h3>
+            <div class="code-block">
+/app/
+├── backend/
+│   ├── server.py              # FastAPI Server + Business Logic
+│   ├── requirements.txt       # Python Dependencies
+│   └── .env                   # MongoDB URL
+├── frontend/
+│   ├── src/
+│   │   ├── App.js            # Haupt-React-Komponente
+│   │   ├── App.css           # Globale Styles
+│   │   └── components/
+│   │       ├── ui/           # Shadcn/ui Base Components
+│   │       ├── ComprehensiveHelpSystem.js
+│   │       ├── LiveCategoryManager.js
+│   │       ├── EnhancedBookmarkCard.js
+│   │       └── ImprovedBookmarkDialog.js
+│   ├── package.json          # Node Dependencies
+│   ├── tailwind.config.js    # Tailwind Configuration
+│   └── .env                  # Backend URL
+└── TECHNICAL_DOCUMENTATION.html
+            </div>
+
+            <h3>Datenfluss-Architektur</h3>
+            <div class="api-endpoint">
+                <strong>1. Frontend → Backend</strong><br>
+                React Components → Fetch API → FastAPI Endpoints → MongoDB
+            </div>
+            <div class="api-endpoint">
+                <strong>2. State Management</strong><br>
+                React Hooks (useState, useEffect) → Local Storage (Persistence) → Context (Global State)
+            </div>
+            <div class="api-endpoint">
+                <strong>3. Real-time Updates</strong><br>
+                Custom Events → Component Re-renders → UI State Sync
+            </div>
+        </div>
+
+        <!-- API-Dokumentation -->
+        <div class="section" id="api-docs">
+            <h2>🔌 API-Dokumentation</h2>
+            <p>Vollständige REST API Endpunkt-Referenz für FavOrg Backend.</p>
+
+            <h3>Bookmark Endpoints</h3>
+            <div class="api-endpoint">
+                <span class="api-method method-get">GET</span> <code>/api/bookmarks</code><br>
+                <strong>Beschreibung:</strong> Alle Bookmarks abrufen, optional mit Status-Filter<br>
+                <strong>Query Params:</strong> <code>status_type</code> (optional), <code>category</code> (optional)
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-post">POST</span> <code>/api/bookmarks</code><br>
+                <strong>Beschreibung:</strong> Neuen Bookmark erstellen<br>
+                <strong>Body:</strong> JSON mit title, url, category, description, is_locked
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-put">PUT</span> <code>/api/bookmarks/{id}</code><br>
+                <strong>Beschreibung:</strong> Bookmark aktualisieren<br>
+                <strong>Body:</strong> JSON mit zu ändernden Feldern
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-delete">DELETE</span> <code>/api/bookmarks/{id}</code><br>
+                <strong>Beschreibung:</strong> Bookmark löschen (außer gesperrt)<br>
+                <strong>Response:</strong> HTTP 403 wenn gesperrt
+            </div>
+
+            <h3>Specialized Bookmark Operations</h3>
+            <div class="api-endpoint">
+                <span class="api-method method-post">POST</span> <code>/api/bookmarks/validate</code><br>
+                <strong>Beschreibung:</strong> Alle Links auf Erreichbarkeit prüfen<br>
+                <strong>Response:</strong> <code>{total_checked, dead_links_found, message}</code>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-delete">DELETE</span> <code>/api/bookmarks/dead-links</code><br>
+                <strong>Beschreibung:</strong> Alle toten Links löschen (localhost verschont)<br>
+                <strong>Response:</strong> <code>{removed_count, message}</code>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-post">POST</span> <code>/api/bookmarks/find-duplicates</code><br>
+                <strong>Beschreibung:</strong> Duplikate finden und markieren<br>
+                <strong>Response:</strong> <code>{duplicate_groups, marked_count, message}</code>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-delete">DELETE</span> <code>/api/bookmarks/duplicates</code><br>
+                <strong>Beschreibung:</strong> Alle als duplicate markierten Links löschen<br>
+                <strong>Response:</strong> <code>{removed_count, message}</code>
+            </div>
+
+            <h3>Category Management</h3>
+            <div class="api-endpoint">
+                <span class="api-method method-get">GET</span> <code>/api/categories</code><br>
+                <strong>Beschreibung:</strong> Alle Kategorien mit Bookmark-Anzahl<br>
+                <strong>Response:</strong> Array mit <code>{id, name, parent_category, bookmark_count}</code>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-post">POST</span> <code>/api/categories</code><br>
+                <strong>Beschreibung:</strong> Neue Kategorie erstellen<br>
+                <strong>Body:</strong> <code>{name, parent_category}</code>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-put">PUT</span> <code>/api/categories/{id}</code><br>
+                <strong>Beschreibung:</strong> Kategorie umbenennen<br>
+                <strong>Body:</strong> <code>{name}</code>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-delete">DELETE</span> <code>/api/categories/{id}</code><br>
+                <strong>Beschreibung:</strong> Kategorie löschen, Bookmarks zu "Uncategorized"<br>
+                <strong>Response:</strong> Anzahl verschobener Bookmarks
+            </div>
+
+            <h3>Export & Import</h3>
+            <div class="api-endpoint">
+                <span class="api-method method-post">POST</span> <code>/api/export</code><br>
+                <strong>Beschreibung:</strong> Bookmarks exportieren<br>
+                <strong>Body:</strong> <code>{format: "xml|csv|html|json", category?: string}</code><br>
+                <strong>Headers:</strong> Content-Type je nach Format, attachment filename
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-post">POST</span> <code>/api/import</code><br>
+                <strong>Beschreibung:</strong> Bookmark-Datei importieren<br>
+                <strong>Body:</strong> Multipart file upload<br>
+                <strong>Formats:</strong> HTML, XML, CSV, JSON
+            </div>
+
+            <h3>Statistics & System</h3>
+            <div class="api-endpoint">
+                <span class="api-method method-get">GET</span> <code>/api/statistics</code><br>
+                <strong>Beschreibung:</strong> System-Statistiken abrufen<br>
+                <strong>Response:</strong> <code>{total_bookmarks, active_links, dead_links, locked_links, localhost_links, duplicate_links, unchecked_links, total_categories}</code>
+            </div>
+            <div class="api-endpoint">
+                <span class="api-method method-post">POST</span> <code>/api/bookmarks/create-comprehensive-test-data</code><br>
+                <strong>Beschreibung:</strong> 100 realistische Testdaten erstellen<br>
+                <strong>Response:</strong> <code>{message, created_count, categories_created, details}</code>
+            </div>
+        </div>
+
+        <!-- Status-System -->
+        <div class="section" id="status-system">
+            <h2>📊 Status-System</h2>
+            <p>Umfassendes Status-Management mit 7 verschiedenen Bookmark-Zuständen.</p>
+
+            <h3>Status-Typen Übersicht</h3>
+            <table class="status-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Wert</th>
+                        <th>Icon</th>
+                        <th>Beschreibung</th>
+                        <th>Automatische Erkennung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge badge-success">Aktiv</span></td>
+                        <td><code>active</code></td>
+                        <td>✅</td>
+                        <td>Funktionierende, erreichbare URLs</td>
+                        <td>HTTP 200-299 Response</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-error">Tote Links</span></td>
+                        <td><code>dead</code></td>
+                        <td>💀</td>
+                        <td>Nicht erreichbare URLs</td>
+                        <td>HTTP 404, 500, DNS-Fehler</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-warning">Gesperrt</span></td>
+                        <td><code>locked</code></td>
+                        <td>🔒</td>
+                        <td>Schreibgeschützte Bookmarks</td>
+                        <td>Manuell gesetzt</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-secondary">Timeout</span></td>
+                        <td><code>timeout</code></td>
+                        <td>⏱️</td>
+                        <td>Zu langsame Verbindungen</td>
+                        <td>Verbindung >30s</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-accent">Localhost</span></td>
+                        <td><code>localhost</code></td>
+                        <td>🏠</td>
+                        <td>Lokale Entwicklungs-URLs</td>
+                        <td>127.0.0.1, localhost Pattern</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-warning">Duplikate</span></td>
+                        <td><code>duplicate</code></td>
+                        <td>📋</td>
+                        <td>Mehrfach vorhandene URLs</td>
+                        <td>URL-Normalisierung Matching</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-primary">Ungeprüft</span></td>
+                        <td><code>unchecked</code></td>
+                        <td>❓</td>
+                        <td>Noch nicht validierte Bookmarks</td>
+                        <td>Standard bei Import</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Status-Übergänge</h3>
+            <div class="code-block">
+// Automatische Status-Übergänge bei Validierung:
+unchecked → active   (HTTP 200-299)
+unchecked → dead     (HTTP 404, 500, DNS-Fehler)
+unchecked → timeout  (Verbindung >30s)
+unchecked → localhost (localhost/127.0.0.1 Pattern)
+
+// Manuelle Status-Änderungen:
+any_status → locked   (Sperr-Button)
+locked → active       (Entsperr-Button)
+any_status → duplicate (Find-Duplicates Funktion)
+
+// Bulk-Aktionen:
+dead → deleted        (TOTE Links Button)
+duplicate → deleted   (Duplikate Button)
+localhost → deleted   (Localhost Button)
+            </div>
+
+            <h3>Database-Schema Status-Felder</h3>
+            <div class="code-block">
+{
+  "status_type": "active|dead|locked|timeout|localhost|duplicate|unchecked",
+  "is_dead_link": boolean,     // Legacy field, sync mit status_type
+  "is_locked": boolean,        // Legacy field, sync mit status_type
+  "last_checked": "2025-01-19T10:30:00Z",  // Letzter Validierungs-Zeitpunkt
+  "created_at": "2025-01-19T09:15:00Z",    // Erstellungs-Zeitpunkt
+  "updated_at": "2025-01-19T10:30:00Z"     // Letzter Update
+}
+            </div>
+        </div>
+
+        <!-- Drag & Drop System -->
+        <div class="section" id="drag-drop">
+            <h2>🖱️ Drag & Drop System</h2>
+            <p>Excel-ähnliche Drag & Drop Funktionalität für intuitive Bookmark-Organisation.</p>
+
+            <h3>System-Komponenten</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>Frontend D&D Events</h5>
+                    <ul>
+                        <li><code>onDragStart</code> - Drag-Operation beginnen</li>
+                        <li><code>onDragOver</code> - Über Drop-Zone hovern</li>
+                        <li><code>onDragEnter</code> - Drop-Zone betreten</li>
+                        <li><code>onDragLeave</code> - Drop-Zone verlassen</li>
+                        <li><code>onDrop</code> - Drag-Operation abschließen</li>
+                        <li><code>onDragEnd</code> - Cleanup nach Operation</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Backend D&D Endpoints</h5>
+                    <ul>
+                        <li><code>POST /api/bookmarks/move</code> - Bookmark verschieben</li>
+                        <li><code>PUT /api/categories/reorder</code> - Kategorie-Reihenfolge</li>
+                        <li><code>PUT /api/categories/cross-level-sort</code> - Cross-Level Move</li>
+                        <li><code>POST /api/categories/reparent</code> - Parent-Kategorie ändern</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Drag & Drop Typen</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <h5>Bookmark D&D</h5>
+                    <p><strong>Zwischen Kategorien:</strong> Bookmarks zwischen verschiedenen Kategorien verschieben</p>
+                    <div class="code-block">
+// Data Transfer Format:
+{
+  type: "bookmark",
+  bookmarkId: "uuid-123",
+  fromCategory: "Development",
+  toCategory: "Tools"
+}
+                    </div>
+                </div>
+                <div class="card">
+                    <h5>Category D&D</h5>
+                    <p><strong>Hierarchie-Änderung:</strong> Kategorien zwischen Hierarchie-Ebenen verschieben</p>
+                    <div class="code-block">
+// Data Transfer Format:
+{
+  type: "category",
+  categoryId: "uuid-456",
+  newParent: "Development",
+  level: 2
+}
+                    </div>
+                </div>
+                <div class="card">
+                    <h5>Cross-Level D&D</h5>
+                    <p><strong>Alle-Ebenen-Übergreifend:</strong> Zwischen Root und Unterkategorien</p>
+                    <div class="code-block">
+// Special "Alle" Handling:
+{
+  type: "cross-level",
+  targetCategory: "Alle",
+  operation: "move-to-root"
+}
+                    </div>
+                </div>
+            </div>
+
+            <h3>Visuelle Feedback-Systeme</h3>
+            <table class="status-table">
+                <thead>
+                    <tr>
+                        <th>CSS-Klasse</th>
+                        <th>Visual Effect</th>
+                        <th>Trigger</th>
+                        <th>Beschreibung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>.drag-over</code></td>
+                        <td>Border: 2px dashed blue</td>
+                        <td>onDragOver</td>
+                        <td>Drop-Zone Highlight</td>
+                    </tr>
+                    <tr>
+                        <td><code>.dragging</code></td>
+                        <td>Opacity: 0.5</td>
+                        <td>onDragStart</td>
+                        <td>Dragged Element</td>
+                    </tr>
+                    <tr>
+                        <td><code>.drop-indicator</code></td>
+                        <td>Line: |---|</td>
+                        <td>onDragEnter</td>
+                        <td>Drop-Position Indikator</td>
+                    </tr>
+                    <tr>
+                        <td><code>.invalid-drop</code></td>
+                        <td>Border: 2px solid red</td>
+                        <td>Invalid Target</td>
+                        <td>Ungültige Drop-Zone</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Shift-Key Enhanced D&D</h3>
+            <div class="code-block">
+// Erweiterte D&D mit Shift-Taste:
+const handleDragStart = (e) => {
+  const isShiftPressed = e.shiftKey;
+  
+  if (isShiftPressed) {
+    // Multi-Select Mode aktivieren
+    // Mehrere Bookmarks gleichzeitig verschieben
+    setDragData({
+      type: "multi-bookmark",
+      bookmarkIds: selectedBookmarks,
+      mode: "bulk-move"
+    });
+  } else {
+    // Single Bookmark Move
+    setDragData({
+      type: "bookmark", 
+      bookmarkId: bookmark.id,
+      mode: "single-move"
+    });
+  }
+};
+            </div>
+        </div>
+
+        <!-- Testdaten-System -->
+        <div class="section" id="testdaten">
+            <h2>🧪 Testdaten-System</h2>
+            <p>Automatisches Generierungs-System für 100 realistische Test-Bookmarks.</p>
+
+            <h3>Testdaten-Konfiguration</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>Status-Verteilung</h5>
+                    <ul>
+                        <li><strong>54 Aktive (54%)</strong> - Funktionierende URLs</li>
+                        <li><strong>9 Tote (9%)</strong> - Dead Links für Testing</li>
+                        <li><strong>14 Gesperrt (14%)</strong> - Lock-System Testing</li>
+                        <li><strong>10 Localhost (10%)</strong> - Dev-URLs</li>
+                        <li><strong>7 Duplikate (7%)</strong> - Duplicate Detection</li>
+                        <li><strong>100 Ungeprüft (100%)</strong> - Initial Status</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Kategorie-Verteilung</h5>
+                    <ul>
+                        <li><strong>Development (20)</strong> - Frontend, Backend, DevOps</li>
+                        <li><strong>News (15)</strong> - Tech News, World News</li>
+                        <li><strong>Tools (15)</strong> - Productivity, Design</li>
+                        <li><strong>Social Media (12)</strong> - LinkedIn, Twitter</li>
+                        <li><strong>Entertainment (10)</strong> - Netflix, Gaming</li>
+                        <li><strong>Reference (8)</strong> - Wikipedia, Docs</li>
+                        <li><strong>Shopping (6)</strong> - Amazon, E-Commerce</li>
+                        <li><strong>Education (6)</strong> - Coursera, Learning</li>
+                        <li><strong>Health (4)</strong> - WebMD, Health</li>
+                        <li><strong>Finance (2)</strong> - Banking, Investment</li>
+                        <li><strong>Travel (2)</strong> - Booking, Travel</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Realistische URL-Patterns</h3>
+            <div class="code-block">
+// Echte Service-URLs für authentische Tests:
+const testUrls = {
+  development: [
+    "https://github.com", "https://gitlab.com", "https://stackoverflow.com",
+    "https://developer.mozilla.org", "https://reactjs.org", "https://nodejs.org"
+  ],
+  news: [
+    "https://bbc.com/news", "https://cnn.com", "https://techcrunch.com",
+    "https://arstechnica.com", "https://theverge.com"
+  ],
+  social: [
+    "https://linkedin.com", "https://twitter.com", "https://facebook.com",
+    "https://instagram.com", "https://youtube.com"
+  ],
+  entertainment: [
+    "https://netflix.com", "https://spotify.com", "https://twitch.tv",
+    "https://steam.com", "https://epicgames.com"
+  ]
+  // ... weitere Kategorien
+};
+            </div>
+
+            <h3>Testdaten-Generierung Prozess</h3>
+            <div class="api-endpoint">
+                <strong>1. Datenbasis bereinigen</strong><br>
+                Alle bestehenden Bookmarks und Kategorien löschen
+            </div>
+            <div class="api-endpoint">
+                <strong>2. Kategorien erstellen</strong><br>
+                11 Hauptkategorien + 49 Unterkategorien generieren
+            </div>
+            <div class="api-endpoint">
+                <strong>3. Bookmarks generieren</strong><br>
+                100 realistische Bookmarks mit echten URLs und Beschreibungen
+            </div>
+            <div class="api-endpoint">
+                <strong>4. Status verteilen</strong><br>
+                Zufällige aber proportionale Status-Zuweisung
+            </div>
+            <div class="api-endpoint">
+                <strong>5. Hierarchie aufbauen</strong><br>
+                Parent-Child Beziehungen zwischen Kategorien
+            </div>
+
+            <h3>Backend Implementation</h3>
+            <div class="code-block">
+@app.post("/api/bookmarks/create-comprehensive-test-data")
+async def create_comprehensive_test_data():
+    """Erstellt 100 realistische Test-Bookmarks mit Kategorien"""
+    
+    # 1. Cleanup bestehende Daten
+    await db.bookmarks.delete_many({})
+    await db.categories.delete_many({})
+    
+    # 2. Kategorien-Hierarchie erstellen
+    categories = await create_category_hierarchy()
+    
+    # 3. 100 Bookmarks mit realistischen Daten
+    bookmarks = []
+    for i in range(100):
+        bookmark = {
+            "id": str(uuid.uuid4()),
+            "title": get_realistic_title(category),
+            "url": get_realistic_url(category),
+            "description": get_realistic_description(category),
+            "category": get_random_category(),
+            "status_type": get_weighted_status(),
+            "is_locked": random.choice([True] * 14 + [False] * 86),
+            "created_at": get_random_timestamp(),
+            "last_checked": None
+        }
+        bookmarks.append(bookmark)
+    
+    # 4. Bulk Insert
+    await db.bookmarks.insert_many(bookmarks)
+    
+    return {
+        "message": f"✅ 100 Test-Bookmarks erstellt",
+        "created_count": 100,
+        "categories_created": len(categories),
+        "status_distribution": get_status_counts()
+    }
+            </div>
+        </div>
+
+        <!-- Frontend-Komponenten -->
+        <div class="section" id="components">
+            <h2>⚙️ Frontend-Komponenten</h2>
+            <p>Detaillierte Referenz aller React-Komponenten und deren Eigenschaften.</p>
+
+            <h3>Haupt-Komponenten</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>App.js - Main Component</h5>
+                    <p><strong>Zweck:</strong> Zentrale Anwendungslogik und State Management</p>
+                    <p><strong>State:</strong> bookmarks, categories, searchTerm, selectedCategory, settings</p>
+                    <p><strong>Features:</strong> API Integration, Event Handling, Theme Management</p>
+                </div>
+                <div class="card">
+                    <h5>EnhancedBookmarkCard.js</h5>
+                    <p><strong>Zweck:</strong> Einzelne Bookmark-Darstellung</p>
+                    <p><strong>Props:</strong> bookmark, onEdit, onDelete, onMove, onStatusChange</p>
+                    <p><strong>Features:</strong> Lock-System, Status-Badges, Drag Handles</p>
+                </div>
+            </div>
+
+            <h3>Dialog-Komponenten</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <h5>ImprovedBookmarkDialog</h5>
+                    <p><strong>Zweck:</strong> Bookmark erstellen/bearbeiten</p>
+                    <p><strong>Features:</strong> Form Validation, Category Selection, Multi-Subcategories</p>
+                </div>
+                <div class="card">
+                    <h5>ComprehensiveHelpSystem</h5>
+                    <p><strong>Zweck:</strong> Wiki-ähnliches Hilfe-System</p>
+                    <p><strong>Features:</strong> Navigation, Search, PDF Export, Internal Links</p>
+                </div>
+                <div class="card">
+                    <h5>LiveCategoryManager</h5>
+                    <p><strong>Zweck:</strong> Hierarchische Kategorie-Verwaltung</p>
+                    <p><strong>Features:</strong> Live Editing, D&D, Search, CRUD Operations</p>
+                </div>
+            </div>
+
+            <h3>Utility-Komponenten</h3>
+            <table class="status-table">
+                <thead>
+                    <tr>
+                        <th>Komponente</th>
+                        <th>Datei</th>
+                        <th>Zweck</th>
+                        <th>Key Features</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>EnhancedStatusFilter</td>
+                        <td>EnhancedStatusFilter.js</td>
+                        <td>Status-basierte Filterung</td>
+                        <td>Dropdown, Live Counts, Icon Badges</td>
+                    </tr>
+                    <tr>
+                        <td>TableView</td>
+                        <td>TableView.js</td>
+                        <td>Tabellarische Bookmark-Ansicht</td>
+                        <td>Sortierung, Bulk Actions, Export</td>
+                    </tr>
+                    <tr>
+                        <td>EnhancedCatchMouseGame</td>
+                        <td>EnhancedCatchMouseGame.js</td>
+                        <td>Easter Egg Spiel</td>
+                        <td>Canvas Animation, High Scores</td>
+                    </tr>
+                    <tr>
+                        <td>Shadcn/ui Components</td>
+                        <td>components/ui/</td>
+                        <td>Base UI Elements</td>
+                        <td>Button, Dialog, Input, etc.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Component Lifecycle & Hooks</h3>
+            <div class="code-block">
+// Typical Component Pattern in FavOrg:
+const ExampleComponent = ({ prop1, prop2, onAction }) => {
+  // State Management
+  const [localState, setLocalState] = useState(initialValue);
+  const [loading, setLoading] = useState(false);
+  
+  // Effect Hooks für API Calls
+  useEffect(() => {
+    fetchData();
+  }, [dependencies]);
+  
+  // Event Handlers
+  const handleAction = async (data) => {
+    setLoading(true);
+    try {
+      const result = await apiCall(data);
+      onAction(result);
+      toast.success('Erfolgreich!');
+    } catch (error) {
+      toast.error('Fehler: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Custom Event Listeners für Cross-Component Communication
+  useEffect(() => {
+    const handleCustomEvent = (event) => {
+      // Update component state based on custom event
+    };
+    
+    window.addEventListener('categoryUpdated', handleCustomEvent);
+    return () => window.removeEventListener('categoryUpdated', handleCustomEvent);
+  }, []);
+  
+  return (
+    &lt;div className="component-wrapper"&gt;
+      {/* JSX Content */}
+    &lt;/div&gt;
+  );
+};
+            </div>
+        </div>
+
+        <!-- Datenbank-Schema -->
+        <div class="section" id="database">
+            <h2>🗄️ Datenbank-Schema</h2>
+            <p>MongoDB Collections Schema und Daten-Strukturen für FavOrg.</p>
+
+            <h3>Bookmarks Collection</h3>
+            <div class="code-block">
+{
+  "_id": ObjectId("..."),           // MongoDB Internal ID (nicht verwendet)
+  "id": "uuid-string",              // FavOrg Primary Key (UUID)
+  "title": "GitHub - Code Repository", 
+  "url": "https://github.com",
+  "description": "Code hosting platform for software development", 
+  "category": "Development",        // Main Category
+  "subcategory": "Frontend",        // Optional Subcategory
+  "status_type": "active",          // active|dead|locked|timeout|localhost|duplicate|unchecked
+  "is_dead_link": false,           // Legacy field - sync with status_type
+  "is_locked": false,              // Legacy field - sync with status_type
+  "favicon_url": null,             // Optional favicon URL
+  "last_checked": "2025-01-19T10:30:00Z",  // Last validation timestamp
+  "created_at": "2025-01-19T09:15:00Z",    // Creation timestamp
+  "updated_at": "2025-01-19T10:30:00Z",    // Last update timestamp
+  "tags": ["development", "git"],          // Optional tags array
+  "notes": "Primary development platform"  // Optional user notes
+}
+            </div>
+
+            <h3>Categories Collection</h3>
+            <div class="code-block">
+{
+  "_id": ObjectId("..."),           // MongoDB Internal ID (nicht verwendet)
+  "id": "uuid-string",              // FavOrg Primary Key (UUID)
+  "name": "Development",            // Category Name
+  "parent_category": null,          // Parent Category (null = root level)
+  "bookmark_count": 25,             // Number of bookmarks in this category
+  "subcategory_count": 6,           // Number of subcategories
+  "description": "Software development resources", // Optional description
+  "color": "#3b82f6",              // Optional category color
+  "icon": "code",                  // Optional icon name
+  "created_at": "2025-01-19T08:00:00Z",    // Creation timestamp
+  "updated_at": "2025-01-19T10:00:00Z",    // Last update timestamp
+  "sort_order": 1                  // Manual sort order
+}
+            </div>
+
+            <h3>Datenbank-Operationen</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>Bookmark Queries</h5>
+                    <div class="code-block">
+# Alle aktiven Bookmarks
+db.bookmarks.find({"status_type": "active"})
+
+# Bookmarks einer Kategorie
+db.bookmarks.find({"category": "Development"})
+
+# Gesperrte Bookmarks
+db.bookmarks.find({"is_locked": true})
+
+# Text-Suche in mehreren Feldern
+db.bookmarks.find({
+  "$or": [
+    {"title": {"$regex": "github", "$options": "i"}},
+    {"url": {"$regex": "github", "$options": "i"}},
+    {"description": {"$regex": "github", "$options": "i"}}
+  ]
+})
+                    </div>
+                </div>
+                <div class="card">
+                    <h5>Aggregation Pipelines</h5>
+                    <div class="code-block">
+# Kategorie-Statistiken
+db.bookmarks.aggregate([
+  {"$group": {
+    "_id": "$category",
+    "count": {"$sum": 1},
+    "active": {"$sum": {"$cond": [{"$eq": ["$status_type", "active"]}, 1, 0]}},
+    "dead": {"$sum": {"$cond": [{"$eq": ["$status_type", "dead"]}, 1, 0]}}
+  }}
+])
+
+# Duplikat-Erkennung
+db.bookmarks.aggregate([
+  {"$group": {
+    "_id": "$url",
+    "count": {"$sum": 1},
+    "bookmarks": {"$push": "$$ROOT"}
+  }},
+  {"$match": {"count": {"$gt": 1}}}
+])
+                    </div>
+                </div>
+            </div>
+
+            <h3>Index-Strategien</h3>
+            <div class="code-block">
+// Empfohlene Indexes für Performance:
+
+// 1. Unique Index auf FavOrg ID
+db.bookmarks.createIndex({"id": 1}, {"unique": true});
+db.categories.createIndex({"id": 1}, {"unique": true});
+
+// 2. Compound Index für Category + Status Queries
+db.bookmarks.createIndex({"category": 1, "status_type": 1});
+
+// 3. Text Index für Search Functionality
+db.bookmarks.createIndex({
+  "title": "text",
+  "url": "text", 
+  "description": "text"
+});
+
+// 4. Index für URL-basierte Duplikat-Erkennung
+db.bookmarks.createIndex({"url": 1});
+
+// 5. Index für Timestamp-basierte Queries
+db.bookmarks.createIndex({"created_at": -1});
+db.bookmarks.createIndex({"last_checked": -1});
+            </div>
+        </div>
+
+        <!-- Environment Setup -->
+        <div class="section" id="environment">
+            <h2>🌍 Environment Setup</h2>
+            <p>Entwicklungsumgebung, Deployment und Konfiguration für FavOrg.</p>
+
+            <h3>Environment Variables</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>Frontend (.env)</h5>
+                    <div class="code-block">
+# Backend API URL - PROTECTED
+REACT_APP_BACKEND_URL=https://favorg-rebuild.preview.emergentagent.com
+VITE_REACT_APP_BACKEND_URL=https://favorg-rebuild.preview.emergentagent.com
+
+# Development Settings
+NODE_ENV=production
+REACT_APP_VERSION=2.3.0
+REACT_APP_DEBUG=false
+                    </div>
+                </div>
+                <div class="card">
+                    <h5>Backend (.env)</h5>
+                    <div class="code-block">
+# MongoDB Connection - PROTECTED  
+MONGO_URL=mongodb://localhost:27017/favorg
+
+# FastAPI Settings
+ENVIRONMENT=production
+DEBUG=false
+CORS_ORIGINS=["*"]
+MAX_UPLOAD_SIZE=10485760
+
+# Rate Limiting
+RATE_LIMIT_PER_MINUTE=60
+                    </div>
+                </div>
+            </div>
+
+            <h3>Service Configuration</h3>
+            <div class="api-endpoint">
+                <strong>Frontend Service</strong><br>
+                Port: 3000 (internal) → External URL via Kubernetes Ingress<br>
+                Hot Reload: Enabled in Development
+            </div>
+            <div class="api-endpoint">
+                <strong>Backend Service</strong><br>
+                Port: 8001 (internal) → /api routes via Kubernetes Ingress<br>
+                CORS: Configured for Frontend Domain
+            </div>
+            <div class="api-endpoint">
+                <strong>MongoDB Service</strong><br>
+                Port: 27017 (internal) → MONGO_URL Environment Variable<br>
+                Database: favorg, Collections: bookmarks, categories
+            </div>
+
+            <h3>Development Commands</h3>
+            <div class="code-block">
+# Service Management
+sudo supervisorctl restart frontend
+sudo supervisorctl restart backend  
+sudo supervisorctl restart all
+sudo supervisorctl status
+
+# Frontend Development
+cd /app/frontend
+yarn install                    # Install dependencies
+yarn add package-name          # Add new package
+yarn start                     # Development server (port 3000)
+yarn build                     # Production build
+
+# Backend Development  
+cd /app/backend
+pip install -r requirements.txt     # Install dependencies
+pip install package-name           # Add new package
+pip freeze > requirements.txt      # Update requirements
+python server.py                   # Development server (port 8001)
+
+# Database Operations
+mongosh                            # MongoDB Shell
+use favorg                         # Select database
+db.bookmarks.find()               # Query bookmarks
+db.categories.find()              # Query categories
+            </div>
+
+            <h3>Deployment Checklist</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>Pre-Release</h5>
+                    <ul>
+                        <li>✅ Environment Variables validated</li>
+                        <li>✅ Database connections tested</li>
+                        <li>✅ API endpoints functional</li>
+                        <li>✅ Frontend builds without errors</li>
+                        <li>✅ All tests passing</li>
+                        <li>✅ CORS properly configured</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Post-Release</h5>
+                    <ul>
+                        <li>✅ Services running (supervisorctl status)</li>
+                        <li>✅ Frontend accessible via URL</li>
+                        <li>✅ API responses correct</li>
+                        <li>✅ Database queries working</li>
+                        <li>✅ File uploads functional</li>
+                        <li>✅ Error handling working</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Critical URLs & Ports</h3>
+            <table class="status-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Internal Port</th>
+                        <th>External URL</th>
+                        <th>Verwendung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Frontend</td>
+                        <td>3000</td>
+                        <td>https://favorg-rebuild.preview.emergentagent.com</td>
+                        <td>Main User Interface</td>
+                    </tr>
+                    <tr>
+                        <td>Backend API</td>
+                        <td>8001</td>
+                        <td>https://favorg-rebuild.preview.emergentagent.com/api</td>
+                        <td>REST API Endpoints</td>
+                    </tr>
+                    <tr>
+                        <td>MongoDB</td>
+                        <td>27017</td>
+                        <td>mongodb://localhost:27017/favorg</td>
+                        <td>Database Connection</td>
+                    </tr>
+                    <tr>
+                        <td>Development</td>
+                        <td>Various</td>
+                        <td>Hot Reload URLs</td>
+                        <td>Development Only</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <h3>📧 Entwickler-Kontakt</h3>
+            <p><strong>Technische Fragen:</strong> support@id2.de</p>
+            <p><strong>System-Updates:</strong> Automatisch bei Code-Änderungen</p>
+            <p><strong>Repository:</strong> Interne Emergent Development</p>
+            <hr style="margin: 20px 0;">
+            <p>&copy; 2025 FavOrg Development Team - Interne Technische Dokumentation</p>
+            <p><em>Letzte Aktualisierung: <span id="footer-timestamp"></span> • Version 2.3.0</em></p>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" onclick="scrollToTop()" title="Nach oben">↑</button>
+
+    <script>
+        // Set current timestamp
+        document.getElementById('last-updated').textContent = new Date().toLocaleDateString('de-DE', {
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        document.getElementById('footer-timestamp').textContent = new Date().toLocaleDateString('de-DE', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Smooth scroll to top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const backToTopButton = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        // Console easter egg
+        console.log(`
+🔧 FavOrg Technical Documentation
+Version 2.3.0 - Internal Developer Reference
+
+Quick Access Commands:
+- scrollToTop() - Scroll to top of page
+- document.querySelector('#section-id') - Navigate to section
+- console.clear() - Clear console
+
+This document is automatically updated with code changes.
+For technical support: support@id2.de
+        `);
+    </script>
+</body>
+</html>
