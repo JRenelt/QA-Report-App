@@ -926,202 +926,170 @@ class BookmarkManager:
         }
 
     async def create_comprehensive_test_data(self):
-        """100 umfassende Testdaten mit Duplikaten und toten Links erstellen"""
-        test_bookmarks = [
-            # Normale funktionale Links (65 Stück)
-            {"title": "GitHub", "url": "https://github.com", "category": "Development", "subcategory": "Code Hosting"},
-            {"title": "GitLab", "url": "https://gitlab.com", "category": "Development", "subcategory": "Code Hosting"},
-            {"title": "Stack Overflow", "url": "https://stackoverflow.com", "category": "Development", "subcategory": "Q&A"},
-            {"title": "MDN Web Docs", "url": "https://developer.mozilla.org", "category": "Development", "subcategory": "Documentation"},
-            {"title": "CodePen", "url": "https://codepen.io", "category": "Development", "subcategory": "Code Sharing"},
-            {"title": "Docker Hub", "url": "https://hub.docker.com", "category": "Development", "subcategory": "Container"},
-            {"title": "Visual Studio Code", "url": "https://code.visualstudio.com", "category": "Development"},
-            {"title": "React Documentation", "url": "https://reactjs.org", "category": "Development", "subcategory": "Documentation"},
-            {"title": "Angular", "url": "https://angular.io", "category": "Development", "subcategory": "Frameworks"},
-            {"title": "Vue.js", "url": "https://vuejs.org", "category": "Development", "subcategory": "Frameworks"},
-            {"title": "Node.js", "url": "https://nodejs.org", "category": "Development"},
-            {"title": "Python.org", "url": "https://python.org", "category": "Development"},
-            {"title": "TypeScript", "url": "https://www.typescriptlang.org", "category": "Development", "subcategory": "Languages"},
-            {"title": "Rust", "url": "https://www.rust-lang.org", "category": "Development", "subcategory": "Languages"},
-            {"title": "Go", "url": "https://golang.org", "category": "Development", "subcategory": "Languages"},
-            {"title": "MongoDB", "url": "https://www.mongodb.com", "category": "Development", "subcategory": "Databases"},
-            {"title": "PostgreSQL", "url": "https://www.postgresql.org", "category": "Development", "subcategory": "Databases"},
-            {"title": "Redis", "url": "https://redis.io", "category": "Development", "subcategory": "Databases"},
-            {"title": "AWS", "url": "https://aws.amazon.com", "category": "Development", "subcategory": "Cloud"},
-            {"title": "Google Cloud", "url": "https://cloud.google.com", "category": "Development", "subcategory": "Cloud"},
-            
-            {"title": "BBC News", "url": "https://www.bbc.com/news", "category": "News", "subcategory": "World News"},
-            {"title": "TechCrunch", "url": "https://techcrunch.com", "category": "News", "subcategory": "Tech News"},
-            {"title": "The Verge", "url": "https://www.theverge.com", "category": "News", "subcategory": "Tech News"},
-            {"title": "Ars Technica", "url": "https://arstechnica.com", "category": "News", "subcategory": "Tech News"},
-            {"title": "Hacker News", "url": "https://news.ycombinator.com", "category": "News", "subcategory": "Tech News"},
-            {"title": "Reuters", "url": "https://www.reuters.com", "category": "News", "subcategory": "World News"},
-            {"title": "CNN", "url": "https://www.cnn.com", "category": "News", "subcategory": "World News"},
-            {"title": "The Guardian", "url": "https://www.theguardian.com", "category": "News", "subcategory": "World News"},
-            {"title": "Wired", "url": "https://www.wired.com", "category": "News", "subcategory": "Tech News"},
-            
-            {"title": "LinkedIn", "url": "https://www.linkedin.com", "category": "Social Media", "subcategory": "Professional"},
-            {"title": "Twitter", "url": "https://twitter.com", "category": "Social Media"},
-            {"title": "Mastodon", "url": "https://mastodon.social", "category": "Social Media", "subcategory": "Decentralized"},
-            {"title": "Reddit", "url": "https://www.reddit.com", "category": "Social Media", "subcategory": "Discussion"},
-            {"title": "Discord", "url": "https://discord.com", "category": "Social Media", "subcategory": "Communication"},
-            
-            {"title": "Google Drive", "url": "https://drive.google.com", "category": "Tools", "subcategory": "Cloud Storage"},
-            {"title": "Dropbox", "url": "https://www.dropbox.com", "category": "Tools", "subcategory": "Cloud Storage"},
-            {"title": "Notion", "url": "https://www.notion.so", "category": "Tools", "subcategory": "Productivity"},
-            {"title": "Figma", "url": "https://www.figma.com", "category": "Tools", "subcategory": "Design"},
-            {"title": "Slack", "url": "https://slack.com", "category": "Tools", "subcategory": "Communication"},
-            {"title": "Trello", "url": "https://trello.com", "category": "Tools", "subcategory": "Project Management"},
-            {"title": "Asana", "url": "https://asana.com", "category": "Tools", "subcategory": "Project Management"},
-            {"title": "Zoom", "url": "https://zoom.us", "category": "Tools", "subcategory": "Communication"},
-            {"title": "Microsoft Teams", "url": "https://teams.microsoft.com", "category": "Tools", "subcategory": "Communication"},
-            
-            {"title": "YouTube", "url": "https://www.youtube.com", "category": "Entertainment", "subcategory": "Video"},
-            {"title": "Spotify", "url": "https://www.spotify.com", "category": "Entertainment", "subcategory": "Music"},
-            {"title": "Netflix", "url": "https://www.netflix.com", "category": "Entertainment", "subcategory": "Video"},
-            {"title": "Twitch", "url": "https://www.twitch.tv", "category": "Entertainment", "subcategory": "Streaming"},
-            {"title": "Apple Music", "url": "https://music.apple.com", "category": "Entertainment", "subcategory": "Music"},
-            
-            {"title": "Wikipedia", "url": "https://en.wikipedia.org", "category": "Reference", "subcategory": "Encyclopedia"},
-            {"title": "MDN", "url": "https://developer.mozilla.org", "category": "Reference", "subcategory": "Technical"},
-            {"title": "Can I Use", "url": "https://caniuse.com", "category": "Reference", "subcategory": "Technical"},
-            {"title": "W3Schools", "url": "https://www.w3schools.com", "category": "Reference", "subcategory": "Tutorials"},
-            
-            {"title": "Amazon", "url": "https://www.amazon.com", "category": "Shopping", "subcategory": "General"},
-            {"title": "eBay", "url": "https://www.ebay.com", "category": "Shopping", "subcategory": "Auction"},
-            {"title": "AliExpress", "url": "https://www.aliexpress.com", "category": "Shopping", "subcategory": "International"},
-            
-            {"title": "Coursera", "url": "https://www.coursera.org", "category": "Education", "subcategory": "Online Learning"},
-            {"title": "edX", "url": "https://www.edx.org", "category": "Education", "subcategory": "Online Learning"},
-            {"title": "Khan Academy", "url": "https://www.khanacademy.org", "category": "Education", "subcategory": "Free Learning"},
-            {"title": "MIT OpenCourseWare", "url": "https://ocw.mit.edu", "category": "Education", "subcategory": "University"},
-            
-            {"title": "WebMD", "url": "https://www.webmd.com", "category": "Health", "subcategory": "Medical Info"},
-            {"title": "Mayo Clinic", "url": "https://www.mayoclinic.org", "category": "Health", "subcategory": "Medical Info"},
-            
-            {"title": "Yahoo Finance", "url": "https://finance.yahoo.com", "category": "Finance", "subcategory": "Markets"},
-            {"title": "Coinbase", "url": "https://www.coinbase.com", "category": "Finance", "subcategory": "Cryptocurrency"},
-            
-            {"title": "Booking.com", "url": "https://www.booking.com", "category": "Travel", "subcategory": "Hotels"},
-            {"title": "Airbnb", "url": "https://www.airbnb.com", "category": "Travel", "subcategory": "Accommodation"},
-            {"title": "Google Maps", "url": "https://maps.google.com", "category": "Travel", "subcategory": "Navigation"},
-            
-            # Duplikate (20 Stück - gleiche URLs mit leicht anderen Titeln)
-            {"title": "GitHub - Code Repository", "url": "https://github.com", "category": "Development", "subcategory": "Code Hosting"},
-            {"title": "GitLab Repository", "url": "https://gitlab.com", "category": "Development", "subcategory": "Code Hosting"},
-            {"title": "StackOverflow Q&A", "url": "https://stackoverflow.com", "category": "Development", "subcategory": "Q&A"},
-            {"title": "Mozilla Developer Network", "url": "https://developer.mozilla.org", "category": "Development", "subcategory": "Documentation"},
-            {"title": "CodePen Online Editor", "url": "https://codepen.io", "category": "Development", "subcategory": "Code Sharing"},
-            {"title": "BBC World News", "url": "https://www.bbc.com/news", "category": "News", "subcategory": "World News"},
-            {"title": "TechCrunch Tech News", "url": "https://techcrunch.com", "category": "News", "subcategory": "Tech News"},
-            {"title": "LinkedIn Professional Network", "url": "https://www.linkedin.com", "category": "Social Media", "subcategory": "Professional"},
-            {"title": "YouTube Video Platform", "url": "https://www.youtube.com", "category": "Entertainment", "subcategory": "Video"},
-            {"title": "Spotify Music Streaming", "url": "https://www.spotify.com", "category": "Entertainment", "subcategory": "Music"},
-            {"title": "Google Drive Storage", "url": "https://drive.google.com", "category": "Tools", "subcategory": "Cloud Storage"},
-            {"title": "Notion Workspace", "url": "https://www.notion.so", "category": "Tools", "subcategory": "Productivity"},
-            {"title": "Netflix Streaming", "url": "https://www.netflix.com", "category": "Entertainment", "subcategory": "Video"},
-            {"title": "Wikipedia Encyclopedia", "url": "https://en.wikipedia.org", "category": "Reference", "subcategory": "Encyclopedia"},
-            {"title": "Amazon Shopping", "url": "https://www.amazon.com", "category": "Shopping", "subcategory": "General"},
-            {"title": "Coursera Online Courses", "url": "https://www.coursera.org", "category": "Education", "subcategory": "Online Learning"},
-            {"title": "WebMD Health", "url": "https://www.webmd.com", "category": "Health", "subcategory": "Medical Info"},
-            {"title": "Yahoo Finance Markets", "url": "https://finance.yahoo.com", "category": "Finance", "subcategory": "Markets"},
-            {"title": "Booking Hotels", "url": "https://www.booking.com", "category": "Travel", "subcategory": "Hotels"},
-            # Tote Links (15 Stück - nicht erreichbare URLs)
-            {"title": "Dead Link Example 1", "url": "https://nonexistentdomain12345.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 2", "url": "https://brokenlink98765.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 3", "url": "https://deadurl54321.net", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 4", "url": "https://invalidsite11111.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 5", "url": "https://notfound22222.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 6", "url": "https://broken33333.net", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 7", "url": "https://dead44444.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 8", "url": "https://invalid55555.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 9", "url": "https://missing66666.net", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 10", "url": "https://gone77777.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 11", "url": "https://vanished88888.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 12", "url": "https://removed99999.net", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 13", "url": "https://nonexistent00000.com", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 14", "url": "https://brokensite12321.org", "category": "Testing", "is_dead": True, "status_type": "dead"},
-            {"title": "Dead Link Example 15", "url": "https://deadpage54345.net", "category": "Testing", "is_dead": True, "status_type": "dead"}
+        """Modulare Testdaten-Generierung mit exakten Status-Zahlen für Phase 2 Rebuild"""
+        # Bereinigung vor Neuerstellung
+        await self.db.bookmarks.delete_many({})
+        await self.db.categories.delete_many({})
+        
+        created_bookmarks = []
+        
+        # 10 Aktive Links
+        active_bookmarks = [
+            {"title": "GitHub", "url": "https://github.com", "category": "Development", "subcategory": "Code Hosting", "description": "Code hosting platform for software development"},
+            {"title": "Stack Overflow", "url": "https://stackoverflow.com", "category": "Development", "subcategory": "Q&A", "description": "Programming Q&A community"},
+            {"title": "MDN Web Docs", "url": "https://developer.mozilla.org", "category": "Development", "subcategory": "Documentation", "description": "Web development documentation"},
+            {"title": "BBC News", "url": "https://www.bbc.com/news", "category": "News", "subcategory": "World News", "description": "International news coverage"},
+            {"title": "LinkedIn", "url": "https://www.linkedin.com", "category": "Social Media", "subcategory": "Professional", "description": "Professional networking platform"},
+            {"title": "Netflix", "url": "https://www.netflix.com", "category": "Entertainment", "subcategory": "Streaming", "description": "Video streaming service"},
+            {"title": "Wikipedia", "url": "https://www.wikipedia.org", "category": "Reference", "subcategory": "Encyclopedia", "description": "Free online encyclopedia"},
+            {"title": "Amazon", "url": "https://www.amazon.com", "category": "Shopping", "subcategory": "E-Commerce", "description": "Online shopping platform"},
+            {"title": "Coursera", "url": "https://www.coursera.org", "category": "Education", "subcategory": "Online Learning", "description": "Online course platform"},
+            {"title": "WebMD", "url": "https://www.webmd.com", "category": "Health", "subcategory": "Medical Info", "description": "Health information resource"}
         ]
         
-        created_count = 0
-        duplicates_count = 0
-        dead_links_count = 0
-        locked_count = 0
-        timeout_count = 0
-        unchecked_count = 0
+        # 10 Tote Links (Dead)
+        dead_bookmarks = [
+            {"title": "Dead Link 1", "url": "https://deadlink1.nonexistent", "category": "Development", "description": "This is a dead link for testing"},
+            {"title": "Dead Link 2", "url": "https://404error.test", "category": "News", "description": "Another dead link"},
+            {"title": "Dead Link 3", "url": "https://broken.example", "category": "Tools", "description": "Broken link example"},
+            {"title": "Dead Link 4", "url": "https://notfound.invalid", "category": "Social Media", "description": "Invalid domain test"},
+            {"title": "Dead Link 5", "url": "https://missing.page", "category": "Entertainment", "description": "Missing page test"},
+            {"title": "Dead Link 6", "url": "https://expired.domain", "category": "Reference", "description": "Expired domain test"},
+            {"title": "Dead Link 7", "url": "https://unreachable.site", "category": "Shopping", "description": "Unreachable site test"},
+            {"title": "Dead Link 8", "url": "https://offline.service", "category": "Education", "description": "Offline service test"},
+            {"title": "Dead Link 9", "url": "https://discontinued.app", "category": "Health", "description": "Discontinued app test"},
+            {"title": "Dead Link 10", "url": "https://removed.content", "category": "Finance", "description": "Removed content test"}
+        ]
         
-        for i, bookmark_data in enumerate(test_bookmarks):
-            # Verschiedene Status-Typen zuweisen basierend auf Index
-            if i < 65:  # Normale aktive Links (65)
-                status_type = "active"
-                is_dead = False
-                is_locked = False
-            elif i < 80:  # Tote Links (15)
-                status_type = "dead"
-                is_dead = True
-                is_locked = False
-                dead_links_count += 1
-            elif i < 90:  # Gesperrte Links (10)
-                status_type = "locked"
-                is_dead = False
-                is_locked = True
-                locked_count += 1
-            elif i < 95:  # Timeout Links (5)
-                status_type = "timeout"
-                is_dead = False
-                is_locked = False
-                timeout_count += 1
-            else:  # Ungeprüfte Links (5)
-                status_type = "unchecked"
-                is_dead = False
-                is_locked = False
-                unchecked_count += 1
-            
-            bookmark_dict = {
-                "id": str(uuid.uuid4()),
-                "title": bookmark_data["title"],
-                "url": bookmark_data["url"],
-                "category": bookmark_data["category"],
-                "subcategory": bookmark_data.get("subcategory", ""),
-                "created_at": datetime.utcnow(),
-                "is_dead_link": is_dead,
-                "is_locked": is_locked,
-                "status_type": status_type
-            }
-            
-            # Check if this is a duplicate
-            existing = await db.bookmarks.find_one({"url": bookmark_data["url"]})
-            if existing:
-                duplicates_count += 1
-            
-            # Track dead links
-            if bookmark_data.get("is_dead", False):
-                dead_links_count += 1
-            
-            # Insert the bookmark
-            await db.bookmarks.insert_one(bookmark_dict)
-            created_count += 1
+        # 10 Localhost Links
+        localhost_bookmarks = [
+            {"title": "Local Dev Server", "url": "http://localhost:3000", "category": "Development", "subcategory": "Local Dev", "description": "React development server"},
+            {"title": "Local API", "url": "http://localhost:8000", "category": "Development", "subcategory": "Local Dev", "description": "FastAPI local server"},
+            {"title": "Local Database", "url": "http://127.0.0.1:27017", "category": "Development", "subcategory": "Database", "description": "MongoDB local instance"},
+            {"title": "Local Docs", "url": "http://localhost:4000", "category": "Development", "subcategory": "Documentation", "description": "Local documentation server"},
+            {"title": "Local Test", "url": "http://127.0.0.1:5000", "category": "Development", "subcategory": "Testing", "description": "Local test environment"},
+            {"title": "Local Web", "url": "http://localhost:8080", "category": "Development", "subcategory": "Web Server", "description": "Local web server"},
+            {"title": "Local Admin", "url": "http://localhost:9000", "category": "Tools", "subcategory": "Admin", "description": "Local admin panel"},
+            {"title": "Local Preview", "url": "http://127.0.0.1:3001", "category": "Development", "subcategory": "Preview", "description": "Local preview server"},
+            {"title": "Local Cache", "url": "http://localhost:6379", "category": "Development", "subcategory": "Cache", "description": "Local Redis cache"},
+            {"title": "Local Debug", "url": "http://127.0.0.1:4040", "category": "Development", "subcategory": "Debug", "description": "Local debug server"}
+        ]
+        
+        # 10 Duplikate (gleiche URLs mit unterschiedlichen Titeln)
+        duplicate_bookmarks = [
+            {"title": "GitHub Main", "url": "https://github.com", "category": "Development", "description": "Main GitHub page"},
+            {"title": "GitHub Duplicate", "url": "https://github.com", "category": "Development", "description": "Duplicate GitHub entry"},
+            {"title": "Google Search", "url": "https://www.google.com", "category": "Tools", "description": "Google search engine"},
+            {"title": "Google Homepage", "url": "https://www.google.com", "category": "Tools", "description": "Duplicate Google entry"},
+            {"title": "YouTube Main", "url": "https://www.youtube.com", "category": "Entertainment", "description": "YouTube video platform"},
+            {"title": "YouTube Videos", "url": "https://www.youtube.com", "category": "Entertainment", "description": "Duplicate YouTube entry"},
+            {"title": "Facebook Social", "url": "https://www.facebook.com", "category": "Social Media", "description": "Facebook social network"},
+            {"title": "Facebook Page", "url": "https://www.facebook.com", "category": "Social Media", "description": "Duplicate Facebook entry"},
+            {"title": "Twitter Feed", "url": "https://twitter.com", "category": "Social Media", "description": "Twitter social platform"},
+            {"title": "Twitter Social", "url": "https://twitter.com", "category": "Social Media", "description": "Duplicate Twitter entry"}
+        ]
+        
+        # 10 Gesperrt (Locked)
+        locked_bookmarks = [
+            {"title": "Production Database", "url": "https://production-db.company.com", "category": "Development", "subcategory": "Critical", "description": "CRITICAL: Production database access"},
+            {"title": "Admin Panel", "url": "https://admin.company.com", "category": "Tools", "subcategory": "Critical", "description": "CRITICAL: Company admin panel"},
+            {"title": "Financial System", "url": "https://finance.company.com", "category": "Finance", "subcategory": "Critical", "description": "CRITICAL: Financial management system"},
+            {"title": "Customer Data", "url": "https://customers.company.com", "category": "Reference", "subcategory": "Critical", "description": "CRITICAL: Customer database"},
+            {"title": "Security Console", "url": "https://security.company.com", "category": "Tools", "subcategory": "Security", "description": "CRITICAL: Security management"},
+            {"title": "Backup System", "url": "https://backup.company.com", "category": "Tools", "subcategory": "Critical", "description": "CRITICAL: Backup management"},
+            {"title": "Legal Documents", "url": "https://legal.company.com", "category": "Reference", "subcategory": "Legal", "description": "CRITICAL: Legal document storage"},
+            {"title": "HR System", "url": "https://hr.company.com", "category": "Tools", "subcategory": "HR", "description": "CRITICAL: Human resources system"},
+            {"title": "Payment Gateway", "url": "https://payments.company.com", "category": "Finance", "subcategory": "Critical", "description": "CRITICAL: Payment processing"},
+            {"title": "API Keys", "url": "https://keys.company.com", "category": "Development", "subcategory": "Critical", "description": "CRITICAL: API key management"}
+        ]
+        
+        # 10 Timeout Links (langsame Verbindungen)
+        timeout_bookmarks = [
+            {"title": "Slow Server 1", "url": "https://slowserver1.timeout", "category": "Development", "description": "Very slow loading server"},
+            {"title": "Slow Server 2", "url": "https://slowserver2.timeout", "category": "News", "description": "Timeout-prone news site"},
+            {"title": "Slow Server 3", "url": "https://slowserver3.timeout", "category": "Tools", "description": "Slow loading tool"},
+            {"title": "Slow Server 4", "url": "https://slowserver4.timeout", "category": "Social Media", "description": "Slow social platform"},
+            {"title": "Slow Server 5", "url": "https://slowserver5.timeout", "category": "Entertainment", "description": "Slow streaming service"},
+            {"title": "Slow Server 6", "url": "https://slowserver6.timeout", "category": "Reference", "description": "Slow reference site"},
+            {"title": "Slow Server 7", "url": "https://slowserver7.timeout", "category": "Shopping", "description": "Slow e-commerce site"},
+            {"title": "Slow Server 8", "url": "https://slowserver8.timeout", "category": "Education", "description": "Slow learning platform"},
+            {"title": "Slow Server 9", "url": "https://slowserver9.timeout", "category": "Health", "description": "Slow health portal"},
+            {"title": "Slow Server 10", "url": "https://slowserver10.timeout", "category": "Finance", "description": "Slow financial service"}
+        ]
+        
+        # 10 Überprüft (checked - geprüfte aber inaktive)
+        checked_bookmarks = [
+            {"title": "Checked Link 1", "url": "https://checked1.example", "category": "Development", "description": "Previously checked development link"},
+            {"title": "Checked Link 2", "url": "https://checked2.example", "category": "News", "description": "Previously checked news link"},
+            {"title": "Checked Link 3", "url": "https://checked3.example", "category": "Tools", "description": "Previously checked tool"},
+            {"title": "Checked Link 4", "url": "https://checked4.example", "category": "Social Media", "description": "Previously checked social link"},
+            {"title": "Checked Link 5", "url": "https://checked5.example", "category": "Entertainment", "description": "Previously checked entertainment link"},
+            {"title": "Checked Link 6", "url": "https://checked6.example", "category": "Reference", "description": "Previously checked reference"},
+            {"title": "Checked Link 7", "url": "https://checked7.example", "category": "Shopping", "description": "Previously checked shopping link"},
+            {"title": "Checked Link 8", "url": "https://checked8.example", "category": "Education", "description": "Previously checked education link"},
+            {"title": "Checked Link 9", "url": "https://checked9.example", "category": "Health", "description": "Previously checked health link"},
+            {"title": "Checked Link 10", "url": "https://checked10.example", "category": "Finance", "description": "Previously checked finance link"}
+        ]
+        
+        # Erstelle Bookmarks mit korrekten Status-Typen
+        all_bookmark_groups = [
+            (active_bookmarks, "active", False, False),
+            (dead_bookmarks, "dead", True, False),
+            (localhost_bookmarks, "localhost", False, False),
+            (duplicate_bookmarks, "duplicate", False, False),
+            (locked_bookmarks, "locked", False, True),
+            (timeout_bookmarks, "timeout", False, False),
+            (checked_bookmarks, "checked", False, False)
+        ]
+        
+        total_created = 0
+        status_counts = {
+            "active": 0,
+            "dead": 0,
+            "localhost": 0,
+            "duplicate": 0,
+            "locked": 0,
+            "timeout": 0,
+            "checked": 0
+        }
+        
+        for bookmark_group, status_type, is_dead, is_locked in all_bookmark_groups:
+            for bookmark_data in bookmark_group:
+                bookmark_dict = {
+                    "id": str(uuid.uuid4()),
+                    "title": bookmark_data["title"],
+                    "url": bookmark_data["url"],
+                    "category": bookmark_data["category"],
+                    "subcategory": bookmark_data.get("subcategory", ""),
+                    "description": bookmark_data.get("description", ""),
+                    "date_added": datetime.now(timezone.utc),
+                    "is_dead_link": is_dead,
+                    "is_locked": is_locked,
+                    "status_type": status_type,
+                    "last_checked": None
+                }
+                
+                await self.db.bookmarks.insert_one(bookmark_dict)
+                created_bookmarks.append(bookmark_dict)
+                status_counts[status_type] += 1
+                total_created += 1
         
         # Update categories
         await self.category_manager.update_bookmark_counts()
         
         return {
-            "message": f"Created {created_count} comprehensive test bookmarks",
-            "created_count": created_count,
-            "duplicates": duplicates_count,
-            "dead_links": dead_links_count,
-            "locked_links": locked_count,
-            "timeout_links": timeout_count,
-            "unchecked_links": unchecked_count,
+            "message": f"Created {total_created} modular test bookmarks with exact status distribution",
+            "created_count": total_created,
+            "status_distribution": status_counts,
             "details": {
-                "active_links": 65,
-                "dead_links": 15,
-                "locked_links": 10,
-                "timeout_links": 5,
-                "unchecked_links": 5,
-                "duplicate_links": duplicates_count,
-                "total": 100
+                "active_links": status_counts["active"],
+                "dead_links": status_counts["dead"],
+                "localhost_links": status_counts["localhost"],
+                "duplicate_links": status_counts["duplicate"],
+                "locked_links": status_counts["locked"],
+                "timeout_links": status_counts["timeout"],
+                "checked_links": status_counts["checked"],
+                "total": total_created
             }
         }
 
