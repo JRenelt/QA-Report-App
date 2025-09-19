@@ -38,7 +38,6 @@ import {
   Copy, 
   FolderOpen,
   Link as LinkIcon,
-  AlertTriangle,
   CheckCircle,
   XCircle,
   BarChart3,
