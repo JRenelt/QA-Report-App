@@ -296,7 +296,7 @@ class Phase2TestDataValidator:
                     "duplicate_links": "duplicate",
                     "locked_links": "locked",
                     "timeout_links": "timeout",
-                    "unchecked_links": "checked"  # checked maps to unchecked in stats
+                    "unchecked_links": "checked"  # Backend bug: creates 'checked' but counts 'unchecked'
                 }
                 
                 all_stats_correct = True
@@ -304,6 +304,19 @@ class Phase2TestDataValidator:
                 for stats_field, status_type in status_mapping.items():
                     expected = self.expected_counts[status_type]
                     actual = stats.get(stats_field, 0)
+                    
+                    # Special handling for unchecked_links bug
+                    if stats_field == "unchecked_links":
+                        # Backend counts 'unchecked' but creates 'checked' - this is a bug
+                        if actual == 0 and expected == 10:
+                            self.log_test(
+                                f"Statistics {stats_field} (BACKEND BUG)",
+                                False,
+                                f"Backend creates 'checked' status but counts 'unchecked' status. Expected {expected}, got {actual}",
+                                {"field": stats_field, "expected": expected, "actual": actual, "bug": "status_type mismatch"}
+                            )
+                            all_stats_correct = False
+                            continue
                     
                     if actual != expected:
                         self.log_test(
