@@ -236,6 +236,23 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
             }
           },
           {
+            title: 'UI-Nomenklatur Handbuch',
+            steps: [
+              '📋 Vollständige Bereichs-Terminologie für FavOrg',
+              '🔸 Alle UI-Bereiche mit Positionen definiert',
+              '📚 Technisches Glossar (CRUD, Excel-Funktionalität, etc.)',
+              '📄 Als PDF oder Text-Datei verfügbar'
+            ],
+            action: {
+              label: '📄 Nomenklatur PDF herunterladen',
+              description: 'Komplette UI-Terminologie',
+              onClick: () => {
+                const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+                window.open(`${backendUrl}/api/documentation/download-nomenklatur`, '_blank');
+              }
+            }
+          },
+          {
             title: 'Unterstützte Import-Formate',
             steps: [
               'HTML: Standard Browser-Export Format',
