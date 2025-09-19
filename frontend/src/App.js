@@ -1743,6 +1743,8 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const [draggedCategory, setDraggedCategory] = useState(null);
   const [dragOverCategory, setDragOverCategory] = useState(null);
+  const [shiftPressed, setShiftPressed] = useState(false);
+  const [dragMode, setDragMode] = useState('standard'); // 'standard' oder 'insert'
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     return parseInt(localStorage.getItem('favorg-sidebar-width') || '280');
   });
