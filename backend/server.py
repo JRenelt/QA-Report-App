@@ -1923,12 +1923,18 @@ async def cross_level_sort_categories(sort_data: dict):
         if not dragged_category or not target_category:
             raise HTTPException(status_code=400, detail="Dragged and target categories are required")
         
-        # Finde beide Kategorien
+        # Finde dragged category - target kann "Alle" sein (UI-Element)
         dragged = await db.categories.find_one({"name": dragged_category})
-        target = await db.categories.find_one({"name": target_category})
+        target = None
         
-        if not dragged or not target:
-            raise HTTPException(status_code=404, detail="One or both categories not found")
+        # Spezialbehandlung für "Alle" - existiert nicht in DB
+        if target_category != "Alle":
+            target = await db.categories.find_one({"name": target_category})
+            if not target:
+                raise HTTPException(status_code=404, detail=f"Target category '{target_category}' not found")
+        
+        if not dragged:
+            raise HTTPException(status_code=404, detail=f"Dragged category '{dragged_category}' not found")
         
         # Bestimme neue Hierarchie basierend auf target_level
         new_parent = None
