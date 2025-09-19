@@ -59,6 +59,10 @@ class Category(BaseModel):
     bookmark_count: int = 0
     subcategory_count: int = 0
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: Optional[datetime] = None
+    is_locked: bool = False
+    lock_reason: str = ""
+    locked_at: Optional[datetime] = None
 
 class BookmarkCreate(BaseModel):
     title: str
