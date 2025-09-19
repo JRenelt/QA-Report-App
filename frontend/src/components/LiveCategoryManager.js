@@ -125,7 +125,6 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
       </span>
     );
   };
-  };
 
   // Filter-Funktion für Kategorien basierend auf Suchterm
   const filterCategories = (categories, searchTerm) => {
