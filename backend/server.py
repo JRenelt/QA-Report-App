@@ -1945,14 +1945,19 @@ async def cross_level_sort_categories(sort_data: dict):
             new_parent = target_category
             new_position = 0  # Erste Position unter Parent
         elif target_level == 'root':
-            # Dragged wird Root-Kategorie
+            # Dragged wird Root-Kategorie (auch bei "Alle" als Target)
             new_parent = None
             new_position = 0  # Erste Position auf Root-Level
         elif target_level == 'same':
             # Dragged bleibt auf gleicher Ebene wie Target
-            new_parent = target.get("parent_category")
-            target_position = target.get("order_index", 0)
-            new_position = target_position if operation_mode == 'standard' else target_position + 1
+            if target_category == "Alle":
+                # Wenn Target "Alle" ist, wird es Root-Level
+                new_parent = None
+                new_position = 0
+            else:
+                new_parent = target.get("parent_category") if target else None
+                target_position = target.get("order_index", 0) if target else 0
+                new_position = target_position if operation_mode == 'standard' else target_position + 1
         
         # Verschiebe andere Kategorien nach unten wenn Insert-Modus
         if operation_mode == 'insert':
