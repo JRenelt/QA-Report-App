@@ -1638,7 +1638,9 @@ const CategoryNode = ({ category, level = 0, expandedCategories, onCategoryChang
   return (
     <div className="category-group">
       <div
-        className={`category-item ${level === 0 ? 'main-category' : 'subcategory'} draggable ${isActive ? 'active' : ''} ${dragOverCategory?.id === category.id ? 'drag-over' : ''}`}
+        className={`category-item ${level === 0 ? 'main-category' : 'subcategory'} draggable ${isActive ? 'active' : ''} ${
+          dragOverCategory?.id === category.id ? `drag-over ${dragOverCategory.insertMode ? 'insert-mode' : 'standard-mode'}` : ''
+        } ${dragOverCategory?.name === category.name && dragOverCategory?.dragMode === 'insert' ? 'insert-mode' : ''}`}
         style={{ marginLeft: `${level * 20}px` }}
         onClick={() => {
           if (level === 0) {
