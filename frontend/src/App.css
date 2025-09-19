@@ -1485,23 +1485,29 @@ body {
   margin-bottom: 12px;
 }
 
+.sidebar-title-with-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .sidebar-controls {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Info Button - Kreis mit i */
-.category-info-btn {
+/* Info Button - Größerer Kreis direkt neben "Kategorien" */
+.category-info-btn-inline {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 2px;
+  padding: 0;
 }
 
-.info-circle {
-  width: 18px;
-  height: 18px;
+.info-circle-large {
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--bg-tertiary);
   color: var(--text-primary);
@@ -1509,12 +1515,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.info-circle:hover {
+.info-circle-large:hover {
   background: var(--bg-secondary);
+  transform: scale(1.05);
+  transition: all 0.2s ease;
 }
 
 /* Kategorie verwalten Button - Blaues Kreuz rechts */
