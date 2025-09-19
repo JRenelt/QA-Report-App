@@ -1966,13 +1966,24 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
             <>
               <div className="sidebar-title-section">
                 <h3 className="sidebar-title">Kategorien</h3>
-                <button
-                  className="category-manage-btn"
-                  onClick={() => onCategoryManage && onCategoryManage()}
-                  title="Kategorien verwalten"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
+                <div className="sidebar-controls">
+                  {/* Info-Button (Kreis mit i) */}
+                  <button
+                    className="category-info-btn"
+                    onClick={() => alert('Kategorie-Hilfe: Drag & Drop zwischen Ebenen, Shift für Einfügemodus')}
+                    title="Kategorie-Hilfe"
+                  >
+                    <div className="info-circle">i</div>
+                  </button>
+                  {/* Kategorie verwalten Button (Blaues Kreuz rechts) */}
+                  <button
+                    className="category-manage-btn"
+                    onClick={() => onCategoryManage && onCategoryManage()}
+                    title="Kategorien verwalten"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
               <div className="sidebar-info">
                 <button
