@@ -316,6 +316,44 @@ class FavoritesService {
     }
   }
 
+  async reorderCategories(categoryIds, parentCategory = null) {
+    try {
+      const response = await axios.put(`${this.baseURL}/api/categories/reorder`, {
+        category_ids: categoryIds,
+        parent_category: parentCategory
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to reorder categories');
+    }
+  }
+
+  async reparentCategory(categoryName, newParent, targetPosition = 0) {
+    try {
+      const response = await axios.put(`${this.baseURL}/api/categories/${encodeURIComponent(categoryName)}/reparent`, {
+        new_parent: newParent,
+        target_position: targetPosition
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to reparent category');
+    }
+  }
+
+  async crossLevelSortCategories(draggedCategory, targetCategory, operationMode = 'standard', targetLevel = 'same') {
+    try {
+      const response = await axios.put(`${this.baseURL}/api/categories/cross-level-sort`, {
+        dragged_category: draggedCategory,
+        target_category: targetCategory,
+        operation_mode: operationMode,
+        target_level: targetLevel
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to sort categories');
+    }
+  }
+
   async moveBookmarks(bookmarkIds, targetCategory, targetSubcategory = null) {
     try {
       const response = await axios.post(`${this.baseURL}/api/bookmarks/move`, {
