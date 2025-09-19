@@ -1750,6 +1750,30 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   });
   const [isResizing, setIsResizing] = useState(false);
 
+  // Shift-Taste Detection für Excel-ähnliche Drag & Drop
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Shift') {
+        setShiftPressed(true);
+        setDragMode('insert');
+      }
+    };
+    const handleKeyUp = (e) => {
+      if (e.key === 'Shift') {
+        setShiftPressed(false);
+        setDragMode('standard');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
   // Auflösungserkennung beim Programmstart und bei Änderungen
   useEffect(() => {
     const handleResize = () => {
