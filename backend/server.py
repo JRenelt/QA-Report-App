@@ -1176,9 +1176,14 @@ class BookmarkManager:
             # Lösche bestehende Kategorien
             await self.db.categories.delete_many({})
             
-            # Füge neue Kategorien hinzu
+            # Füge neue Kategorien hinzu - mit upsert um Duplikate zu vermeiden
             if categories_to_insert:
-                await self.db.categories.insert_many(categories_to_insert)
+                for category in categories_to_insert:
+                    await self.db.categories.update_one(
+                        {"name": category["name"]},
+                        {"$set": category},
+                        upsert=True  # Erstelle nur wenn nicht vorhanden
+                    )
             
             # Update bookmark counts
             await self.category_manager.update_bookmark_counts()
