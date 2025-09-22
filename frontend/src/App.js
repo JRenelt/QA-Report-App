@@ -2960,6 +2960,36 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   </div>
                 </div>
 
+                {/* System-Tools direkt nach S-Time */}
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">System-Tools</Label>
+                    <span className="setting-description">Audit-Log für Test-Tracking und Technische System-Dokumentation</span>
+                  </div>
+                  <div className="setting-input-group">
+                    <Button 
+                      onClick={() => {
+                        console.log('Opening Audit Log...');
+                        onOpenAuditLog();
+                      }}
+                      className="bg-cyan-600 hover:bg-cyan-700 mr-2"
+                      size="sm"
+                    >
+                      📊 AuditLog
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        console.log('Opening SysDok...');
+                        window.open('/technical-docs.html', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700"
+                      size="sm"
+                    >
+                      📄 SysDok
+                    </Button>
+                  </div>
+                </div>
+
                 <div className="settings-danger-zone">
                   <h4 className="danger-title">Gefahrenbereich</h4>
                   <p className="danger-description">
