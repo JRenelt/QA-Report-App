@@ -7,10 +7,11 @@ import { toast } from 'sonner';
 
 const AuditLogSystem = ({ isOpen, onClose }) => {
   const [currentCategory, setCurrentCategory] = useState('Allgemeines Design');
-  const [showCategorySelection, setShowCategorySelection] = useState(true);
+  const [viewMode, setViewMode] = useState('bereiche'); // 'bereiche', 'tests', 'bericht'
   const [newTestName, setNewTestName] = useState('');
   const [compactView, setCompactView] = useState(false);
   const [testReports, setTestReports] = useState([]);
+  const [selectedTestPoints, setSelectedTestPoints] = useState([]);
 
   // Test-Bereiche für FavOrg
   const testCategories = [
