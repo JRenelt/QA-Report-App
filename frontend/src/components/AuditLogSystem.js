@@ -280,20 +280,20 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
             {/* Mitte: Zentriertes Inputfeld + Plus (nur in Test-Ansicht) */}
             {viewMode === 'tests' && (
-              <div className="flex-1 max-w-md mx-4">
+              <div className="flex-1 max-w-xs mx-4">
                 <div className="flex items-center gap-1">
                   <input
                     type="text"
                     value={newTestName}
                     onChange={(e) => setNewTestName(e.target.value)}
                     placeholder="Eigener Test..."
-                    className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-sm text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
+                    className="flex-1 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
                     onKeyPress={(e) => e.key === 'Enter' && addNewTest()}
                   />
                   <Button
                     onClick={addNewTest}
                     size="sm"
-                    className="bg-cyan-600 hover:bg-cyan-700 px-2 py-2 h-8 w-8"
+                    className="bg-cyan-600 hover:bg-cyan-700 px-2 py-1 h-7 w-7"
                     disabled={!newTestName.trim()}
                     title="Test hinzufügen"
                   >
