@@ -2424,7 +2424,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
 };
 
 // Settings Dialog Component
-const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettings, onSettingsChange }) => {
+const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettings, onSettingsChange, onOpenAuditLog }) => {
   const [settings, setSettings] = useState({
     theme: 'dark',
     autoSync: true,
