@@ -304,12 +304,12 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             )}
 
             {/* Rechts: Toggle Button + Schließen (Berichte entfernt) */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <Button
                 onClick={toggleView}
                 variant="outline"
                 size="sm"
-                className="border-cyan-600 text-cyan-400 text-xs px-2 py-1 h-7"
+                className="border-cyan-600 text-cyan-400 text-xs px-1 py-0 h-5"
               >
                 {getViewToggleText()}
               </Button>
@@ -317,9 +317,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 onClick={onClose}
                 variant="ghost"
                 size="sm"
-                className="text-gray-400 hover:text-white p-1 h-7 w-7"
+                className="text-gray-400 hover:text-white p-0 h-5 w-5"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3 h-3" />
               </Button>
             </div>
           </div>
