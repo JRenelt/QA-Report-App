@@ -73,10 +73,10 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--bg-primary);
-  transform: scale(0.8); /* 80% Größe für bessere Übersicht */
+  transform: scale(0.75); /* 75% Größe für optimale Übersicht */
   transform-origin: top center;
-  width: 125%; /* Kompensiert die 80% Skalierung */
-  margin: 0 -12.5%; /* Zentriert die Ansicht */
+  width: 133.33%; /* Kompensiert die 75% Skalierung (100/75 = 133.33) */
+  margin: 0 -16.67%; /* Zentriert die Ansicht (-33.33/2 = -16.67) */
 }
 
 /* App Container - Hauptlayout */
