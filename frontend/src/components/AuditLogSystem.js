@@ -286,40 +286,60 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         </DialogHeader>
 
         <div className="flex flex-col h-full space-y-4 overflow-hidden">
-          {/* Bereichsauswahl - Ein-/Ausblendbar */}
-          {showCategorySelection && (
+          {/* Bereichsauswahl ODER Test-Auswahl - Umschaltbar */}
+          {showCategorySelection ? (
+            /* Bereichsauswahl-Modus */
             <div className="flex-shrink-0 space-y-4">
-              {/* Kategorie-Auswahl */}
               <div className="p-4 bg-gray-800 rounded-lg">
                 <h3 className="text-lg font-semibold mb-3 text-cyan-300">📂 Test-Bereiche wählen:</h3>
-                <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2">
-                  {testCategories.map(category => (
-                    <Button
-                      key={category}
-                      onClick={() => {
-                        setCurrentCategory(category);
-                        setShowCategorySelection(false);
-                      }}
-                      variant={currentCategory === category ? "default" : "outline"}
-                      className={`text-sm h-12 ${
-                        currentCategory === category 
-                          ? 'bg-cyan-600 hover:bg-cyan-700' 
-                          : 'border-gray-600 text-gray-300 hover:bg-gray-700'
-                      }`}
-                    >
-                      {category.split('-')[0]}
-                    </Button>
-                  ))}
+                <div className="max-h-48 overflow-y-auto">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pr-2">
+                    {testCategories.map(category => (
+                      <Button
+                        key={category}
+                        onClick={() => {
+                          setCurrentCategory(category);
+                          setShowCategorySelection(false);
+                        }}
+                        variant={currentCategory === category ? "default" : "outline"}
+                        className={`text-sm h-16 flex flex-col items-center justify-center ${
+                          currentCategory === category 
+                            ? 'bg-cyan-600 hover:bg-cyan-700' 
+                            : 'border-gray-600 text-gray-300 hover:bg-gray-700'
+                        }`}
+                      >
+                        <span className="text-lg mb-1">
+                          {category === 'Allgemeines Design' ? '🎨' :
+                           category === 'Header-Bereich' ? '🔝' :
+                           category === 'Sidebar-Bereich' ? '📋' :
+                           category === 'Search-Section' ? '🔍' :
+                           category === 'Main-Content' ? '📄' :
+                           category === 'Bookmark-Karten' ? '🎴' :
+                           category === 'Dialoge & Modals' ? '🗨️' :
+                           category === 'Navigation & Routing' ? '🧭' :
+                           category === 'Drag & Drop System' ? '🎯' :
+                           category === 'Filter & Sortierung' ? '🎛️' :
+                           category === 'Import/Export' ? '📤' :
+                           category === 'Einstellungen' ? '⚙️' :
+                           category === 'Performance & Responsive' ? '⚡' : '📁'}
+                        </span>
+                        <span className="text-xs text-center">{category.replace('-', ' ')}</span>
+                      </Button>
+                    ))}
+                  </div>
                 </div>
               </div>
-
-              {/* Vordefinierte Tests für aktuellen Bereich */}
+            </div>
+          ) : (
+            /* Test-Auswahl-Modus */
+            <div className="flex-shrink-0 space-y-4">
+              {/* Schnell-Tests für gewählten Bereich */}
               <div className="p-4 bg-gray-850 rounded-lg">
                 <h3 className="text-lg font-semibold mb-3 text-cyan-300">
-                  🎯 Tests für "{currentCategory}":
+                  🎯 Schnell-Tests für "{currentCategory}":
                 </h3>
-                <div className="max-h-40 overflow-y-auto">
-                  <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2">
+                <div className="max-h-48 overflow-y-auto">
+                  <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 pr-2">
                     {predefinedTests
                       .filter(test => test.category === currentCategory)
                       .map((test, index) => (
@@ -329,64 +349,76 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           variant="outline"
                           size="sm"
                           title={test.tooltip}
-                          className={`h-12 flex flex-col items-center justify-center text-xs border-gray-600 hover:bg-gray-700 ${
+                          className={`h-16 flex flex-col items-center justify-center text-xs border-gray-600 hover:bg-gray-700 ${
                             visitedTests.has(test.name) 
                               ? 'bg-green-900 border-green-600 text-green-300' 
                               : 'text-gray-300'
                           }`}
                         >
                           <span className="text-lg mb-1">{test.icon}</span>
-                          <span className="text-xs">{test.name}</span>
+                          <span className="text-xs text-center leading-tight">{test.name}</span>
                         </Button>
                       ))}
                   </div>
                 </div>
               </div>
+
+              {/* Eigene Test-Eingabe */}
+              <div className="p-3 bg-gray-800 rounded-lg">
+                <h4 className="text-md font-semibold mb-2 text-gray-300">✏️ Eigener Test:</h4>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder={`Eigener Test für ${currentCategory}...`}
+                    value={newTestName}
+                    onChange={(e) => setNewTestName(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white text-sm"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && newTestName.trim()) {
+                        addTestEntry(newTestName.trim(), currentCategory);
+                        setNewTestName('');
+                      }
+                    }}
+                  />
+                  <Button 
+                    onClick={() => {
+                      if (newTestName.trim()) {
+                        addTestEntry(newTestName.trim(), currentCategory);
+                        setNewTestName('');
+                      }
+                    }}
+                    className="bg-cyan-600 hover:bg-cyan-700"
+                    size="sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Kontroll-Bereich - Kompakt */}
+          {/* Kontroll-Leiste - Kompakt */}
           <div className="flex-shrink-0">
-            <div className="flex flex-wrap gap-4 p-3 bg-gray-800 rounded-lg items-center">
-              <div className="flex-1 min-w-[250px]">
-                <input
-                  type="text"
-                  placeholder={`Neuer Test für ${currentCategory}...`}
-                  value={newTestName}
-                  onChange={(e) => setNewTestName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white text-sm"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' && newTestName.trim()) {
-                      addTestEntry(newTestName.trim(), currentCategory);
-                      setNewTestName('');
-                    }
-                  }}
-                />
+            <div className="flex justify-between items-center p-2 bg-gray-800 rounded-lg">
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => setShowCategorySelection(!showCategorySelection)}
+                  variant="outline" 
+                  size="sm" 
+                  className="border-cyan-600 text-cyan-400"
+                >
+                  {showCategorySelection ? '🎯 Tests anzeigen' : '📂 Bereich wechseln'}
+                </Button>
               </div>
 
-              <Button 
-                onClick={() => {
-                  if (newTestName.trim()) {
-                    addTestEntry(newTestName.trim(), currentCategory);
-                    setNewTestName('');
-                  }
-                }}
-                className="bg-cyan-600 hover:bg-cyan-700"
-                size="sm"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Hinzufügen
-              </Button>
-
-              <Button onClick={exportAuditLog} variant="outline" size="sm" className="border-gray-600 text-white">
-                <Download className="w-4 h-4 mr-2" />
-                Export
-              </Button>
-
-              <Button onClick={clearAllTests} variant="outline" size="sm" className="border-red-600 text-red-400 hover:bg-red-900">
-                <Trash2 className="w-4 h-4 mr-2" />
-                Reset
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={exportAuditLog} variant="outline" size="sm" className="border-gray-600 text-white">
+                  <Download className="w-4 h-4" />
+                </Button>
+                <Button onClick={clearAllTests} variant="outline" size="sm" className="border-red-600 text-red-400 hover:bg-red-900">
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
 
             {/* Kompakte Statistiken */}
@@ -395,25 +427,25 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 <div className="text-lg font-bold text-green-400">
                   {auditEntries.filter(e => e.status === 'passed').length}
                 </div>
-                <div className="text-xs text-green-300">✅ Bestanden</div>
+                <div className="text-xs text-green-300">✅</div>
               </div>
               <div className="p-2 bg-red-900 rounded text-sm">
                 <div className="text-lg font-bold text-red-400">
                   {auditEntries.filter(e => e.status === 'failed').length}
                 </div>
-                <div className="text-xs text-red-300">❌ Fehlgeschlagen</div>
+                <div className="text-xs text-red-300">❌</div>
               </div>
               <div className="p-2 bg-yellow-900 rounded text-sm">
                 <div className="text-lg font-bold text-yellow-400">
                   {auditEntries.filter(e => e.status === 'pending').length}
                 </div>
-                <div className="text-xs text-yellow-300">⏳ Ausstehend</div>
+                <div className="text-xs text-yellow-300">⏳</div>
               </div>
               <div className="p-2 bg-blue-900 rounded text-sm">
                 <div className="text-lg font-bold text-blue-400">
                   {auditEntries.length}
                 </div>
-                <div className="text-xs text-blue-300">📊 Gesamt</div>
+                <div className="text-xs text-blue-300">📊</div>
               </div>
             </div>
           </div>
