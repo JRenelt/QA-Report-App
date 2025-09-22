@@ -257,27 +257,56 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
         
-        {/* Kopfzeile */}
-        <DialogHeader className="flex-shrink-0 p-2 border-b border-gray-700">
+        {/* Kopfzeile - Alles in einer Zeile */}
+        <DialogHeader className="flex-shrink-0 p-3 border-b border-gray-700">
           <div className="flex items-center justify-between">
-            {/* Links: Logo + Titel */}
-            <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-cyan-400" />
-              <span className="text-sm font-bold text-cyan-400">FavOrg Audit-Log</span>
-              {!showCategorySelection && (
-                <span className="text-sm text-cyan-300">- {currentCategory}</span>
-              )}
+            {/* Links: Logo + Titel + FavOrg Button + Kurzhilfen */}
+            <div className="flex items-center gap-3 flex-1">
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">✓</span>
+                </div>
+                <span className="text-sm font-bold text-cyan-400">FavOrg Audit-Log</span>
+                {viewMode === 'tests' && (
+                  <span className="text-sm text-cyan-300">- {currentCategory}</span>
+                )}
+              </div>
+              
+              {/* FavOrg Button direkt neben Titel */}
+              <Button
+                onClick={() => window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes')}
+                variant="ghost"
+                size="sm"
+                className="text-cyan-400 hover:text-cyan-300 px-2 py-1 h-6 text-xs"
+                title="FavOrg in neuem Fenster öffnen"
+              >
+                🔗 FavOrg
+              </Button>
+
+              {/* Kurzhilfen als sekundäre Info */}
+              <div className="flex items-center gap-2 text-gray-400 text-xs ml-4">
+                <HelpCircle className="w-3 h-3" />
+                <span>{getContextHelp()}</span>
+              </div>
             </div>
 
-            {/* Rechts: Toggle + Schließen */}
+            {/* Rechts: Bericht + Toggle + Schließen */}
             <div className="flex items-center gap-2">
               <Button
-                onClick={() => setShowCategorySelection(!showCategorySelection)}
+                onClick={() => setViewMode('bericht')}
+                variant="ghost"
+                size="sm"
+                className={`text-xs px-2 py-1 h-7 ${viewMode === 'bericht' ? 'text-cyan-400' : 'text-gray-400 hover:text-white'}`}
+              >
+                📊 Bericht
+              </Button>
+              <Button
+                onClick={toggleView}
                 variant="outline"
                 size="sm"
                 className="border-cyan-600 text-cyan-400 text-xs px-3 py-1 h-7"
               >
-                {showCategorySelection ? 'Test anzeigen' : 'Bereiche'}
+                {getViewToggleText()}
               </Button>
               <Button
                 onClick={onClose}
@@ -290,21 +319,6 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </div>
           </div>
         </DialogHeader>
-
-        {/* Zweite Zeile: Kurzhilfen + Status */}
-        <div className="flex items-center justify-between px-4 py-2 bg-gray-800 text-sm">
-          <div className="flex items-center gap-2 text-gray-300">
-            <HelpCircle className="w-4 h-4" />
-            <span>{getContextHelp()}</span>
-          </div>
-          <div className="text-gray-400">
-            {showCategorySelection ? (
-              `${testCategories.length} Bereiche verfügbar`
-            ) : (
-              `Bereich: ${currentCategory} | ${currentTests.length} Tests`
-            )}
-          </div>
-        </div>
 
         <div className="flex flex-col h-full overflow-hidden">
           
