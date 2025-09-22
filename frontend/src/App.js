@@ -2976,6 +2976,80 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                 </div>
               </div>
             </TabsContent>
+            
+            <TabsContent value="system" className="settings-tab-content-modern">
+              <div className="settings-section">
+                <h3 className="section-title">System & Entwickler-Tools</h3>
+                
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">🔍 Audit-Log System</Label>
+                    <span className="setting-description">Test-Tracking und Qualitätssicherung für Drag & Drop und andere Funktionen</span>
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      // Trigger Audit Log Dialog öffnen
+                      document.dispatchEvent(new CustomEvent('openAuditLog'));
+                    }}
+                    className="bg-cyan-600 hover:bg-cyan-700"
+                  >
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Audit Log öffnen
+                  </Button>
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">📄 Technische Dokumentation</Label>
+                    <span className="setting-description">Vollständige interne Entwickler-Referenz</span>
+                  </div>
+                  <Button 
+                    onClick={() => window.open('/technical-docs.html', '_blank')}
+                    variant="outline"
+                    className="border-gray-600"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Dokumentation öffnen
+                  </Button>
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">🏗️ System-Status</Label>
+                    <span className="setting-description">Backend-Verbindung und Service-Health prüfen</span>
+                  </div>
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/statistics`);
+                        toast.success(`Backend OK: ${response.data.total_bookmarks} Bookmarks, ${response.data.total_categories} Kategorien`);
+                      } catch (error) {
+                        toast.error(`Backend Fehler: ${error.message}`);
+                      }
+                    }}
+                    variant="outline"
+                    className="border-green-600 text-green-400"
+                  >
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    System-Check
+                  </Button>
+                </div>
+
+                <div className="settings-info-box">
+                  <h4 className="info-title">🚀 Phase 2 System Rebuild</h4>
+                  <p className="info-description">
+                    Dieses System wurde mit modularer, objektorientierter Architektur für bessere Wartbarkeit und Testbarkeit entwickelt.
+                  </p>
+                  <ul className="info-list">
+                    <li>✅ Modulares Category Lock-System</li>
+                    <li>✅ 70 strukturierte Testdaten (7 Status-Gruppen)</li>
+                    <li>✅ Audit-Log für Qualitätssicherung</li>
+                    <li>✅ Verbesserte Drag & Drop Hierarchie</li>
+                    <li>✅ 80% kompakte UI-Darstellung</li>
+                  </ul>
+                </div>
+              </div>
+            </TabsContent>
           </Tabs>
         </div>
         
