@@ -301,9 +301,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         </DialogHeader>
 
         <div className="flex flex-col h-full overflow-hidden">
-          {/* Bereichsauswahl ODER Test-Auswahl - Fokussiert auf das Wesentliche */}
+          {/* Bereichsauswahl ODER Test-Auswahl - Nur Auswahl, keine Verwaltung */}
           {showCategorySelection ? (
-            /* BEREICHSAUSWAHL-MODUS - Kompakt ohne überflüssige Titel */
+            /* BEREICHSAUSWAHL-MODUS - Nur Bereiche */
             <div className="flex-1 p-3 bg-gray-800 rounded-lg overflow-hidden">
               <div className="h-full overflow-y-auto">
                 <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pr-2">
@@ -345,90 +345,29 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               </div>
             </div>
           ) : (
-            /* TEST-MODUS - Tests sind primär, alles andere sekundär */
-            <div className="flex flex-col h-full space-y-2 overflow-hidden">
-              {/* PRIMÄR: Schnell-Tests - Maximum Platz */}
-              <div className="flex-1 p-3 bg-gray-850 rounded-lg overflow-hidden">
-                <div className="h-full overflow-y-auto">
-                  <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 pr-2">
-                    {predefinedTests
-                      .filter(test => test.category === currentCategory)
-                      .map((test, index) => (
-                        <Button
-                          key={index}
-                          onClick={() => addTestEntry(test.name, test.category)}
-                          variant="outline"
-                          size="sm"
-                          title={test.tooltip}
-                          className={`h-16 flex flex-col items-center justify-center text-xs border-gray-600 hover:bg-gray-700 ${
-                            visitedTests.has(test.name) 
-                              ? 'bg-green-900 border-green-600 text-green-300' 
-                              : 'text-gray-300'
-                          }`}
-                        >
-                          <span className="text-lg mb-1">{test.icon}</span>
-                          <span className="text-xs text-center leading-tight font-medium">{test.name}</span>
-                        </Button>
-                      ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* SEKUNDÄR: Eigener Test - Kompakt */}
-              <div className="flex-shrink-0 p-2 bg-gray-800 rounded">
-                <div className="flex gap-2 items-center">
-                  <span className="text-xs text-gray-400 whitespace-nowrap">✏️ Eigener:</span>
-                  <input
-                    type="text"
-                    placeholder="Eigener Test..."
-                    value={newTestName}
-                    onChange={(e) => setNewTestName(e.target.value)}
-                    className="flex-1 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs"
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter' && newTestName.trim()) {
-                        addTestEntry(newTestName.trim(), currentCategory);
-                        setNewTestName('');
-                      }
-                    }}
-                  />
-                  <Button 
-                    onClick={() => {
-                      if (newTestName.trim()) {
-                        addTestEntry(newTestName.trim(), currentCategory);
-                        setNewTestName('');
-                      }
-                    }}
-                    className="bg-cyan-600 hover:bg-cyan-700 px-2 py-1 h-6"
-                    size="sm"
-                  >
-                    <Plus className="w-3 h-3" />
-                  </Button>
-                </div>
-              </div>
-
-              {/* SEKUNDÄR: Mini-Status und Aktionen - Nur im Test-Modus */}
-              <div className="flex-shrink-0">
-                <div className="flex justify-between items-center p-2 bg-gray-800 rounded">
-                  <div className="flex gap-1 text-xs">
-                    <span className="px-2 py-1 bg-green-900 rounded text-green-300">
-                      ✅{auditEntries.filter(e => e.status === 'passed').length}
-                    </span>
-                    <span className="px-2 py-1 bg-red-900 rounded text-red-300">
-                      ❌{auditEntries.filter(e => e.status === 'failed').length}
-                    </span>
-                    <span className="px-2 py-1 bg-blue-900 rounded text-blue-300">
-                      📊{auditEntries.length}
-                    </span>
-                  </div>
-
-                  <div className="flex gap-1">
-                    <Button onClick={exportAuditLog} variant="ghost" size="sm" className="text-gray-400 p-1">
-                      <Download className="w-3 h-3" />
-                    </Button>
-                    <Button onClick={clearAllTests} variant="ghost" size="sm" className="text-red-400 p-1">
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </div>
+            /* TEST-AUSWAHL-MODUS - Nur Test-Buttons, keine Verwaltung */
+            <div className="flex-1 p-3 bg-gray-850 rounded-lg overflow-hidden">
+              <div className="h-full overflow-y-auto">
+                <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 pr-2">
+                  {predefinedTests
+                    .filter(test => test.category === currentCategory)
+                    .map((test, index) => (
+                      <Button
+                        key={index}
+                        onClick={() => {
+                          // Nur zur externen FavOrg-Seite weiterleiten
+                          window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
+                          toast.success(`Test-Bereich "${test.name}" - FavOrg geöffnet`);
+                        }}
+                        variant="outline"
+                        size="sm"
+                        title={test.tooltip}
+                        className="h-16 flex flex-col items-center justify-center text-xs border-gray-600 text-gray-300 hover:bg-gray-700"
+                      >
+                        <span className="text-lg mb-1">{test.icon}</span>
+                        <span className="text-xs text-center leading-tight font-medium">{test.name}</span>
+                      </Button>
+                    ))}
                 </div>
               </div>
             </div>
