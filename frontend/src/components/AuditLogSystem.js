@@ -639,7 +639,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   onClick={() => setViewMode('bericht')}
                   variant="outline"
                   size="sm"
-                  className={`border-blue-600 text-blue-400 hover:bg-blue-900 px-3 ${viewMode === 'bericht' ? 'bg-blue-900' : ''}`}
+                  className={`border-blue-600 text-blue-400 hover:bg-blue-900 px-2 ${viewMode === 'bericht' ? 'bg-blue-900' : ''}`}
                   title="Berichte-Archiv anzeigen"
                 >
                   <FileText className="w-4 h-4 mr-1" />
