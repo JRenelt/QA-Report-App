@@ -339,18 +339,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           
           {/* Bereichsauswahl */}
           {viewMode === 'bereiche' && (
-            <div className="flex-1 p-4 overflow-y-auto">
-              {/* Toggle für kompakte Ansicht */}
-              <div className="flex justify-end mb-3">
-                <Button
-                  onClick={() => setCompactView(!compactView)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-400 text-xs"
-                >
-                  {compactView ? '📝 Vollansicht' : '🎯 Kompakt'}
-                </Button>
-              </div>
+            <div className="flex-1 p-2 overflow-y-auto">
 
               <div className="grid grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-1">
                 {testCategories.map((category) => (
