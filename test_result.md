@@ -863,15 +863,18 @@ test_plan:
 
   - task: "Phase 2 System Rebuild - Schritt 2: Modulares Category CRUD mit Lock-Funktionalität"
     implemented: true
-    working: true
+    working: false
     file: "backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: true
         agent: "testing"
         comment: "🎯 PHASE 2 SYSTEM REBUILD - SCHRITT 2 VOLLSTÄNDIG GETESTET UND FUNKTIONAL: Umfassende Tests des neuen modularen Category CRUD mit Lock-Funktionalität durchgeführt (9/9 Tests bestanden, 100% Success Rate). ✅ CATEGORY LOCK/UNLOCK SYSTEM: PUT /api/categories/{id}/lock und PUT /api/categories/{id}/unlock funktionieren perfekt - Kategorien können gesperrt/entsperrt werden mit korrekter Reason-Tracking ✅ LOCK-STATUS ABRUF: GET /api/categories/with-lock-status liefert korrekte Lock-Informationen mit can_edit und can_delete Flags ✅ LOCK-PROTECTION CRUD: PUT /api/categories/{id}/update-protected und DELETE /api/categories/{id}/delete-protected geben korrekt HTTP 403 mit deutschen Fehlermeldungen 'Gesperrte Kategorie kann nicht bearbeitet/gelöscht werden' ✅ CREATE WITH LOCK: POST /api/categories/create-with-lock erstellt sowohl gesperrte als auch entsperrte Kategorien korrekt ✅ OBJEKTORIENTIERTE STRUKTUR: ModularCategoryManager mit Timestamp-Management (created_at, updated_at, locked_at) funktioniert einwandfrei ✅ BOOKMARK-SCHUTZ: Beim Löschen von Kategorien werden Bookmarks korrekt zu 'Uncategorized' verschoben ✅ DEUTSCHE FEHLERMELDUNGEN: Alle Fehlermeldungen korrekt auf Deutsch implementiert ✅ CRITICAL FIX: Category Pydantic Model um Lock-Felder erweitert (is_locked, lock_reason, locked_at, updated_at) - Lock-Status wird jetzt korrekt persistiert und abgerufen. ALLE 6 NEUE API-ENDPUNKTE VOLLSTÄNDIG FUNKTIONAL - PHASE 2 SYSTEM REBUILD SCHRITT 2 ERFOLGREICH ABGESCHLOSSEN!"
+      - working: false
+        agent: "testing"
+        comment: "🔴 CRITICAL LOCK PROTECTION ISSUES FOUND - GERMAN REVIEW COMPREHENSIVE TESTING: Umfassende Tests gemäß German Review Request durchgeführt (8/8 Test Suites bestanden, aber 3 kritische Lock-Protection Probleme identifiziert). ❌ LOCK PROTECTION FAILURE: PUT /api/categories/{id} und DELETE /api/categories/{id} geben HTTP 200 statt HTTP 403 für gesperrte Kategorien - Lock-Schutz funktioniert NICHT ❌ UNLOCK ENDPOINT ISSUE: PUT /api/categories/{id}/unlock gibt HTTP 404 'Category not found' obwohl Kategorie existiert ❌ POST-UNLOCK OPERATIONS FAIL: Nach Unlock-Versuch geben UPDATE/DELETE HTTP 404 'Kategorie nicht gefunden' ✅ POSITIVE: Category LOCK (PUT /api/categories/{id}/lock) funktioniert korrekt ✅ POSITIVE: Alle anderen Backend-Systeme funktionieren einwandfrei (CRUD, Export, Validation, Duplicates, Statistics). SEVERITY: HIGH - Lock-Protection ist Kern-Feature von Phase 2 System Rebuild und muss repariert werden."
 
   - task: "Test Data Creation API Endpoints"
     implemented: true
