@@ -260,7 +260,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         {/* Kopfzeile */}
         <DialogHeader className="flex-shrink-0 p-2 border-b border-gray-700">
           {/* Erste Zeile: Titel + FavOrg + Inputfeld + Bereich-Button */}
-          <div className="flex items-center justify-between gap-4 mb-2">
+          <div className="flex items-center justify-between gap-4 mb-1">
             {/* Links: Titel + FavOrg Link */}
             <div className="flex items-center gap-2">
               <div className="w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center">
