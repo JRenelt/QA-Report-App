@@ -412,27 +412,31 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {currentTests.map((test, index) => (
-                    <Button
-                      key={index}
-                      onClick={() => {
-                        window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
-                        toast.success(`Test "${test.name}" - FavOrg geöffnet`);
-                      }}
-                      variant="outline"
-                      title={test.tooltip}
-                      className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-xs border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-cyan-500`}
-                    >
-                      <span className={`${compactView ? 'text-lg' : 'text-lg mb-1'}`}>
-                        {test.icon}
-                      </span>
-                      {!compactView && (
-                        <span className="text-xs text-center leading-tight font-medium">
-                          {test.name}
+                  {currentTests.map((test, index) => {
+                    const isSelected = selectedTestPoints.includes(test.name);
+                    return (
+                      <Button
+                        key={index}
+                        onClick={() => toggleTestPoint(test.name)}
+                        variant={isSelected ? "default" : "outline"}
+                        title={test.tooltip}
+                        className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-xs ${
+                          isSelected 
+                            ? 'bg-green-600 hover:bg-green-700 text-white border-green-500'
+                            : 'border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-cyan-500'
+                        }`}
+                      >
+                        <span className={`${compactView ? 'text-lg' : 'text-lg mb-1'}`}>
+                          {isSelected ? '✅' : test.icon}
                         </span>
-                      )}
-                    </Button>
-                  ))}
+                        {!compactView && (
+                          <span className="text-xs text-center leading-tight font-medium">
+                            {test.name}
+                          </span>
+                        )}
+                      </Button>
+                    );
+                  })}
                 </div>
               </div>
 
