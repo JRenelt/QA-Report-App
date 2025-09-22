@@ -324,8 +324,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Zweite Zeile: Subline - kleiner und dezenter */}
-          <div className="text-xs text-gray-400 font-normal">
+          {/* Zweite Zeile: Subline - kleinerer Durchschuss */}
+          <div className="text-xs text-gray-400 font-normal -mt-1">
             {getContextHelp()}
           </div>
         </DialogHeader>
