@@ -300,14 +300,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </div>
         </DialogHeader>
 
-        <div className="flex flex-col h-full space-y-2 overflow-hidden">
+        <div className="flex flex-col h-full overflow-hidden">
           {/* Bereichsauswahl ODER Test-Auswahl - Fokussiert auf das Wesentliche */}
           {showCategorySelection ? (
-            /* BEREICHSAUSWAHL-MODUS - Nur Bereiche sind wichtig */
-            <div className="flex-1 p-4 bg-gray-800 rounded-lg overflow-hidden">
-              <h3 className="text-xl font-bold mb-4 text-cyan-300 text-center">📂 Test-Bereich wählen</h3>
+            /* BEREICHSAUSWAHL-MODUS - Kompakt ohne überflüssige Titel */
+            <div className="flex-1 p-3 bg-gray-800 rounded-lg overflow-hidden">
               <div className="h-full overflow-y-auto">
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pr-2">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pr-2">
                   {testCategories.map(category => (
                     <Button
                       key={category}
@@ -316,13 +315,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         setShowCategorySelection(false);
                       }}
                       variant={currentCategory === category ? "default" : "outline"}
-                      className={`text-sm h-20 flex flex-col items-center justify-center ${
+                      className={`text-sm h-18 flex flex-col items-center justify-center ${
                         currentCategory === category 
                           ? 'bg-cyan-600 hover:bg-cyan-700 text-white' 
                           : 'border-gray-600 text-gray-300 hover:bg-gray-700'
                       }`}
                     >
-                      <span className="text-2xl mb-2">
+                      <span className="text-xl mb-1">
                         {category === 'Allgemeines Design' ? '🎨' :
                          category === 'Header-Bereich' ? '🔝' :
                          category === 'Sidebar-Bereich' ? '📋' :
@@ -337,7 +336,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                          category === 'Einstellungen' ? '⚙️' :
                          category === 'Performance & Responsive' ? '⚡' : '📁'}
                       </span>
-                      <span className="text-sm text-center font-medium leading-tight">
+                      <span className="text-xs text-center font-medium leading-tight">
                         {category.replace('-', ' ')}
                       </span>
                     </Button>
@@ -347,12 +346,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </div>
           ) : (
             /* TEST-MODUS - Tests sind primär, alles andere sekundär */
-            <div className="flex-1 flex flex-col space-y-2 overflow-hidden">
+            <div className="flex flex-col h-full space-y-2 overflow-hidden">
               {/* PRIMÄR: Schnell-Tests - Maximum Platz */}
-              <div className="flex-1 p-4 bg-gray-850 rounded-lg overflow-hidden">
-                <h3 className="text-lg font-bold mb-3 text-cyan-300 text-center">
-                  🎯 Tests für "{currentCategory}"
-                </h3>
+              <div className="flex-1 p-3 bg-gray-850 rounded-lg overflow-hidden">
                 <div className="h-full overflow-y-auto">
                   <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 pr-2">
                     {predefinedTests
@@ -364,13 +360,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           variant="outline"
                           size="sm"
                           title={test.tooltip}
-                          className={`h-18 flex flex-col items-center justify-center text-xs border-gray-600 hover:bg-gray-700 ${
+                          className={`h-16 flex flex-col items-center justify-center text-xs border-gray-600 hover:bg-gray-700 ${
                             visitedTests.has(test.name) 
                               ? 'bg-green-900 border-green-600 text-green-300' 
                               : 'text-gray-300'
                           }`}
                         >
-                          <span className="text-xl mb-1">{test.icon}</span>
+                          <span className="text-lg mb-1">{test.icon}</span>
                           <span className="text-xs text-center leading-tight font-medium">{test.name}</span>
                         </Button>
                       ))}
@@ -402,31 +398,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         setNewTestName('');
                       }
                     }}
-                    className="bg-cyan-600 hover:bg-cyan-700 px-2 py-1 h-7"
+                    className="bg-cyan-600 hover:bg-cyan-700 px-2 py-1 h-6"
                     size="sm"
                   >
                     <Plus className="w-3 h-3" />
                   </Button>
                 </div>
               </div>
-            </div>
-          )}
 
-          {/* SEKUNDÄR: Minimale Kontroll-Leiste - Nur im Test-Modus */}
-          {!showCategorySelection && (
-            <div className="flex-shrink-0">
-              <div className="flex justify-between items-center p-2 bg-gray-800 rounded">
-                <Button 
-                  onClick={() => setShowCategorySelection(true)}
-                  variant="outline" 
-                  size="sm" 
-                  className="border-cyan-600 text-cyan-400 text-xs px-3 py-1"
-                >
-                  📂 Bereich wechseln
-                </Button>
-
-                <div className="flex gap-1">
-                  {/* SEKUNDÄR: Mini-Statistiken - Sehr kompakt */}
+              {/* SEKUNDÄR: Mini-Status und Aktionen - Nur im Test-Modus */}
+              <div className="flex-shrink-0">
+                <div className="flex justify-between items-center p-2 bg-gray-800 rounded">
                   <div className="flex gap-1 text-xs">
                     <span className="px-2 py-1 bg-green-900 rounded text-green-300">
                       ✅{auditEntries.filter(e => e.status === 'passed').length}
