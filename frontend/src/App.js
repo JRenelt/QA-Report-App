@@ -3513,8 +3513,18 @@ function App() {
     
     window.addEventListener('refreshCategories', handleCategoryRefresh);
     
+    // Event Listener für Audit-Log öffnen
+    const handleOpenAuditLog = () => {
+      setShowAuditLog(true);
+    };
+    
+    window.addEventListener('openAuditLog', handleOpenAuditLog);
+    document.addEventListener('openAuditLog', handleOpenAuditLog);
+    
     return () => {
       window.removeEventListener('refreshCategories', handleCategoryRefresh);
+      window.removeEventListener('openAuditLog', handleOpenAuditLog);
+      document.removeEventListener('openAuditLog', handleOpenAuditLog);
     };
   }, []);
 
