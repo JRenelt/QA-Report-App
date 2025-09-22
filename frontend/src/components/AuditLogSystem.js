@@ -504,42 +504,54 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* Fixe Fußzeile - Nur in Test-Ansicht */}
-          {viewMode === 'tests' && (
+          {/* Fixe Fußzeile - In Test-Ansicht und Bericht-Ansicht */}
+          {(viewMode === 'tests' || viewMode === 'bericht') && (
             <div className="flex items-center justify-between p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0">
               {/* Links: Status-Quadrate */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <div 
-                  className="w-8 h-8 bg-green-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                  className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-help shadow-lg"
                   title="Bestanden - Tests erfolgreich abgeschlossen"
                 >
                   ✓
                 </div>
                 <div 
-                  className="w-8 h-8 bg-red-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                  className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-help shadow-lg"
                   title="Fehlgeschlagen - Tests mit Problemen"
                 >
                   ✗
                 </div>
                 <div 
-                  className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                  className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-help shadow-lg"
                   title="In Bearbeitung - Tests werden aktuell durchgeführt"
                 >
                   ~
                 </div>
                 <div 
-                  className="w-8 h-8 bg-orange-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                  className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-help shadow-lg"
                   title="Ausstehend - Tests noch nicht begonnen"
                 >
                   ○
                 </div>
               </div>
 
-              {/* Rechts: Export + Löschen */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-400 mr-2">
-                  {selectedTestPoints.length}/{currentTests.length} ausgewählt
-                </span>
+              {/* Rechts: Berichte(Archiv) + Download + Mülleimer */}
+              <div className="flex items-center gap-3">
+                {viewMode === 'tests' && (
+                  <span className="text-xs text-gray-400 mr-2">
+                    {selectedTestPoints.length}/{currentTests.length} ausgewählt
+                  </span>
+                )}
+                <Button
+                  onClick={() => setViewMode('bericht')}
+                  variant="outline"
+                  size="sm"
+                  className={`border-blue-600 text-blue-400 hover:bg-blue-900 px-3 ${viewMode === 'bericht' ? 'bg-blue-900' : ''}`}
+                  title="Berichte-Archiv anzeigen"
+                >
+                  <FileText className="w-4 h-4 mr-1" />
+                  Archiv
+                </Button>
                 <Button
                   onClick={exportTestReport}
                   variant="outline"
@@ -548,7 +560,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   title="Test-Bericht als PDF exportieren"
                 >
                   <Download className="w-4 h-4 mr-1" />
-                  PDF
+                  Download
                 </Button>
                 <Button
                   onClick={clearAllReports}
