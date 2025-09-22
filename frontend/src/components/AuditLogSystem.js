@@ -387,8 +387,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               {/* Direkt zu Testpunkten */}
               <div className="flex-1 p-2 overflow-y-auto">
                 {/* Testpunkte/Testeinträge wie in Auditlog6.png */}
-                <div className="mt-6">
-                  <h4 className="text-sm font-semibold text-cyan-400 mb-3">📋 Testpunkte für {currentCategory}</h4>
+                <div className="mt-2">
                   <div className="space-y-3">
                     {currentTests.map((test, index) => {
                       const isSelected = selectedTestPoints.includes(test.name);
