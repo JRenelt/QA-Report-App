@@ -417,21 +417,28 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       <Button
                         key={index}
                         onClick={() => toggleTestPoint(test.name)}
-                        variant={isSelected ? "default" : "outline"}
+                        variant="outline"
                         title={test.tooltip}
-                        className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-xs ${
+                        className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-xs relative ${
                           isSelected 
-                            ? 'bg-green-600 hover:bg-green-700 text-white border-green-500'
+                            ? 'border-green-500 bg-green-900/30 text-green-300 hover:bg-green-900/50'
                             : 'border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-cyan-500'
                         }`}
                       >
+                        {/* Test-Icon */}
                         <span className={`${compactView ? 'text-lg' : 'text-lg mb-1'}`}>
-                          {isSelected ? '✅' : test.icon}
+                          {test.icon}
                         </span>
                         {!compactView && (
                           <span className="text-xs text-center leading-tight font-medium">
                             {test.name}
                           </span>
+                        )}
+                        {/* Ausgewählt-Indikator */}
+                        {isSelected && (
+                          <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs">✓</span>
+                          </div>
                         )}
                       </Button>
                     );
