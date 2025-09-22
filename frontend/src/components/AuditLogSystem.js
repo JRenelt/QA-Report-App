@@ -394,25 +394,25 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       const isSelected = selectedTestPoints.includes(test.name);
                       return (
                         <div key={index} className="bg-gray-800 p-3 rounded border border-gray-700">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-3">
-                                {/* Status Badge */}
-                                <div className="px-2 py-1 bg-yellow-600 rounded text-xs text-white font-medium flex items-center gap-1">
-                                  <Clock className="w-3 h-3" />
-                                  Ausstehend
-                                </div>
-                                
-                                {/* Test Name */}
-                                <div className="flex flex-col">
-                                  <span className="text-white font-medium text-sm">{test.name}</span>
-                                  <span className="text-xs text-gray-400">
-                                    {new Date().toLocaleDateString('de-DE')}, {new Date().toLocaleTimeString('de-DE')}
-                                  </span>
-                                </div>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              {/* Status Badge */}
+                              <div className="px-2 py-1 bg-yellow-600 rounded text-xs text-white font-medium flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                Ausstehend
                               </div>
+                              
+                              {/* Test Name */}
+                              <div className="flex flex-col">
+                                <span className="text-white font-medium text-sm">{test.name}</span>
+                                <span className="text-xs text-gray-400">
+                                  {new Date().toLocaleDateString('de-DE')}, {new Date().toLocaleTimeString('de-DE')}
+                                </span>
+                              </div>
+                            </div>
 
-                              {/* Action Buttons */}
-                              <div className="flex items-center gap-1">
+                            {/* Action Buttons */}
+                            <div className="flex items-center gap-1">
                                 <Button
                                   size="sm"
                                   onClick={() => toggleTestPoint(test.name)}
