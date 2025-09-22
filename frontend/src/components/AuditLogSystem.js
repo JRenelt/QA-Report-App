@@ -450,14 +450,18 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* Bericht-Ansicht */}
+          {/* Bericht-Ansicht - Wird nur angezeigt wenn explizit aktiviert */}
           {viewMode === 'bericht' && (
             <div className="flex-1 p-4 overflow-y-auto">
               <div className="space-y-4">
                 <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
                   <h3 className="text-lg font-semibold text-cyan-400 mb-3">Gespeicherte Test-Berichte</h3>
                   {testReports.length === 0 ? (
-                    <p className="text-gray-400 text-center py-8">Noch keine Test-Berichte vorhanden</p>
+                    <div className="text-center py-12">
+                      <FileText className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                      <p className="text-gray-400 mb-2">Noch keine Test-Berichte vorhanden</p>
+                      <p className="text-xs text-gray-500">Exportieren Sie Tests um Berichte zu erstellen</p>
+                    </div>
                   ) : (
                     <div className="space-y-2">
                       {testReports.map((report, index) => (
@@ -490,20 +494,18 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       <div className="text-xs text-gray-400">Ausgewählt</div>
                     </div>
                     <div className="text-center">
+                      <div className="text-2xl font-bold text-red-400">0</div>
+                      <div className="text-xs text-gray-400">Fehlgeschlagen</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-400">0</div>
+                      <div className="text-xs text-gray-400">In Bearbeitung</div>
+                    </div>
+                    <div className="text-center">
                       <div className="text-2xl font-bold text-orange-400">
-                        {currentTests.length - selectedTestPoints.length}
+                        {testCategories.reduce((sum, cat) => sum + cat.tests, 0) - selectedTestPoints.length}
                       </div>
                       <div className="text-xs text-gray-400">Ausstehend</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-cyan-400">{testCategories.length}</div>
-                      <div className="text-xs text-gray-400">Bereiche</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-400">
-                        {testCategories.reduce((sum, cat) => sum + cat.tests, 0)}
-                      </div>
-                      <div className="text-xs text-gray-400">Gesamt Tests</div>
                     </div>
                   </div>
                 </div>
