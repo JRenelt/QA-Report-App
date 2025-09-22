@@ -9,6 +9,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const [auditEntries, setAuditEntries] = useState([]);
   const [newTestName, setNewTestName] = useState('');
   const [currentCategory, setCurrentCategory] = useState('Allgemeines Design');
+  const [showCategorySelection, setShowCategorySelection] = useState(true);
+  const [visitedTests, setVisitedTests] = useState(new Set());
 
   // Erweiterte Test-Bereiche für alle FavOrg-Funktionen
   const testCategories = [
