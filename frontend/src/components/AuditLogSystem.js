@@ -258,7 +258,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
         
         {/* Kopfzeile */}
-        <DialogHeader className="flex-shrink-0 p-3 border-b border-gray-700">
+        <DialogHeader className="flex-shrink-0 p-2 border-b border-gray-700">
           {/* Erste Zeile: Titel + FavOrg + Inputfeld + Bereich-Button */}
           <div className="flex items-center justify-between gap-4 mb-2">
             {/* Links: Titel + FavOrg Link */}
