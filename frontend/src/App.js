@@ -26,6 +26,7 @@ import ImprovedBookmarkDialog from "./components/ImprovedBookmarkDialog";
 import EnhancedCatchMouseGame from './components/EnhancedCatchMouseGame';
 import LiveCategoryManager from "./components/LiveCategoryManager";
 import ComprehensiveHelpSystem from "./components/ComprehensiveHelpSystem";
+import AuditLogSystem from "./components/AuditLogSystem";
 import { 
   Settings, 
   HelpCircle, 
