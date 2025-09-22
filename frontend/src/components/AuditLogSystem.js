@@ -447,52 +447,56 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     })}
                   </div>
 
-                  {/* Zusätzliche Test-Funktionen die Sie testen können */}
+                  {/* Konkrete Testschritte - Was soll ich testen? */}
                   <div className="mt-6">
-                    <h4 className="text-sm font-semibold text-cyan-400 mb-3">🔧 Verfügbare Test-Funktionen:</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      
-                      {/* Hauptfunktionen */}
-                      <div className="bg-gray-800 p-3 rounded border border-gray-700">
-                        <h5 className="text-xs font-semibold text-white mb-2">📋 Bookmark-Management</h5>
-                        <ul className="text-xs text-gray-300 space-y-1">
-                          <li>• ➕ Neuen Bookmark hinzufügen</li>
-                          <li>• ✏️ Bookmark bearbeiten</li>
-                          <li>• 🗑️ Bookmark löschen</li>
-                          <li>• 🔒 Bookmark sperren/entsperren</li>
-                        </ul>
-                      </div>
+                    <h4 className="text-sm font-semibold text-cyan-400 mb-3">❓ Was soll ich testen?</h4>
+                    <div className="bg-gray-800 p-4 rounded border border-gray-700">
+                      <div className="space-y-3">
+                        
+                        {/* Für aktuellen Bereich spezifische Testschritte */}
+                        {currentCategory === 'Allgemeines Design' && (
+                          <div className="space-y-2">
+                            <div className="text-xs text-white font-medium">Testschritte für {currentCategory}:</div>
+                            <ul className="text-xs text-gray-300 space-y-1 ml-4">
+                              <li>1. 📱 <span className="text-cyan-400">UI-Kompaktheit:</span> Prüfen Sie die 80% Skalierung der Oberfläche</li>
+                              <li>2. 🌙 <span className="text-cyan-400">Dark Theme:</span> Wechseln Sie zwischen Hell/Dunkel-Modus</li>
+                              <li>3. 📐 <span className="text-cyan-400">Responsiveness:</span> Testen Sie verschiedene Bildschirmgrößen</li>
+                              <li>4. 🔤 <span className="text-cyan-400">Typographie:</span> Überprüfen Sie Schriftarten und -größen</li>
+                            </ul>
+                          </div>
+                        )}
 
-                      <div className="bg-gray-800 p-3 rounded border border-gray-700">
-                        <h5 className="text-xs font-semibold text-white mb-2">📁 Kategorie-System</h5>
-                        <ul className="text-xs text-gray-300 space-y-1">
-                          <li>• 🆕 Neue Kategorie erstellen</li>
-                          <li>• 🎯 Drag & Drop zwischen Kategorien</li>
-                          <li>• 🌳 Hierarchische Struktur</li>
-                          <li>• ↔️ Sidebar ein-/ausklappen</li>
-                        </ul>
-                      </div>
+                        {currentCategory === 'Header-Bereich' && (
+                          <div className="space-y-2">
+                            <div className="text-xs text-white font-medium">Testschritte für {currentCategory}:</div>
+                            <ul className="text-xs text-gray-300 space-y-1 ml-4">
+                              <li>1. 🏷️ <span className="text-cyan-400">Logo + Counter:</span> Bookmark-Anzahl korrekt angezeigt?</li>
+                              <li>2. 🔘 <span className="text-cyan-400">Action-Buttons:</span> Neu, Export, Datei wählen funktional?</li>
+                              <li>3. ⚙️ <span className="text-cyan-400">Header-Icons:</span> Hilfe, Statistik, Einstellungen klickbar?</li>
+                              <li>4. 🎯 <span className="text-cyan-400">Status-Buttons:</span> TOTE Links, Duplikate, Localhost anzeigen?</li>
+                            </ul>
+                          </div>
+                        )}
 
-                      <div className="bg-gray-800 p-3 rounded border border-gray-700">
-                        <h5 className="text-xs font-semibold text-white mb-2">🔍 Such- & Filter-System</h5>
-                        <ul className="text-xs text-gray-300 space-y-1">
-                          <li>• 🔎 Textsuche in Titel/URL</li>
-                          <li>• 🎛️ Status-Filter (Aktiv, Tot, etc.)</li>
-                          <li>• 📊 Erweiterte Suchoptionen</li>
-                          <li>• ❌ Suchfilter zurücksetzen</li>
-                        </ul>
-                      </div>
+                        {(currentCategory !== 'Allgemeines Design' && currentCategory !== 'Header-Bereich') && (
+                          <div className="space-y-2">
+                            <div className="text-xs text-white font-medium">Allgemeine Testschritte:</div>
+                            <ul className="text-xs text-gray-300 space-y-1 ml-4">
+                              <li>1. ✅ <span className="text-cyan-400">Auswählen:</span> Klicken Sie auf Test-Buttons um sie auszuwählen</li>
+                              <li>2. 🔗 <span className="text-cyan-400">FavOrg öffnen:</span> Klicken Sie "🔗 FavOrg" um die Hauptapp zu öffnen</li>
+                              <li>3. 🧪 <span className="text-cyan-400">Eigene Tests:</span> Geben Sie eigene Test-Namen ein</li>
+                              <li>4. 📊 <span className="text-cyan-400">Status verfolgen:</span> Beobachten Sie die Footer-Counter</li>
+                            </ul>
+                          </div>
+                        )}
 
-                      <div className="bg-gray-800 p-3 rounded border border-gray-700">
-                        <h5 className="text-xs font-semibold text-white mb-2">⚙️ System-Funktionen</h5>
-                        <ul className="text-xs text-gray-300 space-y-1">
-                          <li>• 📤 Daten exportieren (JSON/CSV)</li>
-                          <li>• 📥 Bookmarks importieren</li>
-                          <li>• 🧪 Test-Daten generieren</li>
-                          <li>• 🌙 Dark/Light Theme</li>
-                        </ul>
+                        <div className="border-t border-gray-700 pt-3 mt-3">
+                          <div className="text-xs text-gray-400">
+                            💡 <strong>Tipp:</strong> Wählen Sie Testpunkte aus und verfolgen Sie den Fortschritt in der Fußzeile. 
+                            Verwenden Sie "Archiv" um Berichte zu speichern.
+                          </div>
+                        </div>
                       </div>
-
                     </div>
                   </div>
                 </div>
