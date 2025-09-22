@@ -383,7 +383,6 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
           {/* Test-Auswahl */}
           {viewMode === 'tests' && (
-            /* Test-Auswahl - Nur Testpunkte, keine Buttons oder Überschriften */
             <div className="flex-1 flex flex-col overflow-hidden">
               
               {/* Direkt zu Testpunkten */}
