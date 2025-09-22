@@ -265,28 +265,19 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-cyan-400 flex items-center justify-between">
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2" />
-              🔍 FavOrg Audit-Log
-              {!showCategorySelection && (
-                <span className="ml-2 text-lg text-cyan-300">- {currentCategory}</span>
-              )}
-            </div>
-            <Button
-              onClick={() => setShowCategorySelection(!showCategorySelection)}
-              variant="ghost"
-              size="sm"
-              className="text-cyan-400 hover:text-cyan-300"
-            >
-              {showCategorySelection ? '📂 Bereiche' : '🎯 Tests'}
-            </Button>
+        <DialogHeader className="flex-shrink-0">
+          <DialogTitle className="text-lg font-bold text-cyan-400 flex items-center justify-center">
+            <CheckCircle className="w-4 h-4 mr-2" />
+            🔍 FavOrg Audit-Log
+            {!showCategorySelection && (
+              <span className="ml-2 text-base text-cyan-300">- {currentCategory}</span>
+            )}
           </DialogTitle>
-          <p className="text-gray-300 text-sm">
+          {/* SEKUNDÄR: Nur minimale Beschreibung */}
+          <p className="text-gray-400 text-xs text-center">
             {showCategorySelection 
-              ? 'Wählen Sie einen Bereich zum systematischen Testen aus'
-              : `Testing "${currentCategory}" - ${auditEntries.filter(e => e.category === currentCategory).length} Tests dokumentiert`
+              ? 'Fokus: Bereich wählen'
+              : `Fokus: ${currentCategory} testen - ${auditEntries.filter(e => e.category === currentCategory).length} dokumentiert`
             }
           </p>
         </DialogHeader>
