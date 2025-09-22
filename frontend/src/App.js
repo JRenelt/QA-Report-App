@@ -4146,6 +4146,7 @@ function App() {
         onCreateTestData={handleCreateTestData}
         appSettings={appSettings}
         onSettingsChange={setAppSettings}
+        onOpenAuditLog={() => setShowAuditLog(true)}
       />
 
       <ComprehensiveHelpSystem
