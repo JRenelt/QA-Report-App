@@ -357,7 +357,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+              <div className="grid grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
                 {testCategories.map((category) => (
                   <Button
                     key={category.name}
@@ -366,19 +366,19 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       setViewMode('tests');
                     }}
                     variant={currentCategory === category.name ? "default" : "outline"}
-                    className={`${compactView ? 'h-10 px-2' : 'h-14 px-3'} flex items-center justify-start text-xs ${
+                    className={`${compactView ? 'h-10 px-1' : 'h-12 px-2'} flex items-center justify-start text-xs ${
                       currentCategory === category.name 
                         ? 'bg-cyan-600 hover:bg-cyan-700 text-white' 
                         : 'border-gray-600 text-gray-300 hover:bg-gray-700'
                     }`}
                   >
-                    <span className="text-sm mr-2">{category.icon}</span>
+                    <span className="text-sm mr-1">{category.icon}</span>
                     {!compactView ? (
                       <div className="flex flex-col items-start">
-                        <span className="font-medium leading-tight text-left">
+                        <span className="font-medium leading-tight text-left text-xs">
                           {category.name.replace('-', ' ').replace(' Bereich', '').replace(' Section', '')}
                         </span>
-                        <span className="text-xs text-gray-400">{category.tests} Tests</span>
+                        <span className="text-xs text-gray-400">{category.tests}T</span>
                       </div>
                     ) : (
                       <Badge variant="secondary" className="ml-1 text-xs bg-gray-700 text-gray-300 px-1">
