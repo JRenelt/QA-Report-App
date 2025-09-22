@@ -410,39 +410,91 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {currentTests.map((test, index) => {
-                    const isSelected = selectedTestPoints.includes(test.name);
-                    return (
-                      <Button
-                        key={index}
-                        onClick={() => toggleTestPoint(test.name)}
-                        variant="outline"
-                        title={test.tooltip}
-                        className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-xs relative ${
-                          isSelected 
-                            ? 'border-green-500 bg-green-900/30 text-green-300 hover:bg-green-900/50'
-                            : 'border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-cyan-500'
-                        }`}
-                      >
-                        {/* Test-Icon */}
-                        <span className={`${compactView ? 'text-lg' : 'text-lg mb-1'}`}>
-                          {test.icon}
-                        </span>
-                        {!compactView && (
-                          <span className="text-xs text-center leading-tight font-medium">
-                            {test.name}
+                {/* Testfunktionen - Sichtbare Test-Szenarien */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    {currentTests.map((test, index) => {
+                      const isSelected = selectedTestPoints.includes(test.name);
+                      return (
+                        <Button
+                          key={index}
+                          onClick={() => toggleTestPoint(test.name)}
+                          variant="outline"
+                          title={test.tooltip}
+                          className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-xs relative ${
+                            isSelected 
+                              ? 'border-green-500 bg-green-900/30 text-green-300 hover:bg-green-900/50'
+                              : 'border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-cyan-500'
+                          }`}
+                        >
+                          {/* Test-Icon */}
+                          <span className={`${compactView ? 'text-lg' : 'text-lg mb-1'}`}>
+                            {test.icon}
                           </span>
-                        )}
-                        {/* Ausgewählt-Indikator */}
-                        {isSelected && (
-                          <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs">✓</span>
-                          </div>
-                        )}
-                      </Button>
-                    );
-                  })}
+                          {!compactView && (
+                            <span className="text-xs text-center leading-tight font-medium">
+                              {test.name}
+                            </span>
+                          )}
+                          {/* Ausgewählt-Indikator */}
+                          {isSelected && (
+                            <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs">✓</span>
+                            </div>
+                          )}
+                        </Button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Zusätzliche Test-Funktionen die Sie testen können */}
+                  <div className="mt-6">
+                    <h4 className="text-sm font-semibold text-cyan-400 mb-3">🔧 Verfügbare Test-Funktionen:</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      
+                      {/* Hauptfunktionen */}
+                      <div className="bg-gray-800 p-3 rounded border border-gray-700">
+                        <h5 className="text-xs font-semibold text-white mb-2">📋 Bookmark-Management</h5>
+                        <ul className="text-xs text-gray-300 space-y-1">
+                          <li>• ➕ Neuen Bookmark hinzufügen</li>
+                          <li>• ✏️ Bookmark bearbeiten</li>
+                          <li>• 🗑️ Bookmark löschen</li>
+                          <li>• 🔒 Bookmark sperren/entsperren</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gray-800 p-3 rounded border border-gray-700">
+                        <h5 className="text-xs font-semibold text-white mb-2">📁 Kategorie-System</h5>
+                        <ul className="text-xs text-gray-300 space-y-1">
+                          <li>• 🆕 Neue Kategorie erstellen</li>
+                          <li>• 🎯 Drag & Drop zwischen Kategorien</li>
+                          <li>• 🌳 Hierarchische Struktur</li>
+                          <li>• ↔️ Sidebar ein-/ausklappen</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gray-800 p-3 rounded border border-gray-700">
+                        <h5 className="text-xs font-semibold text-white mb-2">🔍 Such- & Filter-System</h5>
+                        <ul className="text-xs text-gray-300 space-y-1">
+                          <li>• 🔎 Textsuche in Titel/URL</li>
+                          <li>• 🎛️ Status-Filter (Aktiv, Tot, etc.)</li>
+                          <li>• 📊 Erweiterte Suchoptionen</li>
+                          <li>• ❌ Suchfilter zurücksetzen</li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gray-800 p-3 rounded border border-gray-700">
+                        <h5 className="text-xs font-semibold text-white mb-2">⚙️ System-Funktionen</h5>
+                        <ul className="text-xs text-gray-300 space-y-1">
+                          <li>• 📤 Daten exportieren (JSON/CSV)</li>
+                          <li>• 📥 Bookmarks importieren</li>
+                          <li>• 🧪 Test-Daten generieren</li>
+                          <li>• 🌙 Dark/Light Theme</li>
+                        </ul>
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
               </div>
 
