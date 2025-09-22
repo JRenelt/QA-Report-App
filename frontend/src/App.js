@@ -2981,54 +2981,52 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
               <div className="settings-section">
                 <h3 className="section-title">System & Entwickler-Tools</h3>
                 
+                {/* System-Tools Rahmen analog zu S-Time */}
                 <div className="setting-item">
                   <div className="setting-info">
-                    <Label className="setting-label">🔍 Audit-Log System</Label>
-                    <span className="setting-description">Test-Tracking und Qualitätssicherung für Drag & Drop und andere Funktionen</span>
+                    <Label className="setting-label">🔧 System-Tools</Label>
+                    <span className="setting-description">Audit-Log für Test-Tracking und Technische System-Dokumentation</span>
                   </div>
-                  <Button 
-                    onClick={() => {
-                      // Trigger Audit Log Dialog öffnen
-                      document.dispatchEvent(new CustomEvent('openAuditLog'));
-                    }}
-                    className="bg-cyan-600 hover:bg-cyan-700"
-                  >
-                    <CheckCircle className="w-4 h-4 mr-2" />
-                    Audit Log öffnen
-                  </Button>
+                  <div className="setting-input-group">
+                    <Button 
+                      onClick={() => {
+                        console.log('Opening Audit Log...');
+                        setShowAuditLog(true);
+                      }}
+                      className="bg-cyan-600 hover:bg-cyan-700 mr-2"
+                      size="sm"
+                    >
+                      📊 AuditLog
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        console.log('Opening SysDok...');
+                        window.open('/technical-docs.html', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700"
+                      size="sm"
+                    >
+                      📄 SysDok
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="setting-item">
                   <div className="setting-info">
-                    <Label className="setting-label">📄 Technische Dokumentation</Label>
-                    <span className="setting-description">Vollständige interne Entwickler-Referenz</span>
-                  </div>
-                  <Button 
-                    onClick={() => window.open('/technical-docs.html', '_blank')}
-                    variant="outline"
-                    className="border-gray-600"
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    Dokumentation öffnen
-                  </Button>
-                </div>
-
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <Label className="setting-label">🏗️ System-Status</Label>
-                    <span className="setting-description">Backend-Verbindung und Service-Health prüfen</span>
+                    <Label className="setting-label">🏗️ System-Health</Label>
+                    <span className="setting-description">Backend-Verbindung und Service-Status prüfen</span>
                   </div>
                   <Button 
                     onClick={async () => {
                       try {
                         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/statistics`);
-                        toast.success(`Backend OK: ${response.data.total_bookmarks} Bookmarks, ${response.data.total_categories} Kategorien`);
+                        toast.success(`✅ Backend OK: ${response.data.total_bookmarks} Bookmarks, ${response.data.total_categories} Kategorien`);
                       } catch (error) {
-                        toast.error(`Backend Fehler: ${error.message}`);
+                        toast.error(`❌ Backend Fehler: ${error.message}`);
                       }
                     }}
                     variant="outline"
-                    className="border-green-600 text-green-400"
+                    className="border-green-600 text-green-400 hover:bg-green-900"
                   >
                     <RefreshCw className="w-4 h-4 mr-2" />
                     System-Check
@@ -3036,16 +3034,17 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                 </div>
 
                 <div className="settings-info-box">
-                  <h4 className="info-title">🚀 Phase 2 System Rebuild</h4>
+                  <h4 className="info-title">🚀 Phase 2 System Rebuild - Abschluss</h4>
                   <p className="info-description">
-                    Dieses System wurde mit modularer, objektorientierter Architektur für bessere Wartbarkeit und Testbarkeit entwickelt.
+                    Modulare, objektorientierte Architektur mit strukturiertem Test-System für nachhaltigen Projekterfolg.
                   </p>
                   <ul className="info-list">
                     <li>✅ Modulares Category Lock-System</li>
                     <li>✅ 70 strukturierte Testdaten (7 Status-Gruppen)</li>
-                    <li>✅ Audit-Log für Qualitätssicherung</li>
-                    <li>✅ Verbesserte Drag & Drop Hierarchie</li>
+                    <li>✅ Audit-Log für systematische Qualitätssicherung</li>
+                    <li>✅ Verbesserte Hierarchie-Visualisierung</li>
                     <li>✅ 80% kompakte UI-Darstellung</li>
+                    <li>🎯 Pragmatischer Projektabschluss erreicht</li>
                   </ul>
                 </div>
               </div>
