@@ -257,49 +257,53 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
         
-        {/* Kopfzeile - Alles in einer Zeile */}
+        {/* Kopfzeile */}
         <DialogHeader className="flex-shrink-0 p-3 border-b border-gray-700">
-          <div className="flex items-center justify-between">
-            {/* Links: Logo + Titel + FavOrg Button + Kurzhilfen */}
-            <div className="flex items-center gap-3 flex-1">
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <span className="text-sm font-bold text-cyan-400">FavOrg Audit-Log</span>
-                {viewMode === 'tests' && (
-                  <span className="text-sm text-cyan-300">- {currentCategory}</span>
-                )}
+          {/* Erste Zeile: Titel + FavOrg + Inputfeld + Bereich-Button */}
+          <div className="flex items-center justify-between gap-4 mb-2">
+            {/* Links: Titel + FavOrg Link */}
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs">✓</span>
               </div>
-              
-              {/* FavOrg Button direkt neben Titel */}
+              <span className="text-sm font-bold text-cyan-400">FavOrg Audit-Log</span>
               <Button
                 onClick={() => window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes')}
                 variant="ghost"
                 size="sm"
-                className="text-cyan-400 hover:text-cyan-300 px-2 py-1 h-6 text-xs"
+                className="text-cyan-400 hover:text-cyan-300 px-2 py-1 h-6 text-xs border border-cyan-600 rounded"
                 title="FavOrg in neuem Fenster öffnen"
               >
                 🔗 FavOrg
               </Button>
-
-              {/* Kurzhilfen als sekundäre Info */}
-              <div className="flex items-center gap-2 text-gray-400 text-xs ml-4">
-                <HelpCircle className="w-3 h-3" />
-                <span>{getContextHelp()}</span>
-              </div>
             </div>
 
-            {/* Rechts: Bericht + Toggle + Schließen */}
+            {/* Mitte: Zentriertes Inputfeld (nur in Test-Ansicht) */}
+            {viewMode === 'tests' && (
+              <div className="flex-1 max-w-md mx-4">
+                <input
+                  type="text"
+                  value={newTestName}
+                  onChange={(e) => setNewTestName(e.target.value)}
+                  placeholder="Eigener Test..."
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-sm text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
+                  onKeyPress={(e) => e.key === 'Enter' && addNewTest()}
+                />
+              </div>
+            )}
+
+            {/* Rechts: Navigation Buttons + Schließen */}
             <div className="flex items-center gap-2">
-              <Button
-                onClick={() => setViewMode('bericht')}
-                variant="ghost"
-                size="sm"
-                className={`text-xs px-2 py-1 h-7 ${viewMode === 'bericht' ? 'text-cyan-400' : 'text-gray-400 hover:text-white'}`}
-              >
-                📊 Bericht
-              </Button>
+              {viewMode !== 'bericht' && (
+                <Button
+                  onClick={() => setViewMode('bericht')}
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-400 hover:text-white text-xs px-2 py-1 h-7"
+                >
+                  📊 Berichte
+                </Button>
+              )}
               <Button
                 onClick={toggleView}
                 variant="outline"
@@ -317,6 +321,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 <X className="w-4 h-4" />
               </Button>
             </div>
+          </div>
+
+          {/* Zweite Zeile: Subline - kleiner und dezenter */}
+          <div className="text-xs text-gray-400 font-normal">
+            {getContextHelp()}
           </div>
         </DialogHeader>
 
