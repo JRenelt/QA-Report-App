@@ -437,56 +437,82 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     })}
                   </div>
 
-                  {/* Konkrete Testschritte - Was soll ich testen? */}
+                  {/* Testpunkte/Testeinträge wie in Auditlog6.png */}
                   <div className="mt-6">
-                    <h4 className="text-sm font-semibold text-cyan-400 mb-3">❓ Was soll ich testen?</h4>
-                    <div className="bg-gray-800 p-4 rounded border border-gray-700">
-                      <div className="space-y-3">
-                        
-                        {/* Für aktuellen Bereich spezifische Testschritte */}
-                        {currentCategory === 'Allgemeines Design' && (
-                          <div className="space-y-2">
-                            <div className="text-xs text-white font-medium">Testschritte für {currentCategory}:</div>
-                            <ul className="text-xs text-gray-300 space-y-1 ml-4">
-                              <li>1. 📱 <span className="text-cyan-400">UI-Kompaktheit:</span> Prüfen Sie die 80% Skalierung der Oberfläche</li>
-                              <li>2. 🌙 <span className="text-cyan-400">Dark Theme:</span> Wechseln Sie zwischen Hell/Dunkel-Modus</li>
-                              <li>3. 📐 <span className="text-cyan-400">Responsiveness:</span> Testen Sie verschiedene Bildschirmgrößen</li>
-                              <li>4. 🔤 <span className="text-cyan-400">Typographie:</span> Überprüfen Sie Schriftarten und -größen</li>
-                            </ul>
-                          </div>
-                        )}
+                    <h4 className="text-sm font-semibold text-cyan-400 mb-3">📋 Testpunkte für {currentCategory}</h4>
+                    <div className="space-y-3">
+                      {currentTests.map((test, index) => {
+                        const isSelected = selectedTestPoints.includes(test.name);
+                        return (
+                          <div key={index} className="bg-gray-800 p-3 rounded border border-gray-700">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                {/* Status Badge */}
+                                <div className="px-2 py-1 bg-yellow-600 rounded text-xs text-white font-medium flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  Ausstehend
+                                </div>
+                                
+                                {/* Test Name */}
+                                <div className="flex flex-col">
+                                  <span className="text-white font-medium text-sm">{test.name}</span>
+                                  <span className="text-xs text-gray-400">
+                                    {new Date().toLocaleDateString('de-DE')}, {new Date().toLocaleTimeString('de-DE')}
+                                  </span>
+                                </div>
+                              </div>
 
-                        {currentCategory === 'Header-Bereich' && (
-                          <div className="space-y-2">
-                            <div className="text-xs text-white font-medium">Testschritte für {currentCategory}:</div>
-                            <ul className="text-xs text-gray-300 space-y-1 ml-4">
-                              <li>1. 🏷️ <span className="text-cyan-400">Logo + Counter:</span> Bookmark-Anzahl korrekt angezeigt?</li>
-                              <li>2. 🔘 <span className="text-cyan-400">Action-Buttons:</span> Neu, Export, Datei wählen funktional?</li>
-                              <li>3. ⚙️ <span className="text-cyan-400">Header-Icons:</span> Hilfe, Statistik, Einstellungen klickbar?</li>
-                              <li>4. 🎯 <span className="text-cyan-400">Status-Buttons:</span> TOTE Links, Duplikate, Localhost anzeigen?</li>
-                            </ul>
+                              {/* Action Buttons */}
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  size="sm"
+                                  onClick={() => toggleTestPoint(test.name)}
+                                  className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs h-8 w-8"
+                                  title="Test bestanden"
+                                >
+                                  ✅
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="border-red-600 text-red-400 hover:bg-red-900 px-2 py-1 text-xs h-8 w-8"
+                                  title="Test fehlgeschlagen"
+                                >
+                                  ❌
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="border-blue-600 text-blue-400 hover:bg-blue-900 px-2 py-1 text-xs h-8 w-8"
+                                  title="Test in Bearbeitung"
+                                >
+                                  ⏳
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="border-gray-600 text-gray-400 hover:bg-gray-700 px-2 py-1 text-xs h-8 w-8"
+                                  title="Test löschen"
+                                >
+                                  🗑️
+                                </Button>
+                              </div>
+                            </div>
                           </div>
-                        )}
-
-                        {(currentCategory !== 'Allgemeines Design' && currentCategory !== 'Header-Bereich') && (
-                          <div className="space-y-2">
-                            <div className="text-xs text-white font-medium">Allgemeine Testschritte:</div>
-                            <ul className="text-xs text-gray-300 space-y-1 ml-4">
-                              <li>1. ✅ <span className="text-cyan-400">Auswählen:</span> Klicken Sie auf Test-Buttons um sie auszuwählen</li>
-                              <li>2. 🔗 <span className="text-cyan-400">FavOrg öffnen:</span> Klicken Sie "🔗 FavOrg" um die Hauptapp zu öffnen</li>
-                              <li>3. 🧪 <span className="text-cyan-400">Eigene Tests:</span> Geben Sie eigene Test-Namen ein</li>
-                              <li>4. 📊 <span className="text-cyan-400">Status verfolgen:</span> Beobachten Sie die Footer-Counter</li>
-                            </ul>
-                          </div>
-                        )}
-
-                        <div className="border-t border-gray-700 pt-3 mt-3">
-                          <div className="text-xs text-gray-400">
-                            💡 <strong>Tipp:</strong> Wählen Sie Testpunkte aus und verfolgen Sie den Fortschritt in der Fußzeile. 
-                            Verwenden Sie "Archiv" um Berichte zu speichern.
-                          </div>
-                        </div>
-                      </div>
+                        );
+                      })}
+                    </div>
+                    
+                    {/* Link zum Handbuch */}
+                    <div className="mt-4 text-center">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-cyan-400 hover:text-cyan-300 text-xs"
+                        title="Öffnet das Handbuch mit detaillierten Testanleitungen"
+                      >
+                        📖 Detaillierte Testanleitungen im Handbuch
+                      </Button>
                     </div>
                   </div>
                 </div>
