@@ -127,10 +127,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     toast.success('Test-Eintrag gelöscht');
   };
 
-  // Alle Tests löschen
+  // Alle Tests löschen - Reset auch die besuchten Tests
   const clearAllTests = () => {
     if (window.confirm('Alle Audit-Log Einträge löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
       setAuditEntries([]);
+      setVisitedTests(new Set());
       localStorage.removeItem('favorg_audit_logs');
       toast.success('Alle Audit-Logs gelöscht');
     }
