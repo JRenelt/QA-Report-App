@@ -291,61 +291,61 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </p>
         </DialogHeader>
 
-        <div className="flex flex-col h-full space-y-4 overflow-hidden">
-          {/* Bereichsauswahl ODER Test-Auswahl - Umschaltbar */}
+        <div className="flex flex-col h-full space-y-2 overflow-hidden">
+          {/* Bereichsauswahl ODER Test-Auswahl - Fokussiert auf das Wesentliche */}
           {showCategorySelection ? (
-            /* Bereichsauswahl-Modus */
-            <div className="flex-shrink-0 space-y-4">
-              <div className="p-4 bg-gray-800 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3 text-cyan-300">📂 Test-Bereiche wählen:</h3>
-                <div className="max-h-48 overflow-y-auto">
-                  <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pr-2">
-                    {testCategories.map(category => (
-                      <Button
-                        key={category}
-                        onClick={() => {
-                          setCurrentCategory(category);
-                          setShowCategorySelection(false);
-                        }}
-                        variant={currentCategory === category ? "default" : "outline"}
-                        className={`text-sm h-16 flex flex-col items-center justify-center ${
-                          currentCategory === category 
-                            ? 'bg-cyan-600 hover:bg-cyan-700' 
-                            : 'border-gray-600 text-gray-300 hover:bg-gray-700'
-                        }`}
-                      >
-                        <span className="text-lg mb-1">
-                          {category === 'Allgemeines Design' ? '🎨' :
-                           category === 'Header-Bereich' ? '🔝' :
-                           category === 'Sidebar-Bereich' ? '📋' :
-                           category === 'Search-Section' ? '🔍' :
-                           category === 'Main-Content' ? '📄' :
-                           category === 'Bookmark-Karten' ? '🎴' :
-                           category === 'Dialoge & Modals' ? '🗨️' :
-                           category === 'Navigation & Routing' ? '🧭' :
-                           category === 'Drag & Drop System' ? '🎯' :
-                           category === 'Filter & Sortierung' ? '🎛️' :
-                           category === 'Import/Export' ? '📤' :
-                           category === 'Einstellungen' ? '⚙️' :
-                           category === 'Performance & Responsive' ? '⚡' : '📁'}
-                        </span>
-                        <span className="text-xs text-center">{category.replace('-', ' ')}</span>
-                      </Button>
-                    ))}
-                  </div>
+            /* BEREICHSAUSWAHL-MODUS - Nur Bereiche sind wichtig */
+            <div className="flex-1 p-4 bg-gray-800 rounded-lg overflow-hidden">
+              <h3 className="text-xl font-bold mb-4 text-cyan-300 text-center">📂 Test-Bereich wählen</h3>
+              <div className="h-full overflow-y-auto">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pr-2">
+                  {testCategories.map(category => (
+                    <Button
+                      key={category}
+                      onClick={() => {
+                        setCurrentCategory(category);
+                        setShowCategorySelection(false);
+                      }}
+                      variant={currentCategory === category ? "default" : "outline"}
+                      className={`text-sm h-20 flex flex-col items-center justify-center ${
+                        currentCategory === category 
+                          ? 'bg-cyan-600 hover:bg-cyan-700 text-white' 
+                          : 'border-gray-600 text-gray-300 hover:bg-gray-700'
+                      }`}
+                    >
+                      <span className="text-2xl mb-2">
+                        {category === 'Allgemeines Design' ? '🎨' :
+                         category === 'Header-Bereich' ? '🔝' :
+                         category === 'Sidebar-Bereich' ? '📋' :
+                         category === 'Search-Section' ? '🔍' :
+                         category === 'Main-Content' ? '📄' :
+                         category === 'Bookmark-Karten' ? '🎴' :
+                         category === 'Dialoge & Modals' ? '🗨️' :
+                         category === 'Navigation & Routing' ? '🧭' :
+                         category === 'Drag & Drop System' ? '🎯' :
+                         category === 'Filter & Sortierung' ? '🎛️' :
+                         category === 'Import/Export' ? '📤' :
+                         category === 'Einstellungen' ? '⚙️' :
+                         category === 'Performance & Responsive' ? '⚡' : '📁'}
+                      </span>
+                      <span className="text-sm text-center font-medium leading-tight">
+                        {category.replace('-', ' ')}
+                      </span>
+                    </Button>
+                  ))}
                 </div>
               </div>
             </div>
           ) : (
-            /* Test-Auswahl-Modus */
-            <div className="flex-shrink-0 space-y-4">
-              {/* Schnell-Tests für gewählten Bereich */}
-              <div className="p-4 bg-gray-850 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3 text-cyan-300">
-                  🎯 Schnell-Tests für "{currentCategory}":
+            /* TEST-MODUS - Tests sind primär, alles andere sekundär */
+            <div className="flex-1 flex flex-col space-y-2 overflow-hidden">
+              {/* PRIMÄR: Schnell-Tests - Maximum Platz */}
+              <div className="flex-1 p-4 bg-gray-850 rounded-lg overflow-hidden">
+                <h3 className="text-lg font-bold mb-3 text-cyan-300 text-center">
+                  🎯 Tests für "{currentCategory}"
                 </h3>
-                <div className="max-h-48 overflow-y-auto">
-                  <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 pr-2">
+                <div className="h-full overflow-y-auto">
+                  <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 pr-2">
                     {predefinedTests
                       .filter(test => test.category === currentCategory)
                       .map((test, index) => (
@@ -355,30 +355,30 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           variant="outline"
                           size="sm"
                           title={test.tooltip}
-                          className={`h-16 flex flex-col items-center justify-center text-xs border-gray-600 hover:bg-gray-700 ${
+                          className={`h-18 flex flex-col items-center justify-center text-xs border-gray-600 hover:bg-gray-700 ${
                             visitedTests.has(test.name) 
                               ? 'bg-green-900 border-green-600 text-green-300' 
                               : 'text-gray-300'
                           }`}
                         >
-                          <span className="text-lg mb-1">{test.icon}</span>
-                          <span className="text-xs text-center leading-tight">{test.name}</span>
+                          <span className="text-xl mb-1">{test.icon}</span>
+                          <span className="text-xs text-center leading-tight font-medium">{test.name}</span>
                         </Button>
                       ))}
                   </div>
                 </div>
               </div>
 
-              {/* Eigene Test-Eingabe */}
-              <div className="p-3 bg-gray-800 rounded-lg">
-                <h4 className="text-md font-semibold mb-2 text-gray-300">✏️ Eigener Test:</h4>
-                <div className="flex gap-2">
+              {/* SEKUNDÄR: Eigener Test - Kompakt */}
+              <div className="flex-shrink-0 p-2 bg-gray-800 rounded">
+                <div className="flex gap-2 items-center">
+                  <span className="text-xs text-gray-400 whitespace-nowrap">✏️ Eigener:</span>
                   <input
                     type="text"
-                    placeholder={`Eigener Test für ${currentCategory}...`}
+                    placeholder="Eigener Test..."
                     value={newTestName}
                     onChange={(e) => setNewTestName(e.target.value)}
-                    className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white text-sm"
+                    className="flex-1 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs"
                     onKeyPress={(e) => {
                       if (e.key === 'Enter' && newTestName.trim()) {
                         addTestEntry(newTestName.trim(), currentCategory);
@@ -393,68 +393,55 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         setNewTestName('');
                       }
                     }}
-                    className="bg-cyan-600 hover:bg-cyan-700"
+                    className="bg-cyan-600 hover:bg-cyan-700 px-2 py-1 h-7"
                     size="sm"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-3 h-3" />
                   </Button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Kontroll-Leiste - Kompakt */}
-          <div className="flex-shrink-0">
-            <div className="flex justify-between items-center p-2 bg-gray-800 rounded-lg">
-              <div className="flex gap-2">
+          {/* SEKUNDÄR: Minimale Kontroll-Leiste - Nur im Test-Modus */}
+          {!showCategorySelection && (
+            <div className="flex-shrink-0">
+              <div className="flex justify-between items-center p-2 bg-gray-800 rounded">
                 <Button 
-                  onClick={() => setShowCategorySelection(!showCategorySelection)}
+                  onClick={() => setShowCategorySelection(true)}
                   variant="outline" 
                   size="sm" 
-                  className="border-cyan-600 text-cyan-400"
+                  className="border-cyan-600 text-cyan-400 text-xs px-3 py-1"
                 >
-                  {showCategorySelection ? '🎯 Tests anzeigen' : '📂 Bereich wechseln'}
+                  📂 Bereich wechseln
                 </Button>
-              </div>
 
-              <div className="flex gap-2">
-                <Button onClick={exportAuditLog} variant="outline" size="sm" className="border-gray-600 text-white">
-                  <Download className="w-4 h-4" />
-                </Button>
-                <Button onClick={clearAllTests} variant="outline" size="sm" className="border-red-600 text-red-400 hover:bg-red-900">
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+                <div className="flex gap-1">
+                  {/* SEKUNDÄR: Mini-Statistiken - Sehr kompakt */}
+                  <div className="flex gap-1 text-xs">
+                    <span className="px-2 py-1 bg-green-900 rounded text-green-300">
+                      ✅{auditEntries.filter(e => e.status === 'passed').length}
+                    </span>
+                    <span className="px-2 py-1 bg-red-900 rounded text-red-300">
+                      ❌{auditEntries.filter(e => e.status === 'failed').length}
+                    </span>
+                    <span className="px-2 py-1 bg-blue-900 rounded text-blue-300">
+                      📊{auditEntries.length}
+                    </span>
+                  </div>
+
+                  <div className="flex gap-1">
+                    <Button onClick={exportAuditLog} variant="ghost" size="sm" className="text-gray-400 p-1">
+                      <Download className="w-3 h-3" />
+                    </Button>
+                    <Button onClick={clearAllTests} variant="ghost" size="sm" className="text-red-400 p-1">
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
-
-            {/* Kompakte Statistiken */}
-            <div className="grid grid-cols-4 gap-2 text-center mt-2">
-              <div className="p-2 bg-green-900 rounded text-sm">
-                <div className="text-lg font-bold text-green-400">
-                  {auditEntries.filter(e => e.status === 'passed').length}
-                </div>
-                <div className="text-xs text-green-300">✅</div>
-              </div>
-              <div className="p-2 bg-red-900 rounded text-sm">
-                <div className="text-lg font-bold text-red-400">
-                  {auditEntries.filter(e => e.status === 'failed').length}
-                </div>
-                <div className="text-xs text-red-300">❌</div>
-              </div>
-              <div className="p-2 bg-yellow-900 rounded text-sm">
-                <div className="text-lg font-bold text-yellow-400">
-                  {auditEntries.filter(e => e.status === 'pending').length}
-                </div>
-                <div className="text-xs text-yellow-300">⏳</div>
-              </div>
-              <div className="p-2 bg-blue-900 rounded text-sm">
-                <div className="text-lg font-bold text-blue-400">
-                  {auditEntries.length}
-                </div>
-                <div className="text-xs text-blue-300">📊</div>
-              </div>
-            </div>
-          </div>
+          )}
 
           {/* Test-Einträge - Scrollbar */}
           <div className="flex-1 overflow-y-auto bg-gray-800 rounded-lg">
