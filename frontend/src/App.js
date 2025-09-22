@@ -2991,7 +2991,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                     <Button 
                       onClick={() => {
                         console.log('Opening Audit Log...');
-                        setShowAuditLog(true);
+                        onOpenAuditLog();
                       }}
                       className="bg-cyan-600 hover:bg-cyan-700 mr-2"
                       size="sm"
