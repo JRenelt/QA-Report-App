@@ -266,21 +266,27 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
         <DialogHeader>
-          <DialogTitle 
-            className="text-2xl font-bold text-cyan-400 flex items-center cursor-pointer hover:text-cyan-300"
-            onClick={() => setShowCategorySelection(!showCategorySelection)}
-            title="Klicken um Bereichsauswahl ein-/auszublenden"
-          >
-            <CheckCircle className="w-6 h-6 mr-2" />
-            🔍 FavOrg Audit-Log - {currentCategory}
-            <span className="ml-2 text-sm text-gray-400">
-              {showCategorySelection ? '(Klick zum Ausblenden)' : '(Klick zum Einblenden)'}
-            </span>
+          <DialogTitle className="text-xl font-bold text-cyan-400 flex items-center justify-between">
+            <div className="flex items-center">
+              <CheckCircle className="w-5 h-5 mr-2" />
+              🔍 FavOrg Audit-Log
+              {!showCategorySelection && (
+                <span className="ml-2 text-lg text-cyan-300">- {currentCategory}</span>
+              )}
+            </div>
+            <Button
+              onClick={() => setShowCategorySelection(!showCategorySelection)}
+              variant="ghost"
+              size="sm"
+              className="text-cyan-400 hover:text-cyan-300"
+            >
+              {showCategorySelection ? '📂 Bereiche' : '🎯 Tests'}
+            </Button>
           </DialogTitle>
-          <p className="text-gray-300">
+          <p className="text-gray-300 text-sm">
             {showCategorySelection 
-              ? 'Wählen Sie einen Bereich zum Testen aus'
-              : `Testing: ${currentCategory} - ${auditEntries.filter(e => e.category === currentCategory).length} Tests`
+              ? 'Wählen Sie einen Bereich zum systematischen Testen aus'
+              : `Testing "${currentCategory}" - ${auditEntries.filter(e => e.category === currentCategory).length} Tests dokumentiert`
             }
           </p>
         </DialogHeader>
