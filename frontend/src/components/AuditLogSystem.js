@@ -567,7 +567,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
           {/* Fixe Fußzeile - In Test-Ansicht und Bericht-Ansicht */}
           {(viewMode === 'tests' || viewMode === 'bericht') && (
-            <div className="flex items-center justify-between p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0">
+            <div className="flex items-center justify-between p-2 bg-gray-800 border-t border-gray-700 flex-shrink-0">
               {/* Links: Status-Quadrate mit kumulierten Zahlen */}
               <div className="flex items-center gap-3">
                 <div 
