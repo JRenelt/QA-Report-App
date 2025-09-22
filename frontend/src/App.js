@@ -4193,6 +4193,12 @@ function App() {
         onChange={handleFileSelected}
         style={{ display: 'none' }}
       />
+      
+      {/* Audit-Log System Dialog */}
+      <AuditLogSystem 
+        isOpen={showAuditLog}
+        onClose={() => setShowAuditLog(false)}
+      />
     </div>
   );
 }
