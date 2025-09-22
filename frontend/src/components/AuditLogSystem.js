@@ -413,44 +413,44 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
                             {/* Action Buttons */}
                             <div className="flex items-center gap-1">
-                                <Button
-                                  size="sm"
-                                  onClick={() => toggleTestPoint(test.name)}
-                                  className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs h-8 w-8"
-                                  title="Test bestanden"
-                                >
-                                  ✅
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="border-red-600 text-red-400 hover:bg-red-900 px-2 py-1 text-xs h-8 w-8"
-                                  title="Test fehlgeschlagen"
-                                >
-                                  ❌
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="border-blue-600 text-blue-400 hover:bg-blue-900 px-2 py-1 text-xs h-8 w-8"
-                                  title="Test in Bearbeitung"
-                                >
-                                  ⏳
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="border-gray-600 text-gray-400 hover:bg-gray-700 px-2 py-1 text-xs h-8 w-8"
-                                  title="Test löschen"
-                                >
-                                  🗑️
-                                </Button>
-                              </div>
+                              <Button
+                                size="sm"
+                                onClick={() => toggleTestPoint(test.name)}
+                                className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs h-8 w-8"
+                                title="Test bestanden"
+                              >
+                                ✅
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-red-600 text-red-400 hover:bg-red-900 px-2 py-1 text-xs h-8 w-8"
+                                title="Test fehlgeschlagen"
+                              >
+                                ❌
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-blue-600 text-blue-400 hover:bg-blue-900 px-2 py-1 text-xs h-8 w-8"
+                                title="Test in Bearbeitung"
+                              >
+                                ⏳
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-gray-600 text-gray-400 hover:bg-gray-700 px-2 py-1 text-xs h-8 w-8"
+                                title="Test löschen"
+                              >
+                                🗑️
+                              </Button>
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                     
                     {/* Link zum Handbuch */}
                     <div className="mt-4 text-center">
