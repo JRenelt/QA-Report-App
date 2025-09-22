@@ -383,59 +383,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
           {/* Test-Auswahl */}
           {viewMode === 'tests' && (
-            /* Test-Auswahl */
+            /* Test-Auswahl - Nur Testpunkte, keine Buttons oder Überschriften */
             <div className="flex-1 flex flex-col overflow-hidden">
               
-              {/* Test-Buttons */}
-              <div className="flex-1 p-4 overflow-y-auto">
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-lg font-semibold text-cyan-400">{currentCategory}</h3>
-                  <Button
-                    onClick={() => setCompactView(!compactView)}
-                    variant="ghost"
-                    size="sm"
-                    className="text-gray-400 text-xs"
-                  >
-                    {compactView ? '📝 Text anzeigen' : '🎯 Nur Symbole'}
-                  </Button>
-                </div>
-
-                {/* Testfunktionen - Sichtbare Test-Szenarien */}
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                    {currentTests.map((test, index) => {
-                      const isSelected = selectedTestPoints.includes(test.name);
-                      return (
-                        <Button
-                          key={index}
-                          onClick={() => toggleTestPoint(test.name)}
-                          variant="outline"
-                          title={test.tooltip}
-                          className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-xs relative ${
-                            isSelected 
-                              ? 'border-green-500 bg-green-900/30 text-green-300 hover:bg-green-900/50'
-                              : 'border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-cyan-500'
-                          }`}
-                        >
-                          {/* Test-Icon */}
-                          <span className={`${compactView ? 'text-lg' : 'text-lg mb-1'}`}>
-                            {test.icon}
-                          </span>
-                          {!compactView && (
-                            <span className="text-xs text-center leading-tight font-medium">
-                              {test.name}
-                            </span>
-                          )}
-                          {/* Ausgewählt-Indikator */}
-                          {isSelected && (
-                            <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs">✓</span>
-                            </div>
-                          )}
-                        </Button>
-                      );
-                    })}
-                  </div>
+              {/* Direkt zu Testpunkten */}
+              <div className="flex-1 p-2 overflow-y-auto">
 
                   {/* Testpunkte/Testeinträge wie in Auditlog6.png */}
                   <div className="mt-6">
