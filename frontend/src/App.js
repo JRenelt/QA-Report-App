@@ -2583,6 +2583,10 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                 <span className="tab-icon">⚙️</span>
                 Erweitert
               </TabsTrigger>
+              <TabsTrigger value="system" className="settings-tab-trigger">
+                <span className="tab-icon">🔧</span>
+                System
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="display" className="settings-tab-content-modern">
