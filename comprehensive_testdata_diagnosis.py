@@ -115,8 +115,8 @@ def comprehensive_testdata_diagnosis():
         frontend_headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Origin': 'https://favorg-rebuild.preview.emergentagent.com',
-            'Referer': 'https://favorg-rebuild.preview.emergentagent.com/',
+            'Origin': 'https://hieralink.preview.emergentagent.com',
+            'Referer': 'https://hieralink.preview.emergentagent.com/',
             'User-Agent': 'Mozilla/5.0 (Frontend Simulation)'
         }
         

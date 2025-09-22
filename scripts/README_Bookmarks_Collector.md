@@ -93,7 +93,7 @@ Diese Datei enthält:
 
 ## 🎯 Import in FavLink Manager
 
-1. Öffnen Sie FavLink Manager: `https://favorg-rebuild.preview.emergentagent.com`
+1. Öffnen Sie FavLink Manager: `https://hieralink.preview.emergentagent.com`
 2. Klicken Sie auf **"Favoriten importieren"**
 3. Wählen Sie die generierte HTML-Datei aus
 4. Die Anwendung erkennt automatisch:
