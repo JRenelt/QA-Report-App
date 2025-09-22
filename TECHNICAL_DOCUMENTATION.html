@@ -1012,6 +1012,161 @@ async def create_comprehensive_test_data():
             </div>
         </div>
 
+        <!-- AuditLog-System -->
+        <div class="section" id="auditlog">
+            <h2>🔍 AuditLog-System</h2>
+            <p>Systematische Qualitätsprüfung aller FavOrg-Funktionen mit strukturierten Testbereichen und detaillierter Dokumentation.</p>
+
+            <h3>System-Architektur</h3>
+            <table class="status-table">
+                <thead>
+                    <tr>
+                        <th>Komponente</th>
+                        <th>Datei</th>
+                        <th>Zweck</th>
+                        <th>Features</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AuditLogSystem</td>
+                        <td>AuditLogSystem.js</td>
+                        <td>Haupt-Komponente für Qualitätsprüfung</td>
+                        <td>13 Testbereiche, Status-Tracking, Berichte</td>
+                    </tr>
+                    <tr>
+                        <td>Test Categories</td>
+                        <td>predefinedTests Object</td>
+                        <td>60+ vordefinierte Testpunkte</td>
+                        <td>Bereich-spezifische Test-Szenarien</td>
+                    </tr>
+                    <tr>
+                        <td>Report System</td>
+                        <td>testReports State</td>
+                        <td>Historische Test-Verfolgung</td>
+                        <td>Archivierung, Export, Bereinigung</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Test-Bereiche Übersicht</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>UI/UX Bereiche</h5>
+                    <ul>
+                        <li><code>Allgemeines Design</code> - UI-Kompaktheit, Dark Theme, Responsiveness, Typographie</li>
+                        <li><code>Header-Bereich</code> - Logo, Action-Buttons, Icons, Status-Buttons</li>
+                        <li><code>Sidebar-Bereich</code> - Kategorien-Tree, Collapse/Expand, Navigation</li>
+                        <li><code>Search-Section</code> - Suchfeld, Erweiterte Suche, Status-Filter</li>
+                        <li><code>Main-Content</code> - Grid Layout, View Toggle, Scrolling</li>
+                        <li><code>Bookmark-Karten</code> - Card Design, Status-Badges, Lock/Edit Buttons</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Funktionale Bereiche</h5>
+                    <ul>
+                        <li><code>Dialoge & Modals</code> - Bookmark-Dialog, Einstellungen, Hilfe-System</li>
+                        <li><code>Navigation & Routing</code> - Sidebar-Navigation, Breadcrumb, Deep Links</li>
+                        <li><code>Drag & Drop System</code> - Bookmark/Category D&D, Cross-Level Movement</li>
+                        <li><code>Filter & Sortierung</code> - Status-Filter, Kombinierte Filter</li>
+                        <li><code>Import/Export</code> - HTML Import, JSON/XML Export, Testdaten</li>
+                        <li><code>Einstellungen</code> - Theme-Switch, System-Tools, Meldungen</li>
+                        <li><code>Performance & Responsive</code> - Load Speed, Mobile/Tablet/Desktop</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Status-System</h3>
+            <table class="status-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Symbol</th>
+                        <th>Farbe</th>
+                        <th>Bedeutung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ausstehend</td>
+                        <td>🟡 ⏰</td>
+                        <td>Yellow/Orange</td>
+                        <td>Test noch nicht begonnen</td>
+                    </tr>
+                    <tr>
+                        <td>Bestanden</td>
+                        <td>✅</td>
+                        <td>Green</td>
+                        <td>Test erfolgreich abgeschlossen</td>
+                    </tr>
+                    <tr>
+                        <td>Fehlgeschlagen</td>
+                        <td>❌</td>
+                        <td>Red</td>
+                        <td>Test mit Problemen/Fehlern</td>
+                    </tr>
+                    <tr>
+                        <td>In Bearbeitung</td>
+                        <td>⏳</td>
+                        <td>Blue</td>
+                        <td>Test wird aktuell durchgeführt</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>API Integration</h3>
+            <div class="code-block">
+// AuditLog Component Structure
+const AuditLogSystem = ({ isOpen, onClose }) => {
+  const [viewMode, setViewMode] = useState('bereiche'); // 'bereiche', 'tests', 'bericht'
+  const [currentCategory, setCurrentCategory] = useState('Allgemeines Design');
+  const [selectedTestPoints, setSelectedTestPoints] = useState([]);
+  const [testReports, setTestReports] = useState([]);
+
+  // 13 Test Categories with predefined test points
+  const testCategories = [
+    { name: 'Allgemeines Design', icon: '🎨', tests: 4 },
+    { name: 'Header-Bereich', icon: '🔝', tests: 4 },
+    // ... weitere 11 Bereiche
+  ];
+
+  // Test point management
+  const toggleTestPoint = (testName) => {
+    // Status tracking and selection logic
+  };
+
+  // Report generation and export
+  const exportTestReport = () => {
+    // PDF/JSON export functionality
+  };
+};
+            </div>
+
+            <h3>Testmethodik</h3>
+            <div class="grid-2">
+                <div class="card">
+                    <h5>Systematisches Vorgehen</h5>
+                    <ul>
+                        <li><strong>Schritt 1:</strong> Bereich auswählen aus 13 Kategorien</li>
+                        <li><strong>Schritt 2:</strong> Testpunkte durchgehen und Status setzen</li>
+                        <li><strong>Schritt 3:</strong> FavOrg parallel in neuem Fenster testen</li>
+                        <li><strong>Schritt 4:</strong> Fortschritt in Footer-Counter verfolgen</li>
+                        <li><strong>Schritt 5:</strong> Bericht exportieren und archivieren</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h5>Qualitätssicherung</h5>
+                    <ul>
+                        <li><strong>Checklisten-Prinzip:</strong> Strukturierte Abarbeitung</li>
+                        <li><strong>Status-Markierung:</strong> Eindeutige Kennzeichnung</li>
+                        <li><strong>Historische Verfolgung:</strong> Archivierung aller Tests</li>
+                        <li><strong>Export-Funktionen:</strong> PDF/JSON Berichte</li>
+                        <li><strong>Parallel-Testing:</strong> Live-Tests während Dokumentation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <!-- Frontend-Komponenten -->
         <div class="section" id="components">
             <h2>⚙️ Frontend-Komponenten</h2>
