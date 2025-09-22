@@ -266,24 +266,95 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-cyan-400 flex items-center">
+          <DialogTitle 
+            className="text-2xl font-bold text-cyan-400 flex items-center cursor-pointer hover:text-cyan-300"
+            onClick={() => setShowCategorySelection(!showCategorySelection)}
+            title="Klicken um Bereichsauswahl ein-/auszublenden"
+          >
             <CheckCircle className="w-6 h-6 mr-2" />
-            🔍 FavOrg Audit-Log System - Vollständige Qualitätssicherung
+            🔍 FavOrg Audit-Log - {currentCategory}
+            <span className="ml-2 text-sm text-gray-400">
+              {showCategorySelection ? '(Klick zum Ausblenden)' : '(Klick zum Einblenden)'}
+            </span>
           </DialogTitle>
-          <p className="text-gray-300">Systematisches Testing aller FavOrg-Funktionen und UI-Bereiche</p>
+          <p className="text-gray-300">
+            {showCategorySelection 
+              ? 'Wählen Sie einen Bereich zum Testen aus'
+              : `Testing: ${currentCategory} - ${auditEntries.filter(e => e.category === currentCategory).length} Tests`
+            }
+          </p>
         </DialogHeader>
 
         <div className="flex flex-col h-full space-y-4 overflow-hidden">
-          {/* Header Controls - Fixed */}
+          {/* Bereichsauswahl - Ein-/Ausblendbar */}
+          {showCategorySelection && (
+            <div className="flex-shrink-0 space-y-4">
+              {/* Kategorie-Auswahl */}
+              <div className="p-4 bg-gray-800 rounded-lg">
+                <h3 className="text-lg font-semibold mb-3 text-cyan-300">📂 Test-Bereiche wählen:</h3>
+                <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2">
+                  {testCategories.map(category => (
+                    <Button
+                      key={category}
+                      onClick={() => {
+                        setCurrentCategory(category);
+                        setShowCategorySelection(false);
+                      }}
+                      variant={currentCategory === category ? "default" : "outline"}
+                      className={`text-sm h-12 ${
+                        currentCategory === category 
+                          ? 'bg-cyan-600 hover:bg-cyan-700' 
+                          : 'border-gray-600 text-gray-300 hover:bg-gray-700'
+                      }`}
+                    >
+                      {category.split('-')[0]}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Vordefinierte Tests für aktuellen Bereich */}
+              <div className="p-4 bg-gray-850 rounded-lg">
+                <h3 className="text-lg font-semibold mb-3 text-cyan-300">
+                  🎯 Tests für "{currentCategory}":
+                </h3>
+                <div className="max-h-40 overflow-y-auto">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2">
+                    {predefinedTests
+                      .filter(test => test.category === currentCategory)
+                      .map((test, index) => (
+                        <Button
+                          key={index}
+                          onClick={() => addTestEntry(test.name, test.category)}
+                          variant="outline"
+                          size="sm"
+                          title={test.tooltip}
+                          className={`h-12 flex flex-col items-center justify-center text-xs border-gray-600 hover:bg-gray-700 ${
+                            visitedTests.has(test.name) 
+                              ? 'bg-green-900 border-green-600 text-green-300' 
+                              : 'text-gray-300'
+                          }`}
+                        >
+                          <span className="text-lg mb-1">{test.icon}</span>
+                          <span className="text-xs">{test.name}</span>
+                        </Button>
+                      ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Kontroll-Bereich - Kompakt */}
           <div className="flex-shrink-0">
-            <div className="flex flex-wrap gap-4 p-4 bg-gray-800 rounded-lg">
-              <div className="flex-1 min-w-[300px]">
+            <div className="flex flex-wrap gap-4 p-3 bg-gray-800 rounded-lg items-center">
+              <div className="flex-1 min-w-[250px]">
                 <input
                   type="text"
-                  placeholder="Neuer Test-Name..."
+                  placeholder={`Neuer Test für ${currentCategory}...`}
                   value={newTestName}
                   onChange={(e) => setNewTestName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white text-sm"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter' && newTestName.trim()) {
                       addTestEntry(newTestName.trim(), currentCategory);
@@ -292,16 +363,6 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   }}
                 />
               </div>
-              
-              <select
-                value={currentCategory}
-                onChange={(e) => setCurrentCategory(e.target.value)}
-                className="px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-              >
-                {testCategories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
 
               <Button 
                 onClick={() => {
@@ -311,99 +372,92 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   }
                 }}
                 className="bg-cyan-600 hover:bg-cyan-700"
+                size="sm"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Test hinzufügen
+                Hinzufügen
               </Button>
 
-              <Button onClick={exportAuditLog} variant="outline" className="border-gray-600 text-white">
+              <Button onClick={exportAuditLog} variant="outline" size="sm" className="border-gray-600 text-white">
                 <Download className="w-4 h-4 mr-2" />
-                Export JSON
+                Export
               </Button>
 
-              <Button onClick={clearAllTests} variant="outline" className="border-red-600 text-red-400 hover:bg-red-900">
+              <Button onClick={clearAllTests} variant="outline" size="sm" className="border-red-600 text-red-400 hover:bg-red-900">
                 <Trash2 className="w-4 h-4 mr-2" />
-                Alle löschen
+                Reset
               </Button>
             </div>
 
-            {/* Quick Add Predefined Tests */}
-            <div className="p-4 bg-gray-850 rounded-lg mt-4">
-              <h3 className="text-lg font-semibold mb-3 text-cyan-300">📝 Vordefinierte Test-Szenarien (alle FavOrg-Bereiche):</h3>
-              <div className="max-h-32 overflow-y-auto">
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-                  {predefinedTests.slice(0, 20).map((test, index) => (
-                    <Button
-                      key={index}
-                      onClick={() => addTestEntry(test.name, test.category)}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs border-gray-600 text-gray-300 hover:bg-gray-700 justify-start"
-                    >
-                      {test.name}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Statistics */}
-            <div className="grid grid-cols-4 gap-4 text-center mt-4">
-              <div className="p-3 bg-green-900 rounded-lg">
-                <div className="text-2xl font-bold text-green-400">
+            {/* Kompakte Statistiken */}
+            <div className="grid grid-cols-4 gap-2 text-center mt-2">
+              <div className="p-2 bg-green-900 rounded text-sm">
+                <div className="text-lg font-bold text-green-400">
                   {auditEntries.filter(e => e.status === 'passed').length}
                 </div>
-                <div className="text-sm text-green-300">Bestanden</div>
+                <div className="text-xs text-green-300">✅ Bestanden</div>
               </div>
-              <div className="p-3 bg-red-900 rounded-lg">
-                <div className="text-2xl font-bold text-red-400">
+              <div className="p-2 bg-red-900 rounded text-sm">
+                <div className="text-lg font-bold text-red-400">
                   {auditEntries.filter(e => e.status === 'failed').length}
                 </div>
-                <div className="text-sm text-red-300">Fehlgeschlagen</div>
+                <div className="text-xs text-red-300">❌ Fehlgeschlagen</div>
               </div>
-              <div className="p-3 bg-yellow-900 rounded-lg">
-                <div className="text-2xl font-bold text-yellow-400">
+              <div className="p-2 bg-yellow-900 rounded text-sm">
+                <div className="text-lg font-bold text-yellow-400">
                   {auditEntries.filter(e => e.status === 'pending').length}
                 </div>
-                <div className="text-sm text-yellow-300">Ausstehend</div>
+                <div className="text-xs text-yellow-300">⏳ Ausstehend</div>
               </div>
-              <div className="p-3 bg-blue-900 rounded-lg">
-                <div className="text-2xl font-bold text-blue-400">
+              <div className="p-2 bg-blue-900 rounded text-sm">
+                <div className="text-lg font-bold text-blue-400">
                   {auditEntries.length}
                 </div>
-                <div className="text-sm text-blue-300">Gesamt</div>
+                <div className="text-xs text-blue-300">📊 Gesamt</div>
               </div>
             </div>
           </div>
 
-          {/* Audit Log Entries - Scrollable */}
+          {/* Test-Einträge - Scrollbar */}
           <div className="flex-1 overflow-y-auto bg-gray-800 rounded-lg">
             {auditEntries.length === 0 ? (
               <div className="p-8 text-center text-gray-400">
                 <CheckCircle className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <h3 className="text-xl font-semibold mb-2">Keine Test-Einträge vorhanden</h3>
-                <p>Fügen Sie Ihren ersten Test hinzu, um mit dem systematischen FavOrg-Testing zu beginnen.</p>
+                <h3 className="text-xl font-semibold mb-2">Bereit zum Testen</h3>
+                <p>Fügen Sie Tests hinzu um mit der Qualitätssicherung für "<strong>{currentCategory}</strong>" zu beginnen.</p>
+                {!showCategorySelection && (
+                  <Button 
+                    onClick={() => setShowCategorySelection(true)}
+                    className="mt-4 bg-cyan-600 hover:bg-cyan-700"
+                  >
+                    Bereich wechseln
+                  </Button>
+                )}
               </div>
             ) : (
               <div className="space-y-2 p-4">
-                {auditEntries.map((entry) => (
-                  <div key={entry.id} className="bg-gray-700 p-4 rounded-lg border border-gray-600">
+                {auditEntries
+                  .filter(entry => !showCategorySelection ? entry.category === currentCategory : true)
+                  .map((entry) => (
+                  <div key={entry.id} className="bg-gray-700 p-3 rounded-lg border border-gray-600">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-2">
                           <StatusBadge status={entry.status} />
-                          <Badge variant="outline" className="border-gray-500 text-gray-300">
-                            {entry.category}
-                          </Badge>
-                          <span className="text-sm text-gray-400">
+                          {showCategorySelection && (
+                            <Badge variant="outline" className="border-gray-500 text-gray-300 text-xs">
+                              {entry.category}
+                            </Badge>
+                          )}
+                          <span className="text-xs text-gray-400">
                             {entry.dateTime}
                           </span>
                         </div>
                         
-                        <h4 className="font-semibold text-white mb-1">{entry.testName}</h4>
+                        <h4 className="font-semibold text-white mb-1 text-sm">{entry.testName}</h4>
                         
                         {entry.notes && (
-                          <p className="text-sm text-gray-300 bg-gray-800 p-2 rounded mt-2">
+                          <p className="text-xs text-gray-300 bg-gray-800 p-2 rounded mt-2">
                             📝 {entry.notes}
                           </p>
                         )}
@@ -415,12 +469,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         )}
                       </div>
 
-                      <div className="flex space-x-2 ml-4">
+                      <div className="flex space-x-1 ml-4">
                         <Button
                           size="sm"
                           onClick={() => updateTestStatus(entry.id, 'passed', 'Test erfolgreich bestanden')}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs"
                           disabled={entry.status === 'passed'}
+                          title="Test bestanden"
                         >
                           ✅
                         </Button>
@@ -432,16 +487,18 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               updateTestStatus(entry.id, 'failed', notes || 'Test fehlgeschlagen');
                             }
                           }}
-                          className="bg-red-600 hover:bg-red-700"
+                          className="bg-red-600 hover:bg-red-700 px-2 py-1 text-xs"
                           disabled={entry.status === 'failed'}
+                          title="Test fehlgeschlagen"
                         >
                           ❌
                         </Button>
                         <Button
                           size="sm"
                           onClick={() => updateTestStatus(entry.id, 'pending')}
-                          className="bg-yellow-600 hover:bg-yellow-700"
+                          className="bg-yellow-600 hover:bg-yellow-700 px-2 py-1 text-xs"
                           disabled={entry.status === 'pending'}
+                          title="Test zurücksetzen"
                         >
                           ⏳
                         </Button>
@@ -449,7 +506,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           size="sm"
                           onClick={() => deleteTest(entry.id)}
                           variant="outline"
-                          className="border-gray-600 text-gray-400 hover:bg-red-900"
+                          className="border-gray-600 text-gray-400 hover:bg-red-900 px-2 py-1 text-xs"
+                          title="Test löschen"
                         >
                           🗑️
                         </Button>
