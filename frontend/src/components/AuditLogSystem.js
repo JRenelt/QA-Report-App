@@ -2,477 +2,439 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { CheckCircle, Clock, AlertTriangle, Info, Download, Trash2, Plus } from 'lucide-react';
+import { X, Search, FileText, Trash2, Download, Plus, Info, HelpCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AuditLogSystem = ({ isOpen, onClose }) => {
-  const [auditEntries, setAuditEntries] = useState([]);
-  const [newTestName, setNewTestName] = useState('');
   const [currentCategory, setCurrentCategory] = useState('Allgemeines Design');
   const [showCategorySelection, setShowCategorySelection] = useState(true);
-  const [visitedTests, setVisitedTests] = useState(new Set());
+  const [newTestName, setNewTestName] = useState('');
+  const [compactView, setCompactView] = useState(false);
+  const [testReports, setTestReports] = useState([]);
 
-  // Erweiterte Test-Bereiche für alle FavOrg-Funktionen
+  // Test-Bereiche für FavOrg
   const testCategories = [
-    'Allgemeines Design',
-    'Header-Bereich', 
-    'Sidebar-Bereich',
-    'Search-Section',
-    'Main-Content',
-    'Bookmark-Karten',
-    'Dialoge & Modals',
-    'Navigation & Routing',
-    'Drag & Drop System',
-    'Filter & Sortierung',
-    'Import/Export',
-    'Einstellungen',
-    'Performance & Responsive'
+    { name: 'Allgemeines Design', icon: '🎨', tests: 4 },
+    { name: 'Header-Bereich', icon: '🔝', tests: 4 }, 
+    { name: 'Sidebar-Bereich', icon: '📋', tests: 5 },
+    { name: 'Search-Section', icon: '🔍', tests: 5 },
+    { name: 'Main-Content', icon: '📄', tests: 4 },
+    { name: 'Bookmark-Karten', icon: '🎴', tests: 6 },
+    { name: 'Dialoge & Modals', icon: '🗨️', tests: 5 },
+    { name: 'Navigation & Routing', icon: '🧭', tests: 3 },
+    { name: 'Drag & Drop System', icon: '🎯', tests: 5 },
+    { name: 'Filter & Sortierung', icon: '🎛️', tests: 4 },
+    { name: 'Import/Export', icon: '📤', tests: 4 },
+    { name: 'Einstellungen', icon: '⚙️', tests: 4 },
+    { name: 'Performance & Responsive', icon: '⚡', tests: 4 }
   ];
 
-  // Lade gespeicherte Audit-Logs beim Öffnen
+  // Test-Szenarien pro Bereich
+  const predefinedTests = {
+    'Allgemeines Design': [
+      { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
+      { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
+      { name: 'Responsiveness', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
+      { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
+    ],
+    'Header-Bereich': [
+      { name: 'Logo + Counter', icon: '🏷️', tooltip: 'Logo und Bookmark-Anzahl anzeigen' },
+      { name: 'Action-Buttons', icon: '🔘', tooltip: 'Action-Buttons funktional (Neu, Export, etc.)' },
+      { name: 'Header-Icons', icon: '⚙️', tooltip: 'Header-Icons klickbar (Hilfe, Statistik, Einstellungen)' },
+      { name: 'Status-Buttons', icon: '🎯', tooltip: 'Status-Buttons (TOTE Links, Duplikate, Localhost)' }
+    ],
+    'Sidebar-Bereich': [
+      { name: 'Kategorien-Tree', icon: '🌳', tooltip: 'Kategorien-Hierarchie korrekt angezeigt' },
+      { name: 'Collapse/Expand', icon: '↔️', tooltip: 'Sidebar Collapse/Expand funktional' },
+      { name: 'Navigation', icon: '🧭', tooltip: 'Kategorie-Navigation und -Auswahl' },
+      { name: 'Bookmark-Count', icon: '🔢', tooltip: 'Bookmark-Anzahl pro Kategorie anzeigen' },
+      { name: 'Resizer', icon: '↕️', tooltip: 'Sidebar-Resizer Funktionalität' }
+    ],
+    'Search-Section': [
+      { name: 'Suchfeld', icon: '🔍', tooltip: 'Suchfeld Eingabe und Funktionalität' },
+      { name: 'Erweiterte Suche', icon: '🔎', tooltip: 'Erweiterte Suche (Titel, URL, Beschreibung)' },
+      { name: 'Status-Filter', icon: '🎛️', tooltip: 'Status-Filter Dropdown funktional' },
+      { name: 'Ergebnis-Count', icon: '📊', tooltip: 'Suchergebnis-Anzahl korrekt angezeigt' },
+      { name: 'Clear Button', icon: '❌', tooltip: 'Clear Search Button funktional' }
+    ],
+    'Main-Content': [
+      { name: 'Grid Layout', icon: '⚏', tooltip: 'Bookmark-Grid Layout korrekt' },
+      { name: 'View Toggle', icon: '🔀', tooltip: 'Karten/Tabellen-Ansicht Umschalter' },
+      { name: 'Scrolling', icon: '📜', tooltip: 'Scrolling und Pagination' },
+      { name: 'Responsive', icon: '📱', tooltip: 'Content-Bereich responsive' }
+    ],
+    'Bookmark-Karten': [
+      { name: 'Card Design', icon: '🎴', tooltip: 'Bookmark-Karte Design und Layout' },
+      { name: 'Status-Badges', icon: '🏷️', tooltip: 'Status-Badges korrekt angezeigt' },
+      { name: 'Lock Button', icon: '🔒', tooltip: 'Lock/Unlock Button funktional' },
+      { name: 'Edit/Delete', icon: '✏️', tooltip: 'Edit/Delete Buttons verfügbar' },
+      { name: 'Favicons', icon: '🖼️', tooltip: 'Favicon-Anzeige wenn aktiviert' },
+      { name: 'URL-Links', icon: '🔗', tooltip: 'URL-Links funktional' }
+    ],
+    'Dialoge & Modals': [
+      { name: 'Bookmark-Dialog', icon: '📝', tooltip: 'Bookmark-Dialog öffnen/schließen' },
+      { name: 'Kategorie-Select', icon: '📁', tooltip: 'Kategorie-Auswahl im Dialog' },
+      { name: 'Settings-Dialog', icon: '⚙️', tooltip: 'Einstellungen-Dialog alle Tabs' },
+      { name: 'Help-System', icon: '❓', tooltip: 'Hilfe-System Dialog und Navigation' },
+      { name: 'Statistics', icon: '📈', tooltip: 'Statistik-Dialog Daten-Anzeige' }
+    ],
+    'Navigation & Routing': [
+      { name: 'Sidebar Navigation', icon: '🧭', tooltip: 'Navigation zwischen Kategorien' },
+      { name: 'Breadcrumb', icon: '🍞', tooltip: 'Breadcrumb Navigation' },
+      { name: 'Deep Links', icon: '🔗', tooltip: 'Deep Link Funktionalität' }
+    ],
+    'Drag & Drop System': [
+      { name: 'Bookmark D&D', icon: '🎯', tooltip: 'Bookmark zwischen Kategorien verschieben' },
+      { name: 'Category D&D', icon: '📂', tooltip: 'Kategorie Hierarchie-Verschiebung' },
+      { name: 'Cross-Level', icon: '🎢', tooltip: 'Cross-Level Category Movement' },
+      { name: 'Shift+Drag', icon: '⇧', tooltip: 'Shift+Drag Einfüge-Modus' },
+      { name: 'Visual Feedback', icon: '👁️', tooltip: 'Visuelle Drop-Zone Feedback' }
+    ],
+    'Filter & Sortierung': [
+      { name: 'Status-Filter', icon: '🎛️', tooltip: 'Status-Filter alle Typen (Aktiv, Tot, etc.)' },
+      { name: 'Category-Filter', icon: '📁', tooltip: 'Kategorie-Filter Funktionalität' },
+      { name: 'Sortierung', icon: '🔢', tooltip: 'Sortierung nach Datum/Alphabet' },
+      { name: 'Kombiniert', icon: '🔗', tooltip: 'Kombinierte Filter (Status + Kategorie)' }
+    ],
+    'Import/Export': [
+      { name: 'HTML Import', icon: '📥', tooltip: 'HTML Import-Funktionalität' },
+      { name: 'JSON Export', icon: '📤', tooltip: 'JSON Export alle Formate' },
+      { name: 'XML/CSV', icon: '📋', tooltip: 'XML/CSV Import/Export' },
+      { name: 'Testdaten', icon: '🧪', tooltip: 'Testdaten-Generierung (70 Bookmarks)' }
+    ],
+    'Einstellungen': [
+      { name: 'Theme-Switch', icon: '🎨', tooltip: 'Theme-Wechsel (Hell/Dunkel)' },
+      { name: 'S-Time', icon: '⏱️', tooltip: 'Erweiterte Einstellungen (S-Time)' },
+      { name: 'System-Tools', icon: '🔧', tooltip: 'System-Tools (AuditLog/SysDok)' },
+      { name: 'Meldungen', icon: '📢', tooltip: 'Meldungen Delay Einstellung' }
+    ],
+    'Performance & Responsive': [
+      { name: 'Load Speed', icon: '⚡', tooltip: 'Ladezeiten unter 3 Sekunden' },
+      { name: 'Mobile', icon: '📱', tooltip: 'Mobile Responsiveness (768px)' },
+      { name: 'Tablet', icon: '📟', tooltip: 'Tablet-Ansicht (768-1200px)' },
+      { name: 'Desktop', icon: '🖥️', tooltip: 'Desktop-Optimierung (>1200px)' }
+    ]
+  };
+
+  // Lade Test-Berichte beim Öffnen
   useEffect(() => {
     if (isOpen) {
-      const savedLogs = localStorage.getItem('favorg_audit_logs');
-      if (savedLogs) {
+      const savedReports = localStorage.getItem('favorg_test_reports');
+      if (savedReports) {
         try {
-          setAuditEntries(JSON.parse(savedLogs));
+          setTestReports(JSON.parse(savedReports));
         } catch (error) {
-          console.error('Fehler beim Laden der Audit-Logs:', error);
-          toast.error('Fehler beim Laden der Audit-Logs');
+          console.error('Fehler beim Laden der Test-Berichte:', error);
         }
       }
     }
   }, [isOpen]);
 
-  // Speichere Audit-Logs bei Änderungen
-  const saveAuditLogs = (entries) => {
+  // Speichere Test-Berichte
+  const saveTestReports = (reports) => {
     try {
-      localStorage.setItem('favorg_audit_logs', JSON.stringify(entries));
+      localStorage.setItem('favorg_test_reports', JSON.stringify(reports));
     } catch (error) {
-      console.error('Fehler beim Speichern der Audit-Logs:', error);
-      toast.error('Fehler beim Speichern der Audit-Logs');
+      console.error('Fehler beim Speichern der Test-Berichte:', error);
+      toast.error('Fehler beim Speichern der Test-Berichte');
     }
   };
 
-  // Neuen Test-Eintrag hinzufügen
-  const addTestEntry = (testName, category, status = 'pending') => {
-    const newEntry = {
+  // Neuen Test hinzufügen
+  const addNewTest = () => {
+    if (!newTestName.trim()) {
+      toast.error('Bitte geben Sie einen Test-Namen ein');
+      return;
+    }
+
+    const newTest = {
       id: Date.now(),
-      testName: testName || `Test ${auditEntries.length + 1}`,
-      category: category || currentCategory,
-      status: status,
-      timestamp: new Date().toISOString(),
-      dateTime: new Date().toLocaleString('de-DE', {
-        year: 'numeric',
-        month: '2-digit', 
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      }),
-      notes: ''
+      name: newTestName.trim(),
+      category: currentCategory,
+      icon: '🧪',
+      tooltip: `Eigener Test: ${newTestName.trim()}`,
+      created: new Date().toISOString()
     };
 
-    const updatedEntries = [newEntry, ...auditEntries];
-    setAuditEntries(updatedEntries);
-    saveAuditLogs(updatedEntries);
-    
-    // Markiere Test als besucht und verstecke Auswahl
-    setVisitedTests(prev => new Set([...prev, testName]));
-    setShowCategorySelection(false);
-    
-    toast.success(`Test "${newEntry.testName}" hinzugefügt`);
+    // Nur zur FavOrg-Seite weiterleiten
+    window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
+    toast.success(`Test "${newTestName}" erstellt - FavOrg geöffnet`);
+    setNewTestName('');
   };
 
-  // Test-Status ändern (Abhaken/Fehlschlagen)
-  const updateTestStatus = (id, newStatus, notes = '') => {
-    const updatedEntries = auditEntries.map(entry => {
-      if (entry.id === id) {
-        return {
-          ...entry,
-          status: newStatus,
-          notes: notes,
-          updatedAt: new Date().toISOString(),
-          updatedDateTime: new Date().toLocaleString('de-DE', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit', 
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-          })
-        };
-      }
-      return entry;
-    });
-
-    setAuditEntries(updatedEntries);
-    saveAuditLogs(updatedEntries);
-
-    const statusMessages = {
-      passed: 'Test bestanden ✅',
-      failed: 'Test fehlgeschlagen ❌', 
-      pending: 'Test zurückgesetzt ⏳',
-      info: 'Test-Info aktualisiert ℹ️'
-    };
-
-    toast.success(statusMessages[newStatus] || 'Test-Status aktualisiert');
-  };
-
-  // Test löschen
-  const deleteTest = (id) => {
-    const updatedEntries = auditEntries.filter(entry => entry.id !== id);
-    setAuditEntries(updatedEntries);
-    saveAuditLogs(updatedEntries);
-    toast.success('Test-Eintrag gelöscht');
-  };
-
-  // Alle Tests löschen - Reset auch die besuchten Tests
-  const clearAllTests = () => {
-    if (window.confirm('Alle Audit-Log Einträge löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
-      setAuditEntries([]);
-      setVisitedTests(new Set());
-      localStorage.removeItem('favorg_audit_logs');
-      toast.success('Alle Audit-Logs gelöscht');
-    }
-  };
-
-  // Audit-Log als JSON exportieren
-  const exportAuditLog = () => {
-    const exportData = {
+  // Test-Bericht exportieren (PDF-Vorbereitung)
+  const exportTestReport = () => {
+    const reportData = {
       exportDate: new Date().toISOString(),
-      totalTests: auditEntries.length,
-      passedTests: auditEntries.filter(entry => entry.status === 'passed').length,
-      failedTests: auditEntries.filter(entry => entry.status === 'failed').length,
-      pendingTests: auditEntries.filter(entry => entry.status === 'pending').length,
+      reportTitle: `FavOrg Audit-Log Bericht - ${new Date().toLocaleDateString('de-DE')}`,
       categories: testCategories,
-      entries: auditEntries
+      currentCategory: currentCategory,
+      totalTests: testCategories.reduce((sum, cat) => sum + cat.tests, 0),
+      generatedAt: new Date().toLocaleString('de-DE')
     };
 
-    const dataStr = JSON.stringify(exportData, null, 2);
+    // JSON Export (später PDF)
+    const dataStr = JSON.stringify(reportData, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `favorg_audit_log_${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `favorg_audit_report_${new Date().toISOString().split('T')[0]}.json`;
     link.click();
     URL.revokeObjectURL(url);
     
-    toast.success('Audit-Log exportiert');
+    // Bericht speichern
+    const newReports = [reportData, ...testReports.slice(0, 9)]; // Max 10 Berichte
+    setTestReports(newReports);
+    saveTestReports(newReports);
+    
+    toast.success('Test-Bericht exportiert');
   };
 
-  // Status-Badge Komponente
-  const StatusBadge = ({ status }) => {
-    const statusConfig = {
-      passed: { icon: CheckCircle, color: 'bg-green-500', text: 'Bestanden' },
-      failed: { icon: AlertTriangle, color: 'bg-red-500', text: 'Fehlgeschlagen' },
-      pending: { icon: Clock, color: 'bg-yellow-500', text: 'Ausstehend' },
-      info: { icon: Info, color: 'bg-blue-500', text: 'Info' }
-    };
-
-    const config = statusConfig[status] || statusConfig.pending;
-    const IconComponent = config.icon;
-
-    return (
-      <Badge className={`${config.color} text-white`}>
-        <IconComponent className="w-3 h-3 mr-1" />
-        {config.text}
-      </Badge>
-    );
+  // Alle Berichte löschen
+  const clearAllReports = () => {
+    if (window.confirm('Alle gespeicherten Test-Berichte löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+      setTestReports([]);
+      localStorage.removeItem('favorg_test_reports');
+      toast.success('Alle Test-Berichte gelöscht');
+    }
   };
 
-  // Umfassende Test-Szenarien mit Symbolen und kurzen Namen
-  const predefinedTests = [
-    // Allgemeines Design
-    { name: '80% UI-Kompaktheit', category: 'Allgemeines Design', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
-    { name: 'Dark Theme', category: 'Allgemeines Design', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
-    { name: 'Responsiveness', category: 'Allgemeines Design', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
-    { name: 'Typographie', category: 'Allgemeines Design', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' },
-    
-    // Header-Bereich
-    { name: 'Logo + Counter', category: 'Header-Bereich', icon: '🏷️', tooltip: 'Logo und Bookmark-Anzahl anzeigen' },
-    { name: 'Action-Buttons', category: 'Header-Bereich', icon: '🔘', tooltip: 'Action-Buttons funktional (Neu, Export, etc.)' },
-    { name: 'Header-Icons', category: 'Header-Bereich', icon: '⚙️', tooltip: 'Header-Icons klickbar (Hilfe, Statistik, Einstellungen)' },
-    { name: 'Status-Buttons', category: 'Header-Bereich', icon: '🎯', tooltip: 'Status-Buttons (TOTE Links, Duplikate, Localhost)' },
-    
-    // Sidebar-Bereich
-    { name: 'Kategorien-Tree', category: 'Sidebar-Bereich', icon: '🌳', tooltip: 'Kategorien-Hierarchie korrekt angezeigt' },
-    { name: 'Collapse/Expand', category: 'Sidebar-Bereich', icon: '↔️', tooltip: 'Sidebar Collapse/Expand funktional' },
-    { name: 'Navigation', category: 'Sidebar-Bereich', icon: '🧭', tooltip: 'Kategorie-Navigation und -Auswahl' },
-    { name: 'Bookmark-Count', category: 'Sidebar-Bereich', icon: '🔢', tooltip: 'Bookmark-Anzahl pro Kategorie anzeigen' },
-    { name: 'Resizer', category: 'Sidebar-Bereich', icon: '↕️', tooltip: 'Sidebar-Resizer Funktionalität' },
-    
-    // Search-Section
-    { name: 'Suchfeld', category: 'Search-Section', icon: '🔍', tooltip: 'Suchfeld Eingabe und Funktionalität' },
-    { name: 'Erweiterte Suche', category: 'Search-Section', icon: '🔎', tooltip: 'Erweiterte Suche (Titel, URL, Beschreibung)' },
-    { name: 'Status-Filter', category: 'Search-Section', icon: '🎛️', tooltip: 'Status-Filter Dropdown funktional' },
-    { name: 'Ergebnis-Count', category: 'Search-Section', icon: '📊', tooltip: 'Suchergebnis-Anzahl korrekt angezeigt' },
-    { name: 'Clear Button', category: 'Search-Section', icon: '❌', tooltip: 'Clear Search Button funktional' },
-    
-    // Main-Content
-    { name: 'Grid Layout', category: 'Main-Content', icon: '⚏', tooltip: 'Bookmark-Grid Layout korrekt' },
-    { name: 'View Toggle', category: 'Main-Content', icon: '🔀', tooltip: 'Karten/Tabellen-Ansicht Umschalter' },
-    { name: 'Scrolling', category: 'Main-Content', icon: '📜', tooltip: 'Scrolling und Pagination' },
-    { name: 'Responsive', category: 'Main-Content', icon: '📱', tooltip: 'Content-Bereich responsive' },
-    
-    // Bookmark-Karten
-    { name: 'Card Design', category: 'Bookmark-Karten', icon: '🎴', tooltip: 'Bookmark-Karte Design und Layout' },
-    { name: 'Status-Badges', category: 'Bookmark-Karten', icon: '🏷️', tooltip: 'Status-Badges korrekt angezeigt' },
-    { name: 'Lock Button', category: 'Bookmark-Karten', icon: '🔒', tooltip: 'Lock/Unlock Button funktional' },
-    { name: 'Edit/Delete', category: 'Bookmark-Karten', icon: '✏️', tooltip: 'Edit/Delete Buttons verfügbar' },
-    { name: 'Favicons', category: 'Bookmark-Karten', icon: '🖼️', tooltip: 'Favicon-Anzeige wenn aktiviert' },
-    { name: 'URL-Links', category: 'Bookmark-Karten', icon: '🔗', tooltip: 'URL-Links funktional' },
-    
-    // Dialoge & Modals
-    { name: 'Bookmark-Dialog', category: 'Dialoge & Modals', icon: '📝', tooltip: 'Bookmark-Dialog öffnen/schließen' },
-    { name: 'Kategorie-Select', category: 'Dialoge & Modals', icon: '📁', tooltip: 'Kategorie-Auswahl im Dialog' },
-    { name: 'Settings-Dialog', category: 'Dialoge & Modals', icon: '⚙️', tooltip: 'Einstellungen-Dialog alle Tabs' },
-    { name: 'Help-System', category: 'Dialoge & Modals', icon: '❓', tooltip: 'Hilfe-System Dialog und Navigation' },
-    { name: 'Statistics', category: 'Dialoge & Modals', icon: '📈', tooltip: 'Statistik-Dialog Daten-Anzeige' },
-    
-    // Drag & Drop System
-    { name: 'Bookmark D&D', category: 'Drag & Drop System', icon: '🎯', tooltip: 'Bookmark zwischen Kategorien verschieben' },
-    { name: 'Category D&D', category: 'Drag & Drop System', icon: '📂', tooltip: 'Kategorie Hierarchie-Verschiebung' },
-    { name: 'Cross-Level', category: 'Drag & Drop System', icon: '🎢', tooltip: 'Cross-Level Category Movement' },
-    { name: 'Shift+Drag', category: 'Drag & Drop System', icon: '⇧', tooltip: 'Shift+Drag Einfüge-Modus' },
-    { name: 'Visual Feedback', category: 'Drag & Drop System', icon: '👁️', tooltip: 'Visuelle Drop-Zone Feedback' },
-    
-    // Filter & Sortierung
-    { name: 'Status-Filter', category: 'Filter & Sortierung', icon: '🎛️', tooltip: 'Status-Filter alle Typen (Aktiv, Tot, etc.)' },
-    { name: 'Category-Filter', category: 'Filter & Sortierung', icon: '📁', tooltip: 'Kategorie-Filter Funktionalität' },
-    { name: 'Sortierung', category: 'Filter & Sortierung', icon: '🔢', tooltip: 'Sortierung nach Datum/Alphabet' },
-    { name: 'Kombiniert', category: 'Filter & Sortierung', icon: '🔗', tooltip: 'Kombinierte Filter (Status + Kategorie)' },
-    
-    // Import/Export
-    { name: 'HTML Import', category: 'Import/Export', icon: '📥', tooltip: 'HTML Import-Funktionalität' },
-    { name: 'JSON Export', category: 'Import/Export', icon: '📤', tooltip: 'JSON Export alle Formate' },
-    { name: 'XML/CSV', category: 'Import/Export', icon: '📋', tooltip: 'XML/CSV Import/Export' },
-    { name: 'Testdaten', category: 'Import/Export', icon: '🧪', tooltip: 'Testdaten-Generierung (70 Bookmarks)' },
-    
-    // Einstellungen
-    { name: 'Theme-Switch', category: 'Einstellungen', icon: '🎨', tooltip: 'Theme-Wechsel (Hell/Dunkel)' },
-    { name: 'S-Time', category: 'Einstellungen', icon: '⏱️', tooltip: 'Erweiterte Einstellungen (S-Time)' },
-    { name: 'System-Tools', category: 'Einstellungen', icon: '🔧', tooltip: 'System-Tools (AuditLog/SysDok)' },
-    { name: 'Meldungen', category: 'Einstellungen', icon: '📢', tooltip: 'Meldungen Delay Einstellung' },
-    
-    // Performance & Responsive
-    { name: 'Load Speed', category: 'Performance & Responsive', icon: '⚡', tooltip: 'Ladezeiten unter 3 Sekunden' },
-    { name: 'Mobile', category: 'Performance & Responsive', icon: '📱', tooltip: 'Mobile Responsiveness (768px)' },
-    { name: 'Tablet', category: 'Performance & Responsive', icon: '📟', tooltip: 'Tablet-Ansicht (768-1200px)' },
-    { name: 'Desktop', category: 'Performance & Responsive', icon: '🖥️', tooltip: 'Desktop-Optimierung (>1200px)' }
-  ];
+  // Aktuelle Kategorie-Daten
+  const currentCategoryData = testCategories.find(cat => cat.name === currentCategory);
+  const currentTests = predefinedTests[currentCategory] || [];
+
+  // Kontext-Kurzhilfen
+  const getContextHelp = () => {
+    if (showCategorySelection) {
+      return "Wählen Sie einen Test-Bereich aus den 13 verfügbaren Kategorien";
+    } else {
+      return `${currentTests.length} Test-Szenarien für systematische Qualitätsprüfung`;
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
-        <DialogHeader className="flex-shrink-0 p-2">
+        
+        {/* Kopfzeile */}
+        <DialogHeader className="flex-shrink-0 p-2 border-b border-gray-700">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center">
-                <CheckCircle className="w-4 h-4 mr-1" />
-                <span className="text-sm font-bold text-cyan-400">🔍 FavOrg Audit-Log</span>
-                {!showCategorySelection && (
-                  <span className="ml-2 text-sm text-cyan-300">- {currentCategory}</span>
-                )}
-              </div>
-              
-              {/* Link zu FavOrg in zweitem Fenster */}
-              <Button
-                onClick={() => window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes')}
-                variant="ghost"
-                size="sm"
-                className="text-cyan-400 hover:text-cyan-300 px-2 py-1 h-6"
-                title="FavOrg in neuem Fenster öffnen"
-              >
-                🔗 FavOrg
-              </Button>
+            {/* Links: Logo + Titel */}
+            <div className="flex items-center gap-2">
+              <Search className="w-4 h-4 text-cyan-400" />
+              <span className="text-sm font-bold text-cyan-400">FavOrg Audit-Log</span>
+              {!showCategorySelection && (
+                <span className="text-sm text-cyan-300">- {currentCategory}</span>
+              )}
             </div>
 
-            {/* Umschalt-Button - immer sichtbar */}
-            <Button
-              onClick={() => setShowCategorySelection(!showCategorySelection)}
-              variant="outline"
-              size="sm"
-              className="border-cyan-600 text-cyan-400 text-xs px-2 py-1 h-6"
-            >
-              {showCategorySelection ? '🎯 Tests anzeigen' : '📂 Bereiche'}
-            </Button>
+            {/* Rechts: Toggle + Schließen */}
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={() => setShowCategorySelection(!showCategorySelection)}
+                variant="outline"
+                size="sm"
+                className="border-cyan-600 text-cyan-400 text-xs px-3 py-1 h-7"
+              >
+                {showCategorySelection ? 'Test anzeigen' : 'Bereiche'}
+              </Button>
+              <Button
+                onClick={onClose}
+                variant="ghost"
+                size="sm"
+                className="text-gray-400 hover:text-white p-1 h-7 w-7"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </DialogHeader>
 
+        {/* Zweite Zeile: Kurzhilfen + Status */}
+        <div className="flex items-center justify-between px-4 py-2 bg-gray-800 text-sm">
+          <div className="flex items-center gap-2 text-gray-300">
+            <HelpCircle className="w-4 h-4" />
+            <span>{getContextHelp()}</span>
+          </div>
+          <div className="text-gray-400">
+            {showCategorySelection ? (
+              `${testCategories.length} Bereiche verfügbar`
+            ) : (
+              `Bereich: ${currentCategory} | ${currentTests.length} Tests`
+            )}
+          </div>
+        </div>
+
         <div className="flex flex-col h-full overflow-hidden">
-          {/* Bereichsauswahl ODER Test-Auswahl - Nur Auswahl, keine Verwaltung */}
+          
+          {/* Bereichsauswahl */}
           {showCategorySelection ? (
-            /* BEREICHSAUSWAHL-MODUS - Nur Bereiche */
-            <div className="flex-1 p-3 bg-gray-800 rounded-lg overflow-hidden">
-              <div className="h-full overflow-y-auto">
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pr-2">
-                  {testCategories.map(category => (
-                    <Button
-                      key={category}
-                      onClick={() => {
-                        setCurrentCategory(category);
-                        setShowCategorySelection(false);
-                      }}
-                      variant={currentCategory === category ? "default" : "outline"}
-                      className={`text-sm h-18 flex flex-col items-center justify-center ${
-                        currentCategory === category 
-                          ? 'bg-cyan-600 hover:bg-cyan-700 text-white' 
-                          : 'border-gray-600 text-gray-300 hover:bg-gray-700'
-                      }`}
-                    >
-                      <span className="text-xl mb-1">
-                        {category === 'Allgemeines Design' ? '🎨' :
-                         category === 'Header-Bereich' ? '🔝' :
-                         category === 'Sidebar-Bereich' ? '📋' :
-                         category === 'Search-Section' ? '🔍' :
-                         category === 'Main-Content' ? '📄' :
-                         category === 'Bookmark-Karten' ? '🎴' :
-                         category === 'Dialoge & Modals' ? '🗨️' :
-                         category === 'Navigation & Routing' ? '🧭' :
-                         category === 'Drag & Drop System' ? '🎯' :
-                         category === 'Filter & Sortierung' ? '🎛️' :
-                         category === 'Import/Export' ? '📤' :
-                         category === 'Einstellungen' ? '⚙️' :
-                         category === 'Performance & Responsive' ? '⚡' : '📁'}
-                      </span>
+            <div className="flex-1 p-4 overflow-y-auto">
+              {/* Toggle für kompakte Ansicht */}
+              <div className="flex justify-end mb-3">
+                <Button
+                  onClick={() => setCompactView(!compactView)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-400 text-xs"
+                >
+                  {compactView ? '📝 Text anzeigen' : '🎯 Nur Symbole'}
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                {testCategories.map((category) => (
+                  <Button
+                    key={category.name}
+                    onClick={() => {
+                      setCurrentCategory(category.name);
+                      setShowCategorySelection(false);
+                    }}
+                    variant={currentCategory === category.name ? "default" : "outline"}
+                    className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-sm ${
+                      currentCategory === category.name 
+                        ? 'bg-cyan-600 hover:bg-cyan-700 text-white' 
+                        : 'border-gray-600 text-gray-300 hover:bg-gray-700'
+                    }`}
+                  >
+                    <span className={`${compactView ? 'text-lg' : 'text-xl mb-1'}`}>
+                      {category.icon}
+                    </span>
+                    {!compactView && (
                       <span className="text-xs text-center font-medium leading-tight">
-                        {category.replace('-', ' ')}
+                        {category.name}
                       </span>
+                    )}
+                    <Badge 
+                      variant="secondary" 
+                      className={`${compactView ? 'ml-2' : 'mt-1'} text-xs bg-gray-700 text-gray-300`}
+                    >
+                      {category.tests}
+                    </Badge>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* Test-Auswahl */
+            <div className="flex-1 flex flex-col overflow-hidden">
+              
+              {/* Eingabefeld für neue Tests */}
+              <div className="p-4 bg-gray-800 border-b border-gray-700">
+                <div className="flex items-center gap-2 max-w-md mx-auto">
+                  <input
+                    type="text"
+                    value={newTestName}
+                    onChange={(e) => setNewTestName(e.target.value)}
+                    placeholder="Eigener Test..."
+                    className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-sm text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
+                    onKeyPress={(e) => e.key === 'Enter' && addNewTest()}
+                  />
+                  <Button
+                    onClick={addNewTest}
+                    size="sm"
+                    className="bg-cyan-600 hover:bg-cyan-700 px-3 py-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Test-Buttons */}
+              <div className="flex-1 p-4 overflow-y-auto">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-lg font-semibold text-cyan-400">{currentCategory}</h3>
+                  <Button
+                    onClick={() => setCompactView(!compactView)}
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-400 text-xs"
+                  >
+                    {compactView ? '📝 Text anzeigen' : '🎯 Nur Symbole'}
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                  {currentTests.map((test, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => {
+                        window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
+                        toast.success(`Test "${test.name}" - FavOrg geöffnet`);
+                      }}
+                      variant="outline"
+                      title={test.tooltip}
+                      className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-xs border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-cyan-500`}
+                    >
+                      <span className={`${compactView ? 'text-lg' : 'text-lg mb-1'}`}>
+                        {test.icon}
+                      </span>
+                      {!compactView && (
+                        <span className="text-xs text-center leading-tight font-medium">
+                          {test.name}
+                        </span>
+                      )}
                     </Button>
                   ))}
                 </div>
               </div>
-            </div>
-          ) : (
-            /* TEST-AUSWAHL-MODUS - Nur Test-Buttons, keine Verwaltung */
-            <div className="flex-1 p-3 bg-gray-850 rounded-lg overflow-hidden">
-              <div className="h-full overflow-y-auto">
-                <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 pr-2">
-                  {predefinedTests
-                    .filter(test => test.category === currentCategory)
-                    .map((test, index) => (
-                      <Button
-                        key={index}
-                        onClick={() => {
-                          // Nur zur externen FavOrg-Seite weiterleiten
-                          window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
-                          toast.success(`Test-Bereich "${test.name}" - FavOrg geöffnet`);
-                        }}
-                        variant="outline"
-                        size="sm"
-                        title={test.tooltip}
-                        className="h-16 flex flex-col items-center justify-center text-xs border-gray-600 text-gray-300 hover:bg-gray-700"
-                      >
-                        <span className="text-lg mb-1">{test.icon}</span>
-                        <span className="text-xs text-center leading-tight font-medium">{test.name}</span>
-                      </Button>
-                    ))}
+
+              {/* Fußzeile */}
+              <div className="flex items-center justify-between p-4 bg-gray-800 border-t border-gray-700">
+                {/* Links: Status-Quadrate */}
+                <div className="flex items-center gap-2">
+                  <div 
+                    className="w-8 h-8 bg-green-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                    title="Bestanden - Tests erfolgreich abgeschlossen"
+                  >
+                    ✓
+                  </div>
+                  <div 
+                    className="w-8 h-8 bg-red-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                    title="Fehlgeschlagen - Tests mit Problemen"
+                  >
+                    ✗
+                  </div>
+                  <div 
+                    className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                    title="In Bearbeitung - Tests werden aktuell durchgeführt"
+                  >
+                    ~
+                  </div>
+                  <div 
+                    className="w-8 h-8 bg-orange-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                    title="Ausstehend - Tests noch nicht begonnen"
+                  >
+                    ○
+                  </div>
+                </div>
+
+                {/* Rechts: Export + Löschen */}
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={exportTestReport}
+                    variant="outline"
+                    size="sm"
+                    className="border-green-600 text-green-400 hover:bg-green-900 px-3"
+                    title="Test-Bericht als PDF exportieren"
+                  >
+                    <Download className="w-4 h-4 mr-1" />
+                    PDF
+                  </Button>
+                  <Button
+                    onClick={clearAllReports}
+                    variant="outline"
+                    size="sm"
+                    className="border-red-600 text-red-400 hover:bg-red-900 px-2"
+                    title="Alle Test-Berichte löschen"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
             </div>
           )}
-
-          {/* Test-Einträge - Scrollbar */}
-          <div className="flex-1 overflow-y-auto bg-gray-800 rounded-lg">
-            {auditEntries.length === 0 ? (
-              <div className="p-8 text-center text-gray-400">
-                <CheckCircle className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <h3 className="text-xl font-semibold mb-2">Bereit zum Testen</h3>
-                <p>Fügen Sie Tests hinzu um mit der Qualitätssicherung für "<strong>{currentCategory}</strong>" zu beginnen.</p>
-                {!showCategorySelection && (
-                  <Button 
-                    onClick={() => setShowCategorySelection(true)}
-                    className="mt-4 bg-cyan-600 hover:bg-cyan-700"
-                  >
-                    Bereich wechseln
-                  </Button>
-                )}
-              </div>
-            ) : (
-              <div className="space-y-2 p-4">
-                {auditEntries
-                  .filter(entry => !showCategorySelection ? entry.category === currentCategory : true)
-                  .map((entry) => (
-                  <div key={entry.id} className="bg-gray-700 p-3 rounded-lg border border-gray-600">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
-                          <StatusBadge status={entry.status} />
-                          {showCategorySelection && (
-                            <Badge variant="outline" className="border-gray-500 text-gray-300 text-xs">
-                              {entry.category}
-                            </Badge>
-                          )}
-                          <span className="text-xs text-gray-400">
-                            {entry.dateTime}
-                          </span>
-                        </div>
-                        
-                        <h4 className="font-semibold text-white mb-1 text-sm">{entry.testName}</h4>
-                        
-                        {entry.notes && (
-                          <p className="text-xs text-gray-300 bg-gray-800 p-2 rounded mt-2">
-                            📝 {entry.notes}
-                          </p>
-                        )}
-                        
-                        {entry.updatedAt && (
-                          <p className="text-xs text-gray-500 mt-1">
-                            Aktualisiert: {entry.updatedDateTime}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="flex space-x-1 ml-4">
-                        <Button
-                          size="sm"
-                          onClick={() => updateTestStatus(entry.id, 'passed', 'Test erfolgreich bestanden')}
-                          className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs"
-                          disabled={entry.status === 'passed'}
-                          title="Test bestanden"
-                        >
-                          ✅
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            const notes = prompt('Fehlschlag-Notizen:', '');
-                            if (notes !== null) {
-                              updateTestStatus(entry.id, 'failed', notes || 'Test fehlgeschlagen');
-                            }
-                          }}
-                          className="bg-red-600 hover:bg-red-700 px-2 py-1 text-xs"
-                          disabled={entry.status === 'failed'}
-                          title="Test fehlgeschlagen"
-                        >
-                          ❌
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => updateTestStatus(entry.id, 'pending')}
-                          className="bg-yellow-600 hover:bg-yellow-700 px-2 py-1 text-xs"
-                          disabled={entry.status === 'pending'}
-                          title="Test zurücksetzen"
-                        >
-                          ⏳
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => deleteTest(entry.id)}
-                          variant="outline"
-                          className="border-gray-600 text-gray-400 hover:bg-red-900 px-2 py-1 text-xs"
-                          title="Test löschen"
-                        >
-                          🗑️
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       </DialogContent>
     </Dialog>
