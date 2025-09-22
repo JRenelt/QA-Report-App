@@ -3451,6 +3451,7 @@ function App() {
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState(null);
   const [selectedBookmarks, setSelectedBookmarks] = useState(new Set());
+  const [showAuditLog, setShowAuditLog] = useState(false);
 
   // Application Settings mit Meldungen Delay
   const [appSettings, setAppSettings] = useState(() => {
