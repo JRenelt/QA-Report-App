@@ -303,18 +303,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               </div>
             )}
 
-            {/* Rechts: Navigation Buttons + Schließen */}
+            {/* Rechts: Nur Toggle Button (Berichte und Schließen entfernt) */}
             <div className="flex items-center gap-2">
-              {viewMode !== 'bericht' && (
-                <Button
-                  onClick={() => setViewMode('bericht')}
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-400 hover:text-white text-xs px-2 py-1 h-7"
-                >
-                  📊 Berichte
-                </Button>
-              )}
               <Button
                 onClick={toggleView}
                 variant="outline"
@@ -322,14 +312,6 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 className="border-cyan-600 text-cyan-400 text-xs px-2 py-1 h-7"
               >
                 {getViewToggleText()}
-              </Button>
-              <Button
-                onClick={onClose}
-                variant="ghost"
-                size="sm"
-                className="text-gray-400 hover:text-white p-1 h-7 w-7"
-              >
-                <X className="w-4 h-4" />
               </Button>
             </div>
           </div>
