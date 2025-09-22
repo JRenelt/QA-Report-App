@@ -450,6 +450,7 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           {
             title: 'Erweitert',
             steps: [
+              '🔍 **AuditLog-System**: Systematische Qualitätsprüfung aller FavOrg-Funktionen',
               '📊 **Testdaten-Generierung**: 100 Favoriten mit realistischen Daten aus 11 Kategorien',
               '🎯 **Status-Verteilung**: 54% aktiv, 9% tot, 14% gesperrt, 10% localhost, 7% duplikate',
               '🌐 **Realistische URLs**: GitHub, Stack Overflow, BBC News, LinkedIn, Netflix, Wikipedia',
