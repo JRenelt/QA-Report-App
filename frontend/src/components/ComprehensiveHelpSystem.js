@@ -567,6 +567,73 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           }
         ]
       }
+    },
+    auditlog: {
+      title: 'AuditLog-System',
+      icon: <Grid className="w-5 h-5" />,
+      content: {
+        title: '🔍 Systematische Qualitätsprüfung',
+        description: 'Das AuditLog-System ermöglicht eine methodische Überprüfung aller FavOrg-Funktionen mit strukturierten Testbereichen und detaillierter Dokumentation.',
+        sections: [
+          {
+            title: 'Zugriff und Navigation',
+            steps: [
+              '⚙️ **Öffnen**: Einstellungen → Erweitert → AuditLog',
+              '📂 **Bereiche**: 13 Test-Kategorien von Design bis Performance',
+              '🔄 **Navigation**: Toggle zwischen "Bereiche" und "Test anzeigen"',
+              '🔗 **FavOrg-Link**: Direkter Zugriff auf Hauptanwendung zum Testen'
+            ]
+          },
+          {
+            title: 'Test-Bereiche Übersicht',
+            steps: [
+              '🎨 **Allgemeines Design**: UI-Kompaktheit, Dark Theme, Responsiveness, Typographie',
+              '🔝 **Header-Bereich**: Logo, Action-Buttons, Icons, Status-Buttons',
+              '📋 **Sidebar-Bereich**: Kategorien-Tree, Collapse/Expand, Navigation',
+              '🔍 **Search-Section**: Suchfeld, Erweiterte Suche, Status-Filter',
+              '📄 **Main-Content**: Grid Layout, View Toggle, Scrolling',
+              '🎴 **Bookmark-Karten**: Card Design, Status-Badges, Lock/Edit Buttons',
+              '🗨️ **Dialoge & Modals**: Bookmark-Dialog, Einstellungen, Hilfe-System',
+              '🧭 **Navigation & Routing**: Sidebar-Navigation, Breadcrumb, Deep Links',
+              '🎯 **Drag & Drop System**: Bookmark/Category D&D, Cross-Level Movement',
+              '🎛️ **Filter & Sortierung**: Status-Filter, Kombinierte Filter',
+              '📤 **Import/Export**: HTML Import, JSON/XML Export, Testdaten',
+              '⚙️ **Einstellungen**: Theme-Switch, System-Tools, Meldungen',
+              '⚡ **Performance & Responsive**: Load Speed, Mobile/Tablet/Desktop'
+            ]
+          },
+          {
+            title: 'Testpunkt-Management',
+            steps: [
+              '✅ **Testpunkt-Auswahl**: Klick auf Test-Bereiche zeigt spezifische Testpunkte',
+              '📝 **Status-Tracking**: Ausstehend (🟡), Bestanden (✅), Fehlgeschlagen (❌), In Bearbeitung (⏳)',
+              '🗑️ **Testpunkt-Verwaltung**: Löschen einzelner Testpunkte möglich',
+              '🧪 **Eigene Tests**: Über Inputfeld benutzerdefinierte Tests hinzufügen',
+              '📊 **Fortschritts-Tracking**: Live-Counter in Footer für alle Status-Kategorien'
+            ]
+          },
+          {
+            title: 'Bericht-System',
+            steps: [
+              '📋 **Archiv-Funktion**: Alle Testberichte werden automatisch archiviert',
+              '📊 **Status-Übersicht**: Kumulierte Darstellung aller Test-Status',
+              '📤 **Export-Funktionen**: PDF/JSON Export der Testergebnisse',
+              '🗑️ **Bereinigung**: Selective oder komplette Löschung von Testberichten',
+              '📈 **Historische Verfolgung**: Verlauf der durchgeführten Tests einsehbar'
+            ]
+          },
+          {
+            title: 'Testmethodik',
+            steps: [
+              '🎯 **Systematisches Vorgehen**: Schritt-für-Schritt durch alle Bereiche',
+              '🔗 **Parallel-Testing**: FavOrg in separatem Fenster für Live-Tests',
+              '📋 **Checklisten-Prinzip**: Strukturierte Abarbeitung aller Testpunkte',
+              '🏷️ **Status-Markierung**: Eindeutige Kennzeichnung des Testfortschritts',
+              '📊 **Qualitätssicherung**: Vollständige Dokumentation für Nachvollziehbarkeit'
+            ]
+          }
+        ]
+      }
     }
   };
 
