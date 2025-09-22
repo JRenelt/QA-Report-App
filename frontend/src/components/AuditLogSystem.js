@@ -265,21 +265,39 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
-        <DialogHeader className="flex-shrink-0">
-          <DialogTitle className="text-lg font-bold text-cyan-400 flex items-center justify-center">
-            <CheckCircle className="w-4 h-4 mr-2" />
-            🔍 FavOrg Audit-Log
-            {!showCategorySelection && (
-              <span className="ml-2 text-base text-cyan-300">- {currentCategory}</span>
-            )}
-          </DialogTitle>
-          {/* SEKUNDÄR: Nur minimale Beschreibung */}
-          <p className="text-gray-400 text-xs text-center">
-            {showCategorySelection 
-              ? 'Fokus: Bereich wählen'
-              : `Fokus: ${currentCategory} testen - ${auditEntries.filter(e => e.category === currentCategory).length} dokumentiert`
-            }
-          </p>
+        <DialogHeader className="flex-shrink-0 p-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center">
+                <CheckCircle className="w-4 h-4 mr-1" />
+                <span className="text-sm font-bold text-cyan-400">🔍 FavOrg Audit-Log</span>
+                {!showCategorySelection && (
+                  <span className="ml-2 text-sm text-cyan-300">- {currentCategory}</span>
+                )}
+              </div>
+              
+              {/* Link zu FavOrg in zweitem Fenster */}
+              <Button
+                onClick={() => window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes')}
+                variant="ghost"
+                size="sm"
+                className="text-cyan-400 hover:text-cyan-300 px-2 py-1 h-6"
+                title="FavOrg in neuem Fenster öffnen"
+              >
+                🔗 FavOrg
+              </Button>
+            </div>
+
+            {/* Umschalt-Button - immer sichtbar */}
+            <Button
+              onClick={() => setShowCategorySelection(!showCategorySelection)}
+              variant="outline"
+              size="sm"
+              className="border-cyan-600 text-cyan-400 text-xs px-2 py-1 h-6"
+            >
+              {showCategorySelection ? '🎯 Tests anzeigen' : '📂 Bereiche'}
+            </Button>
+          </div>
         </DialogHeader>
 
         <div className="flex flex-col h-full space-y-2 overflow-hidden">
