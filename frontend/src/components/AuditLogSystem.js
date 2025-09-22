@@ -181,85 +181,85 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     );
   };
 
-  // Umfassende Test-Szenarien für alle FavOrg-Bereiche
+  // Umfassende Test-Szenarien mit Symbolen und kurzen Namen
   const predefinedTests = [
     // Allgemeines Design
-    { name: '80% kompakte UI-Darstellung prüfen', category: 'Allgemeines Design' },
-    { name: 'Dark Theme Konsistenz testen', category: 'Allgemeines Design' },
-    { name: 'Responsive Layout auf verschiedenen Größen', category: 'Allgemeines Design' },
-    { name: 'Typographie und Schriftarten prüfen', category: 'Allgemeines Design' },
+    { name: '80% UI-Kompaktheit', category: 'Allgemeines Design', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
+    { name: 'Dark Theme', category: 'Allgemeines Design', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
+    { name: 'Responsiveness', category: 'Allgemeines Design', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
+    { name: 'Typographie', category: 'Allgemeines Design', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' },
     
     // Header-Bereich
-    { name: 'Logo und Bookmark-Anzahl anzeigen', category: 'Header-Bereich' },
-    { name: 'Action-Buttons funktional (Neu, Export, etc.)', category: 'Header-Bereich' },
-    { name: 'Header-Icons klickbar (Hilfe, Statistik, Einstellungen)', category: 'Header-Bereich' },
-    { name: 'Status-Buttons (TOTE Links, Duplikate, Localhost)', category: 'Header-Bereich' },
+    { name: 'Logo + Counter', category: 'Header-Bereich', icon: '🏷️', tooltip: 'Logo und Bookmark-Anzahl anzeigen' },
+    { name: 'Action-Buttons', category: 'Header-Bereich', icon: '🔘', tooltip: 'Action-Buttons funktional (Neu, Export, etc.)' },
+    { name: 'Header-Icons', category: 'Header-Bereich', icon: '⚙️', tooltip: 'Header-Icons klickbar (Hilfe, Statistik, Einstellungen)' },
+    { name: 'Status-Buttons', category: 'Header-Bereich', icon: '🎯', tooltip: 'Status-Buttons (TOTE Links, Duplikate, Localhost)' },
     
     // Sidebar-Bereich
-    { name: 'Kategorien-Hierarchie korrekt angezeigt', category: 'Sidebar-Bereich' },
-    { name: 'Sidebar Collapse/Expand funktional', category: 'Sidebar-Bereich' },
-    { name: 'Kategorie-Navigation und -Auswahl', category: 'Sidebar-Bereich' },
-    { name: 'Bookmark-Anzahl pro Kategorie anzeigen', category: 'Sidebar-Bereich' },
-    { name: 'Sidebar-Resizer Funktionalität', category: 'Sidebar-Bereich' },
+    { name: 'Kategorien-Tree', category: 'Sidebar-Bereich', icon: '🌳', tooltip: 'Kategorien-Hierarchie korrekt angezeigt' },
+    { name: 'Collapse/Expand', category: 'Sidebar-Bereich', icon: '↔️', tooltip: 'Sidebar Collapse/Expand funktional' },
+    { name: 'Navigation', category: 'Sidebar-Bereich', icon: '🧭', tooltip: 'Kategorie-Navigation und -Auswahl' },
+    { name: 'Bookmark-Count', category: 'Sidebar-Bereich', icon: '🔢', tooltip: 'Bookmark-Anzahl pro Kategorie anzeigen' },
+    { name: 'Resizer', category: 'Sidebar-Bereich', icon: '↕️', tooltip: 'Sidebar-Resizer Funktionalität' },
     
     // Search-Section
-    { name: 'Suchfeld Eingabe und Funktionalität', category: 'Search-Section' },
-    { name: 'Erweiterte Suche (Titel, URL, Beschreibung)', category: 'Search-Section' },
-    { name: 'Status-Filter Dropdown funktional', category: 'Search-Section' },
-    { name: 'Suchergebnis-Anzahl korrekt angezeigt', category: 'Search-Section' },
-    { name: 'Clear Search Button funktional', category: 'Search-Section' },
+    { name: 'Suchfeld', category: 'Search-Section', icon: '🔍', tooltip: 'Suchfeld Eingabe und Funktionalität' },
+    { name: 'Erweiterte Suche', category: 'Search-Section', icon: '🔎', tooltip: 'Erweiterte Suche (Titel, URL, Beschreibung)' },
+    { name: 'Status-Filter', category: 'Search-Section', icon: '🎛️', tooltip: 'Status-Filter Dropdown funktional' },
+    { name: 'Ergebnis-Count', category: 'Search-Section', icon: '📊', tooltip: 'Suchergebnis-Anzahl korrekt angezeigt' },
+    { name: 'Clear Button', category: 'Search-Section', icon: '❌', tooltip: 'Clear Search Button funktional' },
     
     // Main-Content
-    { name: 'Bookmark-Grid Layout korrekt', category: 'Main-Content' },
-    { name: 'Karten/Tabellen-Ansicht Umschalter', category: 'Main-Content' },
-    { name: 'Scrolling und Pagination', category: 'Main-Content' },
-    { name: 'Content-Bereich responsive', category: 'Main-Content' },
+    { name: 'Grid Layout', category: 'Main-Content', icon: '⚏', tooltip: 'Bookmark-Grid Layout korrekt' },
+    { name: 'View Toggle', category: 'Main-Content', icon: '🔀', tooltip: 'Karten/Tabellen-Ansicht Umschalter' },
+    { name: 'Scrolling', category: 'Main-Content', icon: '📜', tooltip: 'Scrolling und Pagination' },
+    { name: 'Responsive', category: 'Main-Content', icon: '📱', tooltip: 'Content-Bereich responsive' },
     
     // Bookmark-Karten
-    { name: 'Bookmark-Karte Design und Layout', category: 'Bookmark-Karten' },
-    { name: 'Status-Badges korrekt angezeigt', category: 'Bookmark-Karten' },
-    { name: 'Lock/Unlock Button funktional', category: 'Bookmark-Karten' },
-    { name: 'Edit/Delete Buttons verfügbar', category: 'Bookmark-Karten' },
-    { name: 'Favicon-Anzeige wenn aktiviert', category: 'Bookmark-Karten' },
-    { name: 'URL-Links funktional', category: 'Bookmark-Karten' },
+    { name: 'Card Design', category: 'Bookmark-Karten', icon: '🎴', tooltip: 'Bookmark-Karte Design und Layout' },
+    { name: 'Status-Badges', category: 'Bookmark-Karten', icon: '🏷️', tooltip: 'Status-Badges korrekt angezeigt' },
+    { name: 'Lock Button', category: 'Bookmark-Karten', icon: '🔒', tooltip: 'Lock/Unlock Button funktional' },
+    { name: 'Edit/Delete', category: 'Bookmark-Karten', icon: '✏️', tooltip: 'Edit/Delete Buttons verfügbar' },
+    { name: 'Favicons', category: 'Bookmark-Karten', icon: '🖼️', tooltip: 'Favicon-Anzeige wenn aktiviert' },
+    { name: 'URL-Links', category: 'Bookmark-Karten', icon: '🔗', tooltip: 'URL-Links funktional' },
     
     // Dialoge & Modals
-    { name: 'Bookmark-Dialog öffnen/schließen', category: 'Dialoge & Modals' },
-    { name: 'Kategorie-Auswahl im Dialog', category: 'Dialoge & Modals' },
-    { name: 'Einstellungen-Dialog alle Tabs', category: 'Dialoge & Modals' },
-    { name: 'Hilfe-System Dialog und Navigation', category: 'Dialoge & Modals' },
-    { name: 'Statistik-Dialog Daten-Anzeige', category: 'Dialoge & Modals' },
+    { name: 'Bookmark-Dialog', category: 'Dialoge & Modals', icon: '📝', tooltip: 'Bookmark-Dialog öffnen/schließen' },
+    { name: 'Kategorie-Select', category: 'Dialoge & Modals', icon: '📁', tooltip: 'Kategorie-Auswahl im Dialog' },
+    { name: 'Settings-Dialog', category: 'Dialoge & Modals', icon: '⚙️', tooltip: 'Einstellungen-Dialog alle Tabs' },
+    { name: 'Help-System', category: 'Dialoge & Modals', icon: '❓', tooltip: 'Hilfe-System Dialog und Navigation' },
+    { name: 'Statistics', category: 'Dialoge & Modals', icon: '📈', tooltip: 'Statistik-Dialog Daten-Anzeige' },
     
     // Drag & Drop System
-    { name: 'Bookmark zwischen Kategorien verschieben', category: 'Drag & Drop System' },
-    { name: 'Kategorie Hierarchie-Verschiebung', category: 'Drag & Drop System' },
-    { name: 'Cross-Level Category Movement', category: 'Drag & Drop System' },
-    { name: 'Shift+Drag Einfüge-Modus', category: 'Drag & Drop System' },
-    { name: 'Visuelle Drop-Zone Feedback', category: 'Drag & Drop System' },
+    { name: 'Bookmark D&D', category: 'Drag & Drop System', icon: '🎯', tooltip: 'Bookmark zwischen Kategorien verschieben' },
+    { name: 'Category D&D', category: 'Drag & Drop System', icon: '📂', tooltip: 'Kategorie Hierarchie-Verschiebung' },
+    { name: 'Cross-Level', category: 'Drag & Drop System', icon: '🎢', tooltip: 'Cross-Level Category Movement' },
+    { name: 'Shift+Drag', category: 'Drag & Drop System', icon: '⇧', tooltip: 'Shift+Drag Einfüge-Modus' },
+    { name: 'Visual Feedback', category: 'Drag & Drop System', icon: '👁️', tooltip: 'Visuelle Drop-Zone Feedback' },
     
     // Filter & Sortierung
-    { name: 'Status-Filter alle Typen (Aktiv, Tot, etc.)', category: 'Filter & Sortierung' },
-    { name: 'Kategorie-Filter Funktionalität', category: 'Filter & Sortierung' },
-    { name: 'Sortierung nach Datum/Alphabet', category: 'Filter & Sortierung' },
-    { name: 'Kombinierte Filter (Status + Kategorie)', category: 'Filter & Sortierung' },
+    { name: 'Status-Filter', category: 'Filter & Sortierung', icon: '🎛️', tooltip: 'Status-Filter alle Typen (Aktiv, Tot, etc.)' },
+    { name: 'Category-Filter', category: 'Filter & Sortierung', icon: '📁', tooltip: 'Kategorie-Filter Funktionalität' },
+    { name: 'Sortierung', category: 'Filter & Sortierung', icon: '🔢', tooltip: 'Sortierung nach Datum/Alphabet' },
+    { name: 'Kombiniert', category: 'Filter & Sortierung', icon: '🔗', tooltip: 'Kombinierte Filter (Status + Kategorie)' },
     
     // Import/Export
-    { name: 'HTML Import-Funktionalität', category: 'Import/Export' },
-    { name: 'JSON Export alle Formate', category: 'Import/Export' },
-    { name: 'XML/CSV Import/Export', category: 'Import/Export' },
-    { name: 'Testdaten-Generierung (70 Bookmarks)', category: 'Import/Export' },
+    { name: 'HTML Import', category: 'Import/Export', icon: '📥', tooltip: 'HTML Import-Funktionalität' },
+    { name: 'JSON Export', category: 'Import/Export', icon: '📤', tooltip: 'JSON Export alle Formate' },
+    { name: 'XML/CSV', category: 'Import/Export', icon: '📋', tooltip: 'XML/CSV Import/Export' },
+    { name: 'Testdaten', category: 'Import/Export', icon: '🧪', tooltip: 'Testdaten-Generierung (70 Bookmarks)' },
     
     // Einstellungen
-    { name: 'Theme-Wechsel (Hell/Dunkel)', category: 'Einstellungen' },
-    { name: 'Erweiterte Einstellungen (S-Time)', category: 'Einstellungen' },
-    { name: 'System-Tools (AuditLog/SysDok)', category: 'Einstellungen' },
-    { name: 'Meldungen Delay Einstellung', category: 'Einstellungen' },
+    { name: 'Theme-Switch', category: 'Einstellungen', icon: '🎨', tooltip: 'Theme-Wechsel (Hell/Dunkel)' },
+    { name: 'S-Time', category: 'Einstellungen', icon: '⏱️', tooltip: 'Erweiterte Einstellungen (S-Time)' },
+    { name: 'System-Tools', category: 'Einstellungen', icon: '🔧', tooltip: 'System-Tools (AuditLog/SysDok)' },
+    { name: 'Meldungen', category: 'Einstellungen', icon: '📢', tooltip: 'Meldungen Delay Einstellung' },
     
     // Performance & Responsive
-    { name: 'Ladezeiten unter 3 Sekunden', category: 'Performance & Responsive' },
-    { name: 'Mobile Responsiveness (768px)', category: 'Performance & Responsive' },
-    { name: 'Tablet-Ansicht (768-1200px)', category: 'Performance & Responsive' },
-    { name: 'Desktop-Optimierung (>1200px)', category: 'Performance & Responsive' }
+    { name: 'Load Speed', category: 'Performance & Responsive', icon: '⚡', tooltip: 'Ladezeiten unter 3 Sekunden' },
+    { name: 'Mobile', category: 'Performance & Responsive', icon: '📱', tooltip: 'Mobile Responsiveness (768px)' },
+    { name: 'Tablet', category: 'Performance & Responsive', icon: '📟', tooltip: 'Tablet-Ansicht (768-1200px)' },
+    { name: 'Desktop', category: 'Performance & Responsive', icon: '🖥️', tooltip: 'Desktop-Optimierung (>1200px)' }
   ];
 
   return (
