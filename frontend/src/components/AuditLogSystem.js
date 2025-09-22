@@ -323,7 +323,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         <div className="flex flex-col h-full overflow-hidden">
           
           {/* Bereichsauswahl */}
-          {showCategorySelection ? (
+          {viewMode === 'bereiche' && (
             <div className="flex-1 p-4 overflow-y-auto">
               {/* Toggle für kompakte Ansicht */}
               <div className="flex justify-end mb-3">
@@ -333,44 +333,46 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   size="sm"
                   className="text-gray-400 text-xs"
                 >
-                  {compactView ? '📝 Text anzeigen' : '🎯 Nur Symbole'}
+                  {compactView ? '📝 Vollansicht' : '🎯 Kompakt'}
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
                 {testCategories.map((category) => (
                   <Button
                     key={category.name}
                     onClick={() => {
                       setCurrentCategory(category.name);
-                      setShowCategorySelection(false);
+                      setViewMode('tests');
                     }}
                     variant={currentCategory === category.name ? "default" : "outline"}
-                    className={`${compactView ? 'h-12' : 'h-16'} flex ${compactView ? 'items-center justify-center' : 'flex-col items-center justify-center'} text-sm ${
+                    className={`${compactView ? 'h-10 px-2' : 'h-14 px-3'} flex items-center justify-start text-xs ${
                       currentCategory === category.name 
                         ? 'bg-cyan-600 hover:bg-cyan-700 text-white' 
                         : 'border-gray-600 text-gray-300 hover:bg-gray-700'
                     }`}
                   >
-                    <span className={`${compactView ? 'text-lg' : 'text-xl mb-1'}`}>
-                      {category.icon}
-                    </span>
-                    {!compactView && (
-                      <span className="text-xs text-center font-medium leading-tight">
-                        {category.name}
-                      </span>
+                    <span className="text-sm mr-2">{category.icon}</span>
+                    {!compactView ? (
+                      <div className="flex flex-col items-start">
+                        <span className="font-medium leading-tight text-left">
+                          {category.name.replace('-', ' ').replace(' Bereich', '').replace(' Section', '')}
+                        </span>
+                        <span className="text-xs text-gray-400">{category.tests} Tests</span>
+                      </div>
+                    ) : (
+                      <Badge variant="secondary" className="ml-1 text-xs bg-gray-700 text-gray-300 px-1">
+                        {category.tests}
+                      </Badge>
                     )}
-                    <Badge 
-                      variant="secondary" 
-                      className={`${compactView ? 'ml-2' : 'mt-1'} text-xs bg-gray-700 text-gray-300`}
-                    >
-                      {category.tests}
-                    </Badge>
                   </Button>
                 ))}
               </div>
             </div>
-          ) : (
+          )}
+
+          {/* Test-Auswahl */}
+          {viewMode === 'tests' && (
             /* Test-Auswahl */
             <div className="flex-1 flex flex-col overflow-hidden">
               
