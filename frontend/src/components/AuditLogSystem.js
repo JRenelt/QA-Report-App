@@ -400,25 +400,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               <div className="flex-1 p-4 overflow-y-auto">
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="text-lg font-semibold text-cyan-400">{currentCategory}</h3>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      onClick={addNewTest}
-                      size="sm"
-                      className="bg-cyan-600 hover:bg-cyan-700 px-3 py-2"
-                      disabled={!newTestName.trim()}
-                    >
-                      <Plus className="w-4 h-4 mr-1" />
-                      Hinzufügen
-                    </Button>
-                    <Button
-                      onClick={() => setCompactView(!compactView)}
-                      variant="ghost"
-                      size="sm"
-                      className="text-gray-400 text-xs"
-                    >
-                      {compactView ? '📝 Text anzeigen' : '🎯 Nur Symbole'}
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={() => setCompactView(!compactView)}
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-400 text-xs"
+                  >
+                    {compactView ? '📝 Text anzeigen' : '🎯 Nur Symbole'}
+                  </Button>
                 </div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
