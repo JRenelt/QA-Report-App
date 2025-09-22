@@ -451,19 +451,19 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       );
                     })}
                   </div>
-                    
-                    {/* Link zum Handbuch */}
-                    <div className="mt-4 text-center">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-cyan-400 hover:text-cyan-300 text-xs"
-                        title="Öffnet das Handbuch mit detaillierten Testanleitungen"
-                      >
-                        📖 Detaillierte Testanleitungen im Handbuch
-                      </Button>
-                    </div>
+                  
+                  {/* Link zum Handbuch */}
+                  <div className="mt-4 text-center">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-cyan-400 hover:text-cyan-300 text-xs"
+                      title="Öffnet das Handbuch mit detaillierten Testanleitungen"
+                    >
+                      📖 Detaillierte Testanleitungen im Handbuch
+                    </Button>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
