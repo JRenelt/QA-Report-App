@@ -440,58 +440,126 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              {/* Fußzeile */}
-              <div className="flex items-center justify-between p-4 bg-gray-800 border-t border-gray-700">
-                {/* Links: Status-Quadrate */}
-                <div className="flex items-center gap-2">
-                  <div 
-                    className="w-8 h-8 bg-green-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
-                    title="Bestanden - Tests erfolgreich abgeschlossen"
-                  >
-                    ✓
-                  </div>
-                  <div 
-                    className="w-8 h-8 bg-red-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
-                    title="Fehlgeschlagen - Tests mit Problemen"
-                  >
-                    ✗
-                  </div>
-                  <div 
-                    className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
-                    title="In Bearbeitung - Tests werden aktuell durchgeführt"
-                  >
-                    ~
-                  </div>
-                  <div 
-                    className="w-8 h-8 bg-orange-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
-                    title="Ausstehend - Tests noch nicht begonnen"
-                  >
-                    ○
-                  </div>
+              
+            </div>
+          )}
+
+          {/* Bericht-Ansicht */}
+          {viewMode === 'bericht' && (
+            <div className="flex-1 p-4 overflow-y-auto">
+              <div className="space-y-4">
+                <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                  <h3 className="text-lg font-semibold text-cyan-400 mb-3">Gespeicherte Test-Berichte</h3>
+                  {testReports.length === 0 ? (
+                    <p className="text-gray-400 text-center py-8">Noch keine Test-Berichte vorhanden</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {testReports.map((report, index) => (
+                        <div key={index} className="bg-gray-700 p-3 rounded border border-gray-600">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <h4 className="font-medium text-white">{report.reportTitle}</h4>
+                              <p className="text-xs text-gray-400">Erstellt: {report.generatedAt}</p>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button size="sm" variant="outline" className="text-xs">
+                                📥 Laden
+                              </Button>
+                              <Button size="sm" variant="outline" className="text-xs">
+                                🗑️ Löschen
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                {/* Rechts: Export + Löschen */}
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={exportTestReport}
-                    variant="outline"
-                    size="sm"
-                    className="border-green-600 text-green-400 hover:bg-green-900 px-3"
-                    title="Test-Bericht als PDF exportieren"
-                  >
-                    <Download className="w-4 h-4 mr-1" />
-                    PDF
-                  </Button>
-                  <Button
-                    onClick={clearAllReports}
-                    variant="outline"
-                    size="sm"
-                    className="border-red-600 text-red-400 hover:bg-red-900 px-2"
-                    title="Alle Test-Berichte löschen"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                  <h3 className="text-lg font-semibold text-cyan-400 mb-3">Aktueller Test-Status</h3>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-400">{selectedTestPoints.length}</div>
+                      <div className="text-xs text-gray-400">Ausgewählt</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-orange-400">
+                        {currentTests.length - selectedTestPoints.length}
+                      </div>
+                      <div className="text-xs text-gray-400">Ausstehend</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-cyan-400">{testCategories.length}</div>
+                      <div className="text-xs text-gray-400">Bereiche</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-400">
+                        {testCategories.reduce((sum, cat) => sum + cat.tests, 0)}
+                      </div>
+                      <div className="text-xs text-gray-400">Gesamt Tests</div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* Fixe Fußzeile - Nur in Test-Ansicht */}
+          {viewMode === 'tests' && (
+            <div className="flex items-center justify-between p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0">
+              {/* Links: Status-Quadrate */}
+              <div className="flex items-center gap-2">
+                <div 
+                  className="w-8 h-8 bg-green-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                  title="Bestanden - Tests erfolgreich abgeschlossen"
+                >
+                  ✓
+                </div>
+                <div 
+                  className="w-8 h-8 bg-red-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                  title="Fehlgeschlagen - Tests mit Problemen"
+                >
+                  ✗
+                </div>
+                <div 
+                  className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                  title="In Bearbeitung - Tests werden aktuell durchgeführt"
+                >
+                  ~
+                </div>
+                <div 
+                  className="w-8 h-8 bg-orange-600 rounded flex items-center justify-center text-white text-xs font-bold cursor-help"
+                  title="Ausstehend - Tests noch nicht begonnen"
+                >
+                  ○
+                </div>
+              </div>
+
+              {/* Rechts: Export + Löschen */}
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-400 mr-2">
+                  {selectedTestPoints.length}/{currentTests.length} ausgewählt
+                </span>
+                <Button
+                  onClick={exportTestReport}
+                  variant="outline"
+                  size="sm"
+                  className="border-green-600 text-green-400 hover:bg-green-900 px-3"
+                  title="Test-Bericht als PDF exportieren"
+                >
+                  <Download className="w-4 h-4 mr-1" />
+                  PDF
+                </Button>
+                <Button
+                  onClick={clearAllReports}
+                  variant="outline"
+                  size="sm"
+                  className="border-red-600 text-red-400 hover:bg-red-900 px-2"
+                  title="Alle Test-Berichte löschen"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
               </div>
             </div>
           )}
