@@ -585,9 +585,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* Fixe Fußzeile - In Test-Ansicht und Bericht-Ansicht */}
+          {/* Fixe Fußzeile - Nahtloser Übergang zu FavOrg Footer */}
           {(viewMode === 'tests' || viewMode === 'bericht') && (
-            <div className="flex items-center justify-between p-2 bg-gray-800 border-t border-gray-700 flex-shrink-0">
+            <div className="flex items-center justify-between p-2 bg-gray-900 flex-shrink-0 w-full" style={{marginBottom: '0px', marginLeft: '-24px', marginRight: '-24px', width: 'calc(100% + 48px)'}}>
               {/* Links: Status-Quadrate mit kumulierten Zahlen - 50% schmaler */}
               <div className="flex items-center gap-2">
                 <div 
