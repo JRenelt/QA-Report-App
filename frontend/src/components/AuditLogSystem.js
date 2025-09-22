@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { X, Search, FileText, Trash2, Download, Plus, Info, HelpCircle } from 'lucide-react';
+import { X, Search, FileText, Trash2, Download, Plus, Info, HelpCircle, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AuditLogSystem = ({ isOpen, onClose }) => {
