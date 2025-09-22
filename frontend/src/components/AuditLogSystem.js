@@ -516,31 +516,43 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           {/* Fixe Fußzeile - In Test-Ansicht und Bericht-Ansicht */}
           {(viewMode === 'tests' || viewMode === 'bericht') && (
             <div className="flex items-center justify-between p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0">
-              {/* Links: Status-Quadrate */}
+              {/* Links: Status-Quadrate mit kumulierten Zahlen */}
               <div className="flex items-center gap-3">
                 <div 
-                  className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-help shadow-lg"
+                  className="w-12 h-12 bg-green-600 rounded-lg flex flex-col items-center justify-center text-white cursor-help shadow-lg relative"
                   title="Bestanden - Tests erfolgreich abgeschlossen"
                 >
-                  ✓
+                  <span className="text-lg">✓</span>
+                  <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-green-800 rounded-full w-5 h-5 flex items-center justify-center">
+                    {selectedTestPoints.length}
+                  </span>
                 </div>
                 <div 
-                  className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-help shadow-lg"
+                  className="w-12 h-12 bg-red-600 rounded-lg flex flex-col items-center justify-center text-white cursor-help shadow-lg relative"
                   title="Fehlgeschlagen - Tests mit Problemen"
                 >
-                  ✗
+                  <span className="text-lg">✗</span>
+                  <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-red-800 rounded-full w-5 h-5 flex items-center justify-center">
+                    0
+                  </span>
                 </div>
                 <div 
-                  className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-help shadow-lg"
+                  className="w-12 h-12 bg-blue-600 rounded-lg flex flex-col items-center justify-center text-white cursor-help shadow-lg relative"
                   title="In Bearbeitung - Tests werden aktuell durchgeführt"
                 >
-                  ~
+                  <span className="text-lg">~</span>
+                  <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-blue-800 rounded-full w-5 h-5 flex items-center justify-center">
+                    0
+                  </span>
                 </div>
                 <div 
-                  className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-help shadow-lg"
+                  className="w-12 h-12 bg-orange-600 rounded-lg flex flex-col items-center justify-center text-white cursor-help shadow-lg relative"
                   title="Ausstehend - Tests noch nicht begonnen"
                 >
-                  ○
+                  <span className="text-lg">○</span>
+                  <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-orange-800 rounded-full w-5 h-5 flex items-center justify-center">
+                    {currentTests.length - selectedTestPoints.length}
+                  </span>
                 </div>
               </div>
 
