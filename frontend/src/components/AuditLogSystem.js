@@ -609,7 +609,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               </div>
 
               {/* Rechts: Berichte(Archiv) + Download + Mülleimer */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 {viewMode === 'tests' && (
                   <span className="text-xs text-gray-400 mr-2">
                     {selectedTestPoints.length}/{currentTests.length} ausgewählt
