@@ -385,39 +385,29 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             /* Test-Auswahl */
             <div className="flex-1 flex flex-col overflow-hidden">
               
-              {/* Eingabefeld für neue Tests */}
-              <div className="p-4 bg-gray-800 border-b border-gray-700">
-                <div className="flex items-center gap-2 max-w-md mx-auto">
-                  <input
-                    type="text"
-                    value={newTestName}
-                    onChange={(e) => setNewTestName(e.target.value)}
-                    placeholder="Eigener Test..."
-                    className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-sm text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
-                    onKeyPress={(e) => e.key === 'Enter' && addNewTest()}
-                  />
-                  <Button
-                    onClick={addNewTest}
-                    size="sm"
-                    className="bg-cyan-600 hover:bg-cyan-700 px-3 py-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-
               {/* Test-Buttons */}
               <div className="flex-1 p-4 overflow-y-auto">
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="text-lg font-semibold text-cyan-400">{currentCategory}</h3>
-                  <Button
-                    onClick={() => setCompactView(!compactView)}
-                    variant="ghost"
-                    size="sm"
-                    className="text-gray-400 text-xs"
-                  >
-                    {compactView ? '📝 Text anzeigen' : '🎯 Nur Symbole'}
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      onClick={addNewTest}
+                      size="sm"
+                      className="bg-cyan-600 hover:bg-cyan-700 px-3 py-2"
+                      disabled={!newTestName.trim()}
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Hinzufügen
+                    </Button>
+                    <Button
+                      onClick={() => setCompactView(!compactView)}
+                      variant="ghost"
+                      size="sm"
+                      className="text-gray-400 text-xs"
+                    >
+                      {compactView ? '📝 Text anzeigen' : '🎯 Nur Symbole'}
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
