@@ -148,19 +148,24 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       return;
     }
 
+    // Füge neuen Test zu den aktuellen Tests hinzu
     const newTest = {
-      id: Date.now(),
       name: newTestName.trim(),
-      category: currentCategory,
       icon: '🧪',
-      tooltip: `Eigener Test: ${newTestName.trim()}`,
-      created: new Date().toISOString()
+      tooltip: `Eigener Test: ${newTestName.trim()}`
     };
 
-    // Nur zur FavOrg-Seite weiterleiten
-    window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
-    toast.success(`Test "${newTestName}" erstellt - FavOrg geöffnet`);
+    // Temporär zu predefinedTests hinzufügen
+    if (!predefinedTests[currentCategory]) {
+      predefinedTests[currentCategory] = [];
+    }
+    predefinedTests[currentCategory].push(newTest);
+
+    toast.success(`Test "${newTestName}" hinzugefügt`);
     setNewTestName('');
+    
+    // Force re-render durch State-Update
+    setCurrentCategory(currentCategory);
   };
 
   // Test-Bericht exportieren (PDF-Vorbereitung)
