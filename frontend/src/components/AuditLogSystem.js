@@ -257,21 +257,21 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
         
-        {/* Kopfzeile */}
-        <DialogHeader className="flex-shrink-0 p-2 border-b border-gray-700">
+        {/* Kopfzeile - 50% kleinere Schrift */}
+        <DialogHeader className="flex-shrink-0 p-1 border-b border-gray-700">
           {/* Erste Zeile: Titel + FavOrg + Inputfeld + Bereich-Button */}
-          <div className="flex items-center justify-between gap-4 mb-1">
-            {/* Links: Titel + FavOrg Link */}
-            <div className="flex items-center gap-2">
-              <div className="w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2 mb-0">
+            {/* Links: Titel + FavOrg Link - FavOrg Design bestimmt AuditLog */}
+            <div className="flex items-center gap-1">
+              <div className="w-4 h-4 bg-cyan-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs">✓</span>
               </div>
-              <span className="text-sm font-bold text-cyan-400">FavOrg Audit-Log</span>
+              <span className="text-xs font-bold text-cyan-400">FavOrg Audit-Log</span>
               <Button
                 onClick={() => window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes')}
                 variant="ghost"
                 size="sm"
-                className="text-cyan-400 hover:text-cyan-300 px-2 py-1 h-6 text-xs border border-cyan-600 rounded"
+                className="text-cyan-400 hover:text-cyan-300 px-1 py-0 h-5 text-xs border border-cyan-600 rounded"
                 title="FavOrg in neuem Fenster öffnen"
               >
                 🔗 FavOrg
