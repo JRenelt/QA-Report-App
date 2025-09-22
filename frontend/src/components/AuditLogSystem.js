@@ -571,7 +571,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   title="Berichte-Archiv anzeigen"
                 >
                   <FileText className="w-4 h-4 mr-1" />
-                  Archiv
+                  Archiv [{testReports.length}]
                 </Button>
                 <Button
                   onClick={exportTestReport}
