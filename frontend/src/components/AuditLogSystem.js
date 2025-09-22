@@ -207,11 +207,50 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
   // Kontext-Kurzhilfen
   const getContextHelp = () => {
-    if (showCategorySelection) {
-      return "Wählen Sie einen Test-Bereich aus den 13 verfügbaren Kategorien";
-    } else {
-      return `${currentTests.length} Test-Szenarien für systematische Qualitätsprüfung`;
+    switch(viewMode) {
+      case 'bereiche':
+        return `13 Bereiche verfügbar | Wählen Sie einen Test-Bereich aus`;
+      case 'tests':
+        return `${currentTests.length} Test-Szenarien | ${currentCategory} | Klicken für Testpunkte`;
+      case 'bericht':
+        return `${testReports.length} Berichte gespeichert | Historische Verfolgung aktiv`;
+      default:
+        return "";
     }
+  };
+
+  // Toggle Ansicht
+  const getViewToggleText = () => {
+    switch(viewMode) {
+      case 'bereiche': return 'Test anzeigen';
+      case 'tests': return 'Bereiche';
+      case 'bericht': return 'Bereiche';
+      default: return 'Bereiche';
+    }
+  };
+
+  // Nächste Ansicht
+  const toggleView = () => {
+    if (viewMode === 'bereiche') {
+      setViewMode('tests');
+    } else if (viewMode === 'tests') {
+      setViewMode('bereiche');
+    } else {
+      setViewMode('bereiche');
+    }
+  };
+
+  // Test-Punkt auswählen
+  const toggleTestPoint = (testName) => {
+    setSelectedTestPoints(prev => {
+      const isSelected = prev.includes(testName);
+      const newSelection = isSelected 
+        ? prev.filter(name => name !== testName)
+        : [...prev, testName];
+      
+      toast.success(`Test "${testName}" ${isSelected ? 'abgewählt' : 'ausgewählt'}`);
+      return newSelection;
+    });
   };
 
   return (
