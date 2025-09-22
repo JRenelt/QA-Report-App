@@ -466,8 +466,6 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </div>
-
-              
             </div>
           )}
 
