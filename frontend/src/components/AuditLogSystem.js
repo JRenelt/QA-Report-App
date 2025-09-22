@@ -390,7 +390,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 <div className="mt-6">
                   <h4 className="text-sm font-semibold text-cyan-400 mb-3">📋 Testpunkte für {currentCategory}</h4>
                   <div className="space-y-3">
-                      {currentTests.map((test, index) => {
+                    {currentTests.map((test, index) => {
                         const isSelected = selectedTestPoints.includes(test.name);
                         return (
                           <div key={index} className="bg-gray-800 p-3 rounded border border-gray-700">
