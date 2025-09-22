@@ -319,7 +319,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 onClick={toggleView}
                 variant="outline"
                 size="sm"
-                className="border-cyan-600 text-cyan-400 text-xs px-3 py-1 h-7"
+                className="border-cyan-600 text-cyan-400 text-xs px-2 py-1 h-7"
               >
                 {getViewToggleText()}
               </Button>
