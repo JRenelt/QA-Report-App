@@ -60,7 +60,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       id: Date.now(),
       testName: testName || `Test ${auditEntries.length + 1}`,
       category: category || currentCategory,
-      status: status, // pending, passed, failed, info
+      status: status,
       timestamp: new Date().toISOString(),
       dateTime: new Date().toLocaleString('de-DE', {
         year: 'numeric',
@@ -76,6 +76,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     const updatedEntries = [newEntry, ...auditEntries];
     setAuditEntries(updatedEntries);
     saveAuditLogs(updatedEntries);
+    
+    // Markiere Test als besucht und verstecke Auswahl
+    setVisitedTests(prev => new Set([...prev, testName]));
+    setShowCategorySelection(false);
+    
     toast.success(`Test "${newEntry.testName}" hinzugefügt`);
   };
 
