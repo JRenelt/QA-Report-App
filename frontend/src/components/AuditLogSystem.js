@@ -391,9 +391,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   <h4 className="text-sm font-semibold text-cyan-400 mb-3">📋 Testpunkte für {currentCategory}</h4>
                   <div className="space-y-3">
                     {currentTests.map((test, index) => {
-                        const isSelected = selectedTestPoints.includes(test.name);
-                        return (
-                          <div key={index} className="bg-gray-800 p-3 rounded border border-gray-700">
+                      const isSelected = selectedTestPoints.includes(test.name);
+                      return (
+                        <div key={index} className="bg-gray-800 p-3 rounded border border-gray-700">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
                                 {/* Status Badge */}
