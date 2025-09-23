@@ -264,7 +264,7 @@ class CategoryLockTester:
         
         # Test lock with non-existent category ID
         fake_id = str(uuid.uuid4())
-        response = await self.make_request("POST", f"/categories/{fake_id}/lock", 
+        response = await self.make_request("PUT", f"/categories/{fake_id}/lock", 
                                          {"lock_reason": "Test"}, 404)
         
         if response["status_code"] == 404:
