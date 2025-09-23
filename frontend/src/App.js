@@ -2966,33 +2966,20 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                     <Button 
                       onClick={() => {
                         console.log('Opening Audit Log in new window...');
-                        // Öffne AuditLog in neuem Popup-Fenster
-                        const auditLogWindow = window.open(
-                          '', 
+                        // Öffne AuditLog-Seite in neuem Fenster
+                        window.open(
+                          '/auditlog.html', 
                           'AuditLogWindow', 
-                          'width=1400,height=900,scrollbars=yes,resizable=yes,menubar=no,toolbar=no'
+                          'width=1000,height=700,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no'
                         );
                         
-                        if (auditLogWindow) {
-                          // Schließe Einstellungen-Dialog
-                          onClose();
-                          // Öffne AuditLog im Haupt-Fenster
-                          setTimeout(() => {
-                            onOpenAuditLog();
-                          }, 200);
-                          auditLogWindow.close();
-                        } else {
-                          // Fallback: Öffne im gleichen Fenster
-                          onClose();
-                          setTimeout(() => {
-                            onOpenAuditLog();
-                          }, 100);
-                        }
+                        // Schließe Einstellungen-Dialog
+                        onClose();
                       }}
                       className="bg-cyan-600 hover:bg-cyan-700 mr-2"
                       size="sm"
                     >
-                      📊 AuditLog
+                      📊 AuditLog (Neues Fenster)
                     </Button>
                     <Button 
                       onClick={() => {
