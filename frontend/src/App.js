@@ -2956,21 +2956,21 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   </div>
                 </div>
 
-                {/* System-Tools - Aufgeräumt und organisiert */}
+                {/* System-Tools - Exakt wie im Bild */}
                 <div className="setting-item">
                   <div className="setting-info">
                     <Label className="setting-label">🔧 System-Tools</Label>
                     <span className="setting-description">Qualitätssicherung und Dokumentations-Tools für FavOrg</span>
                   </div>
-                  <div className="setting-input-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div className="setting-input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
                     
-                    {/* AuditLog-Bereich */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', background: 'rgba(6, 182, 212, 0.1)', borderRadius: '6px', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
-                      <div style={{ flex: 1 }}>
-                        <strong style={{ color: '#06b6d4', fontSize: '13px' }}>🔍 AuditLog-System</strong>
-                        <div style={{ fontSize: '11px', color: '#9ca3af' }}>Interaktive Test-Tracking und Qualitätskontrolle</div>
+                    {/* AuditLog-System Bereich */}
+                    <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(6, 182, 212, 0.08)', borderRadius: '8px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
+                      <div style={{ marginBottom: '10px' }}>
+                        <strong style={{ color: '#06b6d4', fontSize: '14px', display: 'block' }}>🔍 AuditLog-System</strong>
+                        <div style={{ fontSize: '12px', color: '#64748b', lineHeight: '1.3' }}>Interaktive Test-Tracking und Qualitätskontrolle</div>
                       </div>
-                      <div style={{ display: 'flex', gap: '4px' }}>
+                      <div style={{ display: 'flex', gap: '6px' }}>
                         <Button 
                           onClick={() => {
                             console.log('Opening Audit Log in new window...');
@@ -2981,7 +2981,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                             );
                             onClose();
                           }}
-                          className="bg-cyan-600 hover:bg-cyan-700 text-xs"
+                          className="bg-cyan-600 hover:bg-cyan-700 text-white flex-1"
                           size="sm"
                         >
                           🖥️ Vollbild
@@ -2992,7 +2992,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                             onClose();
                             setTimeout(() => { onOpenAuditLog(); }, 100);
                           }}
-                          className="bg-slate-600 hover:bg-slate-700 text-xs"
+                          className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
                           size="sm"
                         >
                           📋 Dialog
@@ -3000,20 +3000,20 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                       </div>
                     </div>
 
-                    {/* Dokumentations-Bereich */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
-                      <div style={{ flex: 1 }}>
-                        <strong style={{ color: '#10b981', fontSize: '13px' }}>📚 System-Dokumentation</strong>
-                        <div style={{ fontSize: '11px', color: '#9ca3af' }}>Technische Dokumentation und Entwickler-Handbuch</div>
+                    {/* System-Dokumentation Bereich */}
+                    <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                      <div style={{ marginBottom: '10px' }}>
+                        <strong style={{ color: '#10b981', fontSize: '14px', display: 'block' }}>📚 System-Dokumentation</strong>
+                        <div style={{ fontSize: '12px', color: '#64748b', lineHeight: '1.3' }}>Technische Dokumentation und Entwickler-Handbuch</div>
                       </div>
-                      <div style={{ display: 'flex', gap: '4px' }}>
+                      <div style={{ display: 'flex', gap: '6px' }}>
                         <Button 
                           onClick={() => {
                             console.log('Opening SysDok...');
                             window.open('/technical-docs.html', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
                             onClose();
                           }}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-xs"
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white flex-1"
                           size="sm"
                         >
                           📄 Tech-Docs
@@ -3024,7 +3024,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                             onClose();
                             setTimeout(() => { onOpenComprehensiveHelp(); }, 100);
                           }}
-                          className="bg-slate-600 hover:bg-slate-700 text-xs"
+                          className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
                           size="sm"
                         >
                           📖 Handbuch
