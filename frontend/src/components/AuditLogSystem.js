@@ -396,9 +396,12 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     );
   };
 
-  // Aktuelle Kategorie-Daten
+  // Aktuelle Kategorie-Daten (mit forceRender für Updates)
   const currentCategoryData = testCategories.find(cat => cat.name === currentCategory);
   const currentTests = getFilteredTests();
+  
+  // Console log für Debugging
+  console.log('Current tests for', currentCategory, ':', currentTests.length, 'Force render:', forceRender);
 
   // Kontext-Kurzhilfen
   const getContextHelp = () => {
