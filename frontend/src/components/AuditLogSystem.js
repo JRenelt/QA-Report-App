@@ -261,7 +261,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
     setNewTestName('');
     // Force re-render
-    setCurrentCategory(currentCategory);
+    setForceRender(prev => prev + 1);
   };
 
   // Test-Bericht als PDF exportieren
