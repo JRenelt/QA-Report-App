@@ -809,17 +809,303 @@
             renderTests();
         }
 
-        // Placeholder-Funktionen für Footer-Buttons
+        // Archive-Management
+        let archivedReports = JSON.parse(localStorage.getItem('auditlog_archived_reports') || '[]');
+
         function archiveTests() {
-            showSuccess('Archiv-Funktion wird implementiert');
+            const report = generateTestReport();
+            archivedReports.push(report);
+            localStorage.setItem('auditlog_archived_reports', JSON.stringify(archivedReports));
+            showSuccess(`Bericht "${report.title}" im Archiv gespeichert`);
         }
 
         function downloadTests() {
-            showSuccess('Download-Funktion wird implementiert');
+            // Erstelle einen strukturierten Bericht und öffne Print-Dialog
+            generatePrintableReport();
         }
 
         function trashTests() {
-            showSuccess('Papierkorb-Funktion wird implementiert');
+            if (confirm('Möchten Sie alle Test-Status und Notizen zurücksetzen?')) {
+                testStatuses = {};
+                testNotes = {};
+                editingNote = null;
+                renderTests();
+                updateStatusCounts();
+                showSuccess('Alle Tests zurückgesetzt');
+            }
+        }
+
+        function generateTestReport() {
+            const timestamp = new Date();
+            const categoryTests = getCurrentTests();
+            const completedTests = categoryTests.filter(test => testStatuses[test.name]);
+            
+            return {
+                id: Date.now().toString(),
+                title: `AuditLog-Bericht: ${currentCategory}`,
+                category: currentCategory,
+                timestamp: timestamp.toISOString(),
+                displayDate: timestamp.toLocaleString('de-DE'),
+                totalTests: categoryTests.length,
+                completedTests: completedTests.length,
+                passedTests: completedTests.filter(test => testStatuses[test.name] === 'success').length,
+                failedTests: completedTests.filter(test => testStatuses[test.name] === 'error').length,
+                warningTests: completedTests.filter(test => testStatuses[test.name] === 'warning').length,
+                skippedTests: completedTests.filter(test => testStatuses[test.name] === 'info').length,
+                tests: categoryTests.map(test => ({
+                    name: test.name,
+                    icon: test.icon,
+                    tooltip: test.tooltip,
+                    status: testStatuses[test.name] || 'ungeprüft',
+                    note: testNotes[test.name] || '',
+                    isDynamic: test.isDynamic || false
+                }))
+            };
+        }
+
+        function generatePrintableReport() {
+            const report = generateTestReport();
+            
+            // Erstelle neues Fenster für den Druck
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            
+            const printContent = `
+                <!DOCTYPE html>
+                <html lang="de">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>FavOrg AuditLog-Bericht: ${report.category}</title>
+                    <style>
+                        @page {
+                            margin: 2cm;
+                            size: A4;
+                        }
+                        
+                        body {
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                            color: #1f2937;
+                            margin: 0;
+                            padding: 0;
+                            line-height: 1.5;
+                        }
+                        
+                        .header {
+                            border-bottom: 3px solid #06b6d4;
+                            padding-bottom: 20px;
+                            margin-bottom: 30px;
+                        }
+                        
+                        .logo {
+                            color: #06b6d4;
+                            font-size: 24px;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                        }
+                        
+                        .title {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #374151;
+                            margin: 0;
+                        }
+                        
+                        .meta-info {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 20px;
+                            margin: 20px 0;
+                            padding: 15px;
+                            background: #f9fafb;
+                            border-radius: 8px;
+                        }
+                        
+                        .stats {
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr);
+                            gap: 15px;
+                            margin: 20px 0;
+                        }
+                        
+                        .stat-card {
+                            text-align: center;
+                            padding: 15px;
+                            border-radius: 8px;
+                            border: 1px solid #e5e7eb;
+                        }
+                        
+                        .stat-card.success { border-color: #059669; background: #ecfdf5; }
+                        .stat-card.error { border-color: #dc2626; background: #fef2f2; }
+                        .stat-card.warning { border-color: #2563eb; background: #eff6ff; }
+                        .stat-card.info { border-color: #d97706; background: #fffbeb; }
+                        
+                        .stat-number {
+                            font-size: 24px;
+                            font-weight: bold;
+                            margin-bottom: 5px;
+                        }
+                        
+                        .stat-label {
+                            font-size: 12px;
+                            color: #6b7280;
+                        }
+                        
+                        .tests-section {
+                            margin-top: 30px;
+                        }
+                        
+                        .test-item {
+                            padding: 12px;
+                            margin-bottom: 8px;
+                            border-radius: 6px;
+                            border: 1px solid #e5e7eb;
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 12px;
+                        }
+                        
+                        .test-item.success { border-color: #059669; background: #f0fdf4; }
+                        .test-item.error { border-color: #dc2626; background: #fef2f2; }
+                        .test-item.warning { border-color: #2563eb; background: #eff6ff; }
+                        .test-item.info { border-color: #d97706; background: #fffbeb; }
+                        
+                        .test-icon {
+                            font-size: 16px;
+                            width: 20px;
+                            text-align: center;
+                        }
+                        
+                        .test-content {
+                            flex: 1;
+                        }
+                        
+                        .test-name {
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                        }
+                        
+                        .test-tooltip {
+                            font-size: 13px;
+                            color: #6b7280;
+                            margin-bottom: 8px;
+                        }
+                        
+                        .test-note {
+                            font-size: 13px;
+                            font-style: italic;
+                            color: #374151;
+                            background: #f9fafb;
+                            padding: 8px;
+                            border-radius: 4px;
+                            margin-top: 8px;
+                        }
+                        
+                        .status-badge {
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-size: 12px;
+                            font-weight: 500;
+                            white-space: nowrap;
+                        }
+                        
+                        .status-success { background: #059669; color: white; }
+                        .status-error { background: #dc2626; color: white; }
+                        .status-warning { background: #2563eb; color: white; }
+                        .status-info { background: #d97706; color: white; }
+                        .status-ungeprüft { background: #6b7280; color: white; }
+                        
+                        .footer {
+                            margin-top: 40px;
+                            padding-top: 20px;
+                            border-top: 1px solid #e5e7eb;
+                            font-size: 12px;
+                            color: #6b7280;
+                            text-align: center;
+                        }
+                        
+                        @media print {
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="logo">🔗 FavOrg</div>
+                        <h1 class="title">AuditLog-Bericht: ${report.category}</h1>
+                    </div>
+                    
+                    <div class="meta-info">
+                        <div>
+                            <strong>Bericht erstellt:</strong><br>
+                            ${report.displayDate}
+                        </div>
+                        <div>
+                            <strong>Test-Bereich:</strong><br>
+                            ${report.category}
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat-card success">
+                            <div class="stat-number">${report.passedTests}</div>
+                            <div class="stat-label">✅ Bestanden</div>
+                        </div>
+                        <div class="stat-card error">
+                            <div class="stat-number">${report.failedTests}</div>
+                            <div class="stat-label">❌ Fehlgeschlagen</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="stat-number">${report.warningTests}</div>
+                            <div class="stat-label">⏳ In Bearbeitung</div>
+                        </div>
+                        <div class="stat-card info">
+                            <div class="stat-number">${report.skippedTests}</div>
+                            <div class="stat-label">🗑️ Übersprungen</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tests-section">
+                        <h2>Test-Details (${report.completedTests} von ${report.totalTests} getestet)</h2>
+                        ${report.tests.map(test => `
+                            <div class="test-item ${test.status}">
+                                <div class="test-icon">${test.icon}</div>
+                                <div class="test-content">
+                                    <div class="test-name">
+                                        ${test.name}
+                                        ${test.isDynamic ? '<span style="font-size: 10px; background: #06b6d4; color: white; padding: 2px 4px; border-radius: 3px; margin-left: 8px;">Custom</span>' : ''}
+                                    </div>
+                                    <div class="test-tooltip">${test.tooltip}</div>
+                                    ${test.note ? `<div class="test-note">📝 ${test.note}</div>` : ''}
+                                </div>
+                                <span class="status-badge status-${test.status}">
+                                    ${test.status === 'success' ? '✅ Bestanden' :
+                                      test.status === 'error' ? '❌ Fehlgeschlagen' :
+                                      test.status === 'warning' ? '⏳ In Bearbeitung' :
+                                      test.status === 'info' ? '🗑️ Übersprungen' :
+                                      '⭕ Ungeprüft'}
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="footer">
+                        <p>Generiert von FavOrg AuditLog-System | ${report.displayDate}</p>
+                        <p>Dieser Bericht wurde automatisch erstellt und dokumentiert den aktuellen Status aller Tests.</p>
+                    </div>
+                    
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            window.onafterprint = function() {
+                                window.close();
+                            };
+                        };
+                    </script>
+                </body>
+                </html>
+            `;
+            
+            printWindow.document.write(printContent);
+            printWindow.document.close();
         }
 
         // Render-Funktionen
