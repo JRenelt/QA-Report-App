@@ -631,7 +631,7 @@
                                     ${test.isDynamic ? '<span style="font-size: 10px; background: #06b6d4; color: white; padding: 1px 4px; border-radius: 3px; margin-left: 6px;">Custom</span>' : ''}
                                 </div>
                                 <div style="font-size: 13px; color: #6b7280; margin-bottom: 4px;">${test.tooltip}</div>
-                                ${test.note ? `<div style="font-size: 12px; font-style: italic; color: #374151; background: rgba(249, 250, 251, 0.8); padding: 6px 8px; border-radius: 4px; margin-top: 6px; border-left: 3px solid #06b6d4;">📝 Notiz: ${test.note}</div>` : ''}
+                                ${test.note ? '<div style="font-size: 12px; font-style: italic; color: #374151; background: rgba(249, 250, 251, 0.8); padding: 6px 8px; border-radius: 4px; margin-top: 6px; border-left: 3px solid #06b6d4;">📝 Notiz: ' + test.note + '</div>' : ''}
                             </div>
                             <span class="status-badge status-${test.status}">
                                 ${test.status === 'success' ? '✅ Bestanden' :
