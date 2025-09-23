@@ -247,17 +247,26 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   };
 
-  // Test-Punkt auswählen
+  // Test-Status setzen
+  const setTestStatus = (testName, status) => {
+    const timestamp = new Date().toLocaleString('de-DE');
+    setTestStatuses(prev => ({
+      ...prev,
+      [testName]: { status, timestamp }
+    }));
+    
+    const statusTexts = {
+      'passed': 'bestanden',
+      'failed': 'fehlgeschlagen',
+      'inProgress': 'in Bearbeitung'
+    };
+    
+    toast.success(`Test "${testName}" als ${statusTexts[status]} markiert`);
+  };
+
+  // Test-Punkt auswählen (Legacy für Kompatibilität)
   const toggleTestPoint = (testName) => {
-    setSelectedTestPoints(prev => {
-      const isSelected = prev.includes(testName);
-      const newSelection = isSelected 
-        ? prev.filter(name => name !== testName)
-        : [...prev, testName];
-      
-      toast.success(`Test "${testName}" ${isSelected ? 'abgewählt' : 'ausgewählt'}`);
-      return newSelection;
-    });
+    setTestStatus(testName, 'passed');
   };
 
   return (
