@@ -1024,13 +1024,8 @@
             };
         }
 
-        function generatePrintableReport() {
-            const report = generateTestReport();
-            
-            // Erstelle neues Fenster für den Druck
-            const printWindow = window.open('', '_blank', 'width=800,height=600');
-            
-            const printContent = `
+        function generatePrintContent(reportData) {
+            return `
                 <!DOCTYPE html>
                 <html lang="de">
                 <head>
