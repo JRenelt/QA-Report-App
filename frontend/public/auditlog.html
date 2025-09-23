@@ -233,19 +233,19 @@
     <button class="close-btn" onclick="closeWindow()">✕ Schließen</button>
     
     <div class="audit-log-container">
-        <!-- Header -->
+        <!-- Header - Aufgeräumt -->
         <div class="audit-log-header">
-            <div class="flex align-center gap-8">
-                <button class="btn btn-secondary" onclick="goBackToFavOrg()">
+            <div class="flex align-center gap-12" style="flex: 1;">
+                <button class="btn btn-secondary" onclick="goBackToFavOrg()" title="Zurück zur Hauptanwendung">
                     🏠 FavOrg
                 </button>
                 <h2 class="mb-0 text-cyan">🔍 AuditLog-System - Vollbild</h2>
             </div>
 
             <div class="flex align-center gap-8">
-                <input type="text" class="input" id="newTestInput" placeholder="Neuer Testname..." />
-                <button class="btn btn-primary" onclick="addNewTest()">➕</button>
-                <button class="btn btn-danger" onclick="removeTest()">✕</button>
+                <input type="text" class="input" id="newTestInput" placeholder="Neuer Testname..." title="Test hinzufügen oder entfernen" />
+                <button class="btn btn-primary" onclick="addNewTest()" title="Test hinzufügen">➕</button>
+                <button class="btn btn-danger" onclick="removeTest()" title="Test entfernen">✕</button>
             </div>
         </div>
 
