@@ -1,4 +1,3 @@
-    <script>
         console.log('🚀 AuditLog Script wird geladen...');
         
         // Global State
