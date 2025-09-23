@@ -1296,10 +1296,22 @@
             const container = document.getElementById('testList');
             const tests = getFilteredTests();
             
+            console.log('Rendering tests for category:', currentCategory, 'Tests found:', tests.length);
+            
             container.innerHTML = '';
 
             // Test-Count aktualisieren
             document.getElementById('testCount').textContent = `${tests.length} Tests`;
+
+            if (tests.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                        <p>Keine Tests für "${currentCategory}" gefunden.</p>
+                        <p>Verwenden Sie das Input-Feld im Header, um neue Tests hinzuzufügen.</p>
+                    </div>
+                `;
+                return;
+            }
 
             tests.forEach((test, index) => {
                 const testStatus = testStatuses[test.name];
