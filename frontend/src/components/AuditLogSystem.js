@@ -340,16 +340,36 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
   // Suchlogik für Testpunkte und Bereiche
   const getFilteredTests = () => {
-    if (!searchTerm.trim()) {
-      return predefinedTests[currentCategory] || [];
+    let tests = [];
+    
+    if (statusFilter) {
+      // Status-Filter aktiv: Suche in allen Bereichen
+      Object.keys(predefinedTests).forEach(categoryName => {
+        predefinedTests[categoryName].forEach(test => {
+          const testStatus = testStatuses[test.name];
+          const matchesStatus = statusFilter === 'pending' 
+            ? !testStatus 
+            : testStatus?.status === statusFilter;
+            
+          if (matchesStatus) {
+            tests.push({...test, category: categoryName});
+          }
+        });
+      });
+    } else {
+      // Normale Ansicht: nur aktuelle Kategorie
+      tests = predefinedTests[currentCategory] || [];
     }
     
-    // Suche in aktueller Kategorie
-    const currentTests = predefinedTests[currentCategory] || [];
-    return currentTests.filter(test => 
-      test.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      test.tooltip.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Textsuche anwenden
+    if (searchTerm.trim()) {
+      tests = tests.filter(test => 
+        test.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        test.tooltip.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    return tests;
   };
 
   const getFilteredCategories = () => {
