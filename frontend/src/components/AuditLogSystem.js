@@ -486,6 +486,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   {/* Link zum Handbuch */}
                   <div className="mt-4 text-center">
                     <Button
+                      onClick={() => {
+                        // Öffne Hilfe-System und navigiere zu AuditLog-Kapitel
+                        const event = new CustomEvent('openHelp', { 
+                          detail: { section: 'auditlog' } 
+                        });
+                        window.dispatchEvent(event);
+                      }}
                       variant="ghost"
                       size="sm"
                       className="text-cyan-400 hover:text-cyan-300 text-xs"
