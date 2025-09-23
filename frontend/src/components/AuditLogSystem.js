@@ -20,6 +20,23 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const [statusFilter, setStatusFilter] = useState('');
   const [forceRender, setForceRender] = useState(0);
   const [dynamicTests, setDynamicTests] = useState({});
+  
+  // Test-Bereiche für FavOrg als State
+  const [testCategories, setTestCategories] = useState([
+    { name: 'Allgemeines Design', icon: '🎨', tests: 4 },
+    { name: 'Header-Bereich', icon: '🔝', tests: 4 }, 
+    { name: 'Sidebar-Bereich', icon: '📋', tests: 5 },
+    { name: 'Search-Section', icon: '🔍', tests: 5 },
+    { name: 'Main-Content', icon: '📄', tests: 4 },
+    { name: 'Bookmark-Karten', icon: '🎴', tests: 6 },
+    { name: 'Dialoge & Modals', icon: '🗨️', tests: 5 },
+    { name: 'Navigation & Routing', icon: '🧭', tests: 3 },
+    { name: 'Drag & Drop System', icon: '🎯', tests: 5 },
+    { name: 'Filter & Sortierung', icon: '🎛️', tests: 4 },
+    { name: 'Import/Export', icon: '📤', tests: 4 },
+    { name: 'Einstellungen', icon: '⚙️', tests: 4 },
+    { name: 'Performance & Responsive', icon: '⚡', tests: 4 }
+  ]);
 
   // Test-Bereiche für FavOrg
   const testCategories = [
