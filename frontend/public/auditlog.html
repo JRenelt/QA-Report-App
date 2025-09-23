@@ -486,14 +486,14 @@
             </div>
 
             <div class="flex align-center gap-8 ml-auto">
-                <button class="btn btn-secondary" onclick="archiveTests()">
-                    📁 Archiv
+                <button class="btn btn-secondary" onclick="showArchiveDialog()" id="archiveBtn">
+                    📁 Archiv (<span id="archiveCount">0</span>)
                 </button>
                 <button class="btn btn-secondary" onclick="downloadTests()">
-                    📄 Download
+                    📄 PDF-Export
                 </button>
                 <button class="btn btn-secondary" onclick="trashTests()">
-                    🗑️ Trash
+                    🗑️ Reset
                 </button>
             </div>
         </div>
