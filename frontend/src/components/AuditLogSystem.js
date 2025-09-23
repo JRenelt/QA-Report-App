@@ -733,7 +733,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           {/* Fixe Fußzeile - Nahtloser Übergang zu FavOrg Footer */}
           {(viewMode === 'tests' || viewMode === 'bericht') && (
             <div className="flex items-center justify-between p-2 bg-gray-800 border-t border-gray-700 flex-shrink-0">
-              {/* Links: Status-Quadrate mit kumulierten Zahlen - 50% schmaler */}
+              {/* Links: Status-Quadrate mit kumulierten Zahlen - funktional */}
               <div className="flex items-center gap-2">
                 <div 
                   className="w-8 h-8 bg-green-600 rounded flex flex-col items-center justify-center text-white cursor-help relative"
@@ -741,7 +741,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 >
                   <span className="text-sm">✓</span>
                   <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-green-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    {selectedTestPoints.length}
+                    {Object.values(testStatuses).filter(status => status.status === 'passed').length}
                   </span>
                 </div>
                 <div 
@@ -750,7 +750,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 >
                   <span className="text-sm">✗</span>
                   <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-red-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    0
+                    {Object.values(testStatuses).filter(status => status.status === 'failed').length}
                   </span>
                 </div>
                 <div 
@@ -759,7 +759,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 >
                   <span className="text-sm">~</span>
                   <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-blue-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    0
+                    {Object.values(testStatuses).filter(status => status.status === 'inProgress').length}
                   </span>
                 </div>
                 <div 
@@ -768,7 +768,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 >
                   <span className="text-sm">○</span>
                   <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-orange-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    {currentTests.length - selectedTestPoints.length}
+                    {currentTests.length - Object.keys(testStatuses).length}
                   </span>
                 </div>
               </div>
