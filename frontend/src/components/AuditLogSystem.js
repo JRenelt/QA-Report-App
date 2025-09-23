@@ -357,8 +357,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         });
       });
     } else {
-      // Normale Ansicht: nur aktuelle Kategorie
-      tests = predefinedTests[currentCategory] || [];
+      // Normale Ansicht: NUR aktuelle Kategorie
+      tests = (predefinedTests[currentCategory] || []).map(test => ({...test}));
     }
     
     // Textsuche anwenden
