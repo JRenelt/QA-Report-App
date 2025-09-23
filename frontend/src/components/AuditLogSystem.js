@@ -170,24 +170,62 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     setCurrentCategory(currentCategory);
   };
 
-  // Test-Bericht exportieren (PDF-Vorbereitung)
+  // Test-Bericht als PDF exportieren
   const exportTestReport = () => {
     const reportData = {
       exportDate: new Date().toISOString(),
       reportTitle: `FavOrg Audit-Log Bericht - ${new Date().toLocaleDateString('de-DE')}`,
       categories: testCategories,
       currentCategory: currentCategory,
+      testStatuses: testStatuses,
+      testNotes: testNotes,
       totalTests: testCategories.reduce((sum, cat) => sum + cat.tests, 0),
       generatedAt: new Date().toLocaleString('de-DE')
     };
 
-    // JSON Export (später PDF)
-    const dataStr = JSON.stringify(reportData, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    // PDF Export - Einfacher HTML-zu-PDF Ansatz
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>FavOrg Audit-Log Bericht</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          .header { text-align: center; margin-bottom: 30px; }
+          .category { margin-bottom: 20px; }
+          .test-item { margin: 10px 0; padding: 10px; border-left: 3px solid #ccc; }
+          .passed { border-left-color: #10b981; }
+          .failed { border-left-color: #ef4444; }
+          .inProgress { border-left-color: #3b82f6; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>FavOrg Audit-Log Bericht</h1>
+          <p>Generiert am: ${reportData.generatedAt}</p>
+        </div>
+        <h2>Test-Kategorie: ${currentCategory}</h2>
+        ${predefinedTests[currentCategory].map(test => {
+          const status = testStatuses[test.name];
+          const statusClass = status ? status.status : '';
+          return `
+            <div class="test-item ${statusClass}">
+              <strong>${test.name}</strong><br>
+              Status: ${status ? status.status : 'Nicht getestet'}<br>
+              ${status ? `Zeitstempel: ${status.timestamp}` : ''}
+            </div>
+          `;
+        }).join('')}
+      </body>
+      </html>
+    `;
+
+    // Create PDF-ready HTML
+    const dataBlob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `favorg_audit_report_${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `favorg_audit_report_${new Date().toISOString().split('T')[0]}.html`;
     link.click();
     URL.revokeObjectURL(url);
     
@@ -196,7 +234,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     setTestReports(newReports);
     saveTestReports(newReports);
     
-    toast.success('Test-Bericht exportiert');
+    toast.success('Test-Bericht als HTML exportiert (zum PDF-Druck verwenden)');
   };
 
   // Alle Berichte löschen
