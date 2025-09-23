@@ -25,7 +25,7 @@ from typing import Dict, List, Any, Optional
 class ComprehensiveFavOrgBackendTester:
     def __init__(self):
         # Use backend URL from environment
-        self.base_url = os.getenv('REACT_APP_BACKEND_URL', 'https://audit-log-tracker.preview.emergentagent.com')
+        self.base_url = os.getenv('REACT_APP_BACKEND_URL', 'https://test-audit-tool.preview.emergentagent.com')
         self.api_url = f"{self.base_url}/api"
         self.session = None
         

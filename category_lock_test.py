@@ -19,7 +19,7 @@ from typing import Dict, Any, List
 
 class CategoryLockTester:
     def __init__(self):
-        self.base_url = "https://audit-log-tracker.preview.emergentagent.com/api"
+        self.base_url = "https://test-audit-tool.preview.emergentagent.com/api"
         self.test_results = []
         self.test_category_id = None
         self.test_category_name = f"TestCategory_{uuid.uuid4().hex[:8]}"

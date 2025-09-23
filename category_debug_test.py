@@ -2,7 +2,7 @@ import requests
 import json
 
 def debug_category_operations():
-    base_url = "https://audit-log-tracker.preview.emergentagent.com/api"
+    base_url = "https://test-audit-tool.preview.emergentagent.com/api"
     
     print("🔍 DEBUGGING CATEGORY OPERATIONS")
     print("=" * 50)
