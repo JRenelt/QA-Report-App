@@ -488,8 +488,446 @@
         }
 
         function downloadTests() {
-            console.log('📄 Download-Funktion');
-            alert('PDF-Export wird implementiert');
+            console.log('📄 PDF-Export wird gestartet...');
+            generateLightModePDF();
+        }
+
+        function generateLightModePDF() {
+            // Sammle alle aktuellen Daten
+            const tests = getCurrentTests();
+            const completedTests = tests.filter(test => testStatuses[test.name]);
+            const timestamp = new Date();
+            
+            const reportData = {
+                category: currentCategory,
+                timestamp: timestamp.toLocaleString('de-DE', {
+                    day: '2-digit', month: '2-digit', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                }),
+                totalTests: tests.length,
+                completedTests: completedTests.length,
+                passedTests: tests.filter(test => testStatuses[test.name] === 'success').length,
+                failedTests: tests.filter(test => testStatuses[test.name] === 'error').length,
+                warningTests: tests.filter(test => testStatuses[test.name] === 'warning').length,
+                skippedTests: tests.filter(test => testStatuses[test.name] === 'info').length,
+                successRate: tests.length > 0 ? Math.round((tests.filter(test => testStatuses[test.name] === 'success').length / tests.length) * 100) : 0
+            };
+
+            // Öffne PDF im hellen Design
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            
+            const lightModePDFContent = `
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FavOrg AuditLog-Bericht: ${reportData.category}</title>
+    <style>
+        @page {
+            margin: 2.5cm 2cm;
+            size: A4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #ffffff;
+        }
+        
+        .document-header {
+            text-align: center;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #06b6d4;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: #06b6d4;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        
+        .document-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+        
+        .document-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .metadata-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .metadata-item h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .metadata-item p {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .summary-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .summary-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            font-size: 14px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .summary-label {
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .summary-value {
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 18px 12px;
+            border-radius: 8px;
+            border: 2px solid;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card.success {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+        
+        .stat-card.error {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+        }
+        
+        .stat-card.warning {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%);
+        }
+        
+        .stat-card.info {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .tests-section {
+            margin-top: 35px;
+        }
+        
+        .section-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .test-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 2px solid;
+            background: white;
+            break-inside: avoid;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .test-item.success {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+        }
+        
+        .test-item.error {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        }
+        
+        .test-item.warning {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+        
+        .test-item.info {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+        
+        .test-item.untested {
+            border-color: #9ca3af;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        }
+        
+        .test-icon {
+            font-size: 18px;
+            width: 25px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .test-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .test-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        
+        .test-description {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        
+        .test-note {
+            font-size: 11px;
+            font-style: italic;
+            color: #374151;
+            background: rgba(241, 245, 249, 0.8);
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 6px;
+            border-left: 3px solid #06b6d4;
+        }
+        
+        .status-badge {
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .status-success { background: #10b981; color: white; }
+        .status-error { background: #ef4444; color: white; }
+        .status-warning { background: #3b82f6; color: white; }
+        .status-info { background: #f59e0b; color: white; }
+        .status-untested { background: #9ca3af; color: white; }
+        
+        .document-footer {
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid #e5e7eb;
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+        }
+        
+        .footer-brand {
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+        
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color-adjust: exact;
+            }
+            
+            .test-item, .stat-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document-header">
+        <div class="logo">🔗 FavOrg</div>
+        <h1 class="document-title">AuditLog-Bericht</h1>
+        <div class="document-subtitle">${reportData.category}</div>
+    </div>
+    
+    <div class="metadata-section">
+        <div class="metadata-item">
+            <h4>Bericht erstellt</h4>
+            <p>${reportData.timestamp}</p>
+        </div>
+        <div class="metadata-item">
+            <h4>Test-Bereich</h4>
+            <p>${reportData.category}</p>
+        </div>
+    </div>
+    
+    <div class="summary-section">
+        <h2 class="summary-title">📊 Zusammenfassung</h2>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <span class="summary-label">Gesamte Tests:</span>
+                <span class="summary-value">${reportData.totalTests}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Durchgeführte Tests:</span>
+                <span class="summary-value">${reportData.completedTests}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Erfolgsrate:</span>
+                <span class="summary-value">${reportData.successRate}%</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Offene Tests:</span>
+                <span class="summary-value">${reportData.totalTests - reportData.completedTests}</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="stats-section">
+        <div class="stat-card success">
+            <span class="stat-number">${reportData.passedTests}</span>
+            <div class="stat-label">✅ Bestanden</div>
+        </div>
+        <div class="stat-card error">
+            <span class="stat-number">${reportData.failedTests}</span>
+            <div class="stat-label">❌ Fehlgeschlagen</div>
+        </div>
+        <div class="stat-card warning">
+            <span class="stat-number">${reportData.warningTests}</span>
+            <div class="stat-label">⏳ In Bearbeitung</div>
+        </div>
+        <div class="stat-card info">
+            <span class="stat-number">${reportData.skippedTests}</span>
+            <div class="stat-label">🗑️ Übersprungen</div>
+        </div>
+    </div>
+    
+    <div class="tests-section">
+        <h2 class="section-header">📋 Test-Details (${reportData.completedTests} von ${reportData.totalTests} getestet)</h2>
+        
+        ${tests.map(test => {
+            const status = testStatuses[test.name] || 'untested';
+            const note = testNotes[test.name] || '';
+            
+            const statusMap = {
+                'success': '✅ Bestanden',
+                'error': '❌ Fehlgeschlagen', 
+                'warning': '⏳ In Bearbeitung',
+                'info': '🗑️ Übersprungen',
+                'untested': '⭕ Ungeprüft'
+            };
+            
+            return `
+                <div class="test-item ${status}">
+                    <div class="test-icon">${test.icon}</div>
+                    <div class="test-content">
+                        <div class="test-name">
+                            ${test.name}
+                            ${test.isDynamic ? '<span style="font-size:9px;background:#06b6d4;color:white;padding:1px 4px;border-radius:3px;margin-left:6px;">Custom</span>' : ''}
+                        </div>
+                        <div class="test-description">${test.tooltip}</div>
+                        ${note ? `<div class="test-note">📝 Notiz: ${note}</div>` : ''}
+                    </div>
+                    <span class="status-badge status-${status}">${statusMap[status]}</span>
+                </div>
+            `;
+        }).join('')}
+    </div>
+    
+    <div class="document-footer">
+        <div class="footer-brand">FavOrg AuditLog-System</div>
+        <div>Generiert am ${reportData.timestamp} | Professionelles Bookmark-Management mit integrierter Qualitätssicherung</div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            setTimeout(() => {
+                window.print();
+                window.onafterprint = () => window.close();
+            }, 800);
+        };
+    </script>
+</body>
+</html>
+            `;
+            
+            printWindow.document.write(lightModePDFContent);
+            printWindow.document.close();
         }
 
         function trashTests() {
