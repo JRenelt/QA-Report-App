@@ -835,6 +835,12 @@ class ModularCategoryManager:
     
     async def unlock_category(self, category_id: str) -> dict:
         """Entsperre Kategorie"""
+        # Erst prüfen ob Kategorie existiert
+        existing_category = await self.db.categories.find_one({"id": category_id})
+        if not existing_category:
+            raise HTTPException(status_code=404, detail="Category not found")
+        
+        # Update durchführen
         result = await self.db.categories.update_one(
             {"id": category_id},
             {"$set": {
@@ -845,10 +851,12 @@ class ModularCategoryManager:
             }}
         )
         
-        if result.modified_count == 0:
-            raise HTTPException(status_code=404, detail="Category not found")
-        
-        return {"message": "Category successfully unlocked", "is_locked": False}
+        # Erfolgreiche Entsperrung bestätigen
+        return {
+            "message": f"Category '{existing_category['name']}' successfully unlocked", 
+            "is_locked": False,
+            "category_name": existing_category['name']
+        }
     
     async def update_bookmark_counts(self):
         """Bookmark-Anzahl für alle Kategorien und Unterkategorien aktualisieren"""
