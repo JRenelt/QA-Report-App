@@ -526,7 +526,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 </p>
               </div>
               <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-                {testCategories.map((category) => (
+                {getFilteredCategories().map((category) => (
                   <Button
                     key={category.name}
                     onClick={() => {
