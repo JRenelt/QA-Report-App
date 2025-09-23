@@ -722,7 +722,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                                     
                                     toast.success(`Test "${test.name}" komplett gelöscht`);
                                     // Force re-render
-                                    setCurrentCategory(currentCategory);
+                                    setForceRender(prev => prev + 1);
                                   }
                                 }}
                                 variant="outline"
