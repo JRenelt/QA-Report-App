@@ -2599,21 +2599,39 @@ async def create_category(category_data: CategoryCreate):
 
 @api_router.put("/categories/{category_id}", response_model=Category)
 async def update_category(category_id: str, update_data: CategoryUpdate):
-    """Kategorie aktualisieren"""
+    """Kategorie aktualisieren mit Lock-Protection"""
     # Finde Kategorie
     category = await db.categories.find_one({"id": category_id})
     if not category:
         raise HTTPException(status_code=404, detail="Kategorie nicht gefunden")
     
+    # LOCK-PROTECTION: Prüfe ob Kategorie gesperrt ist
+    if category.get("is_locked", False):
+        raise HTTPException(
+            status_code=403, 
+            detail=f"Category '{category['name']}' is locked: {category.get('lock_reason', 'No reason provided')}"
+        )
+    
     # Update nur geänderte Felder
     update_dict = {}
+    old_name = category["name"]
+    
     if update_data.name is not None:
         update_dict["name"] = update_data.name
     if update_data.parent_category is not None:
         update_dict["parent_category"] = update_data.parent_category
     
+    update_dict["updated_at"] = datetime.now(timezone.utc)
+    
     if update_dict:
         await db.categories.update_one({"id": category_id}, {"$set": update_dict})
+    
+    # Update Bookmark-Referenzen wenn Name geändert wurde
+    if update_data.name and update_data.name != old_name:
+        await db.bookmarks.update_many(
+            {"category": old_name},
+            {"$set": {"category": update_data.name}}
+        )
     
     # Aktualisierte Kategorie zurückgeben
     updated_category = await db.categories.find_one({"id": category_id})
