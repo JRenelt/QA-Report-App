@@ -446,6 +446,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               <Button
                                 size="sm"
                                 variant="outline"
+                                className="border-yellow-600 text-yellow-400 hover:bg-yellow-900 px-2 py-1 text-xs h-8 w-8"
+                                title="Notiz hinzufügen/bearbeiten"
+                              >
+                                ✏️
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
                                 className="border-gray-600 text-gray-400 hover:bg-gray-700 px-2 py-1 text-xs h-8 w-8"
                                 title="Test löschen"
                               >
