@@ -1,3 +1,8 @@
+        function generateTestReport() {
+            const timestamp = new Date();
+            const categoryTests = getCurrentTests();
+            const completedTests = categoryTests.filter(test => testStatuses[test.name]);
+            
             return {
                 id: Date.now().toString(),
                 title: `AuditLog-Bericht: ${currentCategory}`,
