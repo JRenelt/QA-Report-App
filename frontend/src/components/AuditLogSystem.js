@@ -36,7 +36,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     { name: 'Performance & Responsive', icon: '⚡', tests: 4 }
   ];
 
-  // Test-Szenarien pro Bereich
+  // Test-Szenarien pro Bereich (Original aus Technischer Dokumentation)
   const predefinedTests = {
     'Allgemeines Design': [
       { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
