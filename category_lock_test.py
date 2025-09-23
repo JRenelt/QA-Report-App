@@ -309,7 +309,7 @@ class CategoryLockTester:
         try:
             url = f"{self.base_url}/categories/{self.test_category_id or 'test'}/lock"
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, data="invalid json", 
+                async with session.put(url, data="invalid json", 
                                       headers={'Content-Type': 'application/json'}) as response:
                     if response.status in [400, 422]:
                         await self.log_test("Invalid JSON Request", True, 
