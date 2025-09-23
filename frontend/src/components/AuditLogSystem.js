@@ -478,7 +478,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   <Search className="w-4 h-4 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Testpunkt suchen..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="In allen Testpunkten und Bereichen suchen..."
                     className="flex-1 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
                   />
                 </div>
