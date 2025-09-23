@@ -375,15 +375,26 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     className="flex-1 px-1 py-0 bg-gray-700 border border-gray-600 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 h-5"
                     onKeyPress={(e) => e.key === 'Enter' && handleTestEntry()}
                   />
-                  <Button
-                    onClick={addNewTest}
-                    size="sm"
-                    className="bg-cyan-600 hover:bg-cyan-700 px-1 py-0 h-5 w-5"
-                    disabled={!newTestName.trim()}
-                    title="Test hinzufügen"
-                  >
-                    <Plus className="w-2 h-2" />
-                  </Button>
+                  <div className="flex gap-1">
+                    <Button
+                      onClick={handleTestEntry}
+                      size="sm"
+                      className="bg-green-600 hover:bg-green-700 px-1 py-0 h-5 w-5"
+                      disabled={!newTestName.trim()}
+                      title="Test bestätigen (Enter)"
+                    >
+                      <span className="text-white text-xs">✓</span>
+                    </Button>
+                    <Button
+                      onClick={handleTestEntry}
+                      size="sm"
+                      className="bg-red-600 hover:bg-red-700 px-1 py-0 h-5 w-5"
+                      disabled={!newTestName.trim()}
+                      title="Test entfernen (falls vorhanden)"
+                    >
+                      <span className="text-white text-xs">−</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
