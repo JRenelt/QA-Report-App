@@ -12,7 +12,7 @@ class GesperrtFeaturesBackendTester:
     4. Bestehende Endpunkte Kompatibilität
     """
     
-    def __init__(self, base_url="https://hieralink.preview.emergentagent.com"):
+    def __init__(self, base_url="https://audit-log-tracker.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0

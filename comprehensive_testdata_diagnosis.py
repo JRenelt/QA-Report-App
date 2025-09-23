@@ -115,8 +115,8 @@ def comprehensive_testdata_diagnosis():
         frontend_headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Origin': 'https://hieralink.preview.emergentagent.com',
-            'Referer': 'https://hieralink.preview.emergentagent.com/',
+            'Origin': 'https://audit-log-tracker.preview.emergentagent.com',
+            'Referer': 'https://audit-log-tracker.preview.emergentagent.com/',
             'User-Agent': 'Mozilla/5.0 (Frontend Simulation)'
         }
         

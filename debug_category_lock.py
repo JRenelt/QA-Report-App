@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv('/app/frontend/.env')
-BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://hieralink.preview.emergentagent.com')
+BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://audit-log-tracker.preview.emergentagent.com')
 API_BASE = f"{BACKEND_URL}/api"
 
 async def debug_category_lock():

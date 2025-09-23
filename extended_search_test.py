@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 
 # Backend URL aus .env
-BACKEND_URL = "https://hieralink.preview.emergentagent.com/api"
+BACKEND_URL = "https://audit-log-tracker.preview.emergentagent.com/api"
 
 class ExtendedSearchTester:
     def __init__(self):

@@ -16,7 +16,7 @@ import tempfile
 import os
 from datetime import datetime
 
-BACKEND_URL = "https://hieralink.preview.emergentagent.com/api"
+BACKEND_URL = "https://audit-log-tracker.preview.emergentagent.com/api"
 
 def test_xml_import_detailed():
     """Detaillierter XML Import Test gemäß German Review Request"""

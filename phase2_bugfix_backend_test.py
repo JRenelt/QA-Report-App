@@ -16,7 +16,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://hieralink.preview.emergentagent.com/api"
+BACKEND_URL = "https://audit-log-tracker.preview.emergentagent.com/api"
 
 class Phase2BugFixTester:
     def __init__(self):
