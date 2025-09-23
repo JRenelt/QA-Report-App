@@ -341,6 +341,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   };
 
+  // Kombiniere predefined und dynamic tests
+  const getAllTests = (categoryName) => {
+    const predefined = predefinedTests[categoryName] || [];
+    const dynamic = dynamicTests[categoryName] || [];
+    return [...predefined, ...dynamic];
+  };
+
   // Suchlogik für Testpunkte und Bereiche
   const getFilteredTests = () => {
     let tests = [];
@@ -348,7 +355,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     if (statusFilter) {
       // Status-Filter aktiv: Suche in allen Bereichen
       Object.keys(predefinedTests).forEach(categoryName => {
-        predefinedTests[categoryName].forEach(test => {
+        getAllTests(categoryName).forEach(test => {
           const testStatus = testStatuses[test.name];
           const matchesStatus = statusFilter === 'pending' 
             ? !testStatus 
@@ -361,7 +368,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       });
     } else {
       // Normale Ansicht: NUR aktuelle Kategorie
-      tests = (predefinedTests[currentCategory] || []).map(test => ({...test}));
+      tests = getAllTests(currentCategory).map(test => ({...test}));
     }
     
     // Textsuche anwenden
