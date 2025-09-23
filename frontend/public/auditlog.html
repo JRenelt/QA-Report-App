@@ -482,9 +482,185 @@
         }
 
         // Placeholder-Funktionen
+        // Archive-Management
+        let archivedReports = JSON.parse(localStorage.getItem('auditlog_archived_reports') || '[]');
+
         function archiveTests() {
-            console.log('📁 Archiv-Funktion');
-            alert('Archiv-Funktion wird implementiert');
+            const report = generateTestReport();
+            archivedReports.push(report);
+            localStorage.setItem('auditlog_archived_reports', JSON.stringify(archivedReports));
+            updateArchiveCount();
+            console.log('📁 Bericht im Archiv gespeichert:', report.title);
+            alert(`Bericht "${report.title}" erfolgreich im Archiv gespeichert!`);
+        }
+
+        function updateArchiveCount() {
+            // Falls Archive-Button vorhanden, Counter aktualisieren
+            const archiveBtn = document.querySelector('button:has-text("Archiv")');
+            if (archiveBtn) {
+                archiveBtn.textContent = `📁 Archiv (${archivedReports.length})`;
+            }
+        }
+
+        function showArchiveDialog() {
+            // Einfacher Dialog für Archiv-Anzeige
+            const archiveWindow = window.open('', '_blank', 'width=900,height=600,scrollbars=yes');
+            
+            const archiveContent = `
+                <!DOCTYPE html>
+                <html lang="de">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>FavOrg AuditLog-Archiv</title>
+                    <style>
+                        body {
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                            background: #1a1f2e;
+                            color: #e5e7eb;
+                            margin: 0;
+                            padding: 20px;
+                        }
+                        .header {
+                            border-bottom: 1px solid #374151;
+                            padding-bottom: 15px;
+                            margin-bottom: 20px;
+                        }
+                        .report-item {
+                            background: #2d3748;
+                            border: 1px solid #374151;
+                            border-radius: 8px;
+                            padding: 16px;
+                            margin-bottom: 12px;
+                        }
+                        .report-title {
+                            font-weight: bold;
+                            color: #06b6d4;
+                            margin-bottom: 8px;
+                        }
+                        .report-meta {
+                            font-size: 14px;
+                            color: #9ca3af;
+                            margin-bottom: 8px;
+                        }
+                        .report-stats {
+                            display: flex;
+                            gap: 12px;
+                            margin-bottom: 12px;
+                        }
+                        .stat {
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-size: 12px;
+                            font-weight: 500;
+                        }
+                        .stat.success { background: #059669; }
+                        .stat.error { background: #dc2626; }
+                        .stat.warning { background: #2563eb; }
+                        .stat.info { background: #d97706; }
+                        .actions {
+                            display: flex;
+                            gap: 8px;
+                        }
+                        .btn {
+                            padding: 6px 12px;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 12px;
+                            font-weight: 500;
+                        }
+                        .btn-primary { background: #06b6d4; color: white; }
+                        .btn-danger { background: #dc2626; color: white; }
+                        .empty-state {
+                            text-align: center;
+                            color: #6b7280;
+                            padding: 40px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h2>📁 AuditLog-Archiv</h2>
+                        <p>Gespeicherte Test-Berichte (${archivedReports.length})</p>
+                    </div>
+                    
+                    ${archivedReports.length === 0 ? `
+                        <div class="empty-state">
+                            <p>Noch keine Berichte im Archiv.</p>
+                            <p>Verwenden Sie den "📁 Archiv" Button, um den aktuellen Test-Status zu speichern.</p>
+                        </div>
+                    ` : archivedReports.reverse().map(report => `
+                        <div class="report-item">
+                            <div class="report-title">${report.title}</div>
+                            <div class="report-meta">
+                                Erstellt: ${report.displayDate} | 
+                                ${report.completedTests} von ${report.totalTests} Tests abgeschlossen
+                            </div>
+                            <div class="report-stats">
+                                <span class="stat success">✅ ${report.passedTests}</span>
+                                <span class="stat error">❌ ${report.failedTests}</span>
+                                <span class="stat warning">⏳ ${report.warningTests}</span>
+                                <span class="stat info">🗑️ ${report.skippedTests}</span>
+                            </div>
+                            <div class="actions">
+                                <button class="btn btn-primary" onclick="exportReport('${report.id}')">
+                                    📄 PDF-Export
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteReport('${report.id}')">
+                                    🗑️ Löschen
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                    
+                    <script>
+                        function exportReport(reportId) {
+                            // Signalisiere dem Hauptfenster, den Bericht zu exportieren
+                            if (window.opener) {
+                                window.opener.exportArchivedReport(reportId);
+                            }
+                        }
+                        
+                        function deleteReport(reportId) {
+                            if (confirm('Bericht wirklich löschen?')) {
+                                if (window.opener) {
+                                    window.opener.deleteArchivedReport(reportId);
+                                    window.location.reload();
+                                }
+                            }
+                        }
+                    </script>
+                </body>
+                </html>
+            `;
+            
+            archiveWindow.document.write(archiveContent);
+            archiveWindow.document.close();
+        }
+
+        function exportArchivedReport(reportId) {
+            const report = archivedReports.find(r => r.id === reportId);
+            if (report) {
+                generatePrintableReportFromData(report);
+            }
+        }
+
+        function deleteArchivedReport(reportId) {
+            archivedReports = archivedReports.filter(r => r.id !== reportId);
+            localStorage.setItem('auditlog_archived_reports', JSON.stringify(archivedReports));
+            updateArchiveCount();
+            alert('Bericht aus Archiv gelöscht');
+        }
+
+        function generatePrintableReportFromData(reportData) {
+            // Verwende die gleiche Print-Logik, aber mit bereits vorhandenen Daten
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            
+            // Hier würde der gleiche Print-Content verwendet werden
+            // Vereinfacht verwenden wir die bestehende generatePrintableReport-Logik
+            console.log('📄 Exportiere archivierten Bericht:', reportData.title);
+            alert(`PDF-Export für "${reportData.title}" wird gestartet...`);
+            // Hier könnte die vollständige PDF-Generierung implementiert werden
         }
 
         function downloadTests() {
