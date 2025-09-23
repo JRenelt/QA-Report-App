@@ -856,17 +856,18 @@
                 const testNote = testNotes[test.name];
                 
                 const testDiv = document.createElement('div');
-                testDiv.className = 'test-point';
+                testDiv.className = `test-point ${testStatus ? 'status-' + testStatus : ''}`;
                 
                 let statusBadgeHtml = '';
                 if (testStatus) {
-                    const statusIcons = {
-                        'success': '✅',
-                        'error': '❌',
-                        'warning': '⏳',
-                        'info': '🗑️'
+                    const statusConfig = {
+                        'success': { icon: '✅', text: 'Bestanden', class: 'status-success' },
+                        'error': { icon: '❌', text: 'Fehlgeschlagen', class: 'status-error' },
+                        'warning': { icon: '⏳', text: 'In Bearbeitung', class: 'status-warning' },
+                        'info': { icon: '🗑️', text: 'Übersprungen', class: 'status-info' }
                     };
-                    statusBadgeHtml = `<span class="status-badge status-${testStatus}">${statusIcons[testStatus]}</span>`;
+                    const config = statusConfig[testStatus];
+                    statusBadgeHtml = `<span class="status-badge ${config.class}">${config.icon} ${config.text}</span>`;
                 }
 
                 let noteHtml = '';
@@ -891,12 +892,28 @@
                     `;
                 }
 
+                // Timestamp hinzufügen wenn Status gesetzt
+                let timestampHtml = '';
+                if (testStatus) {
+                    const now = new Date().toLocaleString('de-DE', {
+                        day: '2-digit',
+                        month: '2-digit', 
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    timestampHtml = `<span class="text-secondary text-sm" style="margin-left: 8px;">${now}</span>`;
+                }
+
                 testDiv.innerHTML = `
                     <div class="test-point-header">
                         <div class="flex align-center gap-8">
-                            <span>${test.icon}</span>
-                            <strong>${test.name}</strong>
-                            ${test.isDynamic ? '<span class="status-badge" style="background: var(--accent-cyan); color: white;">Custom</span>' : ''}
+                            <span style="font-size: 16px;">${test.icon}</span>
+                            <div class="flex-1">
+                                <strong style="color: var(--text-primary);">${test.name}</strong>
+                                ${timestampHtml}
+                                ${test.isDynamic ? '<span class="status-badge" style="background: var(--accent-cyan); color: white; margin-left: 8px;">Custom</span>' : ''}
+                            </div>
                         </div>
                         ${statusBadgeHtml}
                     </div>
@@ -907,20 +924,20 @@
 
                     ${noteHtml}
 
-                    <div class="test-point-actions">
-                        <button class="btn btn-success btn-small" onclick="setTestStatus('${test.name}', 'success')">
+                    <div class="test-point-actions" style="justify-content: flex-start;">
+                        <button class="btn btn-success btn-small" onclick="setTestStatus('${test.name}', 'success')" title="Test bestanden">
                             ✅
                         </button>
-                        <button class="btn btn-danger btn-small" onclick="setTestStatus('${test.name}', 'error')">
+                        <button class="btn btn-danger btn-small" onclick="setTestStatus('${test.name}', 'error')" title="Test fehlgeschlagen">
                             ❌
                         </button>
-                        <button class="btn btn-warning btn-small" onclick="setTestStatus('${test.name}', 'warning')">
+                        <button class="btn btn-warning btn-small" onclick="setTestStatus('${test.name}', 'warning')" title="Test in Bearbeitung">
                             ⏳
                         </button>
-                        <button class="btn btn-info btn-small" onclick="setTestStatus('${test.name}', 'info')">
+                        <button class="btn btn-info btn-small" onclick="setTestStatus('${test.name}', 'info')" title="Test übersprungen">
                             🗑️
                         </button>
-                        <button class="btn btn-secondary btn-small" onclick="toggleNoteEdit('${test.name}')">
+                        <button class="btn btn-secondary btn-small" onclick="toggleNoteEdit('${test.name}')" title="Notiz hinzufügen/bearbeiten">
                             ✏️
                         </button>
                     </div>
