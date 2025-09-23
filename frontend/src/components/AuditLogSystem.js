@@ -864,44 +864,64 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           {/* Fixe Fußzeile - Nahtloser Übergang zu FavOrg Footer */}
           {(viewMode === 'tests' || viewMode === 'bericht') && (
             <div className="flex items-center justify-between p-2 bg-gray-800 border-t border-gray-700 flex-shrink-0">
-              {/* Links: Status-Quadrate mit kumulierten Zahlen - funktional */}
+              {/* Links: Status-Filter-Buttons mit Counter */}
               <div className="flex items-center gap-2">
-                <div 
-                  className="w-8 h-8 bg-green-600 rounded flex flex-col items-center justify-center text-white cursor-help relative"
-                  title="Bestanden - Tests erfolgreich abgeschlossen"
+                <Button
+                  onClick={() => setStatusFilter(statusFilter === 'passed' ? '' : 'passed')}
+                  className={`w-8 h-8 bg-green-600 hover:bg-green-700 rounded flex flex-col items-center justify-center text-white cursor-pointer relative ${
+                    statusFilter === 'passed' ? 'ring-2 ring-white' : ''
+                  }`}
+                  title="Filter: Bestandene Tests aus allen Bereichen"
                 >
                   <span className="text-sm">✓</span>
                   <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-green-800 rounded-full w-4 h-4 flex items-center justify-center">
                     {Object.values(testStatuses).filter(status => status.status === 'passed').length}
                   </span>
-                </div>
-                <div 
-                  className="w-8 h-8 bg-red-600 rounded flex flex-col items-center justify-center text-white cursor-help relative"
-                  title="Fehlgeschlagen - Tests mit Problemen"
+                </Button>
+                <Button
+                  onClick={() => setStatusFilter(statusFilter === 'failed' ? '' : 'failed')}
+                  className={`w-8 h-8 bg-red-600 hover:bg-red-700 rounded flex flex-col items-center justify-center text-white cursor-pointer relative ${
+                    statusFilter === 'failed' ? 'ring-2 ring-white' : ''
+                  }`}
+                  title="Filter: Fehlgeschlagene Tests aus allen Bereichen"
                 >
                   <span className="text-sm">✗</span>
                   <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-red-800 rounded-full w-4 h-4 flex items-center justify-center">
                     {Object.values(testStatuses).filter(status => status.status === 'failed').length}
                   </span>
-                </div>
-                <div 
-                  className="w-8 h-8 bg-blue-600 rounded flex flex-col items-center justify-center text-white cursor-help relative"
-                  title="In Bearbeitung - Tests werden aktuell durchgeführt"
+                </Button>
+                <Button
+                  onClick={() => setStatusFilter(statusFilter === 'inProgress' ? '' : 'inProgress')}
+                  className={`w-8 h-8 bg-blue-600 hover:bg-blue-700 rounded flex flex-col items-center justify-center text-white cursor-pointer relative ${
+                    statusFilter === 'inProgress' ? 'ring-2 ring-white' : ''
+                  }`}
+                  title="Filter: Tests in Bearbeitung aus allen Bereichen"
                 >
                   <span className="text-sm">~</span>
                   <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-blue-800 rounded-full w-4 h-4 flex items-center justify-center">
                     {Object.values(testStatuses).filter(status => status.status === 'inProgress').length}
                   </span>
-                </div>
-                <div 
-                  className="w-8 h-8 bg-orange-600 rounded flex flex-col items-center justify-center text-white cursor-help relative"
-                  title="Ausstehend - Tests noch nicht begonnen"
+                </Button>
+                <Button
+                  onClick={() => setStatusFilter(statusFilter === 'pending' ? '' : 'pending')}
+                  className={`w-8 h-8 bg-orange-600 hover:bg-orange-700 rounded flex flex-col items-center justify-center text-white cursor-pointer relative ${
+                    statusFilter === 'pending' ? 'ring-2 ring-white' : ''
+                  }`}
+                  title="Filter: Ausstehende Tests aus allen Bereichen"
                 >
                   <span className="text-sm">○</span>
                   <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-orange-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    {currentTests.length - Object.keys(testStatuses).length}
+                    {(() => {
+                      // Zähle alle Tests ohne Status aus allen Bereichen
+                      let totalTests = 0;
+                      let totalWithStatus = Object.keys(testStatuses).length;
+                      Object.values(predefinedTests).forEach(tests => {
+                        totalTests += tests.length;
+                      });
+                      return totalTests - totalWithStatus;
+                    })()}
                   </span>
-                </div>
+                </Button>
               </div>
 
               {/* Rechts: Berichte(Archiv) + Download + Mülleimer */}
