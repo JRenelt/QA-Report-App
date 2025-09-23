@@ -2640,11 +2640,18 @@ async def update_category(category_id: str, update_data: CategoryUpdate):
 
 @api_router.delete("/categories/{category_id}")
 async def delete_category(category_id: str):
-    """Kategorie löschen"""
+    """Kategorie löschen mit Lock-Protection"""
     # Finde Kategorie
     category = await db.categories.find_one({"id": category_id})
     if not category:
         raise HTTPException(status_code=404, detail="Kategorie nicht gefunden")
+    
+    # LOCK-PROTECTION: Prüfe ob Kategorie gesperrt ist
+    if category.get("is_locked", False):
+        raise HTTPException(
+            status_code=403, 
+            detail=f"Gesperrte Kategorie kann nicht gelöscht werden: {category.get('lock_reason', 'Kategorie ist geschützt')}"
+        )
     
     category_name = category["name"]
     
