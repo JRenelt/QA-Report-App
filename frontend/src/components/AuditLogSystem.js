@@ -193,11 +193,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     toast.success(`Test-Karte "${testName}" zu "${currentCategory}" hinzugefügt`);
     setNewTestName('');
     
-    // Force re-render durch State-Change
-    setTimeout(() => {
-      setCurrentCategory(''); 
-      setTimeout(() => setCurrentCategory(currentCategory), 10);
-    }, 10);
+    // Force re-render
+    setForceRender(prev => prev + 1);
   };
 
   // Test aus DB entfernen (rotes Minus)
