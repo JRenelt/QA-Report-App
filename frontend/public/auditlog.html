@@ -661,45 +661,83 @@
             console.log('Tests gerendert:', tests.length);
         }
 
-        // Robuste Initialisierung mit mehreren Fallback-Mechanismen
+        // Robuste Initialisierung mit mehreren Fallback-Mechanismen und Debug-Output
         function initialize() {
             console.log('🚀 Initialisierung gestartet...');
+            console.log('Document readyState:', document.readyState);
             
-            // Warte bis DOM-Elemente verfügbar sind
-            var checkElements = function() {
-                var categoryList = document.getElementById('categoryList');
-                var testList = document.getElementById('testList');
-                
-                if (!categoryList || !testList) {
-                    console.log('⏳ Warte auf DOM-Elemente...');
-                    setTimeout(checkElements, 100);
-                    return;
-                }
-                
-                console.log('✅ DOM-Elemente gefunden, starte Rendering...');
+            // Direkte DOM-Prüfung
+            var categoryList = document.getElementById('categoryList');
+            var testList = document.getElementById('testList');
+            
+            console.log('CategoryList Element:', categoryList);
+            console.log('TestList Element:', testList);
+            
+            if (!categoryList) {
+                console.error('❌ categoryList Element nicht gefunden!');
+                return;
+            }
+            
+            if (!testList) {
+                console.error('❌ testList Element nicht gefunden!');
+                return;
+            }
+            
+            console.log('✅ DOM-Elemente gefunden, starte Rendering...');
+            
+            try {
                 renderCategories();
-                renderTests();
-                updateStatusCounts();
-                console.log('🎉 AuditLog System erfolgreich initialisiert!');
-            };
+                console.log('✅ Kategorien gerendert');
+            } catch (e) {
+                console.error('❌ Fehler beim Rendern der Kategorien:', e);
+            }
             
-            checkElements();
+            try {
+                renderTests();
+                console.log('✅ Tests gerendert');
+            } catch (e) {
+                console.error('❌ Fehler beim Rendern der Tests:', e);
+            }
+            
+            try {
+                updateStatusCounts();
+                console.log('✅ Status-Counts aktualisiert');
+            } catch (e) {
+                console.error('❌ Fehler beim Aktualisieren der Status-Counts:', e);
+            }
+            
+            console.log('🎉 AuditLog System erfolgreich initialisiert!');
         }
 
-        // Multiple DOM-Ready-Strategien
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initialize);
-        } else {
-            initialize();
+        // Sofortige Initialisierung nach DOM-Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📜 DOMContentLoaded Event ausgelöst');
+            setTimeout(initialize, 100);
+        });
+
+        // Fallback für bereits geladenes DOM
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            console.log('📜 DOM bereits geladen, starte sofort');
+            setTimeout(initialize, 100);
         }
         
-        // Fallback nach 2 Sekunden
+        // Zusätzlicher Fallback nach Laden
+        window.addEventListener('load', function() {
+            console.log('📜 Window Load Event ausgelöst');
+            setTimeout(initialize, 200);
+        });
+        
+        // Letzter Fallback nach 3 Sekunden
         setTimeout(function() {
-            if (document.getElementById('testList') && document.getElementById('testList').children.length === 0) {
-                console.log('🔄 Fallback-Initialisierung...');
+            console.log('🔄 Fallback-Check nach 3 Sekunden...');
+            var testList = document.getElementById('testList');
+            if (testList && testList.children.length === 0) {
+                console.log('🔄 Fallback-Initialisierung ausgeführt');
                 initialize();
+            } else {
+                console.log('✅ Tests bereits geladen oder Element nicht vorhanden');
             }
-        }, 2000);
+        }, 3000);
 
         console.log('📝 Script vollständig geladen');
     </script>
