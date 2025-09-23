@@ -564,11 +564,23 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   <div className="mt-4 text-center">
                     <Button
                       onClick={() => {
-                        // Öffne Hilfe-System und navigiere zu AuditLog-Kapitel
-                        const event = new CustomEvent('openHelp', { 
-                          detail: { section: 'auditlog' } 
-                        });
-                        window.dispatchEvent(event);
+                        // Schließe AuditLog und öffne Hilfe-System
+                        onClose();
+                        setTimeout(() => {
+                          // Trigger Hilfe-System über den Header-Button
+                          const helpButton = document.querySelector('[title*="Hilfe"], [aria-label*="Help"], button:has-text("❓")');
+                          if (helpButton) {
+                            helpButton.click();
+                            // Navigiere nach einer kurzen Verzögerung zum AuditLog-Kapitel
+                            setTimeout(() => {
+                              const auditlogSection = document.querySelector('[data-section="auditlog"], button:has-text("AuditLog-System")');
+                              if (auditlogSection) {
+                                auditlogSection.click();
+                              }
+                            }, 500);
+                          }
+                        }, 100);
+                        toast.success('Handbuch wird geöffnet...');
                       }}
                       variant="ghost"
                       size="sm"
