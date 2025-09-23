@@ -150,20 +150,34 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Füge neuen Test zu den aktuellen Tests hinzu
+    // Prüfe ob wir in der Test-Ansicht sind
+    if (viewMode !== 'tests' || !currentCategory) {
+      toast.error('Bitte wählen Sie zuerst einen Test-Bereich aus');
+      return;
+    }
+
+    // Füge neuen Test zum aktuell ausgewählten Bereich hinzu
     const newTest = {
       name: newTestName.trim(),
       icon: '🧪',
       tooltip: `Eigener Test: ${newTestName.trim()}`
     };
 
-    // Temporär zu predefinedTests hinzufügen
+    // Stelle sicher dass der Bereich existiert
     if (!predefinedTests[currentCategory]) {
       predefinedTests[currentCategory] = [];
     }
+    
+    // Füge Test hinzu
     predefinedTests[currentCategory].push(newTest);
 
-    toast.success(`Test "${newTestName}" hinzugefügt`);
+    // Update Test-Kategorie Counter
+    const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
+    if (categoryIndex !== -1) {
+      testCategories[categoryIndex].tests += 1;
+    }
+
+    toast.success(`Test "${newTestName}" zu "${currentCategory}" hinzugefügt`);
     setNewTestName('');
     
     // Force re-render durch State-Update
