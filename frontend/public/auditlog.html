@@ -375,553 +375,548 @@
     </style>
 </head>
 <body>
-    <div id="audit-log-root"></div>
+    <button class="close-btn" onclick="closeWindow()">✕ Schließen</button>
+    
+    <div class="audit-log-container">
+        <!-- Header -->
+        <div class="audit-log-header">
+            <div class="flex align-center gap-12">
+                <button class="btn btn-secondary" onclick="goBackToFavOrg()">
+                    🏠 FavOrg
+                </button>
+                <h2 class="mb-0 text-cyan">
+                    🔍 AuditLog-System - Vollbild
+                </h2>
+            </div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { X, Search, FileText, Trash2, Download, Plus, Info, HelpCircle, Clock, Home } = lucideReact;
+            <div class="flex align-center gap-8">
+                <input
+                    type="text"
+                    class="input"
+                    id="newTestInput"
+                    placeholder="Neuer Testname..."
+                    onkeypress="handleKeyPress(event)"
+                />
+                <button class="btn btn-primary" onclick="addNewTest()">
+                    ➕
+                </button>
+                <button class="btn btn-danger" onclick="removeTest()">
+                    ✕
+                </button>
+            </div>
 
-        // Toast-Funktionen
-        const showSuccess = (message) => {
-            if (window.sonner) {
-                window.sonner.toast.success(message);
-            } else {
-                console.log('SUCCESS:', message);
-            }
+            <div class="flex align-center gap-8">
+                <button class="btn btn-primary" onclick="setViewMode('bereiche')">
+                    Bereiche
+                </button>
+                <button class="btn btn-secondary" onclick="setViewMode('tests')">
+                    Testpunkte
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="audit-log-content">
+            <!-- Sidebar - Kategorien -->
+            <div class="audit-sidebar">
+                <h3 class="mb-16 text-cyan">
+                    📋 Test-Bereiche
+                </h3>
+                <div id="categoryList">
+                    <!-- Dynamisch gefüllt -->
+                </div>
+            </div>
+
+            <!-- Main - Testpunkte -->
+            <div class="audit-main">
+                <div class="flex align-center justify-between mb-16">
+                    <h3 class="mb-0 text-cyan" id="currentCategoryTitle">
+                        🎨 Allgemeines Design
+                    </h3>
+                    <span class="status-badge status-info" id="testCount">
+                        4 Tests
+                    </span>
+                </div>
+
+                <div id="testList">
+                    <!-- Dynamisch gefüllt -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="audit-footer">
+            <div class="flex align-center gap-8">
+                <button class="btn btn-primary" id="filterAll" onclick="setStatusFilter('')">
+                    Alle (0)
+                </button>
+                <button class="btn btn-success" id="filterSuccess" onclick="setStatusFilter('success')">
+                    ✅ (0)
+                </button>
+                <button class="btn btn-danger" id="filterError" onclick="setStatusFilter('error')">
+                    ❌ (0)
+                </button>
+                <button class="btn btn-warning" id="filterWarning" onclick="setStatusFilter('warning')">
+                    ⏳ (0)
+                </button>
+                <button class="btn btn-info" id="filterInfo" onclick="setStatusFilter('info')">
+                    🗑️ (0)
+                </button>
+            </div>
+
+            <div class="flex align-center gap-8 ml-auto">
+                <button class="btn btn-secondary" onclick="archiveTests()">
+                    📁 Archiv
+                </button>
+                <button class="btn btn-secondary" onclick="downloadTests()">
+                    📄 Download
+                </button>
+                <button class="btn btn-secondary" onclick="trashTests()">
+                    🗑️ Trash
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global State
+        let currentCategory = 'Allgemeines Design';
+        let viewMode = 'bereiche';
+        let testStatuses = {};
+        let testNotes = {};
+        let dynamicTests = {};
+        let editingNote = null;
+        let statusFilter = '';
+
+        // Test-Bereiche für FavOrg
+        const testCategories = [
+            { name: 'Allgemeines Design', icon: '🎨', tests: 4 },
+            { name: 'Header-Bereich', icon: '🔝', tests: 4 }, 
+            { name: 'Sidebar-Bereich', icon: '📋', tests: 5 },
+            { name: 'Search-Section', icon: '🔍', tests: 5 },
+            { name: 'Main-Content', icon: '📄', tests: 4 },
+            { name: 'Bookmark-Karten', icon: '🎴', tests: 6 },
+            { name: 'Dialoge & Modals', icon: '🗨️', tests: 5 },
+            { name: 'Navigation & Routing', icon: '🧭', tests: 3 },
+            { name: 'Drag & Drop System', icon: '🎯', tests: 5 },
+            { name: 'Filter & Sortierung', icon: '🎛️', tests: 4 },
+            { name: 'Import/Export', icon: '📤', tests: 4 },
+            { name: 'Einstellungen', icon: '⚙️', tests: 4 },
+            { name: 'Performance & Responsive', icon: '⚡', tests: 4 }
+        ];
+
+        // Test-Szenarien pro Bereich
+        const predefinedTests = {
+            'Allgemeines Design': [
+                { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
+                { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
+                { name: 'Responsiveness', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
+                { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
+            ],
+            'Header-Bereich': [
+                { name: 'Logo & Titel Platzierung', icon: '🏷️', tooltip: 'Logo und Titel korrekt positioniert' },
+                { name: 'Navigation Icons', icon: '🧭', tooltip: 'Alle Navigation-Icons funktional' },
+                { name: 'Bookmark-Anzahl [X]', icon: '🔢', tooltip: 'Bookmark-Counter korrekt angezeigt' },
+                { name: 'Header-Buttons Layout', icon: '🔘', tooltip: 'Button-Layout im Header prüfen' }
+            ],
+            'Sidebar-Bereich': [
+                { name: 'Kategorie-Liste', icon: '📂', tooltip: 'Kategorien korrekt aufgelistet' },
+                { name: 'Drag & Drop Kategorien', icon: '🎯', tooltip: 'Kategorie D&D funktional' },
+                { name: 'Resizing Funktionalität', icon: '↔️', tooltip: 'Sidebar-Größenänderung' },
+                { name: 'Kategorie-Tooltips', icon: '💬', tooltip: 'Tooltip-Positionierung testen' },
+                { name: 'Unterkategorie-Hierarchie', icon: '🌳', tooltip: 'Hierarchische Darstellung prüfen' }
+            ],
+            'Search-Section': [
+                { name: 'Suchfeld Funktionalität', icon: '🔍', tooltip: 'Suche in allen Feldern' },
+                { name: 'Escape-Taste Reset', icon: '⌨️', tooltip: 'ESC leert Suchfeld' },
+                { name: 'Gelbe Hervorhebung', icon: '🟡', tooltip: 'Treffer-Highlighting prüfen' },
+                { name: 'Treffer-Anzeige [X]', icon: '📊', tooltip: 'Treffer-Counter korrekt' },
+                { name: 'Live-Search Performance', icon: '⚡', tooltip: 'Performance bei Eingabe prüfen' }
+            ],
+            'Main-Content': [
+                { name: 'Bookmark-Darstellung', icon: '🎴', tooltip: 'Bookmark-Karten Layout' },
+                { name: 'Tabellen-Ansicht Toggle', icon: '📋', tooltip: 'List/Grid View umschalten' },
+                { name: 'Scroll-Performance', icon: '📜', tooltip: 'Scrolling bei vielen Bookmarks' },
+                { name: 'Leere-State Anzeige', icon: '📭', tooltip: 'Anzeige wenn keine Bookmarks' }
+            ],
+            'Bookmark-Karten': [
+                { name: 'Status-Farb-System', icon: '🎨', tooltip: 'Farben für verschiedene Status' },
+                { name: 'Lock/Unlock Buttons', icon: '🔒', tooltip: 'Sperr-Funktionalität testen' },
+                { name: 'Action-Buttons Layout', icon: '🔘', tooltip: 'Edit/Delete/Link Button-Layout' },
+                { name: 'Drag-Handles sichtbar', icon: '⋮⋮', tooltip: 'Drag-Griffe erkennbar' },
+                { name: 'Hover-States', icon: '👆', tooltip: 'Hover-Effekte auf Karten' },
+                { name: 'Status-Badge Position', icon: '🏷️', tooltip: 'Status-Badges korrekt positioniert' }
+            ],
+            'Dialoge & Modals': [
+                { name: 'Bookmark-Dialog Layout', icon: '📝', tooltip: 'Neuer/Edit Bookmark Dialog' },
+                { name: 'Settings-Dialog Tabs', icon: '⚙️', tooltip: 'System-Einstellungen Tabs' },
+                { name: 'Help-System Navigation', icon: '❓', tooltip: 'Hilfe-System Untermenüs' },
+                { name: 'Modal Escape-Close', icon: '⌨️', tooltip: 'ESC schließt Dialoge' },
+                { name: 'Dialog-Breiten korrekt', icon: '📏', tooltip: 'Dialog-Größen responsive' }
+            ],
+            'Navigation & Routing': [
+                { name: 'Kategorie-Wechsel', icon: '🔄', tooltip: 'Navigation zwischen Kategorien' },
+                { name: 'URL-Updates', icon: '🔗', tooltip: 'URL-Änderungen bei Navigation' },
+                { name: 'Browser Back/Forward', icon: '⬅️', tooltip: 'Browser-Navigation funktional' }
+            ],
+            'Drag & Drop System': [
+                { name: 'Bookmark D&D zwischen Kategorien', icon: '🎯', tooltip: 'Bookmark-Verschiebung' },
+                { name: 'Kategorie D&D Hierarchie', icon: '🌳', tooltip: 'Kategorie-Hierarchie ändern' },
+                { name: 'Visual Feedback DDI', icon: '👁️', tooltip: 'Drag-Drop-Indicator sichtbar' },
+                { name: 'Cross-Level Sorting', icon: '↕️', tooltip: 'Zwischen allen Ebenen verschieben' },
+                { name: 'Multi-Selection D&D', icon: '🎫', tooltip: 'Mehrfach-Auswahl verschieben' }
+            ],
+            'Filter & Sortierung': [
+                { name: 'Status-Filter Buttons', icon: '🎛️', tooltip: 'TOTE/LOCALHOST/DUPLIKAT Filter' },
+                { name: 'Filter-Counter [X]', icon: '🔢', tooltip: 'Counter in Filter-Buttons' },
+                { name: 'Kombinierte Filter', icon: '🔗', tooltip: 'Mehrere Filter gleichzeitig' },
+                { name: 'Filter-Reset Alle', icon: '🔄', tooltip: 'Alle Filter zurücksetzen' }
+            ],
+            'Import/Export': [
+                { name: 'File-Upload Dialog', icon: '📤', tooltip: 'Datei-Auswahl und Upload' },
+                { name: 'Export-Format Buttons', icon: '📋', tooltip: 'HTML/XML/CSV/JSON Export' },
+                { name: 'Download ZIP Scripts', icon: '📦', tooltip: 'Sammelprogramm Download' },
+                { name: 'Batch-Export alle Formate', icon: '🎯', tooltip: 'Alle Formate exportieren' }
+            ],
+            'Einstellungen': [
+                { name: 'Tab-Navigation Icons', icon: '🗂️', tooltip: 'Settings-Tabs mit Icons' },
+                { name: 'Theme-Einstellungen', icon: '🌙', tooltip: 'Dark/Light Theme Toggle' },
+                { name: 'Meldungen Delay Checkbox', icon: '⏰', tooltip: 'Toast-Delay Einstellung' },
+                { name: 'Gefahr-Bereich rot', icon: '⚠️', tooltip: 'Danger-Zone rote Markierung' }
+            ],
+            'Performance & Responsive': [
+                { name: 'Mobile Layout <768px', icon: '📱', tooltip: 'Mobile Ansicht prüfen' },
+                { name: 'Tablet Layout 768-1024px', icon: '📲', tooltip: 'Tablet Ansicht prüfen' },
+                { name: 'Desktop Layout >1024px', icon: '🖥️', tooltip: 'Desktop Ansicht prüfen' },
+                { name: 'Lazy-Loading große Listen', icon: '⚡', tooltip: 'Performance bei 100+ Bookmarks' }
+            ]
         };
 
-        const showError = (message) => {
-            if (window.sonner) {
-                window.sonner.toast.error(message);
-            } else {
-                console.log('ERROR:', message);
-            }
-        };
+        // Toast-Funktionen (simple Alerts als Fallback)
+        function showSuccess(message) {
+            console.log('✅ SUCCESS:', message);
+            // Könnte hier ein einfaches Toast-System eingebaut werden
+        }
 
-        const AuditLogStandalone = () => {
-            const [currentCategory, setCurrentCategory] = useState('Allgemeines Design');
-            const [viewMode, setViewMode] = useState('bereiche');
-            const [newTestName, setNewTestName] = useState('');
-            const [compactView, setCompactView] = useState(false);
-            const [testReports, setTestReports] = useState([]);
-            const [selectedTestPoints, setSelectedTestPoints] = useState([]);
-            const [testNotes, setTestNotes] = useState({});
-            const [testStatuses, setTestStatuses] = useState({});
-            const [editingNote, setEditingNote] = useState(null);
-            const [searchTerm, setSearchTerm] = useState('');
-            const [filteredTests, setFilteredTests] = useState([]);
-            const [statusFilter, setStatusFilter] = useState('');
-            const [forceRender, setForceRender] = useState(0);
-            const [dynamicTests, setDynamicTests] = useState({});
+        function showError(message) {
+            console.log('❌ ERROR:', message);
+            alert('Fehler: ' + message);
+        }
 
-            // Test-Bereiche für FavOrg als State
-            const [testCategories, setTestCategories] = useState([
-                { name: 'Allgemeines Design', icon: '🎨', tests: 4 },
-                { name: 'Header-Bereich', icon: '🔝', tests: 4 }, 
-                { name: 'Sidebar-Bereich', icon: '📋', tests: 5 },
-                { name: 'Search-Section', icon: '🔍', tests: 5 },
-                { name: 'Main-Content', icon: '📄', tests: 4 },
-                { name: 'Bookmark-Karten', icon: '🎴', tests: 6 },
-                { name: 'Dialoge & Modals', icon: '🗨️', tests: 5 },
-                { name: 'Navigation & Routing', icon: '🧭', tests: 3 },
-                { name: 'Drag & Drop System', icon: '🎯', tests: 5 },
-                { name: 'Filter & Sortierung', icon: '🎛️', tests: 4 },
-                { name: 'Import/Export', icon: '📤', tests: 4 },
-                { name: 'Einstellungen', icon: '⚙️', tests: 4 },
-                { name: 'Performance & Responsive', icon: '⚡', tests: 4 }
-            ]);
+        // Utility-Funktionen
+        function getCurrentTests() {
+            const baseTests = predefinedTests[currentCategory] || [];
+            const categoryDynamicTests = dynamicTests[currentCategory] || [];
+            return [...baseTests, ...categoryDynamicTests];
+        }
 
-            // Test-Szenarien pro Bereich
-            const predefinedTests = {
-                'Allgemeines Design': [
-                    { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
-                    { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
-                    { name: 'Responsiveness', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
-                    { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
-                ],
-                'Header-Bereich': [
-                    { name: 'Logo & Titel Platzierung', icon: '🏷️', tooltip: 'Logo und Titel korrekt positioniert' },
-                    { name: 'Navigation Icons', icon: '🧭', tooltip: 'Alle Navigation-Icons funktional' },
-                    { name: 'Bookmark-Anzahl [X]', icon: '🔢', tooltip: 'Bookmark-Counter korrekt angezeigt' },
-                    { name: 'Header-Buttons Layout', icon: '🔘', tooltip: 'Button-Layout im Header prüfen' }
-                ],
-                'Sidebar-Bereich': [
-                    { name: 'Kategorie-Liste', icon: '📂', tooltip: 'Kategorien korrekt aufgelistet' },
-                    { name: 'Drag & Drop Kategorien', icon: '🎯', tooltip: 'Kategorie D&D funktional' },
-                    { name: 'Resizing Funktionalität', icon: '↔️', tooltip: 'Sidebar-Größenänderung' },
-                    { name: 'Kategorie-Tooltips', icon: '💬', tooltip: 'Tooltip-Positionierung testen' },
-                    { name: 'Unterkategorie-Hierarchie', icon: '🌳', tooltip: 'Hierarchische Darstellung prüfen' }
-                ],
-                'Search-Section': [
-                    { name: 'Suchfeld Funktionalität', icon: '🔍', tooltip: 'Suche in allen Feldern' },
-                    { name: 'Escape-Taste Reset', icon: '⌨️', tooltip: 'ESC leert Suchfeld' },
-                    { name: 'Gelbe Hervorhebung', icon: '🟡', tooltip: 'Treffer-Highlighting prüfen' },
-                    { name: 'Treffer-Anzeige [X]', icon: '📊', tooltip: 'Treffer-Counter korrekt' },
-                    { name: 'Live-Search Performance', icon: '⚡', tooltip: 'Performance bei Eingabe prüfen' }
-                ],
-                'Main-Content': [
-                    { name: 'Bookmark-Darstellung', icon: '🎴', tooltip: 'Bookmark-Karten Layout' },
-                    { name: 'Tabellen-Ansicht Toggle', icon: '📋', tooltip: 'List/Grid View umschalten' },
-                    { name: 'Scroll-Performance', icon: '📜', tooltip: 'Scrolling bei vielen Bookmarks' },
-                    { name: 'Leere-State Anzeige', icon: '📭', tooltip: 'Anzeige wenn keine Bookmarks' }
-                ],
-                'Bookmark-Karten': [
-                    { name: 'Status-Farb-System', icon: '🎨', tooltip: 'Farben für verschiedene Status' },
-                    { name: 'Lock/Unlock Buttons', icon: '🔒', tooltip: 'Sperr-Funktionalität testen' },
-                    { name: 'Action-Buttons Layout', icon: '🔘', tooltip: 'Edit/Delete/Link Button-Layout' },
-                    { name: 'Drag-Handles sichtbar', icon: '⋮⋮', tooltip: 'Drag-Griffe erkennbar' },
-                    { name: 'Hover-States', icon: '👆', tooltip: 'Hover-Effekte auf Karten' },
-                    { name: 'Status-Badge Position', icon: '🏷️', tooltip: 'Status-Badges korrekt positioniert' }
-                ],
-                'Dialoge & Modals': [
-                    { name: 'Bookmark-Dialog Layout', icon: '📝', tooltip: 'Neuer/Edit Bookmark Dialog' },
-                    { name: 'Settings-Dialog Tabs', icon: '⚙️', tooltip: 'System-Einstellungen Tabs' },
-                    { name: 'Help-System Navigation', icon: '❓', tooltip: 'Hilfe-System Untermenüs' },
-                    { name: 'Modal Escape-Close', icon: '⌨️', tooltip: 'ESC schließt Dialoge' },
-                    { name: 'Dialog-Breiten korrekt', icon: '📏', tooltip: 'Dialog-Größen responsive' }
-                ],
-                'Navigation & Routing': [
-                    { name: 'Kategorie-Wechsel', icon: '🔄', tooltip: 'Navigation zwischen Kategorien' },
-                    { name: 'URL-Updates', icon: '🔗', tooltip: 'URL-Änderungen bei Navigation' },
-                    { name: 'Browser Back/Forward', icon: '⬅️', tooltip: 'Browser-Navigation funktional' }
-                ],
-                'Drag & Drop System': [
-                    { name: 'Bookmark D&D zwischen Kategorien', icon: '🎯', tooltip: 'Bookmark-Verschiebung' },
-                    { name: 'Kategorie D&D Hierarchie', icon: '🌳', tooltip: 'Kategorie-Hierarchie ändern' },
-                    { name: 'Visual Feedback DDI', icon: '👁️', tooltip: 'Drag-Drop-Indicator sichtbar' },
-                    { name: 'Cross-Level Sorting', icon: '↕️', tooltip: 'Zwischen allen Ebenen verschieben' },
-                    { name: 'Multi-Selection D&D', icon: '🎫', tooltip: 'Mehrfach-Auswahl verschieben' }
-                ],
-                'Filter & Sortierung': [
-                    { name: 'Status-Filter Buttons', icon: '🎛️', tooltip: 'TOTE/LOCALHOST/DUPLIKAT Filter' },
-                    { name: 'Filter-Counter [X]', icon: '🔢', tooltip: 'Counter in Filter-Buttons' },
-                    { name: 'Kombinierte Filter', icon: '🔗', tooltip: 'Mehrere Filter gleichzeitig' },
-                    { name: 'Filter-Reset Alle', icon: '🔄', tooltip: 'Alle Filter zurücksetzen' }
-                ],
-                'Import/Export': [
-                    { name: 'File-Upload Dialog', icon: '📤', tooltip: 'Datei-Auswahl und Upload' },
-                    { name: 'Export-Format Buttons', icon: '📋', tooltip: 'HTML/XML/CSV/JSON Export' },
-                    { name: 'Download ZIP Scripts', icon: '📦', tooltip: 'Sammelprogramm Download' },
-                    { name: 'Batch-Export alle Formate', icon: '🎯', tooltip: 'Alle Formate exportieren' }
-                ],
-                'Einstellungen': [
-                    { name: 'Tab-Navigation Icons', icon: '🗂️', tooltip: 'Settings-Tabs mit Icons' },
-                    { name: 'Theme-Einstellungen', icon: '🌙', tooltip: 'Dark/Light Theme Toggle' },
-                    { name: 'Meldungen Delay Checkbox', icon: '⏰', tooltip: 'Toast-Delay Einstellung' },
-                    { name: 'Gefahr-Bereich rot', icon: '⚠️', tooltip: 'Danger-Zone rote Markierung' }
-                ],
-                'Performance & Responsive': [
-                    { name: 'Mobile Layout <768px', icon: '📱', tooltip: 'Mobile Ansicht prüfen' },
-                    { name: 'Tablet Layout 768-1024px', icon: '📲', tooltip: 'Tablet Ansicht prüfen' },
-                    { name: 'Desktop Layout >1024px', icon: '🖥️', tooltip: 'Desktop Ansicht prüfen' },
-                    { name: 'Lazy-Loading große Listen', icon: '⚡', tooltip: 'Performance bei 100+ Bookmarks' }
-                ]
+        function getFilteredTests() {
+            const allTests = getCurrentTests();
+            if (!statusFilter) return allTests;
+            
+            return allTests.filter(test => testStatuses[test.name] === statusFilter);
+        }
+
+        function updateStatusCounts() {
+            const allStatuses = Object.values(testStatuses);
+            const counts = {
+                all: allStatuses.length,
+                success: allStatuses.filter(s => s === 'success').length,
+                error: allStatuses.filter(s => s === 'error').length,
+                warning: allStatuses.filter(s => s === 'warning').length,
+                info: allStatuses.filter(s => s === 'info').length
             };
 
-            // Alle Tests für aktuellen Bereich
-            const getCurrentTests = () => {
-                const baseTests = predefinedTests[currentCategory] || [];
-                const categoryDynamicTests = dynamicTests[currentCategory] || [];
-                return [...baseTests, ...categoryDynamicTests];
-            };
+            document.getElementById('filterAll').textContent = `Alle (${counts.all})`;
+            document.getElementById('filterSuccess').textContent = `✅ (${counts.success})`;
+            document.getElementById('filterError').textContent = `❌ (${counts.error})`;
+            document.getElementById('filterWarning').textContent = `⏳ (${counts.warning})`;
+            document.getElementById('filterInfo').textContent = `🗑️ (${counts.info})`;
+        }
 
-            // Test hinzufügen
-            const addNewTest = () => {
-                if (!newTestName.trim()) {
-                    showError('Bitte geben Sie einen Testnamen ein');
-                    return;
-                }
+        // Event-Handler
+        function closeWindow() {
+            window.close();
+        }
 
-                const existingTests = getCurrentTests();
-                if (existingTests.some(test => test.name === newTestName.trim())) {
-                    showError('Test mit diesem Namen existiert bereits');
-                    return;
-                }
-
-                setDynamicTests(prev => ({
-                    ...prev,
-                    [currentCategory]: [
-                        ...(prev[currentCategory] || []),
-                        { 
-                            name: newTestName.trim(), 
-                            icon: '🔍', 
-                            tooltip: 'Benutzerdefinierter Test',
-                            isDynamic: true 
-                        }
-                    ]
-                }));
-
-                // Test-Counter in Kategorie aktualisieren
-                setTestCategories(prev => prev.map(cat => 
-                    cat.name === currentCategory 
-                        ? { ...cat, tests: cat.tests + 1 }
-                        : cat
-                ));
-
-                setNewTestName('');
-                setForceRender(prev => prev + 1);
-                showSuccess(`Test "${newTestName.trim()}" zu "${currentCategory}" hinzugefügt`);
-                console.log(`Test hinzugefügt: ${newTestName.trim()} zu Kategorie: ${currentCategory}`);
-            };
-
-            // Test entfernen
-            const removeTest = () => {
-                if (!newTestName.trim()) {
-                    showError('Bitte geben Sie den Namen des zu löschenden Tests ein');
-                    return;
-                }
-
-                const testToRemove = newTestName.trim();
-                const categoryTests = dynamicTests[currentCategory] || [];
-                const testExists = categoryTests.some(test => test.name === testToRemove);
-
-                if (!testExists) {
-                    showError(`Test "${testToRemove}" nicht gefunden in "${currentCategory}"`);
-                    return;
-                }
-
-                setDynamicTests(prev => ({
-                    ...prev,
-                    [currentCategory]: (prev[currentCategory] || []).filter(
-                        test => test.name !== testToRemove
-                    )
-                }));
-
-                // Test-Counter in Kategorie aktualisieren
-                setTestCategories(prev => prev.map(cat => 
-                    cat.name === currentCategory 
-                        ? { ...cat, tests: Math.max(0, cat.tests - 1) }
-                        : cat
-                ));
-
-                setNewTestName('');
-                setForceRender(prev => prev + 1);
-                showSuccess(`Test "${testToRemove}" aus "${currentCategory}" entfernt`);
-                console.log(`Test entfernt: ${testToRemove} aus Kategorie: ${currentCategory}`);
-            };
-
-            // Status setzen
-            const setTestStatus = (testName, status) => {
-                setTestStatuses(prev => ({
-                    ...prev,
-                    [testName]: status
-                }));
-                showSuccess(`Test "${testName}" auf "${status}" gesetzt`);
-            };
-
-            // Notiz bearbeiten
-            const updateNote = (testName, note) => {
-                setTestNotes(prev => ({
-                    ...prev,
-                    [testName]: note
-                }));
-            };
-
-            // Status-Filter Funktionen
-            const statusCounts = {
-                success: Object.values(testStatuses).filter(s => s === 'success').length,
-                error: Object.values(testStatuses).filter(s => s === 'error').length,
-                warning: Object.values(testStatuses).filter(s => s === 'warning').length,
-                info: Object.values(testStatuses).filter(s => s === 'info').length
-            };
-
-            // Gefilterte Tests basierend auf Status
-            const getFilteredTests = () => {
-                const allTests = getCurrentTests();
-                if (!statusFilter) return allTests;
-                
-                return allTests.filter(test => testStatuses[test.name] === statusFilter);
-            };
-
-            // Enter-Taste für Test-Hinzufügung
-            const handleKeyPress = (e) => {
-                if (e.key === 'Enter') {
-                    addNewTest();
-                }
-            };
-
-            useEffect(() => {
-                const filtered = getFilteredTests();
-                setFilteredTests(filtered);
-            }, [currentCategory, statusFilter, testStatuses, dynamicTests, forceRender]);
-
-            const closeWindow = () => {
+        function goBackToFavOrg() {
+            if (window.opener) {
+                window.opener.focus();
                 window.close();
-            };
+            } else {
+                window.location.href = '/';
+            }
+        }
 
-            const goBackToFavOrg = () => {
-                if (window.opener) {
-                    window.opener.focus();
-                    window.close();
-                } else {
-                    window.location.href = '/';
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                addNewTest();
+            }
+        }
+
+        function addNewTest() {
+            const input = document.getElementById('newTestInput');
+            const newTestName = input.value.trim();
+
+            if (!newTestName) {
+                showError('Bitte geben Sie einen Testnamen ein');
+                return;
+            }
+
+            const existingTests = getCurrentTests();
+            if (existingTests.some(test => test.name === newTestName)) {
+                showError('Test mit diesem Namen existiert bereits');
+                return;
+            }
+
+            // Zu dynamicTests hinzufügen
+            if (!dynamicTests[currentCategory]) {
+                dynamicTests[currentCategory] = [];
+            }
+
+            dynamicTests[currentCategory].push({
+                name: newTestName,
+                icon: '🔍',
+                tooltip: 'Benutzerdefinierter Test',
+                isDynamic: true
+            });
+
+            // Test-Counter in Kategorie aktualisieren
+            const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
+            if (categoryIndex !== -1) {
+                testCategories[categoryIndex].tests++;
+            }
+
+            input.value = '';
+            showSuccess(`Test "${newTestName}" zu "${currentCategory}" hinzugefügt`);
+            console.log(`Test hinzugefügt: ${newTestName} zu Kategorie: ${currentCategory}`);
+            
+            renderTests();
+            renderCategories();
+        }
+
+        function removeTest() {
+            const input = document.getElementById('newTestInput');
+            const testToRemove = input.value.trim();
+
+            if (!testToRemove) {
+                showError('Bitte geben Sie den Namen des zu löschenden Tests ein');
+                return;
+            }
+
+            const categoryTests = dynamicTests[currentCategory] || [];
+            const testExists = categoryTests.some(test => test.name === testToRemove);
+
+            if (!testExists) {
+                showError(`Test "${testToRemove}" nicht gefunden in "${currentCategory}"`);
+                return;
+            }
+
+            // Aus dynamicTests entfernen
+            dynamicTests[currentCategory] = categoryTests.filter(
+                test => test.name !== testToRemove
+            );
+
+            // Test-Counter in Kategorie aktualisieren
+            const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
+            if (categoryIndex !== -1) {
+                testCategories[categoryIndex].tests = Math.max(0, testCategories[categoryIndex].tests - 1);
+            }
+
+            input.value = '';
+            showSuccess(`Test "${testToRemove}" aus "${currentCategory}" entfernt`);
+            console.log(`Test entfernt: ${testToRemove} aus Kategorie: ${currentCategory}`);
+            
+            renderTests();
+            renderCategories();
+        }
+
+        function setCurrentCategory(categoryName) {
+            currentCategory = categoryName;
+            
+            // UI aktualisieren
+            const category = testCategories.find(cat => cat.name === categoryName);
+            document.getElementById('currentCategoryTitle').textContent = `${category.icon} ${categoryName}`;
+            
+            renderCategories();
+            renderTests();
+        }
+
+        function setViewMode(mode) {
+            viewMode = mode;
+            // UI-Updates für View-Modus können hier implementiert werden
+        }
+
+        function setTestStatus(testName, status) {
+            testStatuses[testName] = status;
+            showSuccess(`Test "${testName}" auf "${status}" gesetzt`);
+            renderTests();
+            updateStatusCounts();
+        }
+
+        function setStatusFilter(filter) {
+            statusFilter = filter;
+            
+            // Button-States aktualisieren
+            document.querySelectorAll('.audit-footer .btn').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-secondary');
+            });
+
+            if (filter === '') {
+                document.getElementById('filterAll').classList.remove('btn-secondary');
+                document.getElementById('filterAll').classList.add('btn-primary');
+            } else {
+                document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.remove('btn-secondary');
+                document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('btn-primary');
+            }
+
+            renderTests();
+        }
+
+        function toggleNoteEdit(testName) {
+            editingNote = editingNote === testName ? null : testName;
+            renderTests();
+        }
+
+        function updateNote(testName, note) {
+            testNotes[testName] = note;
+        }
+
+        function saveNote(testName) {
+            editingNote = null;
+            renderTests();
+        }
+
+        // Placeholder-Funktionen für Footer-Buttons
+        function archiveTests() {
+            showSuccess('Archiv-Funktion wird implementiert');
+        }
+
+        function downloadTests() {
+            showSuccess('Download-Funktion wird implementiert');
+        }
+
+        function trashTests() {
+            showSuccess('Papierkorb-Funktion wird implementiert');
+        }
+
+        // Render-Funktionen
+        function renderCategories() {
+            const container = document.getElementById('categoryList');
+            container.innerHTML = '';
+
+            testCategories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = `category-btn ${category.name === currentCategory ? 'active' : ''}`;
+                button.onclick = () => setCurrentCategory(category.name);
+                
+                button.innerHTML = `
+                    <span>${category.icon}</span>
+                    <span class="flex-1">${category.name}</span>
+                    <span class="status-badge status-info">${category.tests}</span>
+                `;
+                
+                container.appendChild(button);
+            });
+        }
+
+        function renderTests() {
+            const container = document.getElementById('testList');
+            const tests = getFilteredTests();
+            
+            container.innerHTML = '';
+
+            // Test-Count aktualisieren
+            document.getElementById('testCount').textContent = `${tests.length} Tests`;
+
+            tests.forEach((test, index) => {
+                const testStatus = testStatuses[test.name];
+                const testNote = testNotes[test.name];
+                
+                const testDiv = document.createElement('div');
+                testDiv.className = 'test-point';
+                
+                let statusBadgeHtml = '';
+                if (testStatus) {
+                    const statusIcons = {
+                        'success': '✅',
+                        'error': '❌',
+                        'warning': '⏳',
+                        'info': '🗑️'
+                    };
+                    statusBadgeHtml = `<span class="status-badge status-${testStatus}">${statusIcons[testStatus]}</span>`;
                 }
-            };
 
-            return (
-                <div className="audit-log-container">
-                    <button className="close-btn" onClick={closeWindow}>
-                        ✕ Schließen
-                    </button>
+                let noteHtml = '';
+                if (testNote) {
+                    noteHtml = `<div class="note-box">📝 ${testNote}</div>`;
+                }
 
-                    {/* Header */}
-                    <div className="audit-log-header">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <button className="btn btn-secondary" onClick={goBackToFavOrg}>
-                                <Home size={16} />
-                                FavOrg
-                            </button>
-                            <h2 style={{ margin: 0, color: 'var(--accent-cyan)' }}>
-                                🔍 AuditLog-System - Vollbild
-                            </h2>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                let noteEditHtml = '';
+                if (editingNote === test.name) {
+                    noteEditHtml = `
+                        <div class="mt-8">
                             <input
                                 type="text"
-                                className="input"
-                                placeholder="Neuer Testname..."
-                                value={newTestName}
-                                onChange={(e) => setNewTestName(e.target.value)}
-                                onKeyPress={handleKeyPress}
-                                style={{ width: '200px' }}
+                                class="input input-full"
+                                placeholder="Notiz hinzufügen..."
+                                value="${testNote || ''}"
+                                onchange="updateNote('${test.name}', this.value)"
+                                onkeypress="if(event.key==='Enter') saveNote('${test.name}')"
+                                style="font-size: 13px"
                             />
-                            <button className="btn btn-primary" onClick={addNewTest}>
-                                <Plus size={16} />
-                            </button>
-                            <button className="btn btn-danger" onClick={removeTest}>
-                                ✕
-                            </button>
                         </div>
+                    `;
+                }
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <button 
-                                className={`btn ${viewMode === 'bereiche' ? 'btn-primary' : 'btn-secondary'}`}
-                                onClick={() => setViewMode('bereiche')}
-                            >
-                                Bereiche
-                            </button>
-                            <button 
-                                className={`btn ${viewMode === 'tests' ? 'btn-primary' : 'btn-secondary'}`}
-                                onClick={() => setViewMode('tests')}
-                            >
-                                Testpunkte
-                            </button>
+                testDiv.innerHTML = `
+                    <div class="test-point-header">
+                        <div class="flex align-center gap-8">
+                            <span>${test.icon}</span>
+                            <strong>${test.name}</strong>
+                            ${test.isDynamic ? '<span class="status-badge" style="background: var(--accent-cyan); color: white;">Custom</span>' : ''}
                         </div>
+                        ${statusBadgeHtml}
+                    </div>
+                    
+                    <p class="text-secondary text-sm" style="margin: 4px 0 8px 0;">
+                        ${test.tooltip}
+                    </p>
+
+                    ${noteHtml}
+
+                    <div class="test-point-actions">
+                        <button class="btn btn-success btn-small" onclick="setTestStatus('${test.name}', 'success')">
+                            ✅
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="setTestStatus('${test.name}', 'error')">
+                            ❌
+                        </button>
+                        <button class="btn btn-warning btn-small" onclick="setTestStatus('${test.name}', 'warning')">
+                            ⏳
+                        </button>
+                        <button class="btn btn-info btn-small" onclick="setTestStatus('${test.name}', 'info')">
+                            🗑️
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="toggleNoteEdit('${test.name}')">
+                            ✏️
+                        </button>
                     </div>
 
-                    {/* Main Content */}
-                    <div className="audit-log-content">
-                        {/* Sidebar - Kategorien */}
-                        <div className="audit-sidebar">
-                            <h3 style={{ margin: '0 0 16px 0', color: 'var(--accent-cyan)' }}>
-                                📋 Test-Bereiche
-                            </h3>
-                            {testCategories.map((category) => (
-                                <button
-                                    key={category.name}
-                                    className={`category-btn ${currentCategory === category.name ? 'active' : ''}`}
-                                    onClick={() => setCurrentCategory(category.name)}
-                                >
-                                    <span>{category.icon}</span>
-                                    <span style={{ flex: 1, textAlign: 'left' }}>{category.name}</span>
-                                    <span className="status-badge status-info">{category.tests}</span>
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Main - Testpunkte */}
-                        <div className="audit-main">
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                                <h3 style={{ margin: 0, color: 'var(--accent-cyan)' }}>
-                                    {testCategories.find(cat => cat.name === currentCategory)?.icon} {currentCategory}
-                                </h3>
-                                <span className="status-badge status-info">
-                                    {getFilteredTests().length} Tests
-                                </span>
-                            </div>
-
-                            <div style={{ display: 'grid', gap: '12px' }}>
-                                {getFilteredTests().map((test, index) => {
-                                    const testStatus = testStatuses[test.name];
-                                    const testNote = testNotes[test.name];
-                                    
-                                    return (
-                                        <div key={`${test.name}-${index}`} className="test-point">
-                                            <div className="test-point-header">
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                    <span>{test.icon}</span>
-                                                    <strong>{test.name}</strong>
-                                                    {test.isDynamic && (
-                                                        <span className="status-badge" style={{ background: 'var(--accent-cyan)', color: 'white' }}>
-                                                            Custom
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                {testStatus && (
-                                                    <span className={`status-badge status-${testStatus}`}>
-                                                        {testStatus === 'success' && '✅'}
-                                                        {testStatus === 'error' && '❌'}
-                                                        {testStatus === 'warning' && '⏳'}
-                                                        {testStatus === 'info' && '🗑️'}
-                                                    </span>
-                                                )}
-                                            </div>
-                                            
-                                            <p style={{ margin: '4px 0 8px 0', color: 'var(--text-secondary)', fontSize: '13px' }}>
-                                                {test.tooltip}
-                                            </p>
-
-                                            {testNote && (
-                                                <div style={{ 
-                                                    background: 'var(--bg-primary)', 
-                                                    padding: '8px', 
-                                                    borderRadius: '4px', 
-                                                    margin: '8px 0',
-                                                    fontSize: '13px'
-                                                }}>
-                                                    📝 {testNote}
-                                                </div>
-                                            )}
-
-                                            <div className="test-point-actions">
-                                                <button 
-                                                    className="btn btn-success"
-                                                    onClick={() => setTestStatus(test.name, 'success')}
-                                                    style={{ padding: '4px 8px', fontSize: '12px' }}
-                                                >
-                                                    ✅
-                                                </button>
-                                                <button 
-                                                    className="btn btn-danger"
-                                                    onClick={() => setTestStatus(test.name, 'error')}
-                                                    style={{ padding: '4px 8px', fontSize: '12px' }}
-                                                >
-                                                    ❌
-                                                </button>
-                                                <button 
-                                                    className="btn btn-warning"
-                                                    onClick={() => setTestStatus(test.name, 'warning')}
-                                                    style={{ padding: '4px 8px', fontSize: '12px' }}
-                                                >
-                                                    ⏳
-                                                </button>
-                                                <button 
-                                                    className="btn btn-info"
-                                                    onClick={() => setTestStatus(test.name, 'info')}
-                                                    style={{ padding: '4px 8px', fontSize: '12px' }}
-                                                >
-                                                    🗑️
-                                                </button>
-                                                <button 
-                                                    className="btn btn-secondary"
-                                                    onClick={() => setEditingNote(editingNote === test.name ? null : test.name)}
-                                                    style={{ padding: '4px 8px', fontSize: '12px' }}
-                                                >
-                                                    ✏️
-                                                </button>
-                                            </div>
-
-                                            {editingNote === test.name && (
-                                                <div style={{ marginTop: '8px' }}>
-                                                    <input
-                                                        type="text"
-                                                        className="input"
-                                                        placeholder="Notiz hinzufügen..."
-                                                        value={testNote || ''}
-                                                        onChange={(e) => updateNote(test.name, e.target.value)}
-                                                        onKeyPress={(e) => {
-                                                            if (e.key === 'Enter') {
-                                                                setEditingNote(null);
-                                                            }
-                                                        }}
-                                                        style={{ width: '100%', fontSize: '13px' }}
-                                                    />
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="audit-footer">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                            <button 
-                                className={`btn ${!statusFilter ? 'btn-primary' : 'btn-secondary'}`}
-                                onClick={() => setStatusFilter('')}
-                            >
-                                Alle ({Object.keys(testStatuses).length})
-                            </button>
-                            <button 
-                                className={`btn btn-success ${statusFilter === 'success' ? 'btn-primary' : ''}`}
-                                onClick={() => setStatusFilter(statusFilter === 'success' ? '' : 'success')}
-                            >
-                                ✅ ({statusCounts.success})
-                            </button>
-                            <button 
-                                className={`btn btn-danger ${statusFilter === 'error' ? 'btn-primary' : ''}`}
-                                onClick={() => setStatusFilter(statusFilter === 'error' ? '' : 'error')}
-                            >
-                                ❌ ({statusCounts.error})
-                            </button>
-                            <button 
-                                className={`btn btn-warning ${statusFilter === 'warning' ? 'btn-primary' : ''}`}
-                                onClick={() => setStatusFilter(statusFilter === 'warning' ? '' : 'warning')}
-                            >
-                                ⏳ ({statusCounts.warning})
-                            </button>
-                            <button 
-                                className={`btn btn-info ${statusFilter === 'info' ? 'btn-primary' : ''}`}
-                                onClick={() => setStatusFilter(statusFilter === 'info' ? '' : 'info')}
-                            >
-                                🗑️ ({statusCounts.info})
-                            </button>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }}>
-                            <button className="btn btn-secondary">
-                                📁 Archiv
-                            </button>
-                            <button className="btn btn-secondary">
-                                📄 Download
-                            </button>
-                            <button className="btn btn-secondary">
-                                🗑️ Trash
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Toaster Component
-        const Toaster = () => {
-            return React.createElement('div', { id: 'sonner-toaster' });
-        };
-
-        // Main App
-        const App = () => {
-            return React.createElement(
-                React.Fragment,
-                null,
-                React.createElement(AuditLogStandalone),
-                React.createElement(Toaster)
-            );
-        };
-
-        // Render App
-        ReactDOM.render(React.createElement(App), document.getElementById('audit-log-root'));
-
-        // Initialize Sonner if available
-        if (window.sonner) {
-            // Sonner is available
-            console.log('✅ Sonner Toast system loaded successfully');
-        } else {
-            console.log('⚠️ Sonner Toast system not available, using console fallback');
+                    ${noteEditHtml}
+                `;
+                
+                container.appendChild(testDiv);
+            });
         }
+
+        // Initialisierung
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCategories();
+            renderTests();
+            updateStatusCounts();
+        });
     </script>
 </body>
 </html>
