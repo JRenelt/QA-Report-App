@@ -1,48 +1,70 @@
 {
-  "total_tests": 2,
-  "passed_tests": 0,
-  "failed_tests": 2,
-  "success_rate": "0.0%",
-  "critical_failures": 0,
+  "total_tests": 7,
+  "passed_tests": 4,
+  "failed_tests": 3,
+  "success_rate": "57.1%",
+  "critical_failures": 1,
   "lock_protection_issues": 2,
-  "successful_operations": 0,
+  "successful_operations": 4,
   "test_results": [
     {
       "test": "Setup - Create Test Category",
-      "success": false,
-      "details": "Failed to create test category (Status: 200)",
-      "response_data": {
-        "message": "Kategorie 'LockTestCategory_263bb06c' erfolgreich erstellt",
-        "category": {
-          "id": "da67642d-40a1-4aa5-8909-99a76610bc42",
-          "name": "LockTestCategory_263bb06c",
-          "parent_category": null,
-          "bookmark_count": 0,
-          "subcategory_count": 0,
-          "created_at": "2025-09-23T06:51:15.840268+00:00",
-          "updated_at": "2025-09-23T06:51:15.840274+00:00",
-          "is_locked": false,
-          "lock_reason": "",
-          "locked_at": null
-        },
-        "is_locked": false
-      },
-      "timestamp": "2025-09-23T06:51:15.845670"
+      "success": true,
+      "details": "Created test category with ID: 43159374-e07d-4b22-9a5c-9a247b186fa7",
+      "response_data": null,
+      "timestamp": "2025-09-23T06:51:33.076612"
     },
     {
-      "test": "Setup - Fallback Create",
+      "test": "1.1 Lock Category",
+      "success": true,
+      "details": "Successfully locked category: {'message': 'Category successfully locked: German Review Request - Testing lock functionality', 'is_locked': True}",
+      "response_data": null,
+      "timestamp": "2025-09-23T06:51:33.188595"
+    },
+    {
+      "test": "1.2 Update Locked Category Protection",
+      "success": true,
+      "details": "\u2705 CORRECT: Update blocked with 403 - {'detail': \"Category 'LockTestCategory_2341a12a' is locked: German Review Request - Testing lock functionality\"}",
+      "response_data": null,
+      "timestamp": "2025-09-23T06:51:33.210589"
+    },
+    {
+      "test": "1.3 Delete Locked Category Protection",
       "success": false,
-      "details": "Fallback create also failed",
+      "details": "\u274c FAILED: Expected 403, got 200 - Lock protection not working!",
       "response_data": {
-        "detail": "Kategorie existiert bereits"
+        "message": "Kategorie 'LockTestCategory_2341a12a' gel\u00f6scht"
       },
-      "timestamp": "2025-09-23T06:51:15.871981"
+      "timestamp": "2025-09-23T06:51:33.305264"
+    },
+    {
+      "test": "2.1 Unlock Category",
+      "success": false,
+      "details": "Failed to unlock category (Status: 404)",
+      "response_data": {
+        "detail": "Category not found"
+      },
+      "timestamp": "2025-09-23T06:51:33.331769"
+    },
+    {
+      "test": "3.1 Lock Status Endpoint",
+      "success": true,
+      "details": "\u2705 SUCCESS: Retrieved 3 categories with lock status",
+      "response_data": null,
+      "timestamp": "2025-09-23T06:51:33.358132"
+    },
+    {
+      "test": "Test Execution",
+      "success": false,
+      "details": "Critical error during testing: 0",
+      "response_data": null,
+      "timestamp": "2025-09-23T06:51:33.358186"
     }
   ],
   "summary_analysis": {
-    "lock_functionality": "FAILED",
+    "lock_functionality": "WORKING",
     "unlock_functionality": "FAILED",
-    "lock_protection": "FAILED",
-    "lock_status_endpoint": "FAILED"
+    "lock_protection": "WORKING",
+    "lock_status_endpoint": "WORKING"
   }
 }
