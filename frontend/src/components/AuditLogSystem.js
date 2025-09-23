@@ -796,23 +796,49 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   <div className="mt-4 text-center">
                     <Button
                       onClick={() => {
-                        // Schließe AuditLog und öffne Hilfe-System
-                        onClose();
-                        setTimeout(() => {
-                          // Trigger Hilfe-System über den Header-Button
-                          const helpButton = document.querySelector('[title*="Hilfe"], [aria-label*="Help"], button:has-text("❓")');
-                          if (helpButton) {
-                            helpButton.click();
-                            // Navigiere nach einer kurzen Verzögerung zum AuditLog-Kapitel
-                            setTimeout(() => {
-                              const auditlogSection = document.querySelector('[data-section="auditlog"], button:has-text("AuditLog-System")');
-                              if (auditlogSection) {
-                                auditlogSection.click();
+                        try {
+                          // Schließe AuditLog
+                          onClose();
+                          
+                          // Warte kurz und öffne dann Hilfe
+                          setTimeout(() => {
+                            try {
+                              // Suche Hilfe-Button sicherer
+                              const helpSelectors = [
+                                'button[title*="Hilfe"]',
+                                'button[aria-label*="Help"]', 
+                                'button:contains("❓")',
+                                '[data-testid="help-button"]',
+                                '.help-button'
+                              ];
+                              
+                              let helpButton = null;
+                              for (const selector of helpSelectors) {
+                                helpButton = document.querySelector(selector);
+                                if (helpButton) break;
                               }
-                            }, 500);
-                          }
-                        }, 100);
-                        toast.success('Handbuch wird geöffnet...');
+                              
+                              if (helpButton) {
+                                helpButton.click();
+                                toast.success('Handbuch geöffnet');
+                              } else {
+                                // Fallback: Öffne Hilfe über Event
+                                const helpEvent = new CustomEvent('openHelp', { 
+                                  detail: { section: 'auditlog' },
+                                  bubbles: true 
+                                });
+                                document.dispatchEvent(helpEvent);
+                                toast.success('Handbuch-Event gesendet');
+                              }
+                            } catch (error) {
+                              console.error('Fehler beim Öffnen des Handbuchs:', error);
+                              toast.error('Handbuch konnte nicht geöffnet werden');
+                            }
+                          }, 200);
+                        } catch (error) {
+                          console.error('Runtime Error im Handbuch-Link:', error);
+                          toast.error('Fehler beim Handbuch-Zugriff');
+                        }
                       }}
                       variant="ghost"
                       size="sm"
