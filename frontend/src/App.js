@@ -3011,12 +3011,26 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                           onClick={() => {
                             console.log('Opening SysDok...');
                             window.open('/technical-docs.html', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
-                      }}
-                      className="bg-blue-600 hover:bg-blue-700"
-                      size="sm"
-                    >
-                      📄 SysDok
-                    </Button>
+                            onClose();
+                          }}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-xs"
+                          size="sm"
+                        >
+                          📄 Tech-Docs
+                        </Button>
+                        <Button 
+                          onClick={() => {
+                            console.log('Opening Help System...');
+                            onClose();
+                            setTimeout(() => { onOpenComprehensiveHelp(); }, 100);
+                          }}
+                          className="bg-slate-600 hover:bg-slate-700 text-xs"
+                          size="sm"
+                        >
+                          📖 Handbuch
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
