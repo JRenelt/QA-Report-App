@@ -163,13 +163,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Stelle sicher dass der Bereich existiert  
-    if (!predefinedTests[currentCategory]) {
-      predefinedTests[currentCategory] = [];
-    }
-
-    // Prüfe ob Test bereits existiert
-    const existingTest = predefinedTests[currentCategory].find(t => t.name === testName);
+    // Prüfe ob Test bereits existiert (in predefined oder dynamic)
+    const allCurrentTests = getAllTests(currentCategory);
+    const existingTest = allCurrentTests.find(t => t.name === testName);
     if (existingTest) {
       toast.error(`Test "${testName}" existiert bereits in diesem Bereich`);
       return;
@@ -179,23 +175,27 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     const newTest = {
       name: testName,
       icon: '🧪',
-      tooltip: `Eigener Test: ${testName}`
+      tooltip: `Eigener Test: ${testName}`,
+      isDynamic: true
     };
     
-    // Modifiziere das predefinedTests-Objekt direkt
-    predefinedTests[currentCategory] = [...predefinedTests[currentCategory], newTest];
+    // Füge zu dynamicTests hinzu (React State)
+    setDynamicTests(prev => ({
+      ...prev,
+      [currentCategory]: [...(prev[currentCategory] || []), newTest]
+    }));
 
     // Update Test-Kategorie Counter
-    const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
-    if (categoryIndex !== -1) {
-      testCategories[categoryIndex].tests += 1;
-    }
+    setTestCategories(prev => prev.map(cat => 
+      cat.name === currentCategory 
+        ? {...cat, tests: cat.tests + 1}
+        : cat
+    ));
     
     toast.success(`Test-Karte "${testName}" zu "${currentCategory}" hinzugefügt`);
     setNewTestName('');
     
-    // Force re-render
-    setForceRender(prev => prev + 1);
+    console.log('Test hinzugefügt:', testName, 'zu Kategorie:', currentCategory);
   };
 
   // Test aus DB entfernen (rotes Minus)
