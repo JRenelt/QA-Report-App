@@ -434,7 +434,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     onChange={(e) => setNewTestName(e.target.value)}
                     placeholder="Eigener Test..."
                     className="flex-1 px-1 py-0 bg-gray-700 border border-gray-600 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 h-5"
-                    onKeyPress={(e) => e.key === 'Enter' && handleTestEntry()}
+                    onKeyPress={(e) => e.key === 'Enter' && addNewTest()}
                   />
                   <div className="flex gap-1">
                     <Button
