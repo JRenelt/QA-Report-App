@@ -1276,6 +1276,8 @@
         function renderCategories() {
             const container = document.getElementById('categoryList');
             container.innerHTML = '';
+            
+            console.log('Rendering categories, count:', testCategories.length);
 
             testCategories.forEach(category => {
                 const button = document.createElement('button');
