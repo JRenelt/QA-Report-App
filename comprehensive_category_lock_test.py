@@ -80,11 +80,17 @@ class ComprehensiveCategoryLockTester:
         
         response = await self.make_request("POST", "/categories/create-with-lock", create_data)
         
-        if response["status_code"] == 200 and "id" in response["data"]:
-            self.test_category_id = response["data"]["id"]
-            await self.log_test("Setup - Create Test Category", True, 
-                              f"Created test category with ID: {self.test_category_id}")
-            return True
+        if response["status_code"] == 200:
+            # Check if ID is in response["data"]["id"] or response["data"]["category"]["id"]
+            if "id" in response["data"]:
+                self.test_category_id = response["data"]["id"]
+            elif "category" in response["data"] and "id" in response["data"]["category"]:
+                self.test_category_id = response["data"]["category"]["id"]
+            
+            if self.test_category_id:
+                await self.log_test("Setup - Create Test Category", True, 
+                                  f"Created test category with ID: {self.test_category_id}")
+                return True
         else:
             await self.log_test("Setup - Create Test Category", False, 
                               f"Failed to create test category (Status: {response['status_code']})", 
