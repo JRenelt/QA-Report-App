@@ -409,7 +409,12 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     {currentTests.map((test, index) => {
                       const isSelected = selectedTestPoints.includes(test.name);
                       return (
-                        <div key={index} className="bg-gray-800 p-3 rounded border border-gray-700">
+                        <div key={index} className={`bg-gray-800 p-3 rounded border-2 ${
+                          testStatuses[test.name]?.status === 'passed' ? 'border-green-500' :
+                          testStatuses[test.name]?.status === 'failed' ? 'bg-red-900/30 border-red-500' :
+                          testStatuses[test.name]?.status === 'inProgress' ? 'border-blue-500' :
+                          'border-gray-700'
+                        }`}>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               {/* Status Badge */}
