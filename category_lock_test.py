@@ -118,7 +118,7 @@ class CategoryLockTester:
             "lock_reason": "Testing lock functionality - German Review Request"
         }
         
-        response = await self.make_request("POST", f"/categories/{self.test_category_id}/lock", 
+        response = await self.make_request("PUT", f"/categories/{self.test_category_id}/lock", 
                                          lock_data, 200)
         
         if response["success"]:
