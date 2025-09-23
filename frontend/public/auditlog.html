@@ -488,8 +488,29 @@
         }
 
         function downloadTests() {
-            console.log('📄 Download-Funktion');
-            alert('PDF-Export wird implementiert');
+            console.log('📄 PDF-Export wird gestartet...');
+            
+            // Einfacher PDF-Export über Print-Dialog
+            const report = {
+                category: currentCategory,
+                date: new Date().toLocaleString('de-DE'),
+                tests: getCurrentTests(),
+                statusCounts: {
+                    total: Object.keys(testStatuses).length,
+                    success: Object.values(testStatuses).filter(s => s === 'success').length,
+                    error: Object.values(testStatuses).filter(s => s === 'error').length,
+                    warning: Object.values(testStatuses).filter(s => s === 'warning').length,
+                    info: Object.values(testStatuses).filter(s => s === 'info').length
+                }
+            };
+            
+            // Öffne neues Fenster für PDF-Export
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            
+            const htmlContent = '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>FavOrg AuditLog-Bericht</title><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:40px;color:#1f2937}.header{text-align:center;border-bottom:2px solid #06b6d4;padding-bottom:20px;margin-bottom:30px}.logo{color:#06b6d4;font-size:24px;font-weight:bold}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}.stat{text-align:center;padding:10px;border:1px solid #e5e7eb;border-radius:6px}.test-item{padding:10px;margin:8px 0;border:1px solid #e5e7eb;border-radius:6px}@media print{body{-webkit-print-color-adjust:exact}}</style></head><body><div class="header"><div class="logo">🔗 FavOrg</div><h1>AuditLog-Bericht: ' + report.category + '</h1><p>Erstellt am: ' + report.date + '</p></div><div class="stats"><div class="stat"><strong>' + report.statusCounts.success + '</strong><br>✅ Bestanden</div><div class="stat"><strong>' + report.statusCounts.error + '</strong><br>❌ Fehlgeschlagen</div><div class="stat"><strong>' + report.statusCounts.warning + '</strong><br>⏳ In Bearbeitung</div><div class="stat"><strong>' + report.statusCounts.info + '</strong><br>🗑️ Übersprungen</div></div><h2>Test-Details</h2>' + report.tests.map(test => '<div class="test-item"><strong>' + test.icon + ' ' + test.name + '</strong><br><small>' + test.tooltip + '</small>' + (testStatuses[test.name] ? '<br><strong>Status:</strong> ' + testStatuses[test.name] : '') + (testNotes[test.name] ? '<br><strong>Notiz:</strong> ' + testNotes[test.name] : '') + '</div>').join('') + '<div style="margin-top:40px;text-align:center;font-size:12px;color:#6b7280;">Generiert von FavOrg AuditLog-System</div><script>window.onload=function(){setTimeout(function(){window.print();window.onafterprint=function(){window.close()}},500)}</script></body></html>';
+            
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
         }
 
         function trashTests() {
