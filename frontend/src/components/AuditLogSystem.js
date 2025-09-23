@@ -193,13 +193,10 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     setNewTestName('');
     
     // Force re-render durch State-Change
-    const forceUpdate = Date.now();
-    setCurrentCategory(currentCategory + forceUpdate.toString()).then(() => {
-      setCurrentCategory(currentCategory);
-    }).catch(() => {
-      // Fallback ohne Promise
-      setTimeout(() => setCurrentCategory(currentCategory), 1);
-    });
+    setTimeout(() => {
+      setCurrentCategory(''); 
+      setTimeout(() => setCurrentCategory(currentCategory), 10);
+    }, 10);
   };
 
   // Test aus DB entfernen (rotes Minus)
