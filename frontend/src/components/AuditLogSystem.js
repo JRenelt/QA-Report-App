@@ -496,18 +496,18 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     <Button
                       onClick={addNewTest}
                       size="sm"
-                      className="bg-white hover:bg-gray-100 px-1 py-0 h-5 w-5 text-green-600"
+                      className="bg-blue-600 hover:bg-blue-700 px-1 py-0 h-5 w-5"
                       disabled={!newTestName.trim()}
-                      title="Test hinzufügen (Weißes Kreuz + Enter)"
+                      title="Test hinzufügen (Blauer Hintergrund + weißes Plus)"
                     >
-                      <span className="text-green-600 text-xs font-bold">✓</span>
+                      <span className="text-white text-xs font-bold">+</span>
                     </Button>
                     <Button
                       onClick={removeTestFromDB}
                       size="sm"
                       className="bg-red-600 hover:bg-red-700 px-1 py-0 h-5 w-5"
                       disabled={!newTestName.trim()}
-                      title="Test aus DB entfernen (Rotes Minus - Berichte bleiben)"
+                      title="Test aus DB entfernen (Roter Hintergrund + weißes Minus)"
                     >
                       <span className="text-white text-xs font-bold">−</span>
                     </Button>
