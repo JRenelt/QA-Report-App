@@ -212,57 +212,53 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Stelle sicher dass der Bereich existiert
-    if (!predefinedTests[currentCategory]) {
-      predefinedTests[currentCategory] = [];
-    }
+    let testFound = false;
+    let foundCategory = null;
 
-    // Suche Test in aktueller Kategorie
-    const existingTestIndex = predefinedTests[currentCategory].findIndex(t => t.name === testName);
-    
-    if (existingTestIndex === -1) {
-      // Suche in allen anderen Kategorien
-      let foundCategory = null;
-      let foundIndex = -1;
-      
+    // Suche zuerst in dynamicTests (eigene Tests)
+    Object.keys(dynamicTests).forEach(categoryName => {
+      const dynamicTestsList = dynamicTests[categoryName] || [];
+      const testIndex = dynamicTestsList.findIndex(t => t.name === testName);
+      if (testIndex !== -1) {
+        // Entferne aus dynamicTests
+        setDynamicTests(prev => ({
+          ...prev,
+          [categoryName]: prev[categoryName].filter(t => t.name !== testName)
+        }));
+        
+        // Update Counter
+        setTestCategories(prev => prev.map(cat => 
+          cat.name === categoryName 
+            ? {...cat, tests: Math.max(0, cat.tests - 1)}
+            : cat
+        ));
+        
+        testFound = true;
+        foundCategory = categoryName;
+      }
+    });
+
+    if (!testFound) {
+      // Suche in predefinedTests (nicht empfohlen zu löschen, aber möglich)
       Object.keys(predefinedTests).forEach(categoryName => {
-        const testIndex = predefinedTests[categoryName].findIndex(t => t.name === testName);
-        if (testIndex !== -1) {
+        const predefinedTestsList = predefinedTests[categoryName] || [];
+        const testIndex = predefinedTestsList.findIndex(t => t.name === testName);
+        if (testIndex !== -1 && !testFound) {
+          toast.warning(`"${testName}" ist ein vordefinierter Test und sollte nicht gelöscht werden`);
+          testFound = true;
           foundCategory = categoryName;
-          foundIndex = testIndex;
         }
       });
-      
-      if (foundCategory) {
-        // Test in anderer Kategorie gefunden - entfernen
-        predefinedTests[foundCategory].splice(foundIndex, 1);
-        
-        // Update Test-Kategorie Counter
-        const categoryIndex = testCategories.findIndex(cat => cat.name === foundCategory);
-        if (categoryIndex !== -1 && testCategories[categoryIndex].tests > 0) {
-          testCategories[categoryIndex].tests -= 1;
-        }
-        
-        toast.success(`Test "${testName}" aus "${foundCategory}" entfernt (Berichte bleiben erhalten)`);
-      } else {
-        toast.error(`Test "${testName}" nicht in DB gefunden`);
-      }
+    }
+
+    if (testFound) {
+      toast.success(`Test "${testName}" aus "${foundCategory}" entfernt (Berichte bleiben erhalten)`);
     } else {
-      // Test in aktueller Kategorie gefunden - entfernen
-      predefinedTests[currentCategory].splice(existingTestIndex, 1);
-      
-      // Update Test-Kategorie Counter  
-      const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
-      if (categoryIndex !== -1 && testCategories[categoryIndex].tests > 0) {
-        testCategories[categoryIndex].tests -= 1;
-      }
-      
-      toast.success(`Test "${testName}" aus "${currentCategory}" entfernt (Berichte bleiben erhalten)`);
+      toast.error(`Test "${testName}" nicht gefunden`);
     }
 
     setNewTestName('');
-    // Force re-render
-    setForceRender(prev => prev + 1);
+    console.log('Test entfernt:', testName, 'aus Kategorie:', foundCategory);
   };
 
   // Test-Bericht als PDF exportieren
