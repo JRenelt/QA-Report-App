@@ -570,6 +570,63 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               </Button>
                             </div>
                           </div>
+                          
+                          {/* Notiz-Bereich - erscheint wenn Bleistift geklickt wurde */}
+                          {editingNote === test.name && (
+                            <div className="mt-3 p-3 bg-gray-700 rounded border border-gray-600">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="text-xs text-gray-300">Notiz zu: {test.name}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <textarea
+                                  value={testNotes[test.name] || ''}
+                                  onChange={(e) => setTestNotes(prev => ({
+                                    ...prev,
+                                    [test.name]: e.target.value
+                                  }))}
+                                  placeholder="Notiz eingeben..."
+                                  className="flex-1 px-2 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 resize-none"
+                                  rows="2"
+                                />
+                                <Button
+                                  size="sm"
+                                  onClick={() => {
+                                    setEditingNote(null);
+                                    toast.success('Notiz gespeichert');
+                                  }}
+                                  className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs h-8 w-8"
+                                  title="Notiz speichern"
+                                >
+                                  ✅
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  onClick={() => {
+                                    setEditingNote(null);
+                                    setTestNotes(prev => {
+                                      const newNotes = {...prev};
+                                      delete newNotes[test.name];
+                                      return newNotes;
+                                    });
+                                  }}
+                                  variant="outline"
+                                  className="border-red-600 text-red-400 hover:bg-red-900 px-2 py-1 text-xs h-8 w-8"
+                                  title="Notiz verwerfen"
+                                >
+                                  ❌
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Gespeicherte Notiz anzeigen */}
+                          {testNotes[test.name] && editingNote !== test.name && (
+                            <div className="mt-2 p-2 bg-yellow-900/30 border border-yellow-600 rounded">
+                              <div className="text-xs text-yellow-200">
+                                <strong>Notiz:</strong> {testNotes[test.name]}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       );
                     })}
