@@ -508,6 +508,31 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               </Button>
                               <Button
                                 size="sm"
+                                onClick={() => {
+                                  if (window.confirm(`Test "${test.name}" wirklich löschen?`)) {
+                                    // Entferne Test aus der aktuellen Kategorie
+                                    const categoryTests = predefinedTests[currentCategory];
+                                    const updatedTests = categoryTests.filter(t => t.name !== test.name);
+                                    predefinedTests[currentCategory] = updatedTests;
+                                    
+                                    // Entferne auch Status und Notizen
+                                    setTestStatuses(prev => {
+                                      const newStatuses = {...prev};
+                                      delete newStatuses[test.name];
+                                      return newStatuses;
+                                    });
+                                    
+                                    setTestNotes(prev => {
+                                      const newNotes = {...prev};
+                                      delete newNotes[test.name];
+                                      return newNotes;
+                                    });
+                                    
+                                    toast.success(`Test "${test.name}" gelöscht`);
+                                    // Force re-render
+                                    setCurrentCategory(currentCategory);
+                                  }
+                                }}
                                 variant="outline"
                                 className="border-gray-600 text-gray-400 hover:bg-gray-700 px-2 py-1 text-xs h-8 w-8"
                                 title="Test löschen"
