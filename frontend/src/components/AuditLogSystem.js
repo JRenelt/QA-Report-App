@@ -338,9 +338,45 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   };
 
+  // Suchlogik für Testpunkte und Bereiche
+  const getFilteredTests = () => {
+    if (!searchTerm.trim()) {
+      return predefinedTests[currentCategory] || [];
+    }
+    
+    // Suche in aktueller Kategorie
+    const currentTests = predefinedTests[currentCategory] || [];
+    return currentTests.filter(test => 
+      test.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      test.tooltip.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
+
+  const getFilteredCategories = () => {
+    if (!searchTerm.trim()) {
+      return testCategories;
+    }
+    
+    return testCategories.filter(cat => 
+      cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
+
+  // Highlight-Funktion für Suchtreffer
+  const highlightText = (text, searchTerm) => {
+    if (!searchTerm.trim()) return text;
+    
+    const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
+    return parts.map((part, index) => 
+      part.toLowerCase() === searchTerm.toLowerCase() ? 
+        <span key={index} className="bg-yellow-400 text-black font-bold">{part}</span> : 
+        part
+    );
+  };
+
   // Aktuelle Kategorie-Daten
   const currentCategoryData = testCategories.find(cat => cat.name === currentCategory);
-  const currentTests = predefinedTests[currentCategory] || [];
+  const currentTests = getFilteredTests();
 
   // Kontext-Kurzhilfen
   const getContextHelp = () => {
