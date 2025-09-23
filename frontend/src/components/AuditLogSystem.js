@@ -644,7 +644,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                                   {highlightText(test.name, searchTerm)}
                                 </span>
                                 <span className="text-xs text-gray-400">
-                                  {new Date().toLocaleDateString('de-DE')}, {new Date().toLocaleTimeString('de-DE')}
+                                  {statusFilter && test.category ? `${test.category} | ` : ''}
+                                  {testStatuses[test.name]?.timestamp || 'Noch nicht getestet'}
                                 </span>
                               </div>
                             </div>
