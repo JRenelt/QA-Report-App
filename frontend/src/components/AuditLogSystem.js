@@ -144,9 +144,10 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   };
 
-  // Neuen Test hinzufügen
-  const addNewTest = () => {
-    if (!newTestName.trim()) {
+  // Neuen Test hinzufügen/entfernen
+  const handleTestEntry = () => {
+    const testName = newTestName.trim();
+    if (!testName) {
       toast.error('Bitte geben Sie einen Test-Namen ein');
       return;
     }
@@ -157,30 +158,45 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Füge neuen Test zum aktuell ausgewählten Bereich hinzu
-    const newTest = {
-      name: newTestName.trim(),
-      icon: '🧪',
-      tooltip: `Eigener Test: ${newTestName.trim()}`
-    };
-
     // Stelle sicher dass der Bereich existiert
     if (!predefinedTests[currentCategory]) {
       predefinedTests[currentCategory] = [];
     }
-    
-    // Füge Test hinzu
-    predefinedTests[currentCategory].push(newTest);
 
-    // Update Test-Kategorie Counter
-    const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
-    if (categoryIndex !== -1) {
-      testCategories[categoryIndex].tests += 1;
+    // Prüfe ob Test bereits existiert
+    const existingTestIndex = predefinedTests[currentCategory].findIndex(t => t.name === testName);
+    
+    if (existingTestIndex !== -1) {
+      // Test existiert - aus DB entfernen aber nicht aus Berichten
+      predefinedTests[currentCategory].splice(existingTestIndex, 1);
+      
+      // Update Test-Kategorie Counter
+      const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
+      if (categoryIndex !== -1 && testCategories[categoryIndex].tests > 0) {
+        testCategories[categoryIndex].tests -= 1;
+      }
+      
+      toast.success(`Test "${testName}" aus DB entfernt (Berichte bleiben erhalten)`);
+    } else {
+      // Neuer Test - als neue Karte hinzufügen
+      const newTest = {
+        name: testName,
+        icon: '🧪',
+        tooltip: `Eigener Test: ${testName}`
+      };
+      
+      predefinedTests[currentCategory].push(newTest);
+
+      // Update Test-Kategorie Counter
+      const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
+      if (categoryIndex !== -1) {
+        testCategories[categoryIndex].tests += 1;
+      }
+      
+      toast.success(`Neue Test-Karte "${testName}" zu "${currentCategory}" hinzugefügt`);
     }
 
-    toast.success(`Test "${newTestName}" zu "${currentCategory}" hinzugefügt`);
     setNewTestName('');
-    
     // Force re-render durch State-Update
     setCurrentCategory(currentCategory);
   };
