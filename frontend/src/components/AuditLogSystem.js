@@ -545,7 +545,10 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       <div className="flex items-center justify-between">
                         <div className="flex-1 min-w-0">
                           <div className="font-medium text-xs leading-tight truncate">
-                            {category.name.replace('-', ' ').replace(' Bereich', '').replace(' Section', '')}
+                            {highlightText(
+                              category.name.replace('-', ' ').replace(' Bereich', '').replace(' Section', ''),
+                              searchTerm
+                            )}
                           </div>
                           <div className="text-xs text-gray-400 truncate">
                             {category.tests} Tests
