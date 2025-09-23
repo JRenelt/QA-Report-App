@@ -227,7 +227,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   // Toggle Ansicht
   const getViewToggleText = () => {
     switch(viewMode) {
-      case 'bereiche': return 'Test anzeigen';
+      case 'bereiche': return 'Testpunkte';
       case 'tests': return 'Bereiche';
       case 'bericht': return 'Bereiche';
       default: return 'Bereiche';
