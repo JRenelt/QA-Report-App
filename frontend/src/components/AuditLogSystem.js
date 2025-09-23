@@ -689,13 +689,22 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               <Button
                                 size="sm"
                                 onClick={() => {
-                                  if (window.confirm(`Test "${test.name}" wirklich löschen?`)) {
-                                    // Entferne Test aus der aktuellen Kategorie
-                                    const categoryTests = predefinedTests[currentCategory];
-                                    const updatedTests = categoryTests.filter(t => t.name !== test.name);
-                                    predefinedTests[currentCategory] = updatedTests;
+                                  if (window.confirm(`Test "${test.name}" komplett löschen? (inkl. Status und Notizen)`)) {
+                                    // Finde die richtige Kategorie (falls Status-Filter aktiv)
+                                    const targetCategory = test.category || currentCategory;
                                     
-                                    // Entferne auch Status und Notizen
+                                    // Entferne Test aus der Kategorie
+                                    if (predefinedTests[targetCategory]) {
+                                      predefinedTests[targetCategory] = predefinedTests[targetCategory].filter(t => t.name !== test.name);
+                                      
+                                      // Update Test-Kategorie Counter
+                                      const categoryIndex = testCategories.findIndex(cat => cat.name === targetCategory);
+                                      if (categoryIndex !== -1 && testCategories[categoryIndex].tests > 0) {
+                                        testCategories[categoryIndex].tests -= 1;
+                                      }
+                                    }
+                                    
+                                    // Entferne auch Status und Notizen komplett
                                     setTestStatuses(prev => {
                                       const newStatuses = {...prev};
                                       delete newStatuses[test.name];
@@ -708,7 +717,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                                       return newNotes;
                                     });
                                     
-                                    toast.success(`Test "${test.name}" gelöscht`);
+                                    toast.success(`Test "${test.name}" komplett gelöscht`);
                                     // Force re-render
                                     setCurrentCategory(currentCategory);
                                   }
