@@ -760,8 +760,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "AuditLog System Comprehensive Testing"
-  stuck_tasks: []
+    - "AuditLog System JavaScript Rendering Fix"
+    - "System-Tools Layout Verification"
+    - "PDF Export and Archive Functionality Test"
+  stuck_tasks:
+    - "AuditLog JavaScript Rendering Problem"
   test_all: false
   test_priority: "high_first"
 
