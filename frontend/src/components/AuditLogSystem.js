@@ -14,6 +14,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const [selectedTestPoints, setSelectedTestPoints] = useState([]);
   const [testNotes, setTestNotes] = useState({});
   const [testStatuses, setTestStatuses] = useState({});
+  const [editingNote, setEditingNote] = useState(null);
 
   // Test-Bereiche für FavOrg
   const testCategories = [
