@@ -339,8 +339,12 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           
           {/* Bereichsauswahl */}
           {viewMode === 'bereiche' && (
-            <div className="flex-1 p-2 overflow-y-auto">
-
+            <div className="flex-1 p-4 overflow-y-auto">
+              <div className="mb-4">
+                <p className="text-sm text-gray-300 mb-3">
+                  Wählen Sie einen der verfügbaren Test-Bereiche aus um mit der systematischen Prüfung zu beginnen:
+                </p>
+              </div>
               <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
                 {testCategories.map((category) => (
                   <Button
