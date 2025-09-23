@@ -2965,8 +2965,13 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   <div className="setting-input-group">
                     <Button 
                       onClick={() => {
-                        console.log('Opening Audit Log...');
-                        onOpenAuditLog();
+                        console.log('Opening Audit Log in new window...');
+                        // Schließe Einstellungen-Dialog
+                        onClose();
+                        // Öffne AuditLog in neuem Fenster nach kurzer Verzögerung
+                        setTimeout(() => {
+                          onOpenAuditLog();
+                        }, 100);
                       }}
                       className="bg-cyan-600 hover:bg-cyan-700 mr-2"
                       size="sm"
