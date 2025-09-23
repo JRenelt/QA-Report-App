@@ -620,7 +620,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               
                               {/* Test Name */}
                               <div className="flex flex-col">
-                                <span className="text-white font-medium text-sm">{test.name}</span>
+                                <span className="text-white font-medium text-sm">
+                                  {highlightText(test.name, searchTerm)}
+                                </span>
                                 <span className="text-xs text-gray-400">
                                   {new Date().toLocaleDateString('de-DE')}, {new Date().toLocaleTimeString('de-DE')}
                                 </span>
