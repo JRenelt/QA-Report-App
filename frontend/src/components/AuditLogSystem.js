@@ -216,7 +216,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       case 'bereiche':
         return `13 Bereiche verfügbar | Wählen Sie einen Test-Bereich aus`;
       case 'tests':
-        return `${currentTests.length} Test-Szenarien | ${currentCategory} | Klicken für Testpunkte`;
+        return `${currentTests.length} Testpunkte | ${currentCategory} | Systematische Qualitätsprüfung`;
       case 'bericht':
         return `${testReports.length} Berichte gespeichert | Historische Verfolgung aktiv`;
       default:
