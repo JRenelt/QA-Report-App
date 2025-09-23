@@ -540,22 +540,36 @@
             printWindow.document.close();
         }
 
-        // Initialisierung - SOFORT beim Laden
+        // Einzige, zuverlässige Initialisierung
         function init() {
-            renderCategories();
-            renderTests();
-            updateStatusCounts();
+            console.log('🚀 Init aufgerufen, readyState:', document.readyState);
+            
+            try {
+                const categoryList = document.getElementById('categoryList');
+                const testList = document.getElementById('testList');
+                
+                if (!categoryList || !testList) {
+                    console.error('❌ DOM-Elemente nicht gefunden');
+                    return;
+                }
+                
+                console.log('✅ DOM-Elemente gefunden, starte Rendering...');
+                renderCategories();
+                renderTests();
+                updateStatusCounts();
+                console.log('🎉 AuditLog initialisiert');
+            } catch (error) {
+                console.error('❌ Initialisierungs-Fehler:', error);
+            }
         }
 
-        // Mehrere Initialisierungs-Strategien
+        // Nur DOMContentLoaded verwenden
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
+            // DOM bereits geladen
             init();
         }
-
-        // Zusätzlicher Fallback
-        setTimeout(init, 100);
     </script>
 </body>
 </html>
