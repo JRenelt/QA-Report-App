@@ -19,6 +19,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const [filteredTests, setFilteredTests] = useState([]);
   const [statusFilter, setStatusFilter] = useState('');
   const [forceRender, setForceRender] = useState(0);
+  const [dynamicTests, setDynamicTests] = useState({});
 
   // Test-Bereiche für FavOrg
   const testCategories = [
