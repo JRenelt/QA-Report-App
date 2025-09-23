@@ -528,6 +528,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               </Button>
                               <Button
                                 size="sm"
+                                onClick={() => setEditingNote(test.name)}
                                 variant="outline"
                                 className="border-yellow-600 text-yellow-400 hover:bg-yellow-900 px-2 py-1 text-xs h-8 w-8"
                                 title="Notiz hinzufügen/bearbeiten"
