@@ -147,7 +147,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   };
 
-  // Neuen Test hinzufügen (weißes Kreuz)
+  // Neuen Test hinzufügen (blauer Hintergrund + weißes Plus)
   const addNewTest = () => {
     const testName = newTestName.trim();
     if (!testName) {
@@ -161,7 +161,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Stelle sicher dass der Bereich existiert
+    // Stelle sicher dass der Bereich existiert  
     if (!predefinedTests[currentCategory]) {
       predefinedTests[currentCategory] = [];
     }
@@ -180,7 +180,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       tooltip: `Eigener Test: ${testName}`
     };
     
-    predefinedTests[currentCategory].push(newTest);
+    // Modifiziere das predefinedTests-Objekt direkt
+    predefinedTests[currentCategory] = [...predefinedTests[currentCategory], newTest];
 
     // Update Test-Kategorie Counter
     const categoryIndex = testCategories.findIndex(cat => cat.name === currentCategory);
@@ -188,11 +189,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       testCategories[categoryIndex].tests += 1;
     }
     
-    toast.success(`Neue Test-Karte "${testName}" zu "${currentCategory}" hinzugefügt`);
+    toast.success(`Test-Karte "${testName}" zu "${currentCategory}" hinzugefügt`);
     setNewTestName('');
     
-    // Force re-render
-    setCurrentCategory(currentCategory);
+    // Force re-render durch State-Change
+    const forceUpdate = Date.now();
+    setCurrentCategory(currentCategory + forceUpdate.toString()).then(() => {
+      setCurrentCategory(currentCategory);
+    }).catch(() => {
+      // Fallback ohne Promise
+      setTimeout(() => setCurrentCategory(currentCategory), 1);
+    });
   };
 
   // Test aus DB entfernen (rotes Minus)
