@@ -1,0 +1,47 @@
+{
+  "total_tests": 5,
+  "passed_tests": 2,
+  "failed_tests": 3,
+  "success_rate": "40.0%",
+  "test_results": [
+    {
+      "test": "Setup - Use Existing Category",
+      "success": true,
+      "details": "Using existing category: Reference (ID: a7ac926f-934e-4a3b-bf4b-ccdc22837786)",
+      "response_data": null,
+      "timestamp": "2025-09-23T06:47:48.021712"
+    },
+    {
+      "test": "Lock Category",
+      "success": false,
+      "details": "Failed to lock category (Status: 405)",
+      "response_data": {
+        "detail": "Method Not Allowed"
+      },
+      "timestamp": "2025-09-23T06:47:48.084658"
+    },
+    {
+      "test": "Unlock Category",
+      "success": false,
+      "details": "Failed to unlock category (Status: 404)",
+      "response_data": {
+        "detail": "Category not found"
+      },
+      "timestamp": "2025-09-23T06:47:48.109805"
+    },
+    {
+      "test": "Lock Status Endpoint",
+      "success": true,
+      "details": "Successfully retrieved 3 categories with lock status",
+      "response_data": null,
+      "timestamp": "2025-09-23T06:47:48.141358"
+    },
+    {
+      "test": "Test Execution",
+      "success": false,
+      "details": "Critical error during testing: 0",
+      "response_data": null,
+      "timestamp": "2025-09-23T06:47:48.141394"
+    }
+  ]
+}
