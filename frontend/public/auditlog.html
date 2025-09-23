@@ -661,21 +661,45 @@
             console.log('Tests gerendert:', tests.length);
         }
 
-        // Initialisierung - Robuste DOM-Ready-Erkennung
+        // Robuste Initialisierung mit mehreren Fallback-Mechanismen
         function initialize() {
             console.log('🚀 Initialisierung gestartet...');
-            renderCategories();
-            renderTests();
-            updateStatusCounts();
-            console.log('🎉 AuditLog System erfolgreich initialisiert!');
+            
+            // Warte bis DOM-Elemente verfügbar sind
+            var checkElements = function() {
+                var categoryList = document.getElementById('categoryList');
+                var testList = document.getElementById('testList');
+                
+                if (!categoryList || !testList) {
+                    console.log('⏳ Warte auf DOM-Elemente...');
+                    setTimeout(checkElements, 100);
+                    return;
+                }
+                
+                console.log('✅ DOM-Elemente gefunden, starte Rendering...');
+                renderCategories();
+                renderTests();
+                updateStatusCounts();
+                console.log('🎉 AuditLog System erfolgreich initialisiert!');
+            };
+            
+            checkElements();
         }
 
-        // DOM Ready
+        // Multiple DOM-Ready-Strategien
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initialize);
         } else {
             initialize();
         }
+        
+        // Fallback nach 2 Sekunden
+        setTimeout(function() {
+            if (document.getElementById('testList') && document.getElementById('testList').children.length === 0) {
+                console.log('🔄 Fallback-Initialisierung...');
+                initialize();
+            }
+        }, 2000);
 
         console.log('📝 Script vollständig geladen');
     </script>
