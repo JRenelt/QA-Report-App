@@ -605,9 +605,10 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           {
             title: 'Testpunkt-Management',
             steps: [
-              '✅ **Testpunkt-Auswahl**: Klick auf Test-Bereiche zeigt spezifische Testpunkte',
-              '📝 **Status-Tracking**: Ausstehend (🟡), Bestanden (✅), Fehlgeschlagen (❌), In Bearbeitung (⏳)',
-              '🗑️ **Testpunkt-Verwaltung**: Löschen einzelner Testpunkte möglich',
+              '🔍 **Testpunkt-Suche**: Suchfeld zum Filtern spezifischer Testpunkte',
+              '📝 **Status-Tracking**: Bestanden (✅), Fehlgeschlagen (❌), In Bearbeitung (⏳) mit Zeitstempel',
+              '✏️ **Notizen-System**: Bleistift-Button zum Hinzufügen von Test-Notizen',
+              '🎨 **Visuelle Kennzeichnung**: Grüner/Roter/Blauer Rahmen je nach Test-Status',
               '🧪 **Eigene Tests**: Über Inputfeld benutzerdefinierte Tests hinzufügen',
               '📊 **Fortschritts-Tracking**: Live-Counter in Footer für alle Status-Kategorien'
             ]
