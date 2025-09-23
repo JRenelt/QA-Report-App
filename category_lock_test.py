@@ -288,11 +288,11 @@ class CategoryLockTester:
         # Test double lock (if we have a test category)
         if self.test_category_id:
             # First lock
-            response1 = await self.make_request("POST", f"/categories/{self.test_category_id}/lock", 
+            response1 = await self.make_request("PUT", f"/categories/{self.test_category_id}/lock", 
                                               {"lock_reason": "First lock"})
             
             # Second lock
-            response2 = await self.make_request("POST", f"/categories/{self.test_category_id}/lock", 
+            response2 = await self.make_request("PUT", f"/categories/{self.test_category_id}/lock", 
                                               {"lock_reason": "Second lock"})
             
             await self.log_test("Double Lock", True, 
