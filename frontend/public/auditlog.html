@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FavOrg AuditLog-System</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #111827;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #374151;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #374151;
+        }
+        .header h1 {
+            color: #06b6d4;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .message {
+            background: #1e40af;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .button {
+            background: #06b6d4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .button:hover {
+            background: #0891b2;
+        }
+        .info-box {
+            background: #374151;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #06b6d4;
+        }
+        .close-btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button class="close-btn" onclick="window.close()">✕ Schließen</button>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🔍 FavOrg AuditLog-System</h1>
+            <p>Systematische Qualitätsprüfung - Eigenständiges Fenster</p>
+        </div>
+        
+        <div class="message">
+            <strong>Info:</strong> Das AuditLog-System wird in einem separaten Fenster geöffnet.
+        </div>
+        
+        <div class="info-box">
+            <h3>📋 Verfügbare Aktionen:</h3>
+            <ul>
+                <li><strong>Zurück zu FavOrg:</strong> Kehren Sie zur Hauptanwendung zurück</li>
+                <li><strong>Neues Fenster:</strong> Öffnen Sie FavOrg in einem neuen Tab</li>
+                <li><strong>Vollversion:</strong> Nutzen Sie das integrierte AuditLog in FavOrg</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="javascript:window.opener.focus(); window.close();" class="button">
+                ← Zurück zu FavOrg
+            </a>
+            <a href="/" target="_blank" class="button">
+                🔗 FavOrg in neuem Tab
+            </a>
+            <button class="button" onclick="openIntegratedAuditLog()">
+                📊 Integriertes AuditLog
+            </button>
+        </div>
+        
+        <div class="info-box">
+            <h3>🎯 Empfehlung:</h3>
+            <p>Für die beste Erfahrung nutzen Sie das <strong>integrierte AuditLog-System</strong> direkt in FavOrg über:</p>
+            <p><code>Einstellungen → Erweitert → AuditLog</code></p>
+        </div>
+    </div>
+    
+    <script>
+        function openIntegratedAuditLog() {
+            // Schließe dieses Fenster
+            window.close();
+            
+            // Fokussiere das Hauptfenster und öffne AuditLog
+            if (window.opener) {
+                window.opener.focus();
+                // Versuche AuditLog über Event zu öffnen
+                window.opener.postMessage({
+                    type: 'OPEN_AUDITLOG'
+                }, '*');
+            }
+        }
+        
+        // Automatisch schließen nach 30 Sekunden falls nicht genutzt
+        setTimeout(() => {
+            if (confirm('Fenster automatisch schließen? Klicken Sie "Abbrechen" um geöffnet zu lassen.')) {
+                window.close();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
