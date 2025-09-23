@@ -341,7 +341,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           {viewMode === 'bereiche' && (
             <div className="flex-1 p-2 overflow-y-auto">
 
-              <div className="grid grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-1">
+              <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
                 {testCategories.map((category) => (
                   <Button
                     key={category.name}
@@ -350,25 +350,28 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       setViewMode('tests');
                     }}
                     variant={currentCategory === category.name ? "default" : "outline"}
-                    className={`${compactView ? 'h-6 px-1' : 'h-8 px-1'} flex items-center justify-start text-xs ${
+                    className={`h-12 px-2 flex items-center justify-start text-xs ${
                       currentCategory === category.name 
                         ? 'bg-cyan-600 hover:bg-cyan-700 text-white' 
                         : 'border-gray-600 text-gray-300 hover:bg-gray-700'
                     }`}
                   >
-                    <span className="text-xs mr-1">{category.icon}</span>
-                    {!compactView ? (
-                      <div className="flex flex-col items-start">
-                        <span className="font-medium leading-tight text-left text-xs">
-                          {category.name.replace('-', ' ').replace(' Bereich', '').replace(' Section', '')}
-                        </span>
-                        <span className="text-xs text-gray-400">{category.tests}T</span>
+                    <span className="text-lg mr-2 flex-shrink-0">{category.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-xs leading-tight truncate">
+                            {category.name.replace('-', ' ').replace(' Bereich', '').replace(' Section', '')}
+                          </div>
+                          <div className="text-xs text-gray-400 truncate">
+                            {category.tests} Tests
+                          </div>
+                        </div>
+                        <Badge variant="secondary" className="ml-2 text-xs bg-gray-700 text-gray-300 px-1 flex-shrink-0">
+                          {category.tests}
+                        </Badge>
                       </div>
-                    ) : (
-                      <Badge variant="secondary" className="ml-1 text-xs bg-gray-700 text-gray-300 px-1">
-                        {category.tests}
-                      </Badge>
-                    )}
+                    </div>
                   </Button>
                 ))}
               </div>
