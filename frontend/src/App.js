@@ -2983,6 +2983,19 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                     </Button>
                     <Button 
                       onClick={() => {
+                        console.log('Opening integrated Audit Log...');
+                        onClose();
+                        setTimeout(() => {
+                          onOpenAuditLog();
+                        }, 100);
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700 mr-2"
+                      size="sm"
+                    >
+                      📋 AuditLog (Integriert)
+                    </Button>
+                    <Button 
+                      onClick={() => {
                         console.log('Opening SysDok...');
                         window.open('/technical-docs.html', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
                       }}
