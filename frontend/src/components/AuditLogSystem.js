@@ -436,7 +436,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                             <div className="flex items-center gap-1">
                               <Button
                                 size="sm"
-                                onClick={() => toggleTestPoint(test.name)}
+                                onClick={() => setTestStatus(test.name, 'passed')}
                                 className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs h-8 w-8"
                                 title="Test bestanden"
                               >
@@ -444,6 +444,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               </Button>
                               <Button
                                 size="sm"
+                                onClick={() => setTestStatus(test.name, 'failed')}
                                 variant="outline"
                                 className="border-red-600 text-red-400 hover:bg-red-900 px-2 py-1 text-xs h-8 w-8"
                                 title="Test fehlgeschlagen"
@@ -452,6 +453,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               </Button>
                               <Button
                                 size="sm"
+                                onClick={() => setTestStatus(test.name, 'inProgress')}
                                 variant="outline"
                                 className="border-blue-600 text-blue-400 hover:bg-blue-900 px-2 py-1 text-xs h-8 w-8"
                                 title="Test in Bearbeitung"
