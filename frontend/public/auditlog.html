@@ -488,8 +488,102 @@
         }
 
         function downloadTests() {
-            console.log('📄 Download-Funktion');
-            alert('PDF-Export wird implementiert');
+            console.log('📄 PDF-Export wird gestartet...');
+            
+            // Sammle aktuelle Daten
+            const tests = getCurrentTests();
+            const statusCounts = {
+                success: Object.values(testStatuses).filter(s => s === 'success').length,
+                error: Object.values(testStatuses).filter(s => s === 'error').length,
+                warning: Object.values(testStatuses).filter(s => s === 'warning').length,
+                info: Object.values(testStatuses).filter(s => s === 'info').length
+            };
+            
+            // Öffne Print-Fenster
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            
+            // Erstelle HTML-Content
+            let htmlContent = '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">';
+            htmlContent += '<title>FavOrg AuditLog-Bericht: ' + currentCategory + '</title>';
+            htmlContent += '<style>';
+            htmlContent += 'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:40px;color:#1f2937;line-height:1.6}';
+            htmlContent += '.header{text-align:center;border-bottom:3px solid #06b6d4;padding-bottom:20px;margin-bottom:30px}';
+            htmlContent += '.logo{color:#06b6d4;font-size:28px;font-weight:bold;margin-bottom:10px}';
+            htmlContent += '.title{font-size:20px;font-weight:600;color:#374151;margin:0}';
+            htmlContent += '.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}';
+            htmlContent += '.stat{text-align:center;padding:15px;border-radius:8px;border:2px solid}';
+            htmlContent += '.stat.success{border-color:#059669;background:#ecfdf5}';
+            htmlContent += '.stat.error{border-color:#dc2626;background:#fef2f2}';
+            htmlContent += '.stat.warning{border-color:#2563eb;background:#eff6ff}';
+            htmlContent += '.stat.info{border-color:#d97706;background:#fffbeb}';
+            htmlContent += '.stat-number{font-size:24px;font-weight:bold;margin-bottom:5px}';
+            htmlContent += '.stat-label{font-size:12px;color:#6b7280;font-weight:500}';
+            htmlContent += '.test-item{padding:12px;margin-bottom:8px;border-radius:6px;border:2px solid #e5e7eb;display:flex;align-items:flex-start;gap:12px}';
+            htmlContent += '.test-name{font-weight:600;margin-bottom:4px;color:#111827}';
+            htmlContent += '.test-tooltip{font-size:13px;color:#6b7280;margin-bottom:4px}';
+            htmlContent += '.status-badge{padding:4px 8px;border-radius:4px;font-size:12px;font-weight:600;white-space:nowrap}';
+            htmlContent += '.status-success{background:#059669;color:white}';
+            htmlContent += '.status-error{background:#dc2626;color:white}';
+            htmlContent += '.status-warning{background:#2563eb;color:white}';
+            htmlContent += '.status-info{background:#d97706;color:white}';
+            htmlContent += '.status-ungeprüft{background:#6b7280;color:white}';
+            htmlContent += '@media print{body{-webkit-print-color-adjust:exact}}';
+            htmlContent += '</style></head><body>';
+            
+            // Header
+            htmlContent += '<div class="header">';
+            htmlContent += '<div class="logo">🔗 FavOrg</div>';
+            htmlContent += '<h1 class="title">AuditLog-Bericht: ' + currentCategory + '</h1>';
+            htmlContent += '<p>Erstellt am: ' + new Date().toLocaleString('de-DE') + '</p>';
+            htmlContent += '</div>';
+            
+            // Stats
+            htmlContent += '<div class="stats">';
+            htmlContent += '<div class="stat success"><div class="stat-number">' + statusCounts.success + '</div><div class="stat-label">✅ Bestanden</div></div>';
+            htmlContent += '<div class="stat error"><div class="stat-number">' + statusCounts.error + '</div><div class="stat-label">❌ Fehlgeschlagen</div></div>';
+            htmlContent += '<div class="stat warning"><div class="stat-number">' + statusCounts.warning + '</div><div class="stat-label">⏳ In Bearbeitung</div></div>';
+            htmlContent += '<div class="stat info"><div class="stat-number">' + statusCounts.info + '</div><div class="stat-label">🗑️ Übersprungen</div></div>';
+            htmlContent += '</div>';
+            
+            // Tests
+            htmlContent += '<h2>📋 Test-Details (' + tests.length + ' Tests)</h2>';
+            
+            tests.forEach(function(test) {
+                const status = testStatuses[test.name] || 'ungeprüft';
+                const note = testNotes[test.name] || '';
+                
+                htmlContent += '<div class="test-item">';
+                htmlContent += '<div style="font-size:16px;width:20px;text-align:center;flex-shrink:0">' + test.icon + '</div>';
+                htmlContent += '<div style="flex:1">';
+                htmlContent += '<div class="test-name">' + test.name;
+                if (test.isDynamic) htmlContent += ' <span style="font-size:10px;background:#06b6d4;color:white;padding:1px 4px;border-radius:3px">Custom</span>';
+                htmlContent += '</div>';
+                htmlContent += '<div class="test-tooltip">' + test.tooltip + '</div>';
+                if (note) htmlContent += '<div style="font-size:12px;font-style:italic;color:#374151;background:rgba(249,250,251,0.8);padding:6px 8px;border-radius:4px;margin-top:6px;border-left:3px solid #06b6d4">📝 ' + note + '</div>';
+                htmlContent += '</div>';
+                
+                let statusText = 'Ungeprüft';
+                if (status === 'success') statusText = '✅ Bestanden';
+                else if (status === 'error') statusText = '❌ Fehlgeschlagen';
+                else if (status === 'warning') statusText = '⏳ In Bearbeitung';
+                else if (status === 'info') statusText = '🗑️ Übersprungen';
+                
+                htmlContent += '<span class="status-badge status-' + status + '">' + statusText + '</span>';
+                htmlContent += '</div>';
+            });
+            
+            // Footer
+            htmlContent += '<div style="margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;font-size:12px;color:#6b7280;text-align:center">';
+            htmlContent += '<p><strong>FavOrg AuditLog-System</strong> | ' + new Date().toLocaleString('de-DE') + '</p>';
+            htmlContent += '<p>Strukturierter Test-Bericht für "' + currentCategory + '"</p>';
+            htmlContent += '</div>';
+            
+            // Auto-Print Script
+            htmlContent += '<script>window.onload=function(){setTimeout(function(){window.print();window.onafterprint=function(){window.close()}},500)}</script>';
+            htmlContent += '</body></html>';
+            
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
         }
 
         function trashTests() {
