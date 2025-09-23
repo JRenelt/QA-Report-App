@@ -469,11 +469,24 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         }`}>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              {/* Status Badge */}
-                              <div className="px-2 py-1 bg-yellow-600 rounded text-xs text-white font-medium flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                Ausstehend
-                              </div>
+                              {/* Status Badge - dynamisch basierend auf Test-Status */}
+                              {testStatuses[test.name] ? (
+                                <div className={`px-2 py-1 rounded text-xs text-white font-medium flex items-center gap-1 ${
+                                  testStatuses[test.name].status === 'passed' ? 'bg-green-600' :
+                                  testStatuses[test.name].status === 'failed' ? 'bg-red-600' :
+                                  testStatuses[test.name].status === 'inProgress' ? 'bg-blue-600' :
+                                  'bg-gray-600'
+                                }`}>
+                                  {testStatuses[test.name].status === 'passed' ? '✅' :
+                                   testStatuses[test.name].status === 'failed' ? '❌' :
+                                   testStatuses[test.name].status === 'inProgress' ? '⏳' :
+                                   '○'}
+                                  {testStatuses[test.name].status === 'passed' ? 'Bestanden' :
+                                   testStatuses[test.name].status === 'failed' ? 'Fehlgeschlagen' :
+                                   testStatuses[test.name].status === 'inProgress' ? 'In Bearbeitung' :
+                                   'Unbekannt'}
+                                </div>
+                              ) : null}
                               
                               {/* Test Name */}
                               <div className="flex flex-col">
