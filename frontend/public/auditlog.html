@@ -1244,7 +1244,7 @@
                     </div>
                     
                     <div class="footer">
-                        <p>Generiert von FavOrg AuditLog-System | ${report.displayDate}</p>
+                        <p>Generiert von FavOrg AuditLog-System | ${reportData.displayDate}</p>
                         <p>Dieser Bericht wurde automatisch erstellt und dokumentiert den aktuellen Status aller Tests.</p>
                     </div>
                     
@@ -1259,6 +1259,14 @@
                 </body>
                 </html>
             `;
+        }
+
+        function generatePrintableReport() {
+            const report = generateTestReport();
+            
+            // Erstelle neues Fenster für den Druck
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            const printContent = generatePrintContent(report);
             
             printWindow.document.write(printContent);
             printWindow.document.close();
