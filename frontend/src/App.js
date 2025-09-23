@@ -2966,12 +2966,28 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                     <Button 
                       onClick={() => {
                         console.log('Opening Audit Log in new window...');
-                        // Schließe Einstellungen-Dialog
-                        onClose();
-                        // Öffne AuditLog in neuem Fenster nach kurzer Verzögerung
-                        setTimeout(() => {
-                          onOpenAuditLog();
-                        }, 100);
+                        // Öffne AuditLog in neuem Popup-Fenster
+                        const auditLogWindow = window.open(
+                          '', 
+                          'AuditLogWindow', 
+                          'width=1400,height=900,scrollbars=yes,resizable=yes,menubar=no,toolbar=no'
+                        );
+                        
+                        if (auditLogWindow) {
+                          // Schließe Einstellungen-Dialog
+                          onClose();
+                          // Öffne AuditLog im Haupt-Fenster
+                          setTimeout(() => {
+                            onOpenAuditLog();
+                          }, 200);
+                          auditLogWindow.close();
+                        } else {
+                          // Fallback: Öffne im gleichen Fenster
+                          onClose();
+                          setTimeout(() => {
+                            onOpenAuditLog();
+                          }, 100);
+                        }
                       }}
                       className="bg-cyan-600 hover:bg-cyan-700 mr-2"
                       size="sm"
