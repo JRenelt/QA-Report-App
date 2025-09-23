@@ -438,22 +438,22 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   />
                   <div className="flex gap-1">
                     <Button
-                      onClick={handleTestEntry}
+                      onClick={addNewTest}
                       size="sm"
-                      className="bg-green-600 hover:bg-green-700 px-1 py-0 h-5 w-5"
+                      className="bg-white hover:bg-gray-100 px-1 py-0 h-5 w-5 text-green-600"
                       disabled={!newTestName.trim()}
-                      title="Test bestätigen (Enter)"
+                      title="Test hinzufügen (Weißes Kreuz + Enter)"
                     >
-                      <span className="text-white text-xs">✓</span>
+                      <span className="text-green-600 text-xs font-bold">✓</span>
                     </Button>
                     <Button
-                      onClick={handleTestEntry}
+                      onClick={removeTestFromDB}
                       size="sm"
                       className="bg-red-600 hover:bg-red-700 px-1 py-0 h-5 w-5"
                       disabled={!newTestName.trim()}
-                      title="Test entfernen (falls vorhanden)"
+                      title="Test aus DB entfernen (Rotes Minus - Berichte bleiben)"
                     >
-                      <span className="text-white text-xs">−</span>
+                      <span className="text-white text-xs font-bold">−</span>
                     </Button>
                   </div>
                 </div>
