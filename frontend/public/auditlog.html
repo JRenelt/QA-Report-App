@@ -179,7 +179,7 @@
             flex: 1;
         }
 
-        /* Test Point Styles */
+        /* Test Point Styles - Angelehnt an integrierte Version */
         .test-point {
             background: var(--bg-card);
             border: 2px solid var(--border-primary);
@@ -187,10 +187,31 @@
             padding: 12px;
             margin-bottom: 12px;
             transition: all 0.2s;
+            position: relative;
         }
 
         .test-point:hover {
             border-color: var(--accent-cyan);
+        }
+
+        .test-point.status-success {
+            border-color: #059669;
+            background: var(--bg-card);
+        }
+
+        .test-point.status-error {
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        .test-point.status-warning {
+            border-color: #2563eb;
+            background: var(--bg-card);
+        }
+
+        .test-point.status-info {
+            border-color: #d97706;
+            background: rgba(217, 119, 6, 0.1);
         }
 
         .test-point-header {
