@@ -377,7 +377,20 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           {/* Test-Auswahl */}
           {viewMode === 'tests' && (
             <div className="flex-1 flex flex-col overflow-hidden">
-              {/* Direkt zu Testpunkten */}
+              
+              {/* Suchbereich für Testpunkte */}
+              <div className="p-3 bg-gray-800 border-b border-gray-700">
+                <div className="flex items-center gap-2">
+                  <Search className="w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Testpunkt suchen..."
+                    className="flex-1 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
+                  />
+                </div>
+              </div>
+              
+              {/* Testpunkte */}
               <div className="flex-1 p-2 overflow-y-auto">
                 {/* Testpunkte/Testeinträge wie in Auditlog6.png */}
                 <div className="mt-2">
