@@ -277,9 +277,10 @@
                 <button class="btn btn-info" onclick="setStatusFilter('info')" id="filterInfo">🗑️ (0)</button>
             </div>
             <div class="flex align-center gap-8" style="margin-left: auto;">
-                <button class="btn btn-secondary" onclick="archiveTests()">📁 Archiv</button>
-                <button class="btn btn-secondary" onclick="downloadTests()">📄 PDF-Export</button>
-                <button class="btn btn-secondary" onclick="trashTests()">🗑️ Reset</button>
+                <button class="btn btn-secondary" onclick="showArchiveDialog()" id="archiveBtn" title="Gespeicherte Berichte anzeigen">📁 Archiv (0)</button>
+                <button class="btn btn-secondary" onclick="saveCurrentReport()" title="Aktuellen Status im Archiv speichern">💾 Speichern</button>
+                <button class="btn btn-secondary" onclick="downloadTests()" title="PDF-Export des aktuellen Berichts">📄 PDF-Export</button>
+                <button class="btn btn-secondary" onclick="trashTests()" title="Alle Test-Status zurücksetzen">🗑️ Reset</button>
             </div>
         </div>
     </div>
