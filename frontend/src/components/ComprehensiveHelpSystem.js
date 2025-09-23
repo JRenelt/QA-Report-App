@@ -618,7 +618,8 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
             steps: [
               '📋 **Archiv-Funktion**: Alle Testberichte werden automatisch archiviert',
               '📊 **Status-Übersicht**: Kumulierte Darstellung aller Test-Status',
-              '📤 **Export-Funktionen**: PDF/JSON Export der Testergebnisse',
+              '📄 **PDF-Export**: HTML-Export für PDF-Druck der Testergebnisse',
+              '📥 **Berichte laden**: Laden einzelner Berichte aus dem Archiv',
               '🗑️ **Bereinigung**: Selective oder komplette Löschung von Testberichten',
               '📈 **Historische Verfolgung**: Verlauf der durchgeführten Tests einsehbar'
             ]
