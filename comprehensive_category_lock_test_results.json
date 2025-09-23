@@ -1,0 +1,48 @@
+{
+  "total_tests": 2,
+  "passed_tests": 0,
+  "failed_tests": 2,
+  "success_rate": "0.0%",
+  "critical_failures": 0,
+  "lock_protection_issues": 2,
+  "successful_operations": 0,
+  "test_results": [
+    {
+      "test": "Setup - Create Test Category",
+      "success": false,
+      "details": "Failed to create test category (Status: 200)",
+      "response_data": {
+        "message": "Kategorie 'LockTestCategory_263bb06c' erfolgreich erstellt",
+        "category": {
+          "id": "da67642d-40a1-4aa5-8909-99a76610bc42",
+          "name": "LockTestCategory_263bb06c",
+          "parent_category": null,
+          "bookmark_count": 0,
+          "subcategory_count": 0,
+          "created_at": "2025-09-23T06:51:15.840268+00:00",
+          "updated_at": "2025-09-23T06:51:15.840274+00:00",
+          "is_locked": false,
+          "lock_reason": "",
+          "locked_at": null
+        },
+        "is_locked": false
+      },
+      "timestamp": "2025-09-23T06:51:15.845670"
+    },
+    {
+      "test": "Setup - Fallback Create",
+      "success": false,
+      "details": "Fallback create also failed",
+      "response_data": {
+        "detail": "Kategorie existiert bereits"
+      },
+      "timestamp": "2025-09-23T06:51:15.871981"
+    }
+  ],
+  "summary_analysis": {
+    "lock_functionality": "FAILED",
+    "unlock_functionality": "FAILED",
+    "lock_protection": "FAILED",
+    "lock_status_endpoint": "FAILED"
+  }
+}
