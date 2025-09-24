@@ -2956,81 +2956,36 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   </div>
                 </div>
 
-                {/* System-Tools - Exakt wie im Bild */}
+                {/* System-Tools - Vereinfachtes Design */}
                 <div className="setting-item">
                   <div className="setting-info">
                     <Label className="setting-label">🔧 System-Tools</Label>
-                    <span className="setting-description">Qualitätssicherung und Dokumentations-Tools für FavOrg</span>
                   </div>
-                  <div className="setting-input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
-                    
-                    {/* AuditLog-System Bereich */}
-                    <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(6, 182, 212, 0.08)', borderRadius: '8px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
-                      <div style={{ marginBottom: '10px' }}>
-                        <strong style={{ color: '#06b6d4', fontSize: '14px', display: 'block' }}>🔍 AuditLog-System</strong>
-                        <div style={{ fontSize: '12px', color: '#64748b', lineHeight: '1.3' }}>Interaktive Test-Tracking und Qualitätskontrolle</div>
-                      </div>
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        <Button 
-                          onClick={() => {
-                            console.log('Opening Audit Log in new window...');
-                            window.open(
-                              '/auditlog.html', 
-                              'AuditLogWindow', 
-                              'width=1200,height=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no'
-                            );
-                            onClose();
-                          }}
-                          className="bg-cyan-600 hover:bg-cyan-700 text-white flex-1"
-                          size="sm"
-                        >
-                          🖥️ Vollbild
-                        </Button>
-                        <Button 
-                          onClick={() => {
-                            console.log('Opening integrated Audit Log...');
-                            onClose();
-                            setTimeout(() => { onOpenAuditLog(); }, 100);
-                          }}
-                          className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
-                          size="sm"
-                        >
-                          📋 Dialog
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* System-Dokumentation Bereich */}
-                    <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                      <div style={{ marginBottom: '10px' }}>
-                        <strong style={{ color: '#10b981', fontSize: '14px', display: 'block' }}>📚 System-Dokumentation</strong>
-                        <div style={{ fontSize: '12px', color: '#64748b', lineHeight: '1.3' }}>Technische Dokumentation und Entwickler-Handbuch</div>
-                      </div>
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        <Button 
-                          onClick={() => {
-                            console.log('Opening SysDok...');
-                            window.open('/technical-docs.html', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
-                            onClose();
-                          }}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white flex-1"
-                          size="sm"
-                        >
-                          📄 Tech-Docs
-                        </Button>
-                        <Button 
-                          onClick={() => {
-                            console.log('Opening Help System...');
-                            onClose();
-                            setTimeout(() => { onOpenComprehensiveHelp(); }, 100);
-                          }}
-                          className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
-                          size="sm"
-                        >
-                          📖 Handbuch
-                        </Button>
-                      </div>
-                    </div>
+                  <div className="setting-input-group" style={{ display: 'flex', gap: '8px', marginTop: '8px', justifyContent: 'center' }}>
+                    <Button 
+                      onClick={() => {
+                        console.log('Opening integrated Audit Log...');
+                        onClose();
+                        setTimeout(() => { onOpenAuditLog(); }, 100);
+                      }}
+                      className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                      size="sm"
+                      style={{ padding: '8px 16px' }}
+                    >
+                      🔍 AuditLog-System
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        console.log('Opening Help System...');
+                        onClose();
+                        setTimeout(() => { onOpenComprehensiveHelp(); }, 100);
+                      }}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                      size="sm"
+                      style={{ padding: '8px 16px' }}
+                    >
+                      📚 System-Dokumentation
+                    </Button>
                   </div>
                 </div>
 
