@@ -2989,7 +2989,10 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                           onClick={() => {
                             console.log('Opening integrated Audit Log...');
                             onClose();
-                            setTimeout(() => { onOpenAuditLog(); }, 100);
+                            setTimeout(() => { 
+                              console.log('Triggering AuditLog dialog...');
+                              onOpenAuditLog(); 
+                            }, 300);
                           }}
                           className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
                           size="sm"
