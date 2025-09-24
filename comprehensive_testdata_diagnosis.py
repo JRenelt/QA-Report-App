@@ -115,8 +115,8 @@ def comprehensive_testdata_diagnosis():
         frontend_headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Origin': 'https://test-audit-tool.preview.emergentagent.com',
-            'Referer': 'https://test-audit-tool.preview.emergentagent.com/',
+            'Origin': 'https://log-inspector-1.preview.emergentagent.com',
+            'Referer': 'https://log-inspector-1.preview.emergentagent.com/',
             'User-Agent': 'Mozilla/5.0 (Frontend Simulation)'
         }
         
