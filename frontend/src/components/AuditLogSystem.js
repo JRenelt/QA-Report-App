@@ -261,7 +261,20 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl w-full h-[90vh] p-0 bg-gray-900 border-gray-700" style={{ margin: '10px 0' }}>
+      <DialogContent 
+        className="max-w-7xl w-full bg-gray-900 border-gray-700 p-0" 
+        style={{ 
+          height: 'calc(100vh - 20px)', 
+          margin: '10px auto',
+          top: '10px',
+          transform: 'translateX(-50%)',
+          left: '50%',
+          position: 'fixed',
+          maxHeight: 'calc(100vh - 20px)',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         {/* Header */}
         <div className="bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between" style={{ minHeight: '60px' }}>
           <h2 className="text-xl font-semibold text-cyan-400">🔍 AuditLog-System - Intern</h2>
