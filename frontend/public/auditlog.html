@@ -1041,6 +1041,12 @@
             console.log('🚀 AuditLog Initialisierung gestartet');
             
             try {
+                // Auto-Update der Testumgebung bei erstmaliger Nutzung
+                if (!localStorage.getItem('favorg-audit-config')) {
+                    window.auditConfig.environment = detectEnvironment();
+                    localStorage.setItem('favorg-audit-config', JSON.stringify(window.auditConfig));
+                }
+                
                 renderCategories();
                 renderTests();
                 updateStatusCounts();
