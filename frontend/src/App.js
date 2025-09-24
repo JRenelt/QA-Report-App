@@ -2974,7 +2974,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                           onClick={() => {
                             console.log('Opening Audit Log in new window...');
                             window.open(
-                              '/auditlog.html', 
+                              `${window.location.origin}/auditlog.html`, 
                               'AuditLogWindow', 
                               'width=1200,height=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no'
                             );
