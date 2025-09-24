@@ -2978,7 +2978,10 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                       onClick={() => {
                         console.log('Opening Help System...');
                         onClose();
-                        setTimeout(() => { setShowHelp(true); }, 100);
+                        // Kleine Verzögerung, dann Hilfe öffnen
+                        setTimeout(() => { 
+                          document.querySelector('button[title*="Hilfe"]')?.click();
+                        }, 100);
                       }}
                       className="bg-emerald-600 hover:bg-emerald-700 text-white"
                       size="sm"
