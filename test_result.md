@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "FavLink Manager - SaaS-Anwendung zum dynamischen Generieren einer Website aus Browser-Favoriten mit CRUD-Operationen, Export-Funktionen, Link-Validierung und Duplikat-Erkennung. Deutsche Benutzeroberfläche mit BookmarkPro-Design. Neueste Updates: Escape-Taste für Suchfeld, intelligenter Prüfen-Button, Anzahl im Header, Suchfeld-Focus, komplett überarbeitete System-Einstellungen."
+user_problem_statement: "FavOrg AuditLog-System PDF-Export Erweiterung: Implementierung eines strukturierten, professionellen PDF-Berichts mit konfigurierbaren Metadaten (HauptUser, Version, Testumgebung), automatischer Browser-Erkennung, Testnotizen-Integration und FavOrg-Designfarbraum. Vollständige Berichtsstruktur mit Ziel, Testobjekt, Methodik, Testfälle, Testergebnisse, Abweichungen, Fazit und Anhang."
 
 backend:
   - task: "Bookmark CRUD Operations"
