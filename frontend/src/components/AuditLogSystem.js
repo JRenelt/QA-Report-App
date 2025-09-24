@@ -991,12 +991,39 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 </Button>
               </div>
 
-              {/* Rechts: Berichte(Archiv) + Download + Mülleimer */}
+              {/* Rechts: Test Speichern + Berichte(Archiv) + Download + Mülleimer */}
               <div className="flex items-center gap-2">
                 {viewMode === 'tests' && (
-                  <span className="text-xs text-gray-400 mr-2">
-                    {selectedTestPoints.length}/{currentTests.length} ausgewählt
-                  </span>
+                  <>
+                    <span className="text-xs text-gray-400 mr-2">
+                      {selectedTestPoints.length}/{currentTests.length} ausgewählt
+                    </span>
+                    <Button
+                      onClick={() => {
+                        // Speichere aktuellen Test-Stand ins Archiv
+                        const currentTestData = {
+                          category: currentCategory,
+                          timestamp: new Date().toLocaleString('de-DE'),
+                          testStatuses: {...testStatuses},
+                          testNotes: {...testNotes},
+                          completedTests: Object.keys(testStatuses).length,
+                          totalTests: currentTests.length
+                        };
+                        
+                        const newReports = [currentTestData, ...testReports.slice(0, 9)]; // Max 10 Berichte
+                        setTestReports(newReports);
+                        saveTestReports(newReports);
+                        
+                        toast.success(`Test-Stand für "${currentCategory}" ins Archiv gespeichert`);
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="border-cyan-600 text-cyan-400 hover:bg-cyan-900 px-2"
+                      title="Aktuellen Test-Stand ins Archiv speichern"
+                    >
+                      💾 Test speichern
+                    </Button>
+                  </>
                 )}
                 <Button
                   onClick={() => setViewMode('bericht')}
