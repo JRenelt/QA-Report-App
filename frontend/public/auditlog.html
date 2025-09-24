@@ -975,6 +975,67 @@
             }
         }
 
+        // Config-Dialog Funktionen
+        function openConfigDialog() {
+            // Lade aktuelle Config in die Formularfelder
+            document.getElementById('configTester').value = window.auditConfig.tester;
+            document.getElementById('configVersion').value = window.auditConfig.version;
+            document.getElementById('configEnvironment').value = window.auditConfig.environment;
+            document.getElementById('configTestGoal').value = window.auditConfig.testGoal;
+            document.getElementById('configTestMethodology').value = window.auditConfig.testMethodology;
+            
+            document.getElementById('configDialog').style.display = 'block';
+        }
+
+        function closeConfigDialog() {
+            document.getElementById('configDialog').style.display = 'none';
+        }
+
+        function saveConfigAndClose() {
+            // Speichere die Config-Werte
+            window.auditConfig.tester = document.getElementById('configTester').value;
+            window.auditConfig.version = document.getElementById('configVersion').value;
+            window.auditConfig.environment = document.getElementById('configEnvironment').value;
+            window.auditConfig.testGoal = document.getElementById('configTestGoal').value;
+            window.auditConfig.testMethodology = document.getElementById('configTestMethodology').value;
+            
+            // Persistiere in LocalStorage
+            localStorage.setItem('favorg-audit-config', JSON.stringify(window.auditConfig));
+            
+            closeConfigDialog();
+            alert('Konfiguration erfolgreich gespeichert!');
+        }
+
+        // Funktion zum Automatischen Erfassen der Browser-Umgebung
+        function detectEnvironment() {
+            const userAgent = navigator.userAgent;
+            let os = 'Unknown OS';
+            let browser = 'Unknown Browser';
+            
+            // Betriebssystem erkennen
+            if (userAgent.indexOf('Windows NT 10.0') !== -1) os = 'Windows 10/11';
+            else if (userAgent.indexOf('Windows NT 6.3') !== -1) os = 'Windows 8.1';
+            else if (userAgent.indexOf('Windows NT 6.1') !== -1) os = 'Windows 7';
+            else if (userAgent.indexOf('Mac') !== -1) os = 'macOS';
+            else if (userAgent.indexOf('Linux') !== -1) os = 'Linux';
+            
+            // Browser erkennen
+            if (userAgent.indexOf('Chrome') !== -1 && userAgent.indexOf('Edge') === -1) {
+                const chromeMatch = userAgent.match(/Chrome\/(\d+)/);
+                browser = 'Chrome ' + (chromeMatch ? chromeMatch[1] : '');
+            } else if (userAgent.indexOf('Firefox') !== -1) {
+                const firefoxMatch = userAgent.match(/Firefox\/(\d+)/);
+                browser = 'Firefox ' + (firefoxMatch ? firefoxMatch[1] : '');
+            } else if (userAgent.indexOf('Safari') !== -1 && userAgent.indexOf('Chrome') === -1) {
+                browser = 'Safari';
+            } else if (userAgent.indexOf('Edge') !== -1) {
+                const edgeMatch = userAgent.match(/Edge\/(\d+)/);
+                browser = 'Edge ' + (edgeMatch ? edgeMatch[1] : '');
+            }
+            
+            return os + ', ' + browser;
+        }
+
         // Initialisierung
         function initAuditLog() {
             console.log('🚀 AuditLog Initialisierung gestartet');
