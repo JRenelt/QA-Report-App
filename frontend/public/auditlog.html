@@ -540,7 +540,7 @@
             printWindow.document.close();
         }
 
-        // Einzige, zuverlässige Initialisierung
+        // Verbesserte, zuverlässige Initialisierung
         function init() {
             console.log('🚀 Init aufgerufen, readyState:', document.readyState);
             
@@ -550,26 +550,53 @@
                 
                 if (!categoryList || !testList) {
                     console.error('❌ DOM-Elemente nicht gefunden');
+                    // Retry nach kurzer Verzögerung
+                    setTimeout(init, 100);
                     return;
                 }
                 
                 console.log('✅ DOM-Elemente gefunden, starte Rendering...');
+                
+                // Stelle sicher, dass alle globalen Variablen initialisiert sind
+                if (!window.categories || !window.tests) {
+                    console.error('❌ Globale Daten nicht verfügbar');
+                    return;
+                }
+                
                 renderCategories();
                 renderTests();
                 updateStatusCounts();
                 console.log('🎉 AuditLog initialisiert');
+                
+                // Funktionen global verfügbar machen
+                window.functionsExist = true;
+                
             } catch (error) {
                 console.error('❌ Initialisierungs-Fehler:', error);
+                // Retry bei Fehler
+                setTimeout(init, 500);
             }
         }
 
-        // Nur DOMContentLoaded verwenden
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            // DOM bereits geladen
-            init();
+        // Mehrfache Initialisierungsversuche
+        function tryInit() {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+            
+            // Backup-Initialisierung nach 1 Sekunde
+            setTimeout(() => {
+                if (!window.functionsExist) {
+                    console.log('🔄 Backup-Initialisierung...');
+                    init();
+                }
+            }, 1000);
         }
+
+        // Starte Initialisierung
+        tryInit();
     </script>
 </body>
 </html>
