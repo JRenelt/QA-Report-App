@@ -709,13 +709,17 @@
             printWindow.document.close();
         }
 
-        // Verbesserte, zuverlässige Initialisierung
+        // Verbesserte, zuverlässige Initialisierung mit mehr Debugging
         function init() {
             console.log('🚀 Init aufgerufen, readyState:', document.readyState);
+            console.log('🔍 Checking DOM elements...');
             
             try {
                 const categoryList = document.getElementById('categoryList');
                 const testList = document.getElementById('testList');
+                
+                console.log('categoryList:', categoryList);
+                console.log('testList:', testList);
                 
                 if (!categoryList || !testList) {
                     console.error('❌ DOM-Elemente nicht gefunden');
@@ -727,11 +731,38 @@
                 console.log('✅ DOM-Elemente gefunden, starte Rendering...');
                 
                 // Stelle sicher, dass alle globalen Variablen initialisiert sind
+                console.log('window.categories:', window.categories);
+                console.log('window.tests:', window.tests);
+                
                 if (!window.categories || !window.tests) {
                     console.error('❌ Globale Daten nicht verfügbar');
-                    return;
+                    console.log('Initialisiere Daten...');
+                    
+                    // Fallback: Initialisiere Daten falls nicht vorhanden
+                    if (!window.categories) {
+                        window.categories = [
+                            { name: 'Allgemeines Design', icon: '🎨', count: 4 },
+                            { name: 'Header-Bereich', icon: '🔝', count: 4 },
+                            { name: 'Sidebar-Bereich', icon: '📋', count: 5 },
+                            { name: 'Main-Content', icon: '📄', count: 4 },
+                            { name: 'Bookmark-Karten', icon: '🎴', count: 6 },
+                            { name: 'Einstellungen', icon: '⚙️', count: 4 }
+                        ];
+                    }
+                    
+                    if (!window.tests) {
+                        window.tests = {
+                            'Allgemeines Design': [
+                                { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
+                                { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
+                                { name: 'Responsiveness', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
+                                { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
+                            ]
+                        };
+                    }
                 }
                 
+                console.log('🎯 Starte Rendering-Funktionen...');
                 renderCategories();
                 renderTests();
                 updateStatusCounts();
@@ -740,6 +771,7 @@
                 
                 // Funktionen global verfügbar machen
                 window.functionsExist = true;
+                console.log('✅ functionsExist gesetzt auf true');
                 
             } catch (error) {
                 console.error('❌ Initialisierungs-Fehler:', error);
