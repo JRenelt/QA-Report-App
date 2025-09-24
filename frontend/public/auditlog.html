@@ -405,6 +405,34 @@
             alert('Archiv wurde geleert.');
         }
 
+        function openHandbook() {
+            // Versuche das Hauptfenster zu finden und Hilfe zu öffnen
+            if (window.opener) {
+                try {
+                    // Fokussiere das Hauptfenster
+                    window.opener.focus();
+                    
+                    // Versuche Hilfe-Button zu finden und zu klicken
+                    const helpButton = window.opener.document.querySelector('button[title*="Hilfe"], button[title*="Help"]');
+                    if (helpButton) {
+                        helpButton.click();
+                        alert('Handbuch im Hauptfenster geöffnet');
+                    } else {
+                        // Fallback: Navigiere zur Hauptseite
+                        window.opener.location.href = '/?help=true';
+                        alert('Hauptfenster zur Hilfe-Seite navigiert');
+                    }
+                } catch (error) {
+                    console.error('Fehler beim Öffnen des Handbuchs:', error);
+                    // Fallback: Öffne Hauptseite in neuem Tab
+                    window.open('/', '_blank');
+                }
+            } else {
+                // Kein Opener-Fenster, öffne Hauptseite
+                window.open('/', '_blank');
+            }
+        }
+
         // Test-Daten
         window.categories = [
             { name: 'Allgemeines Design', icon: '🎨', count: 4 },
