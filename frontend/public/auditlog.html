@@ -487,10 +487,15 @@
 
         // Funktionen
         function renderCategories() {
+            console.log('🎨 renderCategories aufgerufen');
             const container = document.getElementById('categoryList');
-            if (!container) return;
+            if (!container) {
+                console.error('❌ categoryList Container nicht gefunden');
+                return;
+            }
             
             container.innerHTML = '';
+            console.log('📋 Kategorien werden gerendert:', window.categories.length);
             
             window.categories.forEach(category => {
                 const btn = document.createElement('button');
@@ -503,15 +508,22 @@
                 `;
                 container.appendChild(btn);
             });
+            console.log('✅ Kategorien erfolgreich gerendert');
         }
 
         function renderTests() {
+            console.log('🧪 renderTests aufgerufen');
             const container = document.getElementById('testList');
-            if (!container) return;
+            if (!container) {
+                console.error('❌ testList Container nicht gefunden');
+                return;
+            }
             
             const categoryTests = window.tests[window.currentCategory] || [];
             const dynamicCategoryTests = window.dynamicTests[window.currentCategory] || [];
             const allTests = [...categoryTests, ...dynamicCategoryTests];
+            
+            console.log('🔍 Tests für', window.currentCategory, ':', allTests.length);
             
             let filteredTests = allTests;
             if (window.statusFilter) {
