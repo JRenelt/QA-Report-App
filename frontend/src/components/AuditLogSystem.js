@@ -947,8 +947,15 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </Button>
           </div>
 
-          {/* Rechts: 4 Aktions-Buttons */}
+          {/* Rechts: 5 Aktions-Buttons */}
           <div className="flex items-center gap-2">
+            <Button
+              onClick={openConfigDialog}
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 text-xs"
+            >
+              ⚙️ Config
+            </Button>
             <Button
               onClick={handleSaveToArchive}
               size="sm"
