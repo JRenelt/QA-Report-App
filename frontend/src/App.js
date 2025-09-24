@@ -2956,10 +2956,12 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   </div>
                 </div>
 
-                {/* System-Tools - Echter Zeilenumbruch nach Titel */}
+                {/* System-Tools - Echte Zweizeiligkeit wie S-Time */}
                 <div className="setting-item">
-                  {/* ERSTE ZEILE: Nur der Titel mit Zeilenumbruch */}
-                  <Label className="setting-label" style={{ display: 'block', marginBottom: '12px' }}>🔧 System-Tools</Label>
+                  {/* ERSTE ZEILE: Nur der Titel */}
+                  <div className="setting-info" style={{ marginBottom: '12px' }}>
+                    <Label className="setting-label">🔧 System-Tools</Label>
+                  </div>
                   
                   {/* ZWEITE ZEILE: Zwei Bereiche nebeneinander */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
