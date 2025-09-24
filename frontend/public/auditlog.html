@@ -880,81 +880,387 @@
 
 
 
-        // PDF-Export
+        // Erweiterte PDF-Export Funktion mit strukturiertem Bericht
         function exportToPDF() {
             const tests = window.tests[window.currentCategory] || [];
+            const testResults = calculateTestResults(tests);
+            const currentDate = new Date().toLocaleString('de-DE', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
             
-            const printWindow = window.open('', '_blank', 'width=800,height=600');
-            printWindow.document.write(`
+            const printWindow = window.open('', '_blank', 'width=900,height=700');
+            printWindow.document.write(generateStructuredReport(tests, testResults, currentDate));
+            printWindow.document.close();
+        }
+
+        // Hilfsfunktion zur Berechnung der Testergebnisse
+        function calculateTestResults(tests) {
+            let total = tests.length;
+            let passed = 0;
+            let failed = 0;
+            let warning = 0;
+            let ungeprüft = 0;
+            let issues = [];
+            
+            tests.forEach(test => {
+                const status = window.testStatuses[test.name] || 'ungeprüft';
+                switch(status) {
+                    case 'success':
+                        passed++;
+                        break;
+                    case 'error':
+                        failed++;
+                        issues.push({
+                            name: test.name,
+                            type: 'FEHLER',
+                            description: window.testNotes[test.name] || 'Kritischer Fehler festgestellt'
+                        });
+                        break;
+                    case 'warning':
+                        warning++;
+                        issues.push({
+                            name: test.name,
+                            type: 'WARNUNG',
+                            description: window.testNotes[test.name] || 'Verbesserung empfohlen'
+                        });
+                        break;
+                    default:
+                        ungeprüft++;
+                }
+            });
+            
+            return { total, passed, failed, warning, ungeprüft, issues };
+        }
+
+        // Hilfsfunktion zur Generierung des strukturierten Berichts
+        function generateStructuredReport(tests, results, currentDate) {
+            return `
                 <!DOCTYPE html>
-                <html>
+                <html lang="de">
                 <head>
-                    <title>FavOrg AuditLog-Bericht: ${window.currentCategory}</title>
+                    <meta charset="UTF-8">
+                    <title>Testbericht · FavOrg</title>
                     <style>
                         body { 
-                            font-family: Arial, sans-serif; 
-                            margin: 40px; 
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                            margin: 30px; 
                             background: white !important;
-                            color: black !important;
+                            color: #333 !important;
+                            line-height: 1.5;
                             -webkit-print-color-adjust: exact;
                             print-color-adjust: exact;
                         }
-                        .header { 
+                        .report-header { 
                             text-align: center; 
-                            border-bottom: 2px solid #06b6d4; 
-                            padding-bottom: 20px; 
-                            margin-bottom: 30px; 
+                            border-bottom: 3px solid #06b6d4; 
+                            padding-bottom: 25px; 
+                            margin-bottom: 40px;
+                            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                            padding: 30px;
+                            border-radius: 8px;
                         }
-                        .test-item { 
-                            padding: 10px; 
-                            margin-bottom: 10px; 
-                            border: 1px solid #ccc; 
-                            border-radius: 5px;
-                            background: white !important;
-                            color: black !important;
+                        .report-header h1 {
+                            color: #1a365d !important;
+                            font-size: 32px;
+                            margin-bottom: 10px;
+                            font-weight: 700;
                         }
-                        h1, h2, h3 { color: black !important; }
-                        p, strong { color: black !important; }
+                        .metadata-grid {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 20px;
+                            margin-bottom: 30px;
+                            background: #f8fafc;
+                            padding: 20px;
+                            border-radius: 6px;
+                            border-left: 4px solid #06b6d4;
+                        }
+                        .metadata-item {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 8px 0;
+                            border-bottom: 1px solid #e2e8f0;
+                        }
+                        .metadata-label {
+                            font-weight: 600;
+                            color: #374151;
+                        }
+                        .metadata-value {
+                            color: #1f2937;
+                            font-weight: 500;
+                        }
+                        .section {
+                            margin-bottom: 35px;
+                            padding: 20px;
+                            border-radius: 6px;
+                            border: 1px solid #e5e7eb;
+                        }
+                        .section h2 {
+                            color: #06b6d4 !important;
+                            font-size: 20px;
+                            margin-bottom: 15px;
+                            padding-bottom: 8px;
+                            border-bottom: 2px solid #06b6d4;
+                        }
+                        .test-case {
+                            padding: 15px;
+                            margin-bottom: 12px;
+                            border: 2px solid #e5e7eb;
+                            border-radius: 6px;
+                            background: white;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                        }
+                        .test-case.success { border-color: #10b981; background: #f0fdf4; }
+                        .test-case.error { border-color: #ef4444; background: #fef2f2; }
+                        .test-case.warning { border-color: #f59e0b; background: #fffbeb; }
+                        .test-case.ungeprüft { border-color: #6b7280; background: #f9fafb; }
+                        .test-info {
+                            flex: 1;
+                        }
+                        .test-name {
+                            font-weight: 600;
+                            font-size: 16px;
+                            margin-bottom: 5px;
+                        }
+                        .test-description {
+                            color: #6b7280;
+                            font-size: 14px;
+                            margin-bottom: 8px;
+                        }
+                        .test-notes {
+                            font-style: italic;
+                            color: #4b5563;
+                            font-size: 13px;
+                        }
+                        .status-badge {
+                            padding: 8px 16px;
+                            border-radius: 20px;
+                            font-weight: 600;
+                            font-size: 14px;
+                            text-align: center;
+                            min-width: 80px;
+                        }
+                        .status-success { background: #10b981; color: white; }
+                        .status-error { background: #ef4444; color: white; }
+                        .status-warning { background: #f59e0b; color: white; }
+                        .status-ungeprüft { background: #6b7280; color: white; }
+                        .results-summary {
+                            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                            color: white !important;
+                            padding: 25px;
+                            border-radius: 8px;
+                            margin-bottom: 25px;
+                        }
+                        .results-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                            gap: 15px;
+                            margin-top: 15px;
+                        }
+                        .result-item {
+                            text-align: center;
+                            background: rgba(255,255,255,0.1);
+                            padding: 15px;
+                            border-radius: 6px;
+                        }
+                        .result-number {
+                            font-size: 28px;
+                            font-weight: bold;
+                            display: block;
+                        }
+                        .result-label {
+                            font-size: 12px;
+                            opacity: 0.9;
+                        }
+                        .issues-list {
+                            list-style: none;
+                            padding: 0;
+                        }
+                        .issue-item {
+                            background: #fef2f2;
+                            border-left: 4px solid #ef4444;
+                            padding: 15px;
+                            margin-bottom: 10px;
+                            border-radius: 0 6px 6px 0;
+                        }
+                        .issue-type {
+                            font-weight: 700;
+                            color: #dc2626;
+                            font-size: 14px;
+                        }
                         .print-btn {
                             position: fixed;
-                            top: 10px;
-                            right: 10px;
-                            padding: 10px 15px;
+                            top: 20px;
+                            right: 20px;
+                            padding: 12px 20px;
                             background: #06b6d4;
                             color: white;
                             border: none;
-                            border-radius: 5px;
+                            border-radius: 6px;
                             cursor: pointer;
                             font-size: 14px;
+                            font-weight: 600;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
                         }
                         @media print {
-                            body { background: white !important; color: black !important; }
-                            .test-item, .header, h1, h2, h3, p, strong { background: white !important; color: black !important; }
+                            body { background: white !important; color: #333 !important; }
                             .print-btn { display: none; }
+                            .section { page-break-inside: avoid; }
                         }
                     </style>
                 </head>
                 <body>
-                    <button class="print-btn" onclick="window.print()">📄 Drucken</button>
-                    <div class="header">
-                        <h1>FavOrg AuditLog-Bericht</h1>
-                        <h2>${window.currentCategory}</h2>
-                        <p>Erstellt am: ${new Date().toLocaleString('de-DE')}</p>
+                    <button class="print-btn" onclick="window.print()">📄 Bericht drucken</button>
+                    
+                    <div class="report-header">
+                        <h1>📋 Testbericht · FavOrg</h1>
+                        <p style="font-size: 18px; color: #64748b; margin: 0;">AuditLog-System Qualitätsprüfung</p>
                     </div>
-                    ${tests.map(test => {
-                        const status = window.testStatuses[test.name] || 'ungeprüft';
-                        return `
-                            <div class="test-item">
-                                <strong>${test.icon} ${test.name}</strong>
-                                <p>${test.tooltip}</p>
-                                <p><strong>Status:</strong> ${status}</p>
+
+                    <div class="metadata-grid">
+                        <div class="metadata-item">
+                            <span class="metadata-label">📅 Datum:</span>
+                            <span class="metadata-value">${currentDate}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="metadata-label">👤 Tester:</span>
+                            <span class="metadata-value">${window.auditConfig.tester}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="metadata-label">🏷️ Version:</span>
+                            <span class="metadata-value">${window.auditConfig.version}</span>
+                        </div>
+                        <div class="metadata-item">
+                            <span class="metadata-label">💻 Testumgebung:</span>
+                            <span class="metadata-value">${window.auditConfig.environment}</span>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>🎯 Ziel des Tests</h2>
+                        <p>${window.auditConfig.testGoal}</p>
+                    </div>
+
+                    <div class="section">
+                        <h2>📋 Testobjekt</h2>
+                        <p><strong>Testbereich:</strong> ${window.currentCategory}</p>
+                        <p>Testpunkte werden systematisch auf Funktionalität, Design-Konsistenz und Benutzerfreundlichkeit überprüft.</p>
+                    </div>
+
+                    <div class="section">
+                        <h2>🔬 Testmethodik</h2>
+                        <p>${window.auditConfig.testMethodology}</p>
+                    </div>
+
+                    <div class="results-summary">
+                        <h2 style="margin-top: 0; color: white;">📊 Testergebnisse</h2>
+                        <p style="color: rgba(255,255,255,0.9);">
+                            ${results.passed} von ${results.total} Testfällen bestanden.
+                            ${results.failed > 0 ? ' Es wurden ' + results.failed + ' kritische Fehler festgestellt.' : ' Alle kritischen Tests erfolgreich.'}
+                        </p>
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="result-number">${results.total}</span>
+                                <span class="result-label">Gesamt</span>
                             </div>
-                        `;
-                    }).join('')}
+                            <div class="result-item">
+                                <span class="result-number">${results.passed}</span>
+                                <span class="result-label">✅ Bestanden</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-number">${results.failed}</span>
+                                <span class="result-label">❌ Fehler</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-number">${results.warning}</span>
+                                <span class="result-label">⚠️ Warnung</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-number">${results.ungeprüft}</span>
+                                <span class="result-label">⏳ Ungeprüft</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>🧪 Testfälle</h2>
+                        ${tests.map((test, index) => {
+                            const status = window.testStatuses[test.name] || 'ungeprüft';
+                            const notes = window.testNotes[test.name];
+                            let statusText = '';
+                            let statusClass = '';
+                            
+                            switch(status) {
+                                case 'success':
+                                    statusText = 'OK';
+                                    statusClass = 'success';
+                                    break;
+                                case 'error':
+                                    statusText = 'FEHLER';
+                                    statusClass = 'error';
+                                    break;
+                                case 'warning':
+                                    statusText = 'WARNUNG';
+                                    statusClass = 'warning';
+                                    break;
+                                default:
+                                    statusText = 'UNGEPRÜFT';
+                                    statusClass = 'ungeprüft';
+                            }
+                            
+                            return `
+                                <div class="test-case ${statusClass}">
+                                    <div class="test-info">
+                                        <div class="test-name">${index + 1}. ${test.icon} ${test.name}</div>
+                                        <div class="test-description">${test.tooltip}</div>
+                                        ${notes ? `<div class="test-notes">💭 Notiz: ${notes}</div>` : ''}
+                                    </div>
+                                    <div class="status-badge status-${statusClass}">[${statusText}]</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    ${results.issues.length > 0 ? `
+                        <div class="section">
+                            <h2>⚠️ Abweichungen und Probleme</h2>
+                            <ul class="issues-list">
+                                ${results.issues.map(issue => `
+                                    <li class="issue-item">
+                                        <div class="issue-type">${issue.type}: ${issue.name}</div>
+                                        <p>${issue.description}</p>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+
+                    <div class="section">
+                        <h2>💡 Fazit und Empfehlungen</h2>
+                        <p>
+                            ${results.failed === 0 ? 
+                                `Das ${window.currentCategory} System ist vollständig funktionsfähig. Alle ${results.passed} kritischen Tests wurden erfolgreich bestanden.` :
+                                `Das ${window.currentCategory} System weist ${results.failed} kritische Fehler auf. Vor der Freigabe müssen diese Probleme behoben und erneut getestet werden.`
+                            }
+                        </p>
+                        ${results.warning > 0 ? `<p><strong>Empfehlung:</strong> ${results.warning} Verbesserungen sollten für eine optimale Benutzererfahrung umgesetzt werden.</p>` : ''}
+                    </div>
+
+                    <div class="section">
+                        <h2>📎 Anhang</h2>
+                        <p>Detaillierte Testdaten und Screenshots sind im internen AuditLog-System archiviert.</p>
+                        <p><strong>Berichts-ID:</strong> AuditLog-${Date.now()}</p>
+                        <p><strong>Generiert von:</strong> FavOrg AuditLog-System v${window.auditConfig.version}</p>
+                    </div>
                 </body>
                 </html>
-            `);
-            printWindow.document.close();
+            `;
         }
 
         function resetAll() {
