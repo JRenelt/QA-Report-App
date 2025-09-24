@@ -760,7 +760,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "FavOrg AuditLog System Final Verification Complete"
+    - "AuditLog PDF-Export Enhancement Testing"
+    - "Config Dialog Functionality Testing"
+    - "Structured Report Generation Testing"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
