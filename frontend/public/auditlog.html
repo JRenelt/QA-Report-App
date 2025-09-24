@@ -524,7 +524,107 @@
         }
 
         function updateArchiveCount() {
-            document.getElementById('archiveBtn').textContent = '📁 Archiv (' + window.archivedReports.length + ')';
+            const btn = document.getElementById('archiveToggleBtn');
+            if (window.viewMode === 'archive') {
+                btn.textContent = '📋 Testpunkte';
+                btn.title = 'Zurück zu Testpunkten';
+            } else {
+                btn.textContent = '📁 Archiv (' + window.archivedReports.length + ')';
+                btn.title = 'Archiv anzeigen';
+            }
+        }
+
+        function toggleArchiveView() {
+            if (window.viewMode === 'archive') {
+                // Zurück zu Tests
+                window.viewMode = 'tests';
+                renderCategories();
+                renderTests();
+            } else {
+                // Zu Archiv wechseln
+                window.viewMode = 'archive';
+                renderArchiveView();
+            }
+            updateArchiveCount();
+        }
+
+        function renderArchiveView() {
+            const categoryContainer = document.getElementById('categoryList');
+            const testContainer = document.getElementById('testList');
+            
+            // Sidebar für Archiv
+            categoryContainer.innerHTML = '<h4 class="text-cyan mb-16">📁 Gespeicherte Berichte</h4>';
+            
+            // Main-Bereich für Archiv
+            if (window.archivedReports.length === 0) {
+                testContainer.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                        <p style="font-size: 18px; margin-bottom: 16px;">📁 Keine archivierten Berichte vorhanden</p>
+                        <p>Speichern Sie Tests mit dem "💾 Test speichern" Button, um Berichte zu erstellen.</p>
+                    </div>
+                `;
+            } else {
+                let archiveHtml = '';
+                window.archivedReports.forEach((report, index) => {
+                    archiveHtml += `
+                        <div class="test-point" style="border-color: var(--accent-cyan);">
+                            <div class="test-point-header">
+                                <div class="flex align-center gap-8">
+                                    <span style="font-size: 16px;">📊</span>
+                                    <div style="flex: 1;">
+                                        <strong>${report.category}</strong>
+                                        <div class="text-secondary text-sm">${report.timestamp}</div>
+                                    </div>
+                                </div>
+                                <span class="status-badge status-info">${report.completedTests}/${report.totalTests} Tests</span>
+                            </div>
+                            <p class="text-secondary text-sm" style="margin: 4px 0 8px 0;">
+                                Bericht erstellt am ${report.timestamp} mit ${report.completedTests} abgeschlossenen Tests
+                            </p>
+                            <div class="test-point-actions">
+                                <button class="btn btn-primary btn-small" onclick="loadReport(${index})" title="Bericht laden">📥 Laden</button>
+                                <button class="btn btn-danger btn-small" onclick="deleteReport(${index})" title="Bericht löschen">🗑️ Löschen</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                testContainer.innerHTML = archiveHtml;
+            }
+            
+            document.getElementById('testCount').textContent = window.archivedReports.length + ' Berichte';
+            document.getElementById('currentCategoryTitle').textContent = '📁 Archivierte Test-Berichte';
+        }
+
+        function loadReport(index) {
+            const report = window.archivedReports[index];
+            if (!report) return;
+            
+            // Lade gespeicherte Test-Status
+            window.testStatuses = {...report.testStatuses};
+            window.testNotes = {...report.testNotes};
+            window.currentCategory = report.category;
+            
+            // Zurück zur Test-Ansicht
+            window.viewMode = 'tests';
+            renderCategories();
+            renderTests();
+            updateStatusCounts();
+            updateArchiveCount();
+            
+            alert(`Bericht "${report.category}" vom ${report.timestamp} wurde geladen`);
+        }
+
+        function deleteReport(index) {
+            const report = window.archivedReports[index];
+            if (!report) return;
+            
+            if (confirm(`Bericht "${report.category}" vom ${report.timestamp} löschen?`)) {
+                window.archivedReports.splice(index, 1);
+                localStorage.setItem('favorg-audit-archive', JSON.stringify(window.archivedReports));
+                renderArchiveView();
+                updateArchiveCount();
+                alert('Bericht gelöscht');
+            }
         }
 
         function setFilter(filter) {
