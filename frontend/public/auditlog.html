@@ -351,6 +351,7 @@
         window.testNotes = {};
         window.statusFilter = '';
         window.archivedReports = JSON.parse(localStorage.getItem('favorg-audit-archive') || '[]');
+        window.viewMode = 'tests'; // 'tests' oder 'archive'
 
         // Test-Kategorien
         window.categories = [
