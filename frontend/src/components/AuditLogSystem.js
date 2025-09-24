@@ -270,7 +270,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               <input
                 type="text"
                 placeholder="Neuer Testname..."
-                className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white text-sm pr-8 w-48"
+                className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white text-sm pr-8 w-60"
                 value={newTestName}
                 onChange={(e) => setNewTestName(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddTest()}
@@ -286,9 +286,21 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700">
               ➕
             </Button>
-            <Button onClick={handleRemoveTest} size="sm" variant="outline">
+            <Button onClick={handleRemoveTest} size="sm" variant="outline" className="bg-red-600 hover:bg-red-700 text-white border-red-600">
               ✕
             </Button>
+            <div 
+              className="w-12 h-8 opacity-0 pointer-events-none" 
+              style={{ 
+                background: 'transparent', 
+                minWidth: '50px',
+                content: '""',
+                display: 'inline-block'
+              }}
+              title="Spacing Element"
+            >
+              {/* Transparentes 50px Element für Layout-Kontrolle */}
+            </div>
           </div>
         </div>
 
