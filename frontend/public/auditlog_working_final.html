@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FavOrg AuditLog-System - Vollbild</title>
+    
+    <style>
+        :root {
+            --bg-primary: #1a1f2e;
+            --bg-secondary: #252b3b;
+            --bg-card: #2d3748;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border-primary: #374151;
+            --accent-cyan: #06b6d4;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .audit-log-container {
+            min-height: 100vh;
+            background: var(--bg-primary);
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+
+        .audit-log-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .audit-log-content {
+            display: flex;
+            gap: 16px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .audit-sidebar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 16px;
+            width: 320px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .audit-main {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .audit-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-primary);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 1000;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary { background: var(--accent-cyan); color: white; }
+        .btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-primary); }
+        .btn-success { background: #059669; color: white; }
+        .btn-danger { background: #dc2626; color: white; }
+        .btn-warning { background: #d97706; color: white; }
+        .btn-info { background: #2563eb; color: white; }
+        .btn-small { padding: 4px 8px; font-size: 12px; }
+
+        .category-btn {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: var(--accent-cyan);
+            color: white;
+        }
+
+        .test-point {
+            background: var(--bg-card);
+            border: 2px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .test-point:hover { border-color: var(--accent-cyan); }
+        .test-point.status-success { border-color: #059669; }
+        .test-point.status-error { border-color: #dc2626; }
+        .test-point.status-warning { border-color: #d97706; }
+        .test-point.status-info { border-color: #2563eb; }
+
+        .test-point-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .test-point-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-success { background: #059669; color: white; }
+        .status-error { background: #dc2626; color: white; }
+        .status-warning { background: #d97706; color: white; }
+        .status-info { background: #2563eb; color: white; }
+
+        .input {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            width: 200px;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .close-btn {
+            position: fixed;
+            top: 24px;
+            right: 16px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .close-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+            transition: all 0.2s;
+        }
+
+        .flex { display: flex; }
+        .align-center { align-items: center; }
+        .gap-8 { gap: 8px; }
+        .mb-0 { margin-bottom: 0; }
+        .mb-16 { margin-bottom: 16px; }
+        .text-cyan { color: var(--accent-cyan); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-sm { font-size: 13px; }
+    </style>
+</head>
+<body>
+    <button class="close-btn" onclick="window.close()">✕ Schließen</button>
+    
+    <div class="audit-log-container">
+        <div class="audit-log-header">
+            <div class="flex align-center gap-8">
+                <h2 class="mb-0 text-cyan">🔍 AuditLog-System - Vollbild</h2>
+            </div>
+            <div class="flex align-center gap-8">
+                <input type="text" class="input" id="newTestInput" placeholder="Neuer Testname..." />
+                <button class="btn btn-primary" onclick="addTest()">➕</button>
+                <button class="btn btn-danger" onclick="removeTest()">✕</button>
+                <button class="btn btn-secondary" onclick="goBackToFavOrg()">🏠 FavOrg</button>
+            </div>
+        </div>
+
+        <div class="audit-log-content">
+            <div class="audit-sidebar">
+                <h3 class="mb-16 text-cyan">📋 Test-Bereiche</h3>
+                <div id="categoryList">
+                    <!-- Wird von JavaScript gefüllt -->
+                </div>
+            </div>
+
+            <div class="audit-main">
+                <div class="flex align-center" style="justify-content: space-between; margin-bottom: 16px;">
+                    <h3 class="mb-0 text-cyan" id="currentCategoryTitle">🎨 Allgemeines Design</h3>
+                    <span class="status-badge status-info" id="testCount">4 Tests</span>
+                </div>
+                <div id="testList">
+                    <!-- Wird von JavaScript gefüllt -->
+                </div>
+            </div>
+        </div>
+
+        <div class="audit-footer">
+            <div class="flex align-center gap-8">
+                <button class="btn btn-primary" onclick="setFilter('')" id="filterAll">Alle (0)</button>
+                <button class="btn btn-success" onclick="setFilter('success')" id="filterSuccess">✅ (0)</button>
+                <button class="btn btn-danger" onclick="setFilter('error')" id="filterError">❌ (0)</button>
+                <button class="btn btn-warning" onclick="setFilter('warning')" id="filterWarning">⏳ (0)</button>
+                <button class="btn btn-info" onclick="setFilter('info')" id="filterInfo">🗑️ (0)</button>
+            </div>
+            <div class="flex align-center gap-8" style="margin-left: auto;">
+                <button class="btn btn-secondary" onclick="showArchive()">📁 Archiv (0)</button>
+                <button class="btn btn-secondary" onclick="exportPDF()">📄 PDF-Export</button>
+                <button class="btn btn-secondary" onclick="resetAll()">🗑️ Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Globale Variablen - SOFORT definiert
+        window.currentCategory = 'Allgemeines Design';
+        window.testStatuses = {};
+        window.testNotes = {};
+        window.statusFilter = '';
+
+        // Test-Kategorien - SOFORT definiert
+        window.categories = [
+            { name: 'Allgemeines Design', icon: '🎨', count: 4 },
+            { name: 'Header-Bereich', icon: '🔝', count: 4 },
+            { name: 'Sidebar-Bereich', icon: '📋', count: 5 },
+            { name: 'Main-Content', icon: '📄', count: 4 },
+            { name: 'Bookmark-Karten', icon: '🎴', count: 6 },
+            { name: 'Einstellungen', icon: '⚙️', count: 4 }
+        ];
+
+        // Test-Daten - SOFORT definiert
+        window.tests = {
+            'Allgemeines Design': [
+                { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
+                { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
+                { name: 'Responsiveness', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
+                { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
+            ],
+            'Header-Bereich': [
+                { name: 'Logo & Titel Platzierung', icon: '🏷️', tooltip: 'Logo und Titel korrekt positioniert' },
+                { name: 'Navigation Icons', icon: '🧭', tooltip: 'Alle Navigation-Icons funktional' },
+                { name: 'Bookmark-Anzahl [X]', icon: '🔢', tooltip: 'Bookmark-Counter korrekt angezeigt' },
+                { name: 'Header-Buttons Layout', icon: '🔘', tooltip: 'Button-Layout im Header prüfen' }
+            ],
+            'Sidebar-Bereich': [
+                { name: 'Kategorie-Liste', icon: '📂', tooltip: 'Kategorien korrekt aufgelistet' },
+                { name: 'Drag & Drop Kategorien', icon: '🎯', tooltip: 'Kategorie D&D funktional' },
+                { name: 'Resizing Funktionalität', icon: '↔️', tooltip: 'Sidebar-Größenänderung' },
+                { name: 'Kategorie-Tooltips', icon: '💬', tooltip: 'Tooltip-Positionierung testen' },
+                { name: 'Unterkategorie-Hierarchie', icon: '🌳', tooltip: 'Hierarchische Darstellung prüfen' }
+            ],
+            'Main-Content': [
+                { name: 'Bookmark-Darstellung', icon: '🎴', tooltip: 'Bookmark-Karten Layout' },
+                { name: 'Tabellen-Ansicht Toggle', icon: '📋', tooltip: 'List/Grid View umschalten' },
+                { name: 'Scroll-Performance', icon: '📜', tooltip: 'Scrolling bei vielen Bookmarks' },
+                { name: 'Leere-State Anzeige', icon: '📭', tooltip: 'Anzeige wenn keine Bookmarks' }
+            ],
+            'Bookmark-Karten': [
+                { name: 'Status-Farb-System', icon: '🎨', tooltip: 'Farben für verschiedene Status' },
+                { name: 'Lock/Unlock Buttons', icon: '🔒', tooltip: 'Sperr-Funktionalität testen' },
+                { name: 'Action-Buttons Layout', icon: '🔘', tooltip: 'Edit/Delete/Link Button-Layout' },
+                { name: 'Drag-Handles sichtbar', icon: '⋮⋮', tooltip: 'Drag-Griffe erkennbar' },
+                { name: 'Hover-States', icon: '👆', tooltip: 'Hover-Effekte auf Karten' },
+                { name: 'Status-Badge Position', icon: '🏷️', tooltip: 'Status-Badges korrekt positioniert' }
+            ],
+            'Einstellungen': [
+                { name: 'Tab-Navigation Icons', icon: '🗂️', tooltip: 'Settings-Tabs mit Icons' },
+                { name: 'Theme-Einstellungen', icon: '🌙', tooltip: 'Dark/Light Theme Toggle' },
+                { name: 'Meldungen Delay Checkbox', icon: '⏰', tooltip: 'Toast-Delay Einstellung' },
+                { name: 'Gefahr-Bereich rot', icon: '⚠️', tooltip: 'Danger-Zone rote Markierung' }
+            ]
+        };
+
+        // Render-Funktionen - SOFORT definiert
+        function renderCategories() {
+            console.log('🎨 renderCategories() aufgerufen');
+            const container = document.getElementById('categoryList');
+            if (!container) {
+                console.error('❌ categoryList Container nicht gefunden');
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            window.categories.forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn ' + (category.name === window.currentCategory ? 'active' : '');
+                btn.onclick = function() { selectCategory(category.name); };
+                
+                btn.innerHTML = '<span>' + category.icon + '</span>' +
+                               '<span style="flex: 1;">' + category.name + '</span>' +
+                               '<span class="status-badge status-info">' + category.count + '</span>';
+                
+                container.appendChild(btn);
+            });
+            
+            console.log('✅ Kategorien gerendert:', window.categories.length);
+        }
+
+        function renderTests() {
+            console.log('🧪 renderTests() aufgerufen');
+            const container = document.getElementById('testList');
+            if (!container) {
+                console.error('❌ testList Container nicht gefunden');
+                return;
+            }
+            
+            const tests = window.tests[window.currentCategory] || [];
+            console.log('Tests zu rendern:', tests.length, 'für Kategorie:', window.currentCategory);
+            
+            container.innerHTML = '';
+            document.getElementById('testCount').textContent = tests.length + ' Tests';
+
+            if (tests.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">' +
+                                    '<p>Keine Tests für "' + window.currentCategory + '" gefunden.</p>' +
+                                    '<p>Verwenden Sie das Input-Feld im Header, um neue Tests hinzuzufügen.</p>' +
+                                    '</div>';
+                return;
+            }
+
+            tests.forEach(function(test, index) {
+                const testStatus = window.testStatuses[test.name];
+                
+                const testDiv = document.createElement('div');
+                testDiv.className = 'test-point ' + (testStatus ? 'status-' + testStatus : '');
+                
+                let statusBadgeHtml = '';
+                if (testStatus) {
+                    const statusConfig = {
+                        'success': { icon: '✅', text: 'Bestanden' },
+                        'error': { icon: '❌', text: 'Fehlgeschlagen' },
+                        'warning': { icon: '⏳', text: 'In Bearbeitung' },
+                        'info': { icon: '🗑️', text: 'Übersprungen' }
+                    };
+                    const config = statusConfig[testStatus];
+                    if (config) {
+                        statusBadgeHtml = '<span class="status-badge status-' + testStatus + '">' + config.icon + ' ' + config.text + '</span>';
+                    }
+                }
+
+                testDiv.innerHTML = 
+                    '<div class="test-point-header">' +
+                        '<div class="flex align-center gap-8">' +
+                            '<span style="font-size: 16px;">' + test.icon + '</span>' +
+                            '<div style="flex: 1;">' +
+                                '<strong>' + test.name + '</strong>' +
+                            '</div>' +
+                        '</div>' +
+                        statusBadgeHtml +
+                    '</div>' +
+                    '<p class="text-secondary text-sm" style="margin: 4px 0 8px 0;">' + test.tooltip + '</p>' +
+                    '<div class="test-point-actions">' +
+                        '<button class="btn btn-success btn-small" onclick="setTestStatus(\'' + test.name + '\', \'success\')" title="Test bestanden">✅</button>' +
+                        '<button class="btn btn-danger btn-small" onclick="setTestStatus(\'' + test.name + '\', \'error\')" title="Test fehlgeschlagen">❌</button>' +
+                        '<button class="btn btn-warning btn-small" onclick="setTestStatus(\'' + test.name + '\', \'warning\')" title="Test in Bearbeitung">⏳</button>' +
+                        '<button class="btn btn-info btn-small" onclick="setTestStatus(\'' + test.name + '\', \'info\')" title="Test übersprungen">🗑️</button>' +
+                    '</div>';
+                
+                container.appendChild(testDiv);
+            });
+            
+            console.log('✅ Tests gerendert:', tests.length);
+        }
+
+        // Event-Handler - SOFORT definiert
+        function selectCategory(categoryName) {
+            console.log('📂 Kategorie gewechselt:', categoryName);
+            window.currentCategory = categoryName;
+            const category = window.categories.find(function(cat) { return cat.name === categoryName; });
+            if (category) {
+                document.getElementById('currentCategoryTitle').textContent = category.icon + ' ' + categoryName;
+            }
+            renderCategories();
+            renderTests();
+        }
+
+        function setTestStatus(testName, status) {
+            console.log('✅ Status gesetzt:', testName, '=', status);
+            window.testStatuses[testName] = status;
+            renderTests();
+            updateStatusCounts();
+        }
+
+        function updateStatusCounts() {
+            const allStatuses = Object.values(window.testStatuses);
+            const counts = {
+                all: allStatuses.length,
+                success: allStatuses.filter(function(s) { return s === 'success'; }).length,
+                error: allStatuses.filter(function(s) { return s === 'error'; }).length,
+                warning: allStatuses.filter(function(s) { return s === 'warning'; }).length,
+                info: allStatuses.filter(function(s) { return s === 'info'; }).length
+            };
+
+            document.getElementById('filterAll').textContent = 'Alle (' + counts.all + ')';
+            document.getElementById('filterSuccess').textContent = '✅ (' + counts.success + ')';
+            document.getElementById('filterError').textContent = '❌ (' + counts.error + ')';
+            document.getElementById('filterWarning').textContent = '⏳ (' + counts.warning + ')';
+            document.getElementById('filterInfo').textContent = '🗑️ (' + counts.info + ')';
+        }
+
+        function setFilter(filter) {
+            window.statusFilter = filter;
+            renderTests();
+        }
+
+        function addTest() {
+            const input = document.getElementById('newTestInput');
+            const testName = input.value.trim();
+            
+            if (!testName) {
+                alert('Bitte geben Sie einen Testnamen ein');
+                return;
+            }
+            
+            if (!window.tests[window.currentCategory]) {
+                window.tests[window.currentCategory] = [];
+            }
+            
+            window.tests[window.currentCategory].push({
+                name: testName,
+                icon: '🔍',
+                tooltip: 'Benutzerdefinierter Test'
+            });
+            
+            input.value = '';
+            renderTests();
+            console.log('➕ Test hinzugefügt:', testName);
+        }
+
+        function removeTest() {
+            const input = document.getElementById('newTestInput');
+            const testName = input.value.trim();
+            
+            if (!testName) {
+                alert('Bitte geben Sie den Namen des zu löschenden Tests ein');
+                return;
+            }
+            
+            const tests = window.tests[window.currentCategory] || [];
+            const newTests = tests.filter(function(test) { return test.name !== testName; });
+            
+            if (newTests.length === tests.length) {
+                alert('Test "' + testName + '" nicht gefunden');
+                return;
+            }
+            
+            window.tests[window.currentCategory] = newTests;
+            delete window.testStatuses[testName];
+            
+            input.value = '';
+            renderTests();
+            console.log('➖ Test entfernt:', testName);
+        }
+
+        function resetAll() {
+            if (confirm('Alle Tests zurücksetzen?')) {
+                window.testStatuses = {};
+                renderTests();
+                updateStatusCounts();
+            }
+        }
+
+        function showArchive() {
+            alert('Archiv-Funktionalität wird implementiert');
+        }
+
+        function exportPDF() {
+            alert('PDF-Export wird implementiert');
+        }
+
+        function goBackToFavOrg() {
+            if (window.opener) {
+                window.opener.focus();
+                window.close();
+            } else {
+                window.location.href = '/';
+            }
+        }
+
+        // SOFORTIGE INITIALISIERUNG
+        function initAuditLog() {
+            console.log('🚀 AuditLog Initialisierung gestartet');
+            
+            try {
+                renderCategories();
+                renderTests();
+                updateStatusCounts();
+                console.log('🎉 AuditLog erfolgreich initialisiert');
+            } catch (error) {
+                console.error('❌ Initialisierungs-Fehler:', error);
+            }
+        }
+
+        // Mehrfache Initialisierungs-Strategien
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAuditLog);
+        } else {
+            initAuditLog();
+        }
+
+        // Fallback nach 500ms
+        setTimeout(initAuditLog, 500);
+        
+        console.log('📝 AuditLog Script vollständig geladen');
+    </script>
+</body>
+</html>
