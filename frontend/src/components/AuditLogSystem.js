@@ -317,8 +317,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Content mit Sidebar-Layout - begrenzt durch Header und Footer */}
-        <div className="flex flex-1" style={{ height: 'calc(90vh - 140px)', margin: '0', overflow: 'hidden' }}>
+        {/* Content mit Sidebar-Layout - automatische Höhenbegrenzung */}
+        <div className="flex flex-1 overflow-hidden" style={{ minHeight: '0' }}>
           {viewMode === 'tests' ? (
             <>
               {/* Sidebar: Test-Bereiche */}
