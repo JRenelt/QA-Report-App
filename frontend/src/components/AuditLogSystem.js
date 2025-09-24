@@ -1,46 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Dialog, DialogContent } from './ui/dialog';
 import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { X, Search, FileText, Trash2, Download, Plus, Info, HelpCircle, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AuditLogSystem = ({ isOpen, onClose }) => {
   const [currentCategory, setCurrentCategory] = useState('Allgemeines Design');
-  const [viewMode, setViewMode] = useState('bereiche'); // 'bereiche', 'tests', 'bericht'
+  const [viewMode, setViewMode] = useState('tests'); // 'tests', 'archive'
   const [newTestName, setNewTestName] = useState('');
-  const [compactView, setCompactView] = useState(false);
-  const [testReports, setTestReports] = useState([]);
-  const [selectedTestPoints, setSelectedTestPoints] = useState([]);
-  const [testNotes, setTestNotes] = useState({});
   const [testStatuses, setTestStatuses] = useState({});
-  const [editingNote, setEditingNote] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredTests, setFilteredTests] = useState([]);
+  const [testNotes, setTestNotes] = useState({});
   const [statusFilter, setStatusFilter] = useState('');
-  const [forceRender, setForceRender] = useState(0);
+  const [archivedReports, setArchivedReports] = useState([]);
   const [dynamicTests, setDynamicTests] = useState({});
   
-  // Test-Bereiche für FavOrg als State
-  const [testCategories, setTestCategories] = useState([
-    { name: 'Allgemeines Design', icon: '🎨', tests: 4 },
-    { name: 'Header-Bereich', icon: '🔝', tests: 4 }, 
-    { name: 'Sidebar-Bereich', icon: '📋', tests: 5 },
-    { name: 'Search-Section', icon: '🔍', tests: 5 },
-    { name: 'Main-Content', icon: '📄', tests: 4 },
-    { name: 'Bookmark-Karten', icon: '🎴', tests: 6 },
-    { name: 'Dialoge & Modals', icon: '🗨️', tests: 5 },
-    { name: 'Navigation & Routing', icon: '🧭', tests: 3 },
-    { name: 'Drag & Drop System', icon: '🎯', tests: 5 },
-    { name: 'Filter & Sortierung', icon: '🎛️', tests: 4 },
-    { name: 'Import/Export', icon: '📤', tests: 4 },
-    { name: 'Einstellungen', icon: '⚙️', tests: 4 },
-    { name: 'Performance & Responsive', icon: '⚡', tests: 4 }
-  ]);
+  // Test-Kategorien
+  const testCategories = [
+    'Allgemeines Design',
+    'Header-Bereich', 
+    'Sidebar-Bereich',
+    'Main-Content',
+    'Bookmark-Karten',
+    'Einstellungen'
+  ];
 
-  // Test-Bereiche sind jetzt als State oben definiert
-
-  // Test-Szenarien pro Bereich (Original aus Technischer Dokumentation)
+  // Test-Daten
   const predefinedTests = {
     'Allgemeines Design': [
       { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
@@ -49,1014 +32,517 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
     ],
     'Header-Bereich': [
-      { name: 'Logo + Counter', icon: '🏷️', tooltip: 'Logo und Bookmark-Anzahl anzeigen' },
-      { name: 'Action-Buttons', icon: '🔘', tooltip: 'Action-Buttons funktional (Neu, Export, etc.)' },
-      { name: 'Header-Icons', icon: '⚙️', tooltip: 'Header-Icons klickbar (Hilfe, Statistik, Einstellungen)' },
-      { name: 'Status-Buttons', icon: '🎯', tooltip: 'Status-Buttons (TOTE Links, Duplikate, Localhost)' }
+      { name: 'Logo & Titel Platzierung', icon: '🏷️', tooltip: 'Logo und Titel korrekt positioniert' },
+      { name: 'Navigation Icons', icon: '🧭', tooltip: 'Alle Navigation-Icons funktional' },
+      { name: 'Bookmark-Anzahl [X]', icon: '🔢', tooltip: 'Bookmark-Counter korrekt angezeigt' },
+      { name: 'Header-Buttons Layout', icon: '🔘', tooltip: 'Button-Layout im Header prüfen' }
     ],
     'Sidebar-Bereich': [
-      { name: 'Kategorien-Tree', icon: '🌳', tooltip: 'Kategorien-Hierarchie korrekt angezeigt' },
-      { name: 'Collapse/Expand', icon: '↔️', tooltip: 'Sidebar Collapse/Expand funktional' },
-      { name: 'Navigation', icon: '🧭', tooltip: 'Kategorie-Navigation und -Auswahl' },
-      { name: 'Bookmark-Count', icon: '🔢', tooltip: 'Bookmark-Anzahl pro Kategorie anzeigen' },
-      { name: 'Resizer', icon: '↕️', tooltip: 'Sidebar-Resizer Funktionalität' }
-    ],
-    'Search-Section': [
-      { name: 'Suchfeld', icon: '🔍', tooltip: 'Suchfeld Eingabe und Funktionalität' },
-      { name: 'Erweiterte Suche', icon: '🔎', tooltip: 'Erweiterte Suche (Titel, URL, Beschreibung)' },
-      { name: 'Status-Filter', icon: '🎛️', tooltip: 'Status-Filter Dropdown funktional' },
-      { name: 'Ergebnis-Count', icon: '📊', tooltip: 'Suchergebnis-Anzahl korrekt angezeigt' },
-      { name: 'Clear Button', icon: '❌', tooltip: 'Clear Search Button funktional' }
+      { name: 'Kategorie-Liste', icon: '📂', tooltip: 'Kategorien korrekt aufgelistet' },
+      { name: 'Drag & Drop Kategorien', icon: '🎯', tooltip: 'Kategorie D&D funktional' },
+      { name: 'Resizing Funktionalität', icon: '↔️', tooltip: 'Sidebar-Größenänderung' },
+      { name: 'Kategorie-Tooltips', icon: '💬', tooltip: 'Tooltip-Positionierung testen' },
+      { name: 'Unterkategorie-Hierarchie', icon: '🌳', tooltip: 'Hierarchische Darstellung prüfen' }
     ],
     'Main-Content': [
-      { name: 'Grid Layout', icon: '⚏', tooltip: 'Bookmark-Grid Layout korrekt' },
-      { name: 'View Toggle', icon: '🔀', tooltip: 'Karten/Tabellen-Ansicht Umschalter' },
-      { name: 'Scrolling', icon: '📜', tooltip: 'Scrolling und Pagination' },
-      { name: 'Responsive', icon: '📱', tooltip: 'Content-Bereich responsive' }
+      { name: 'Bookmark-Darstellung', icon: '🎴', tooltip: 'Bookmark-Karten Layout' },
+      { name: 'Tabellen-Ansicht Toggle', icon: '📋', tooltip: 'List/Grid View umschalten' },
+      { name: 'Scroll-Performance', icon: '📜', tooltip: 'Scrolling bei vielen Bookmarks' },
+      { name: 'Leere-State Anzeige', icon: '📭', tooltip: 'Anzeige wenn keine Bookmarks' }
     ],
     'Bookmark-Karten': [
-      { name: 'Card Design', icon: '🎴', tooltip: 'Bookmark-Karte Design und Layout' },
-      { name: 'Status-Badges', icon: '🏷️', tooltip: 'Status-Badges korrekt angezeigt' },
-      { name: 'Lock Button', icon: '🔒', tooltip: 'Lock/Unlock Button funktional' },
-      { name: 'Edit/Delete', icon: '✏️', tooltip: 'Edit/Delete Buttons verfügbar' },
-      { name: 'Favicons', icon: '🖼️', tooltip: 'Favicon-Anzeige wenn aktiviert' },
-      { name: 'URL-Links', icon: '🔗', tooltip: 'URL-Links funktional' }
-    ],
-    'Dialoge & Modals': [
-      { name: 'Bookmark-Dialog', icon: '📝', tooltip: 'Bookmark-Dialog öffnen/schließen' },
-      { name: 'Kategorie-Select', icon: '📁', tooltip: 'Kategorie-Auswahl im Dialog' },
-      { name: 'Settings-Dialog', icon: '⚙️', tooltip: 'Einstellungen-Dialog alle Tabs' },
-      { name: 'Help-System', icon: '❓', tooltip: 'Hilfe-System Dialog und Navigation' },
-      { name: 'Statistics', icon: '📈', tooltip: 'Statistik-Dialog Daten-Anzeige' }
-    ],
-    'Navigation & Routing': [
-      { name: 'Sidebar Navigation', icon: '🧭', tooltip: 'Navigation zwischen Kategorien' },
-      { name: 'Breadcrumb', icon: '🍞', tooltip: 'Breadcrumb Navigation' },
-      { name: 'Deep Links', icon: '🔗', tooltip: 'Deep Link Funktionalität' }
-    ],
-    'Drag & Drop System': [
-      { name: 'Bookmark D&D', icon: '🎯', tooltip: 'Bookmark zwischen Kategorien verschieben' },
-      { name: 'Category D&D', icon: '📂', tooltip: 'Kategorie Hierarchie-Verschiebung' },
-      { name: 'Cross-Level', icon: '🎢', tooltip: 'Cross-Level Category Movement' },
-      { name: 'Shift+Drag', icon: '⇧', tooltip: 'Shift+Drag Einfüge-Modus' },
-      { name: 'Visual Feedback', icon: '👁️', tooltip: 'Visuelle Drop-Zone Feedback' }
-    ],
-    'Filter & Sortierung': [
-      { name: 'Status-Filter', icon: '🎛️', tooltip: 'Status-Filter alle Typen (Aktiv, Tot, etc.)' },
-      { name: 'Category-Filter', icon: '📁', tooltip: 'Kategorie-Filter Funktionalität' },
-      { name: 'Sortierung', icon: '🔢', tooltip: 'Sortierung nach Datum/Alphabet' },
-      { name: 'Kombiniert', icon: '🔗', tooltip: 'Kombinierte Filter (Status + Kategorie)' }
-    ],
-    'Import/Export': [
-      { name: 'HTML Import', icon: '📥', tooltip: 'HTML Import-Funktionalität' },
-      { name: 'JSON Export', icon: '📤', tooltip: 'JSON Export alle Formate' },
-      { name: 'XML/CSV', icon: '📋', tooltip: 'XML/CSV Import/Export' },
-      { name: 'Testdaten', icon: '🧪', tooltip: 'Testdaten-Generierung (70 Bookmarks)' }
+      { name: 'Status-Farb-System', icon: '🎨', tooltip: 'Farben für verschiedene Status' },
+      { name: 'Lock/Unlock Buttons', icon: '🔒', tooltip: 'Sperr-Funktionalität testen' },
+      { name: 'Action-Buttons Layout', icon: '🔘', tooltip: 'Edit/Delete/Link Button-Layout' },
+      { name: 'Drag-Handles sichtbar', icon: '⋮⋮', tooltip: 'Drag-Griffe erkennbar' },
+      { name: 'Hover-States', icon: '👆', tooltip: 'Hover-Effekte auf Karten' },
+      { name: 'Status-Badge Position', icon: '🏷️', tooltip: 'Status-Badges korrekt positioniert' }
     ],
     'Einstellungen': [
-      { name: 'Theme-Switch', icon: '🎨', tooltip: 'Theme-Wechsel (Hell/Dunkel)' },
-      { name: 'S-Time', icon: '⏱️', tooltip: 'Erweiterte Einstellungen (S-Time)' },
-      { name: 'System-Tools', icon: '🔧', tooltip: 'System-Tools (AuditLog/SysDok)' },
-      { name: 'Meldungen', icon: '📢', tooltip: 'Meldungen Delay Einstellung' }
-    ],
-    'Performance & Responsive': [
-      { name: 'Load Speed', icon: '⚡', tooltip: 'Ladezeiten unter 3 Sekunden' },
-      { name: 'Mobile', icon: '📱', tooltip: 'Mobile Responsiveness (768px)' },
-      { name: 'Tablet', icon: '📟', tooltip: 'Tablet-Ansicht (768-1200px)' },
-      { name: 'Desktop', icon: '🖥️', tooltip: 'Desktop-Optimierung (>1200px)' }
+      { name: 'Tab-Navigation Icons', icon: '🗂️', tooltip: 'Settings-Tabs mit Icons' },
+      { name: 'Theme-Einstellungen', icon: '🌙', tooltip: 'Dark/Light Theme Toggle' },
+      { name: 'Meldungen Delay Checkbox', icon: '⏰', tooltip: 'Toast-Delay Einstellung' },
+      { name: 'Gefahr-Bereich rot', icon: '⚠️', tooltip: 'Danger-Zone rote Markierung' }
     ]
   };
 
-  // Lade Test-Berichte beim Öffnen
-  useEffect(() => {
-    if (isOpen) {
-      const savedReports = localStorage.getItem('favorg_test_reports');
-      if (savedReports) {
-        try {
-          setTestReports(JSON.parse(savedReports));
-        } catch (error) {
-          console.error('Fehler beim Laden der Test-Berichte:', error);
-        }
-      }
-    }
-  }, [isOpen]);
-
-  // Speichere Test-Berichte
-  const saveTestReports = (reports) => {
-    try {
-      localStorage.setItem('favorg_test_reports', JSON.stringify(reports));
-    } catch (error) {
-      console.error('Fehler beim Speichern der Test-Berichte:', error);
-      toast.error('Fehler beim Speichern der Test-Berichte');
-    }
+  // Aktuelle Tests berechnen
+  const getCurrentTests = () => {
+    const baseTests = predefinedTests[currentCategory] || [];
+    const categoryDynamicTests = dynamicTests[currentCategory] || [];
+    return [...baseTests, ...categoryDynamicTests];
   };
 
-  // Neuen Test hinzufügen (blauer Hintergrund + weißes Plus)
-  const addNewTest = () => {
-    const testName = newTestName.trim();
-    if (!testName) {
-      toast.error('Bitte geben Sie einen Test-Namen ein');
+  const getFilteredTests = () => {
+    const allTests = getCurrentTests();
+    if (!statusFilter) return allTests;
+    return allTests.filter(test => testStatuses[test.name] === statusFilter);
+  };
+
+  // Event-Handler
+  const handleAddTest = () => {
+    if (!newTestName.trim()) {
+      toast.error('Bitte geben Sie einen Testnamen ein');
       return;
     }
-
-    // Prüfe ob wir in der Test-Ansicht sind
-    if (viewMode !== 'tests' || !currentCategory) {
-      toast.error('Bitte wählen Sie zuerst einen Test-Bereich aus');
-      return;
+    
+    if (!dynamicTests[currentCategory]) {
+      setDynamicTests({...dynamicTests, [currentCategory]: []});
     }
-
-    // Prüfe ob Test bereits existiert (in predefined oder dynamic)
-    const allCurrentTests = getAllTests(currentCategory);
-    const existingTest = allCurrentTests.find(t => t.name === testName);
-    if (existingTest) {
-      toast.error(`Test "${testName}" existiert bereits in diesem Bereich`);
-      return;
-    }
-
-    // Neuer Test - als neue Karte hinzufügen
-    const newTest = {
-      name: testName,
-      icon: '🧪',
-      tooltip: `Eigener Test: ${testName}`,
+    
+    const newTests = [...(dynamicTests[currentCategory] || []), {
+      name: newTestName,
+      icon: '🔍',
+      tooltip: 'Benutzerdefinierter Test',
       isDynamic: true
-    };
+    }];
     
-    // Füge zu dynamicTests hinzu (React State)
-    setDynamicTests(prev => ({
-      ...prev,
-      [currentCategory]: [...(prev[currentCategory] || []), newTest]
-    }));
-
-    // Update Test-Kategorie Counter
-    setTestCategories(prev => prev.map(cat => 
-      cat.name === currentCategory 
-        ? {...cat, tests: cat.tests + 1}
-        : cat
-    ));
-    
-    toast.success(`Test-Karte "${testName}" zu "${currentCategory}" hinzugefügt`);
+    setDynamicTests({...dynamicTests, [currentCategory]: newTests});
     setNewTestName('');
-    
-    console.log('Test hinzugefügt:', testName, 'zu Kategorie:', currentCategory);
+    toast.success('Test hinzugefügt');
   };
 
-  // Test aus DB entfernen (rotes Minus)
-  const removeTestFromDB = () => {
-    const testName = newTestName.trim();
-    if (!testName) {
-      toast.error('Bitte geben Sie einen Test-Namen ein');
+  const handleRemoveTest = () => {
+    if (!newTestName.trim()) {
+      toast.error('Bitte geben Sie den Namen des zu löschenden Tests ein');
       return;
     }
-
-    // Prüfe ob wir in der Test-Ansicht sind
-    if (viewMode !== 'tests' || !currentCategory) {
-      toast.error('Bitte wählen Sie zuerst einen Test-Bereich aus');
+    
+    const categoryTests = dynamicTests[currentCategory] || [];
+    const newTests = categoryTests.filter(test => test.name !== newTestName);
+    
+    if (newTests.length === categoryTests.length) {
+      toast.error('Test nicht gefunden');
       return;
     }
-
-    let testFound = false;
-    let foundCategory = null;
-
-    // Suche zuerst in dynamicTests (eigene Tests)
-    Object.keys(dynamicTests).forEach(categoryName => {
-      const dynamicTestsList = dynamicTests[categoryName] || [];
-      const testIndex = dynamicTestsList.findIndex(t => t.name === testName);
-      if (testIndex !== -1) {
-        // Entferne aus dynamicTests
-        setDynamicTests(prev => ({
-          ...prev,
-          [categoryName]: prev[categoryName].filter(t => t.name !== testName)
-        }));
-        
-        // Update Counter
-        setTestCategories(prev => prev.map(cat => 
-          cat.name === categoryName 
-            ? {...cat, tests: Math.max(0, cat.tests - 1)}
-            : cat
-        ));
-        
-        testFound = true;
-        foundCategory = categoryName;
-      }
-    });
-
-    if (!testFound) {
-      // Suche in predefinedTests (nicht empfohlen zu löschen, aber möglich)
-      Object.keys(predefinedTests).forEach(categoryName => {
-        const predefinedTestsList = predefinedTests[categoryName] || [];
-        const testIndex = predefinedTestsList.findIndex(t => t.name === testName);
-        if (testIndex !== -1 && !testFound) {
-          toast.warning(`"${testName}" ist ein vordefinierter Test und sollte nicht gelöscht werden`);
-          testFound = true;
-          foundCategory = categoryName;
-        }
-      });
-    }
-
-    if (testFound) {
-      toast.success(`Test "${testName}" aus "${foundCategory}" entfernt (Berichte bleiben erhalten)`);
-    } else {
-      toast.error(`Test "${testName}" nicht gefunden`);
-    }
-
+    
+    setDynamicTests({...dynamicTests, [currentCategory]: newTests});
+    delete testStatuses[newTestName];
     setNewTestName('');
-    console.log('Test entfernt:', testName, 'aus Kategorie:', foundCategory);
+    toast.success('Test entfernt');
   };
 
-  // Test-Bericht als PDF exportieren
-  const exportTestReport = () => {
-    const reportData = {
-      exportDate: new Date().toISOString(),
-      reportTitle: `FavOrg Audit-Log Bericht - ${new Date().toLocaleDateString('de-DE')}`,
-      categories: testCategories,
-      currentCategory: currentCategory,
-      testStatuses: testStatuses,
-      testNotes: testNotes,
-      totalTests: testCategories.reduce((sum, cat) => sum + cat.tests, 0),
-      generatedAt: new Date().toLocaleString('de-DE')
-    };
+  const setTestStatus = (testName, status) => {
+    setTestStatuses({...testStatuses, [testName]: status});
+    toast.success(`Status "${status}" gesetzt`);
+  };
 
-    // PDF Export - Einfacher HTML-zu-PDF Ansatz
-    const htmlContent = `
+  const handleSaveToArchive = () => {
+    const tests = getCurrentTests();
+    const completedTests = tests.filter(test => testStatuses[test.name]);
+    
+    if (completedTests.length === 0) {
+      toast.error('Keine Tests mit Status zum Speichern gefunden');
+      return;
+    }
+    
+    const report = {
+      id: Date.now(),
+      category: currentCategory,
+      timestamp: new Date().toLocaleString('de-DE'),
+      totalTests: tests.length,
+      completedTests: completedTests.length,
+      testStatuses: {...testStatuses},
+      testNotes: {...testNotes}
+    };
+    
+    const newReports = [report, ...archivedReports.slice(0, 9)];
+    setArchivedReports(newReports);
+    
+    toast.success(`Test-Stand für "${currentCategory}" ins Archiv gespeichert`);
+  };
+
+  const handlePDFExport = () => {
+    const tests = getCurrentTests();
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
       <!DOCTYPE html>
       <html>
       <head>
-        <title>FavOrg Audit-Log Bericht</title>
+        <title>FavOrg AuditLog-Bericht: ${currentCategory}</title>
         <style>
-          body { font-family: Arial, sans-serif; margin: 20px; }
-          .header { text-align: center; margin-bottom: 30px; }
-          .category { margin-bottom: 20px; }
-          .test-item { margin: 10px 0; padding: 10px; border-left: 3px solid #ccc; }
-          .passed { border-left-color: #10b981; }
-          .failed { border-left-color: #ef4444; }
-          .inProgress { border-left-color: #3b82f6; }
+          body { font-family: Arial, sans-serif; margin: 40px; background: white; color: black; }
+          .header { text-align: center; border-bottom: 2px solid #06b6d4; padding-bottom: 20px; margin-bottom: 30px; }
+          .test-item { padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
+          @media print { body { background: white !important; color: black !important; } }
         </style>
       </head>
       <body>
         <div class="header">
-          <h1>FavOrg Audit-Log Bericht</h1>
-          <p>Generiert am: ${reportData.generatedAt}</p>
+          <h1>FavOrg AuditLog-Bericht</h1>
+          <h2>${currentCategory}</h2>
+          <p>Erstellt am: ${new Date().toLocaleString('de-DE')}</p>
         </div>
-        <h2>Test-Kategorie: ${currentCategory}</h2>
-        ${predefinedTests[currentCategory].map(test => {
-          const status = testStatuses[test.name];
-          const statusClass = status ? status.status : '';
+        ${tests.map(test => {
+          const status = testStatuses[test.name] || 'ungeprüft';
           return `
-            <div class="test-item ${statusClass}">
-              <strong>${test.name}</strong><br>
-              Status: ${status ? status.status : 'Nicht getestet'}<br>
-              ${status ? `Zeitstempel: ${status.timestamp}` : ''}
+            <div class="test-item">
+              <strong>${test.icon} ${test.name}</strong>
+              <p>${test.tooltip}</p>
+              <p><strong>Status:</strong> ${status}</p>
             </div>
           `;
         }).join('')}
+        <script>
+          setTimeout(() => {
+            window.print();
+            window.onafterprint = () => window.close();
+          }, 500);
+        </script>
       </body>
       </html>
-    `;
-
-    // Create PDF-ready HTML
-    const dataBlob = new Blob([htmlContent], { type: 'text/html' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `favorg_audit_report_${new Date().toISOString().split('T')[0]}.html`;
-    link.click();
-    URL.revokeObjectURL(url);
-    
-    // Bericht speichern
-    const newReports = [reportData, ...testReports.slice(0, 9)]; // Max 10 Berichte
-    setTestReports(newReports);
-    saveTestReports(newReports);
-    
-    toast.success('Test-Bericht als HTML exportiert (zum PDF-Druck verwenden)');
+    `);
+    printWindow.document.close();
   };
 
-  // Alle Berichte löschen
-  const clearAllReports = () => {
-    if (window.confirm('Alle gespeicherten Test-Berichte löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
-      setTestReports([]);
-      localStorage.removeItem('favorg_test_reports');
-      toast.success('Alle Test-Berichte gelöscht');
+  const handleResetAll = () => {
+    if (window.confirm('Alle Tests zurücksetzen?')) {
+      setTestStatuses({});
+      setTestNotes({});
+      toast.success('Alle Tests zurückgesetzt');
     }
   };
 
-  // Kombiniere predefined und dynamic tests
-  const getAllTests = (categoryName) => {
-    const predefined = predefinedTests[categoryName] || [];
-    const dynamic = dynamicTests[categoryName] || [];
-    return [...predefined, ...dynamic];
+  const toggleArchiveView = () => {
+    setViewMode(viewMode === 'archive' ? 'tests' : 'archive');
   };
 
-  // Suchlogik für Testpunkte und Bereiche
-  const getFilteredTests = () => {
-    let tests = [];
+  const loadReport = (index) => {
+    const report = archivedReports[index];
+    if (!report) return;
     
-    if (statusFilter) {
-      // Status-Filter aktiv: Suche in allen Bereichen
-      Object.keys(predefinedTests).forEach(categoryName => {
-        getAllTests(categoryName).forEach(test => {
-          const testStatus = testStatuses[test.name];
-          const matchesStatus = statusFilter === 'pending' 
-            ? !testStatus 
-            : testStatus?.status === statusFilter;
-            
-          if (matchesStatus) {
-            tests.push({...test, category: categoryName});
-          }
-        });
-      });
-    } else {
-      // Normale Ansicht: NUR aktuelle Kategorie
-      tests = getAllTests(currentCategory).map(test => ({...test}));
-    }
+    setTestStatuses({...report.testStatuses});
+    setTestNotes({...report.testNotes});
+    setCurrentCategory(report.category);
+    setViewMode('tests');
     
-    // Textsuche anwenden
-    if (searchTerm.trim()) {
-      tests = tests.filter(test => 
-        test.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        test.tooltip.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    
-    return tests;
+    toast.success(`Bericht "${report.category}" geladen`);
   };
 
-  const getFilteredCategories = () => {
-    if (!searchTerm.trim()) {
-      return testCategories;
-    }
+  const deleteReport = (index) => {
+    const report = archivedReports[index];
+    if (!report) return;
     
-    return testCategories.filter(cat => 
-      cat.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  };
-
-  // Highlight-Funktion für Suchtreffer
-  const highlightText = (text, searchTerm) => {
-    if (!searchTerm.trim()) return text;
-    
-    const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
-    return parts.map((part, index) => 
-      part.toLowerCase() === searchTerm.toLowerCase() ? 
-        <span key={index} className="bg-yellow-400 text-black font-bold">{part}</span> : 
-        part
-    );
-  };
-
-  // Aktuelle Kategorie-Daten (mit forceRender für Updates)
-  const currentCategoryData = testCategories.find(cat => cat.name === currentCategory);
-  const currentTests = getFilteredTests();
-  
-  // Console log für Debugging
-  console.log('Current tests for', currentCategory, ':', currentTests.length, 'Force render:', forceRender);
-
-  // Kontext-Kurzhilfen
-  const getContextHelp = () => {
-    switch(viewMode) {
-      case 'bereiche':
-        return `13 Bereiche verfügbar | Wählen Sie einen Test-Bereich aus`;
-      case 'tests':
-        return `${currentTests.length} Testpunkte | ${currentCategory} | Systematische Qualitätsprüfung`;
-      case 'bericht':
-        return `${testReports.length} Berichte gespeichert | Historische Verfolgung aktiv`;
-      default:
-        return "";
+    if (window.confirm(`Bericht "${report.category}" löschen?`)) {
+      const newReports = archivedReports.filter((_, i) => i !== index);
+      setArchivedReports(newReports);
+      toast.success('Bericht gelöscht');
     }
   };
 
-  // Toggle Ansicht
-  const getViewToggleText = () => {
-    switch(viewMode) {
-      case 'bereiche': return 'Testpunkte';
-      case 'tests': return 'Bereiche';
-      case 'bericht': return 'Bereiche';
-      default: return 'Bereiche';
-    }
-  };
-
-  // Nächste Ansicht
-  const toggleView = () => {
-    if (viewMode === 'bereiche') {
-      setViewMode('tests');
-    } else if (viewMode === 'tests') {
-      setViewMode('bereiche');
-    } else {
-      setViewMode('bereiche');
-    }
-  };
-
-  // Test-Status setzen
-  const setTestStatus = (testName, status) => {
-    const timestamp = new Date().toLocaleString('de-DE');
-    setTestStatuses(prev => ({
-      ...prev,
-      [testName]: { status, timestamp }
-    }));
-    
-    const statusTexts = {
-      'passed': 'bestanden',
-      'failed': 'fehlgeschlagen',
-      'inProgress': 'in Bearbeitung'
+  // Status-Counts berechnen
+  const getStatusCounts = () => {
+    const allStatuses = Object.values(testStatuses);
+    return {
+      all: allStatuses.length,
+      success: allStatuses.filter(s => s === 'success').length,
+      error: allStatuses.filter(s => s === 'error').length,
+      warning: allStatuses.filter(s => s === 'warning').length,
+      info: allStatuses.filter(s => s === 'info').length
     };
-    
-    toast.success(`Test "${testName}" als ${statusTexts[status]} markiert`);
   };
 
-  // Test-Punkt auswählen (Legacy für Kompatibilität)
-  const toggleTestPoint = (testName) => {
-    setTestStatus(testName, 'passed');
+  const counts = getStatusCounts();
+  const currentTests = getFilteredTests();
+
+  // Kategorie-Icon Mapping
+  const getCategoryIcon = (category) => {
+    const icons = {
+      'Allgemeines Design': '🎨',
+      'Header-Bereich': '🔝',
+      'Sidebar-Bereich': '📋',
+      'Main-Content': '📄',
+      'Bookmark-Karten': '🎴',
+      'Einstellungen': '⚙️'
+    };
+    return icons[category] || '📂';
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl h-[90vh] bg-gray-900 text-white border-gray-700 overflow-hidden">
-        
-        {/* Kopfzeile - 50% kleinere Schrift */}
-        <DialogHeader className="flex-shrink-0 p-1 border-b border-gray-700">
-          {/* Erste Zeile: Titel + FavOrg + Inputfeld + Bereich-Button */}
-          <div className="flex items-center justify-between gap-2 mb-0">
-            {/* Links: Titel + FavOrg Link - FavOrg Design bestimmt AuditLog */}
-            <div className="flex items-center gap-1">
-              <div className="w-4 h-4 bg-cyan-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs">✓</span>
-              </div>
-              <span className="text-xs font-bold text-cyan-400">FavOrg Audit-Log</span>
-              <Button
-                onClick={() => window.open('/', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes')}
-                variant="ghost"
-                size="sm"
-                className="text-cyan-400 hover:text-cyan-300 px-1 py-0 h-5 text-xs border border-cyan-600 rounded"
-                title="FavOrg in neuem Fenster öffnen"
+      <DialogContent className="max-w-7xl w-full h-[90vh] p-0 bg-gray-900 border-gray-700">
+        {/* Header */}
+        <div className="bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-cyan-400">🔍 AuditLog-System - Intern</h2>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Neuer Testname..."
+                className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white text-sm pr-8 w-48"
+                value={newTestName}
+                onChange={(e) => setNewTestName(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleAddTest()}
+              />
+              <button
+                onClick={() => setNewTestName('')}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5 bg-none border-2 border-gray-500 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-500 hover:text-gray-900 text-xs transition-all"
+                title="Input leeren"
               >
-                🔗 FavOrg
-              </Button>
+                ×
+              </button>
             </div>
+            <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700">
+              ➕
+            </Button>
+            <Button onClick={handleRemoveTest} size="sm" variant="outline">
+              ✕
+            </Button>
+          </div>
+        </div>
 
-            {/* Mitte: Zentriertes Inputfeld + Plus (nur in Test-Ansicht) */}
-            {viewMode === 'tests' && (
-              <div className="flex-1 max-w-xs mx-2">
-                <div className="flex items-center gap-1">
-                  <input
-                    type="text"
-                    value={newTestName}
-                    onChange={(e) => setNewTestName(e.target.value)}
-                    placeholder="Eigener Test..."
-                    className="flex-1 px-1 py-0 bg-gray-700 border border-gray-600 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 h-5"
-                    onKeyPress={(e) => e.key === 'Enter' && addNewTest()}
-                  />
-                  <div className="flex gap-1">
-                    <Button
-                      onClick={addNewTest}
-                      size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 px-1 py-0 h-5 w-5"
-                      disabled={!newTestName.trim()}
-                      title="Test hinzufügen (Blauer Hintergrund + weißes Plus)"
+        {/* Content mit Sidebar-Layout */}
+        <div className="flex flex-1 h-full">
+          {viewMode === 'tests' ? (
+            <>
+              {/* Sidebar: Test-Bereiche */}
+              <div className="w-80 bg-gray-800 border-r border-gray-700 p-4 overflow-y-auto">
+                <h3 className="text-lg font-semibold text-cyan-400 mb-4">📋 Test-Bereiche</h3>
+                <div className="space-y-2">
+                  {testCategories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setCurrentCategory(category)}
+                      className={`w-full text-left p-3 rounded-lg border transition-all duration-200 flex items-center justify-between ${
+                        currentCategory === category
+                          ? 'bg-cyan-600 text-white border-cyan-500'
+                          : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-cyan-900 hover:border-cyan-600'
+                      }`}
                     >
-                      <span className="text-white text-xs font-bold">+</span>
-                    </Button>
-                    <Button
-                      onClick={removeTestFromDB}
-                      size="sm"
-                      className="bg-red-600 hover:bg-red-700 px-1 py-0 h-5 w-5"
-                      disabled={!newTestName.trim()}
-                      title="Test aus DB entfernen (Roter Hintergrund + weißes Minus)"
-                    >
-                      <span className="text-white text-xs font-bold">−</span>
-                    </Button>
-                  </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-lg">{getCategoryIcon(category)}</span>
+                        <span className="font-medium">{category}</span>
+                      </div>
+                      <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs">
+                        {(predefinedTests[category]?.length || 0) + (dynamicTests[category]?.length || 0)}
+                      </span>
+                    </button>
+                  ))}
                 </div>
               </div>
-            )}
 
-            {/* Rechts: Nur Toggle Button (redundantes Schließen-X entfernt) */}
-            <div className="flex items-center gap-1">
-              <Button
-                onClick={toggleView}
-                variant="outline"
-                size="sm"
-                className="border-cyan-600 text-cyan-400 text-xs px-1 py-0 h-5"
-              >
-                {getViewToggleText()}
-              </Button>
-            </div>
-          </div>
+              {/* Main: Testpunkte */}
+              <div className="flex-1 bg-gray-900 p-4 overflow-y-auto">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-cyan-400">
+                    {getCategoryIcon(currentCategory)} {currentCategory}
+                  </h3>
+                  <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                    {currentTests.length} Tests
+                  </span>
+                </div>
 
-          {/* Zweite Zeile: Subline - kleinerer Durchschuss */}
-          <div className="text-xs text-gray-400 font-normal -mt-1">
-            {getContextHelp()}
-          </div>
-        </DialogHeader>
-
-        <div className="flex flex-col h-full overflow-hidden">
-          
-          {/* Bereichsauswahl */}
-          {viewMode === 'bereiche' && (
-            <div className="flex-1 p-4 overflow-y-auto">
-              <div className="mb-4">
-                <p className="text-sm text-gray-300 mb-3">
-                  Wählen Sie einen der verfügbaren Test-Bereiche aus um mit der systematischen Prüfung zu beginnen:
-                </p>
-              </div>
-              <div className="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-                {getFilteredCategories().map((category) => (
-                  <Button
-                    key={category.name}
-                    onClick={() => {
-                      setCurrentCategory(category.name);
-                      setViewMode('tests');
-                    }}
-                    variant={currentCategory === category.name ? "default" : "outline"}
-                    className={`h-12 px-2 flex items-center justify-start text-xs ${
-                      currentCategory === category.name 
-                        ? 'bg-cyan-600 hover:bg-cyan-700 text-white' 
-                        : 'border-gray-600 text-gray-300 hover:bg-gray-700'
-                    }`}
-                  >
-                    <span className="text-lg mr-2 flex-shrink-0">{category.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium text-xs leading-tight truncate">
-                            {highlightText(
-                              category.name.replace('-', ' ').replace(' Bereich', '').replace(' Section', ''),
-                              searchTerm
+                <div className="space-y-3">
+                  {currentTests.map((test) => (
+                    <div
+                      key={test.name}
+                      className={`bg-gray-800 rounded-lg p-4 border-2 transition-all duration-200 ${
+                        testStatuses[test.name] === 'success' ? 'border-green-500' :
+                        testStatuses[test.name] === 'error' ? 'border-red-500' :
+                        testStatuses[test.name] === 'warning' ? 'border-yellow-500' :
+                        testStatuses[test.name] === 'info' ? 'border-blue-500' :
+                        'border-gray-700 hover:border-cyan-600'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg">{test.icon}</span>
+                          <div>
+                            <strong className="text-white">{test.name}</strong>
+                            {test.isDynamic && (
+                              <span className="ml-2 bg-cyan-600 text-white px-2 py-1 rounded text-xs">Custom</span>
                             )}
                           </div>
-                          <div className="text-xs text-gray-400 truncate">
-                            {category.tests} Tests
-                          </div>
                         </div>
-                        <Badge variant="secondary" className="ml-2 text-xs bg-gray-700 text-gray-300 px-1 flex-shrink-0">
-                          {category.tests}
-                        </Badge>
+                        {testStatuses[test.name] && (
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${
+                            testStatuses[test.name] === 'success' ? 'bg-green-600 text-white' :
+                            testStatuses[test.name] === 'error' ? 'bg-red-600 text-white' :
+                            testStatuses[test.name] === 'warning' ? 'bg-yellow-600 text-white' :
+                            testStatuses[test.name] === 'info' ? 'bg-blue-600 text-white' : ''
+                          }`}>
+                            {testStatuses[test.name] === 'success' ? '✅ Bestanden' :
+                             testStatuses[test.name] === 'error' ? '❌ Fehlgeschlagen' :
+                             testStatuses[test.name] === 'warning' ? '⏳ In Bearbeitung' :
+                             testStatuses[test.name] === 'info' ? '🗑️ Übersprungen' : ''}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-gray-400 text-sm mb-3">{test.tooltip}</p>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          onClick={() => setTestStatus(test.name, 'success')}
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-xs"
+                        >
+                          ✅
+                        </Button>
+                        <Button
+                          onClick={() => setTestStatus(test.name, 'error')}
+                          size="sm"
+                          className="bg-red-600 hover:bg-red-700 text-xs"
+                        >
+                          ❌
+                        </Button>
+                        <Button
+                          onClick={() => setTestStatus(test.name, 'warning')}
+                          size="sm"
+                          className="bg-yellow-600 hover:bg-yellow-700 text-xs"
+                        >
+                          ⏳
+                        </Button>
+                        <Button
+                          onClick={() => setTestStatus(test.name, 'info')}
+                          size="sm"
+                          className="bg-blue-600 hover:bg-blue-700 text-xs"
+                        >
+                          🗑️
+                        </Button>
                       </div>
                     </div>
-                  </Button>
-                ))}
-              </div>
-            </div>
-          )}
+                  ))}
 
-          {/* Test-Auswahl */}
-          {viewMode === 'tests' && (
-            <div className="flex-1 flex flex-col overflow-hidden">
-              
-              {/* Suchbereich für Testpunkte */}
-              <div className="p-3 bg-gray-800 border-b border-gray-700">
-                <div className="flex items-center gap-2">
-                  <Search className="w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="In allen Testpunkten und Bereichen suchen..."
-                    className="flex-1 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
-                  />
-                </div>
-              </div>
-              
-              {/* Testpunkte */}
-              <div className="flex-1 p-2 overflow-y-auto">
-                {/* Testpunkte/Testeinträge wie in Auditlog6.png */}
-                <div className="mt-2">
-                  <div className="space-y-3">
-                    {currentTests.map((test, index) => {
-                      const isSelected = selectedTestPoints.includes(test.name);
-                      return (
-                        <div key={index} className={`p-3 rounded border-2 ${
-                          testStatuses[test.name]?.status === 'passed' ? 'bg-gray-800 border-green-500' :
-                          testStatuses[test.name]?.status === 'failed' ? 'bg-red-900/30 border-red-500' :
-                          testStatuses[test.name]?.status === 'inProgress' ? 'bg-gray-800 border-blue-500' :
-                          'bg-gray-800 border-gray-700'
-                        }`}>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              {/* Status Badge - dynamisch basierend auf Test-Status */}
-                              {testStatuses[test.name] ? (
-                                <div className={`px-2 py-1 rounded text-xs text-white font-medium flex items-center gap-1 ${
-                                  testStatuses[test.name].status === 'passed' ? 'bg-green-600' :
-                                  testStatuses[test.name].status === 'failed' ? 'bg-red-600' :
-                                  testStatuses[test.name].status === 'inProgress' ? 'bg-blue-600' :
-                                  'bg-gray-600'
-                                }`}>
-                                  {testStatuses[test.name].status === 'passed' ? '✅' :
-                                   testStatuses[test.name].status === 'failed' ? '❌' :
-                                   testStatuses[test.name].status === 'inProgress' ? '⏳' :
-                                   '○'}
-                                  {testStatuses[test.name].status === 'passed' ? 'Bestanden' :
-                                   testStatuses[test.name].status === 'failed' ? 'Fehlgeschlagen' :
-                                   testStatuses[test.name].status === 'inProgress' ? 'In Bearbeitung' :
-                                   'Unbekannt'}
-                                </div>
-                              ) : null}
-                              
-                              {/* Test Name */}
-                              <div className="flex flex-col">
-                                <span className="text-white font-medium text-sm">
-                                  {highlightText(test.name, searchTerm)}
-                                </span>
-                                <span className="text-xs text-gray-400">
-                                  {statusFilter && test.category ? `${test.category} | ` : ''}
-                                  {testStatuses[test.name]?.timestamp || 'Noch nicht getestet'}
-                                </span>
-                              </div>
-                            </div>
-
-                            {/* Action Buttons */}
-                            <div className="flex items-center gap-1">
-                              <Button
-                                size="sm"
-                                onClick={() => setTestStatus(test.name, 'passed')}
-                                className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs h-8 w-8"
-                                title="Test bestanden"
-                              >
-                                ✅
-                              </Button>
-                              <Button
-                                size="sm"
-                                onClick={() => setTestStatus(test.name, 'failed')}
-                                variant="outline"
-                                className="border-red-600 text-red-400 hover:bg-red-900 px-2 py-1 text-xs h-8 w-8"
-                                title="Test fehlgeschlagen"
-                              >
-                                ❌
-                              </Button>
-                              <Button
-                                size="sm"
-                                onClick={() => setTestStatus(test.name, 'inProgress')}
-                                variant="outline"
-                                className="border-blue-600 text-blue-400 hover:bg-blue-900 px-2 py-1 text-xs h-8 w-8"
-                                title="Test in Bearbeitung"
-                              >
-                                ⏳
-                              </Button>
-                              <Button
-                                size="sm"
-                                onClick={() => setEditingNote(test.name)}
-                                variant="outline"
-                                className="border-yellow-600 text-yellow-400 hover:bg-yellow-900 px-2 py-1 text-xs h-8 w-8"
-                                title="Notiz hinzufügen/bearbeiten"
-                              >
-                                ✏️
-                              </Button>
-                              <Button
-                                size="sm"
-                                onClick={() => {
-                                  if (window.confirm(`Test "${test.name}" komplett löschen? (inkl. Status und Notizen)`)) {
-                                    // Finde die richtige Kategorie (falls Status-Filter aktiv)
-                                    const targetCategory = test.category || currentCategory;
-                                    
-                                    // Entferne Test aus der Kategorie
-                                    if (predefinedTests[targetCategory]) {
-                                      predefinedTests[targetCategory] = predefinedTests[targetCategory].filter(t => t.name !== test.name);
-                                      
-                                      // Update Test-Kategorie Counter
-                                      const categoryIndex = testCategories.findIndex(cat => cat.name === targetCategory);
-                                      if (categoryIndex !== -1 && testCategories[categoryIndex].tests > 0) {
-                                        testCategories[categoryIndex].tests -= 1;
-                                      }
-                                    }
-                                    
-                                    // Entferne auch Status und Notizen komplett
-                                    setTestStatuses(prev => {
-                                      const newStatuses = {...prev};
-                                      delete newStatuses[test.name];
-                                      return newStatuses;
-                                    });
-                                    
-                                    setTestNotes(prev => {
-                                      const newNotes = {...prev};
-                                      delete newNotes[test.name];
-                                      return newNotes;
-                                    });
-                                    
-                                    toast.success(`Test "${test.name}" komplett gelöscht`);
-                                    // Force re-render
-                                    setForceRender(prev => prev + 1);
-                                  }
-                                }}
-                                variant="outline"
-                                className="border-gray-600 text-gray-400 hover:bg-gray-700 px-2 py-1 text-xs h-8 w-8"
-                                title="Test löschen"
-                              >
-                                🗑️
-                              </Button>
-                            </div>
-                          </div>
-                          
-                          {/* Notiz-Bereich - erscheint wenn Bleistift geklickt wurde */}
-                          {editingNote === test.name && (
-                            <div className="mt-3 p-3 bg-gray-700 rounded border border-gray-600">
-                              <div className="flex items-center gap-2 mb-2">
-                                <span className="text-xs text-gray-300">Notiz zu: {test.name}</span>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <textarea
-                                  value={testNotes[test.name] || ''}
-                                  onChange={(e) => setTestNotes(prev => ({
-                                    ...prev,
-                                    [test.name]: e.target.value
-                                  }))}
-                                  placeholder="Notiz eingeben..."
-                                  className="flex-1 px-2 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500 resize-none"
-                                  rows="2"
-                                />
-                                <Button
-                                  size="sm"
-                                  onClick={() => {
-                                    setEditingNote(null);
-                                    toast.success('Notiz gespeichert');
-                                  }}
-                                  className="bg-green-600 hover:bg-green-700 px-2 py-1 text-xs h-8 w-8"
-                                  title="Notiz speichern"
-                                >
-                                  ✅
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  onClick={() => {
-                                    setEditingNote(null);
-                                    setTestNotes(prev => {
-                                      const newNotes = {...prev};
-                                      delete newNotes[test.name];
-                                      return newNotes;
-                                    });
-                                  }}
-                                  variant="outline"
-                                  className="border-red-600 text-red-400 hover:bg-red-900 px-2 py-1 text-xs h-8 w-8"
-                                  title="Notiz verwerfen"
-                                >
-                                  ❌
-                                </Button>
-                              </div>
-                            </div>
-                          )}
-                          
-                          {/* Gespeicherte Notiz anzeigen */}
-                          {testNotes[test.name] && editingNote !== test.name && (
-                            <div className="mt-2 p-2 bg-yellow-900/30 border border-yellow-600 rounded">
-                              <div className="text-xs text-yellow-200">
-                                <strong>Notiz:</strong> {testNotes[test.name]}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  
-                  {/* Link zum Handbuch mit verbessertem Mouseover-Effekt */}
-                  <div className="mt-4 text-center">
-                    <Button
-                      onClick={() => {
-                        try {
-                          // Schließe AuditLog
-                          onClose();
-                          
-                          // Warte kurz und öffne dann Hilfe
-                          setTimeout(() => {
-                            try {
-                              // Suche Hilfe-Button sicherer
-                              const helpSelectors = [
-                                'button[title*="Hilfe"]',
-                                'button[aria-label*="Help"]', 
-                                'button:contains("❓")',
-                                '[data-testid="help-button"]',
-                                '.help-button'
-                              ];
-                              
-                              let helpButton = null;
-                              for (const selector of helpSelectors) {
-                                helpButton = document.querySelector(selector);
-                                if (helpButton) break;
-                              }
-                              
-                              if (helpButton) {
-                                helpButton.click();
-                                toast.success('Handbuch geöffnet');
-                              } else {
-                                // Fallback: Öffne Hilfe über Event
-                                const helpEvent = new CustomEvent('openHelp', { 
-                                  detail: { section: 'auditlog' },
-                                  bubbles: true 
-                                });
-                                document.dispatchEvent(helpEvent);
-                                toast.success('Handbuch-Event gesendet');
-                              }
-                            } catch (error) {
-                              console.error('Fehler beim Öffnen des Handbuchs:', error);
-                              toast.error('Handbuch konnte nicht geöffnet werden');
-                            }
-                          }, 200);
-                        } catch (error) {
-                          console.error('Runtime Error im Handbuch-Link:', error);
-                          toast.error('Fehler beim Handbuch-Zugriff');
-                        }
-                      }}
-                      variant="ghost"
-                      size="sm"
-                      className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/30 transition-all duration-200 text-xs px-3 py-2 rounded-md border border-transparent hover:border-cyan-600"
-                      title="Öffnet das Handbuch mit detaillierten Testanleitungen"
-                    >
-                      📖 Detaillierte Testanleitungen im Handbuch
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Bericht-Ansicht - Wird nur angezeigt wenn explizit aktiviert */}
-          {viewMode === 'bericht' && (
-            <div className="flex-1 p-4 overflow-y-auto">
-              <div className="space-y-4">
-                <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                  <h3 className="text-lg font-semibold text-cyan-400 mb-3">Gespeicherte Test-Berichte</h3>
-                  {testReports.length === 0 ? (
+                  {currentTests.length === 0 && (
                     <div className="text-center py-12">
-                      <FileText className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                      <p className="text-gray-400 mb-2">Noch keine Test-Berichte vorhanden</p>
-                      <p className="text-xs text-gray-500">Exportieren Sie Tests um Berichte zu erstellen</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {testReports.map((report, index) => (
-                        <div key={index} className="bg-gray-700 p-3 rounded border border-gray-600">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <h4 className="font-medium text-white">{report.reportTitle}</h4>
-                              <p className="text-xs text-gray-400">Erstellt: {report.generatedAt}</p>
-                            </div>
-                            <div className="flex gap-2">
-                              <Button size="sm" variant="outline" className="text-xs">
-                                📥 Laden
-                              </Button>
-                              <Button size="sm" variant="outline" className="text-xs">
-                                🗑️ Löschen
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                      <p className="text-gray-400 mb-2">Keine Tests für "{currentCategory}" gefunden.</p>
+                      <p className="text-gray-500 text-sm">Verwenden Sie das Input-Feld im Header, um neue Tests hinzuzufügen.</p>
                     </div>
                   )}
                 </div>
+              </div>
+            </>
+          ) : (
+            /* Archiv-Ansicht */
+            <div className="flex-1 bg-gray-900 p-4 overflow-y-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-cyan-400">📁 Archivierte Test-Berichte</h3>
+                <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                  {archivedReports.length} Berichte
+                </span>
+              </div>
 
-                <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                  <h3 className="text-lg font-semibold text-cyan-400 mb-3">Aktueller Test-Status</h3>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-400">{selectedTestPoints.length}</div>
-                      <div className="text-xs text-gray-400">Ausgewählt</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-red-400">0</div>
-                      <div className="text-xs text-gray-400">Fehlgeschlagen</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-400">0</div>
-                      <div className="text-xs text-gray-400">In Bearbeitung</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-400">
-                        {testCategories.reduce((sum, cat) => sum + cat.tests, 0) - selectedTestPoints.length}
-                      </div>
-                      <div className="text-xs text-gray-400">Ausstehend</div>
-                    </div>
-                  </div>
+              {archivedReports.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-400 mb-2 text-lg">📁 Keine archivierten Berichte vorhanden</p>
+                  <p className="text-gray-500">Speichern Sie Tests mit dem "💾 Test speichern" Button, um Berichte zu erstellen.</p>
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-3">
+                  {archivedReports.map((report, index) => (
+                    <div key={report.id} className="bg-gray-800 rounded-lg p-4 border-2 border-cyan-600">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg">📊</span>
+                          <div>
+                            <strong className="text-white">{report.category}</strong>
+                            <div className="text-gray-400 text-sm">{report.timestamp}</div>
+                          </div>
+                        </div>
+                        <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs">
+                          {report.completedTests}/{report.totalTests} Tests
+                        </span>
+                      </div>
+                      <p className="text-gray-400 text-sm mb-3">
+                        Bericht erstellt am {report.timestamp} mit {report.completedTests} abgeschlossenen Tests
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          onClick={() => loadReport(index)}
+                          size="sm"
+                          className="bg-cyan-600 hover:bg-cyan-700 text-xs"
+                        >
+                          📥 Laden
+                        </Button>
+                        <Button
+                          onClick={() => deleteReport(index)}
+                          size="sm"
+                          className="bg-red-600 hover:bg-red-700 text-xs"
+                        >
+                          🗑️ Löschen
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
+        </div>
 
-          {/* Fixe Fußzeile - Nahtloser Übergang zu FavOrg Footer */}
-          {(viewMode === 'tests' || viewMode === 'bericht') && (
-            <div className="flex items-center justify-between p-2 bg-gray-800 border-t border-gray-700 flex-shrink-0">
-              {/* Links: Status-Filter-Buttons mit Counter */}
-              <div className="flex items-center gap-2">
-                <Button
-                  onClick={() => setStatusFilter(statusFilter === 'passed' ? '' : 'passed')}
-                  className={`w-8 h-8 bg-green-600 hover:bg-green-700 rounded flex flex-col items-center justify-center text-white cursor-pointer relative ${
-                    statusFilter === 'passed' ? 'ring-2 ring-white' : ''
-                  }`}
-                  title="Filter: Bestandene Tests aus allen Bereichen"
-                >
-                  <span className="text-sm">✓</span>
-                  <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-green-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    {Object.values(testStatuses).filter(status => status.status === 'passed').length}
-                  </span>
-                </Button>
-                <Button
-                  onClick={() => setStatusFilter(statusFilter === 'failed' ? '' : 'failed')}
-                  className={`w-8 h-8 bg-red-600 hover:bg-red-700 rounded flex flex-col items-center justify-center text-white cursor-pointer relative ${
-                    statusFilter === 'failed' ? 'ring-2 ring-white' : ''
-                  }`}
-                  title="Filter: Fehlgeschlagene Tests aus allen Bereichen"
-                >
-                  <span className="text-sm">✗</span>
-                  <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-red-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    {Object.values(testStatuses).filter(status => status.status === 'failed').length}
-                  </span>
-                </Button>
-                <Button
-                  onClick={() => setStatusFilter(statusFilter === 'inProgress' ? '' : 'inProgress')}
-                  className={`w-8 h-8 bg-blue-600 hover:bg-blue-700 rounded flex flex-col items-center justify-center text-white cursor-pointer relative ${
-                    statusFilter === 'inProgress' ? 'ring-2 ring-white' : ''
-                  }`}
-                  title="Filter: Tests in Bearbeitung aus allen Bereichen"
-                >
-                  <span className="text-sm">~</span>
-                  <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-blue-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    {Object.values(testStatuses).filter(status => status.status === 'inProgress').length}
-                  </span>
-                </Button>
-                <Button
-                  onClick={() => setStatusFilter(statusFilter === 'pending' ? '' : 'pending')}
-                  className={`w-8 h-8 bg-orange-600 hover:bg-orange-700 rounded flex flex-col items-center justify-center text-white cursor-pointer relative ${
-                    statusFilter === 'pending' ? 'ring-2 ring-white' : ''
-                  }`}
-                  title="Filter: Ausstehende Tests aus allen Bereichen"
-                >
-                  <span className="text-sm">○</span>
-                  <span className="text-xs font-bold absolute -bottom-1 -right-1 bg-orange-800 rounded-full w-4 h-4 flex items-center justify-center">
-                    {(() => {
-                      // Zähle alle Tests ohne Status aus allen Bereichen
-                      let totalTests = 0;
-                      let totalWithStatus = Object.keys(testStatuses).length;
-                      Object.values(predefinedTests).forEach(tests => {
-                        totalTests += tests.length;
-                      });
-                      return totalTests - totalWithStatus;
-                    })()}
-                  </span>
-                </Button>
-              </div>
+        {/* Footer */}
+        <div className="bg-gray-800 border-t border-gray-700 p-3 flex items-center justify-between">
+          {/* Links: 5 Status-Filter Buttons */}
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => setStatusFilter('')}
+              className={`text-xs ${statusFilter === '' ? 'bg-cyan-600' : 'bg-gray-700'}`}
+              size="sm"
+            >
+              Alle ({counts.all})
+            </Button>
+            <Button
+              onClick={() => setStatusFilter('success')}
+              className={`text-xs ${statusFilter === 'success' ? 'bg-green-600' : 'bg-gray-700'}`}
+              size="sm"
+            >
+              ✅ ({counts.success})
+            </Button>
+            <Button
+              onClick={() => setStatusFilter('error')}
+              className={`text-xs ${statusFilter === 'error' ? 'bg-red-600' : 'bg-gray-700'}`}
+              size="sm"
+            >
+              ❌ ({counts.error})
+            </Button>
+            <Button
+              onClick={() => setStatusFilter('warning')}
+              className={`text-xs ${statusFilter === 'warning' ? 'bg-yellow-600' : 'bg-gray-700'}`}
+              size="sm"
+            >
+              ⏳ ({counts.warning})
+            </Button>
+            <Button
+              onClick={() => setStatusFilter('info')}
+              className={`text-xs ${statusFilter === 'info' ? 'bg-blue-600' : 'bg-gray-700'}`}
+              size="sm"
+            >
+              🗑️ ({counts.info})
+            </Button>
+          </div>
 
-              {/* Rechts: Test Speichern + Berichte(Archiv) + Download + Mülleimer */}
-              <div className="flex items-center gap-2">
-                {viewMode === 'tests' && (
-                  <>
-                    <span className="text-xs text-gray-400 mr-2">
-                      {selectedTestPoints.length}/{currentTests.length} ausgewählt
-                    </span>
-                    <Button
-                      onClick={() => {
-                        // Speichere aktuellen Test-Stand ins Archiv
-                        const currentTestData = {
-                          category: currentCategory,
-                          timestamp: new Date().toLocaleString('de-DE'),
-                          testStatuses: {...testStatuses},
-                          testNotes: {...testNotes},
-                          completedTests: Object.keys(testStatuses).length,
-                          totalTests: currentTests.length
-                        };
-                        
-                        const newReports = [currentTestData, ...testReports.slice(0, 9)]; // Max 10 Berichte
-                        setTestReports(newReports);
-                        saveTestReports(newReports);
-                        
-                        toast.success(`Test-Stand für "${currentCategory}" ins Archiv gespeichert`);
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className="border-cyan-600 text-cyan-400 hover:bg-cyan-900 px-2"
-                      title="Aktuellen Test-Stand ins Archiv speichern"
-                    >
-                      💾 Test speichern
-                    </Button>
-                  </>
-                )}
-                <Button
-                  onClick={() => setViewMode('bericht')}
-                  variant="outline"
-                  size="sm"
-                  className={`border-blue-600 text-blue-400 hover:bg-blue-900 px-2 ${viewMode === 'bericht' ? 'bg-blue-900' : ''}`}
-                  title="Berichte-Archiv anzeigen"
-                >
-                  <FileText className="w-4 h-4 mr-1" />
-                  Archiv [{testReports.length}]
-                </Button>
-                <Button
-                  onClick={exportTestReport}
-                  variant="outline"
-                  size="sm"
-                  className="border-green-600 text-green-400 hover:bg-green-900 px-3"
-                  title="Test-Bericht als PDF exportieren"
-                >
-                  <Download className="w-4 h-4 mr-1" />
-                  Download
-                </Button>
-                <Button
-                  onClick={clearAllReports}
-                  variant="outline"
-                  size="sm"
-                  className="border-red-600 text-red-400 hover:bg-red-900 px-2"
-                  title="Alle Test-Berichte löschen"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          )}
+          {/* Rechts: 4 Aktions-Buttons */}
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handleSaveToArchive}
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 text-xs"
+            >
+              💾 Test speichern
+            </Button>
+            <Button
+              onClick={toggleArchiveView}
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 text-xs"
+            >
+              {viewMode === 'archive' ? '📋 Testpunkte' : `📁 Archiv (${archivedReports.length})`}
+            </Button>
+            <Button
+              onClick={handlePDFExport}
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 text-xs"
+            >
+              📄 PDF-Export
+            </Button>
+            <Button
+              onClick={handleResetAll}
+              size="sm"
+              variant="outline"
+              className="text-xs"
+            >
+              🗑️ Reset
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
