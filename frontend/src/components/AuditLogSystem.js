@@ -554,16 +554,16 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 statusClass = 'ungeprüft';
             }
             
-            return \`
-              <div class="test-case \${statusClass}">
+            return `
+              <div class="test-case ${statusClass}">
                 <div class="test-info">
-                  <div class="test-name">\${index + 1}. \${test.icon} \${test.name}</div>
-                  <div class="test-description">\${test.tooltip}</div>
-                  \${notes ? \`<div class="test-notes">💭 Notiz: \${notes}</div>\` : ''}
+                  <div class="test-name">${index + 1}. ${test.icon} ${test.name}</div>
+                  <div class="test-description">${test.tooltip}</div>
+                  ${notes ? `<div class="test-notes">💭 Notiz: ${notes}</div>` : ''}
                 </div>
-                <div class="status-badge status-\${statusClass}">[\${statusText}]</div>
+                <div class="status-badge status-${statusClass}">[${statusText}]</div>
               </div>
-            \`;
+            `;
           }).join('')}
         </div>
 
