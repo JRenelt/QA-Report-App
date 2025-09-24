@@ -723,28 +723,7 @@
             alert('Test-Stand für "' + window.currentCategory + '" ins Archiv gespeichert (' + completedTests.length + ' Tests)');
         }
 
-        function showArchive() {
-            if (window.archivedReports.length === 0) {
-                alert('Keine archivierten Berichte vorhanden');
-                return;
-            }
-            
-            let archiveHtml = 'Archivierte Test-Berichte:\n\n';
-            
-            window.archivedReports.forEach((report, index) => {
-                archiveHtml += (index + 1) + '. ' + report.category + ' - ' + report.timestamp + '\n';
-                archiveHtml += '   ' + report.completedTests + '/' + report.totalTests + ' Tests abgeschlossen\n\n';
-            });
-            
-            archiveHtml += '\nMöchten Sie das Archiv leeren?';
-            
-            if (confirm(archiveHtml)) {
-                window.archivedReports = [];
-                localStorage.removeItem('favorg-audit-archive');
-                updateArchiveCount();
-                alert('Archiv geleert');
-            }
-        }
+
 
         // PDF-Export
         function exportToPDF() {
