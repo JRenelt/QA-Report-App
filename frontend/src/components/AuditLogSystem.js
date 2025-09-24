@@ -988,6 +988,114 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </div>
         </div>
       </DialogContent>
+      
+      {/* Config Dialog */}
+      {showConfigDialog && (
+        <Dialog open={showConfigDialog} onOpenChange={setShowConfigDialog}>
+          <DialogContent className="w-full max-w-2xl bg-gray-900 border-gray-700">
+            <div className="bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+              <h3 className="text-xl font-semibold text-cyan-400">⚙️ AuditLog Konfiguration</h3>
+              <button 
+                onClick={closeConfigDialog}
+                className="text-gray-400 hover:text-white text-2xl leading-none"
+              >
+                &times;
+              </button>
+            </div>
+            
+            <div className="p-6">
+              <div className="space-y-6">
+                <h4 className="text-lg text-cyan-400 font-semibold border-b border-gray-700 pb-2">
+                  📋 Berichts-Metadaten
+                </h4>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      HauptUser (Tester):
+                    </label>
+                    <input
+                      type="text"
+                      value={auditConfig.tester}
+                      onChange={(e) => setAuditConfig({...auditConfig, tester: e.target.value})}
+                      placeholder="Name des Testers"
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Version:
+                    </label>
+                    <input
+                      type="text"
+                      value={auditConfig.version}
+                      onChange={(e) => setAuditConfig({...auditConfig, version: e.target.value})}
+                      placeholder="z.B. v1.2.3"
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Testumgebung:
+                    </label>
+                    <input
+                      type="text"
+                      value={auditConfig.environment}
+                      onChange={(e) => setAuditConfig({...auditConfig, environment: e.target.value})}
+                      placeholder="z.B. Windows 11, Chrome 117"
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Testziel:
+                    </label>
+                    <textarea
+                      value={auditConfig.testGoal}
+                      onChange={(e) => setAuditConfig({...auditConfig, testGoal: e.target.value})}
+                      placeholder="Beschreibung des Testziels"
+                      rows={3}
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 resize-vertical"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Testmethodik:
+                    </label>
+                    <textarea
+                      value={auditConfig.testMethodology}
+                      onChange={(e) => setAuditConfig({...auditConfig, testMethodology: e.target.value})}
+                      placeholder="Beschreibung der Testmethodik"
+                      rows={3}
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 resize-vertical"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-gray-800 border-t border-gray-700 p-4 flex items-center justify-end gap-3">
+              <Button
+                onClick={() => saveConfig(auditConfig)}
+                className="bg-cyan-600 hover:bg-cyan-700 text-white"
+              >
+                💾 Speichern
+              </Button>
+              <Button
+                onClick={closeConfigDialog}
+                variant="outline"
+                className="border-gray-600 text-gray-300 hover:bg-gray-700"
+              >
+                ❌ Abbrechen
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </Dialog>
   );
 };
