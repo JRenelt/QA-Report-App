@@ -265,15 +265,16 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         className="w-full bg-gray-900 border-gray-700 p-0" 
         style={{ 
           width: 'calc(100% - 20px)',
-          height: 'calc(100vh - 20px)', 
-          margin: '10px auto',
-          top: '10px',
+          height: 'calc(100vh - 140px)', // Berücksichtigt FavOrg Header (~60px) + Footer (~60px) + 20px Abstand
+          margin: '0',
+          top: '70px', // 10px Abstand zur FavOrg-Kopfzeile (FavOrg-Header ist ca. 60px hoch)
           left: '10px',
           right: '10px',
+          bottom: '70px', // 10px Abstand zur FavOrg-Fußzeile
           position: 'fixed',
           transform: 'none',
           maxWidth: 'none',
-          maxHeight: 'calc(100vh - 20px)',
+          maxHeight: 'calc(100vh - 140px)',
           display: 'flex',
           flexDirection: 'column'
         }}
