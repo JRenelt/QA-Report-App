@@ -12,6 +12,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const [statusFilter, setStatusFilter] = useState('');
   const [archivedReports, setArchivedReports] = useState([]);
   const [dynamicTests, setDynamicTests] = useState({});
+  const [showConfigDialog, setShowConfigDialog] = useState(false);
+  const [auditConfig, setAuditConfig] = useState(() => {
+    const saved = localStorage.getItem('favorg-audit-config');
+    return saved ? JSON.parse(saved) : {
+      tester: 'Jörg Renelt',
+      version: 'v1.2.3',
+      environment: 'Windows 11, Chrome 117',
+      testGoal: 'Überprüfung aller Funktionen und Fehlermeldungen des FavOrg AuditLog-Systems.',
+      testMethodology: 'Manueller Funktionstest mit definierten Testfällen. Eingaben über Web-Oberfläche, Auswertung durch visuelle Prüfung und Funktionsvalidierung.'
+    };
+  });
   
   // Test-Kategorien
   const testCategories = [
