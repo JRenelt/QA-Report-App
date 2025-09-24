@@ -23,6 +23,19 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       testMethodology: 'Manueller Funktionstest mit definierten Testfällen. Eingaben über Web-Oberfläche, Auswertung durch visuelle Prüfung und Funktionsvalidierung.'
     };
   });
+
+  // Initialize environment detection on first load
+  useEffect(() => {
+    const saved = localStorage.getItem('favorg-audit-config');
+    if (!saved) {
+      const updatedConfig = {
+        ...auditConfig,
+        environment: detectEnvironment()
+      };
+      setAuditConfig(updatedConfig);
+      localStorage.setItem('favorg-audit-config', JSON.stringify(updatedConfig));
+    }
+  }, []);
   
   // Test-Kategorien
   const testCategories = [
