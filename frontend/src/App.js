@@ -2956,15 +2956,13 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   </div>
                 </div>
 
-                {/* System-Tools - Echte Zweizeiligkeit direkt nach S-Time */}
-                <div className="setting-item">
-                  {/* ERSTE ZEILE: Nur der Titel */}
-                  <div className="setting-info" style={{ width: '100%', marginBottom: '12px' }}>
-                    <Label className="setting-label" style={{ display: 'block', width: '100%' }}>🔧 System-Tools</Label>
-                  </div>
+                {/* System-Tools - ECHTE Zweizeiligkeit: Titel als Block, dann Bereiche darunter */}
+                <div className="setting-item" style={{ display: 'block', width: '100%' }}>
+                  {/* ERSTE ZEILE: Titel als komplett separater Block */}
+                  <Label className="setting-label" style={{ display: 'block', width: '100%', marginBottom: '12px' }}>🔧 System-Tools</Label>
                   
-                  {/* ZWEITE ZEILE: Zwei Bereiche nebeneinander - jetzt als setting-input-group */}
-                  <div className="setting-input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%' }}>
+                  {/* ZWEITE ZEILE: Zwei Bereiche nebeneinander */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%' }}>
                     
                     {/* Links: AuditLog-System */}
                     <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(6, 182, 212, 0.08)', borderRadius: '8px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
