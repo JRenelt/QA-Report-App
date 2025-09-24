@@ -2956,14 +2956,15 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   </div>
                 </div>
 
-                {/* System-Tools - Korrektes Layout: Titel + 2x2 Grid ohne Beschreibungstext */}
+                {/* System-Tools - Korrekte 2-Zeilen-Layout */}
                 <div className="setting-item">
                   <div className="setting-info">
                     <Label className="setting-label">🔧 System-Tools</Label>
                   </div>
+                  {/* Zweite Zeile: Zwei Bereiche nebeneinander */}
                   <div className="setting-input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
                     
-                    {/* AuditLog-System Bereich */}
+                    {/* Links: AuditLog-System */}
                     <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(6, 182, 212, 0.08)', borderRadius: '8px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
                       <div style={{ marginBottom: '10px' }}>
                         <strong style={{ color: '#06b6d4', fontSize: '14px', display: 'block' }}>🔍 AuditLog-System</strong>
@@ -2998,7 +2999,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                       </div>
                     </div>
 
-                    {/* System-Dokumentation Bereich */}
+                    {/* Rechts: System-Dokumentation */}
                     <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
                       <div style={{ marginBottom: '10px' }}>
                         <strong style={{ color: '#10b981', fontSize: '14px', display: 'block' }}>📚 System-Dokumentation</strong>
@@ -3019,7 +3020,6 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                           onClick={() => {
                             console.log('Opening Help System...');
                             onClose();
-                            // Kleine Verzögerung, dann Hilfe öffnen
                             setTimeout(() => { 
                               document.querySelector('button[title*="Hilfe"]')?.click();
                             }, 100);
