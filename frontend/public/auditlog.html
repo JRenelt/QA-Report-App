@@ -345,6 +345,45 @@
         </div>
     </div>
 
+    <!-- Config Dialog -->
+    <div id="configDialog" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙️ AuditLog Konfiguration</h3>
+                <span class="close" onclick="closeConfigDialog()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="config-section">
+                    <h4>📋 Berichts-Metadaten</h4>
+                    <div class="form-group">
+                        <label>HauptUser (Tester):</label>
+                        <input type="text" id="configTester" value="Jörg Renelt" placeholder="Name des Testers">
+                    </div>
+                    <div class="form-group">
+                        <label>Version:</label>
+                        <input type="text" id="configVersion" value="v1.2.3" placeholder="z.B. v1.2.3">
+                    </div>
+                    <div class="form-group">
+                        <label>Testumgebung:</label>
+                        <input type="text" id="configEnvironment" value="Windows 11, Chrome 117" placeholder="z.B. Windows 11, Chrome 117">
+                    </div>
+                    <div class="form-group">
+                        <label>Testziel:</label>
+                        <textarea id="configTestGoal" placeholder="Beschreibung des Testziels">Überprüfung aller Funktionen und Fehlermeldungen des FavOrg AuditLog-Systems.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Testmethodik:</label>
+                        <textarea id="configTestMethodology" placeholder="Beschreibung der Testmethodik">Manueller Funktionstest mit definierten Testfällen. Eingaben über Web-Oberfläche, Auswertung durch visuelle Prüfung und Funktionsvalidierung.</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="saveConfigAndClose()">💾 Speichern</button>
+                <button class="btn btn-secondary" onclick="closeConfigDialog()">❌ Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Globale Variablen
         window.currentCategory = 'Allgemeines Design';
