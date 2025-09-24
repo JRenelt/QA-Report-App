@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FavOrg AuditLog-System</title>
+    <title>FavOrg AuditLog-System - Vollbild</title>
     
     <style>
         :root {
@@ -189,7 +189,7 @@
 
         .close-btn {
             position: fixed;
-            top: 24px;  /* Angepasst auf gleiche Höhe wie "Test-Bereiche" Header */
+            top: 24px;
             right: 16px;
             background: #ef4444;
             color: white;
@@ -230,14 +230,16 @@
                 <input type="text" class="input" id="newTestInput" placeholder="Neuer Testname..." />
                 <button class="btn btn-primary" onclick="addTest()">➕</button>
                 <button class="btn btn-danger" onclick="removeTest()">✕</button>
-                <button class="btn btn-secondary" onclick="window.opener ? (window.opener.focus(), window.close()) : (window.location.href = '/')">🏠 FavOrg</button>
+                <button class="btn btn-secondary" onclick="goBackToFavOrg()">🏠 FavOrg</button>
             </div>
         </div>
 
         <div class="audit-log-content">
             <div class="audit-sidebar">
                 <h3 class="mb-16 text-cyan">📋 Test-Bereiche</h3>
-                <div id="categoryList"></div>
+                <div id="categoryList">
+                    <!-- Wird von JavaScript gefüllt -->
+                </div>
             </div>
 
             <div class="audit-main">
@@ -245,195 +247,36 @@
                     <h3 class="mb-0 text-cyan" id="currentCategoryTitle">🎨 Allgemeines Design</h3>
                     <span class="status-badge status-info" id="testCount">4 Tests</span>
                 </div>
-                <div id="testList"></div>
-                
-                <!-- Link zum Handbuch mit Mouseover-Effekt -->
-                <div style="text-align: center; margin-top: 20px; padding: 10px;">
-                    <button 
-                        onclick="openHandbook()" 
-                        class="handbook-link"
-                        title="Öffnet das Handbuch mit detaillierten Testanleitungen"
-                        style="
-                            background: transparent;
-                            border: 1px solid transparent;
-                            color: var(--accent-cyan);
-                            padding: 8px 16px;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-size: 13px;
-                            transition: all 0.2s ease;
-                        "
-                        onmouseover="this.style.backgroundColor='rgba(6, 182, 212, 0.1)'; this.style.borderColor='var(--accent-cyan)'; this.style.color='#67e8f9';"
-                        onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='transparent'; this.style.color='var(--accent-cyan)';"
-                    >
-                        📖 Detaillierte Testanleitungen im Handbuch
-                    </button>
+                <div id="testList">
+                    <!-- Wird von JavaScript gefüllt -->
                 </div>
             </div>
         </div>
 
         <div class="audit-footer">
             <div class="flex align-center gap-8">
-                <button class="btn btn-primary" onclick="filterTests('')" id="filterAll">Alle (0)</button>
-                <button class="btn btn-success" onclick="filterTests('success')" id="filterSuccess">✅ (0)</button>
-                <button class="btn btn-danger" onclick="filterTests('error')" id="filterError">❌ (0)</button>
-                <button class="btn btn-warning" onclick="filterTests('warning')" id="filterWarning">⏳ (0)</button>
-                <button class="btn btn-info" onclick="filterTests('info')" id="filterInfo">🗑️ (0)</button>
+                <button class="btn btn-primary" onclick="setFilter('')" id="filterAll">Alle (0)</button>
+                <button class="btn btn-success" onclick="setFilter('success')" id="filterSuccess">✅ (0)</button>
+                <button class="btn btn-danger" onclick="setFilter('error')" id="filterError">❌ (0)</button>
+                <button class="btn btn-warning" onclick="setFilter('warning')" id="filterWarning">⏳ (0)</button>
+                <button class="btn btn-info" onclick="setFilter('info')" id="filterInfo">🗑️ (0)</button>
             </div>
             <div class="flex align-center gap-8" style="margin-left: auto;">
-                <button class="btn btn-secondary" onclick="saveCurrentTestToArchive()" title="Aktuellen Test ins Archiv speichern">💾 Test speichern</button>
-                <button class="btn btn-secondary" onclick="showArchive()" id="archiveBtn">📁 Archiv (0)</button>
+                <button class="btn btn-secondary" onclick="showArchive()">📁 Archiv (0)</button>
                 <button class="btn btn-secondary" onclick="exportPDF()">📄 PDF-Export</button>
-                <button class="btn btn-secondary" onclick="resetTests()">🗑️ Reset</button>
+                <button class="btn btn-secondary" onclick="resetAll()">🗑️ Reset</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Globale Variablen
+        // Globale Variablen - SOFORT definiert
         window.currentCategory = 'Allgemeines Design';
         window.testStatuses = {};
-        window.dynamicTests = {};
+        window.testNotes = {};
         window.statusFilter = '';
-        window.archivedTests = JSON.parse(localStorage.getItem('auditlog_archive') || '[]');
 
-        // Archiv-Funktionalität implementieren
-        function saveCurrentTestToArchive() {
-            const currentTests = getAllCurrentTests();
-            const archiveEntry = {
-                category: window.currentCategory,
-                timestamp: new Date().toLocaleString('de-DE'),
-                tests: currentTests.map(test => ({
-                    name: test.name,
-                    status: window.testStatuses[test.name] || 'ungeprüft',
-                    icon: test.icon,
-                    tooltip: test.tooltip
-                })),
-                totalTests: currentTests.length,
-                completedTests: Object.keys(window.testStatuses).length
-            };
-            
-            window.archivedTests.unshift(archiveEntry);
-            
-            // Maximal 50 Archiv-Einträge behalten
-            if (window.archivedTests.length > 50) {
-                window.archivedTests = window.archivedTests.slice(0, 50);
-            }
-            
-            localStorage.setItem('auditlog_archive', JSON.stringify(window.archivedTests));
-            updateArchiveCount();
-            
-            alert(`Test-Session für "${window.currentCategory}" wurde ins Archiv gespeichert.\nArchiv enthält jetzt ${window.archivedTests.length} Einträge.`);
-        }
-
-        function getAllCurrentTests() {
-            const categoryTests = window.tests[window.currentCategory] || [];
-            const dynamicCategoryTests = window.dynamicTests[window.currentCategory] || [];
-            return [...categoryTests, ...dynamicCategoryTests];
-        }
-
-        function updateArchiveCount() {
-            const archiveBtn = document.querySelector('button[onclick="alert(\'Archiv-Funktion\')"]');
-            if (archiveBtn) {
-                archiveBtn.textContent = `📁 Archiv (${window.archivedTests.length})`;
-                archiveBtn.onclick = () => showArchive();
-            }
-        }
-
-        function showArchive() {
-            if (window.archivedTests.length === 0) {
-                alert('Archiv ist leer.\nVerwenden Sie "Test speichern" um Tests zu archivieren.');
-                return;
-            }
-            
-            let archiveHtml = `
-                <div style="max-height: 400px; overflow-y: auto; padding: 10px;">
-                    <h3>📁 Test-Archiv (${window.archivedTests.length} Einträge)</h3>
-            `;
-            
-            window.archivedTests.slice(0, 10).forEach((entry, index) => {
-                const completionRate = entry.totalTests > 0 ? Math.round((entry.completedTests / entry.totalTests) * 100) : 0;
-                archiveHtml += `
-                    <div style="border: 1px solid #374151; border-radius: 6px; padding: 8px; margin-bottom: 8px; background: var(--bg-card);">
-                        <strong>${entry.category}</strong> - ${entry.timestamp}<br>
-                        <small>Tests: ${entry.completedTests}/${entry.totalTests} (${completionRate}% abgeschlossen)</small>
-                    </div>
-                `;
-            });
-            
-            if (window.archivedTests.length > 10) {
-                archiveHtml += `<p><em>... und ${window.archivedTests.length - 10} weitere Einträge</em></p>`;
-            }
-            
-            archiveHtml += `
-                    <button onclick="clearArchive()" style="background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-top: 10px;">
-                        🗑️ Archiv leeren
-                    </button>
-                </div>
-            `;
-            
-            const popup = window.open('', 'archive', 'width=500,height=600,scrollbars=yes');
-            popup.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>FavOrg AuditLog Archiv</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; background: #1a1f2e; color: #e5e7eb; margin: 0; padding: 20px; }
-                        h3 { color: #06b6d4; }
-                    </style>
-                </head>
-                <body>
-                    ${archiveHtml}
-                    <script>
-                        function clearArchive() {
-                            if (confirm('Archiv komplett leeren?')) {
-                                window.opener.clearArchive();
-                                window.close();
-                            }
-                        }
-                    </script>
-                </body>
-                </html>
-            `);
-        }
-
-        function clearArchive() {
-            window.archivedTests = [];
-            localStorage.removeItem('auditlog_archive');
-            updateArchiveCount();
-            alert('Archiv wurde geleert.');
-        }
-
-        function openHandbook() {
-            // Versuche das Hauptfenster zu finden und Hilfe zu öffnen
-            if (window.opener) {
-                try {
-                    // Fokussiere das Hauptfenster
-                    window.opener.focus();
-                    
-                    // Versuche Hilfe-Button zu finden und zu klicken
-                    const helpButton = window.opener.document.querySelector('button[title*="Hilfe"], button[title*="Help"]');
-                    if (helpButton) {
-                        helpButton.click();
-                        alert('Handbuch im Hauptfenster geöffnet');
-                    } else {
-                        // Fallback: Navigiere zur Hauptseite
-                        window.opener.location.href = '/?help=true';
-                        alert('Hauptfenster zur Hilfe-Seite navigiert');
-                    }
-                } catch (error) {
-                    console.error('Fehler beim Öffnen des Handbuchs:', error);
-                    // Fallback: Öffne Hauptseite in neuem Tab
-                    window.open('/', '_blank');
-                }
-            } else {
-                // Kein Opener-Fenster, öffne Hauptseite
-                window.open('/', '_blank');
-            }
-        }
-
-        // Test-Daten
+        // Test-Kategorien - SOFORT definiert
         window.categories = [
             { name: 'Allgemeines Design', icon: '🎨', count: 4 },
             { name: 'Header-Bereich', icon: '🔝', count: 4 },
@@ -443,6 +286,7 @@
             { name: 'Einstellungen', icon: '⚙️', count: 4 }
         ];
 
+        // Test-Daten - SOFORT definiert
         window.tests = {
             'Allgemeines Design': [
                 { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
@@ -485,9 +329,9 @@
             ]
         };
 
-        // Funktionen
+        // Render-Funktionen - SOFORT definiert
         function renderCategories() {
-            console.log('🎨 renderCategories aufgerufen');
+            console.log('🎨 renderCategories() aufgerufen');
             const container = document.getElementById('categoryList');
             if (!container) {
                 console.error('❌ categoryList Container nicht gefunden');
@@ -495,104 +339,102 @@
             }
             
             container.innerHTML = '';
-            console.log('📋 Kategorien werden gerendert:', window.categories.length);
             
             window.categories.forEach(category => {
                 const btn = document.createElement('button');
-                btn.className = `category-btn ${category.name === window.currentCategory ? 'active' : ''}`;
-                btn.onclick = () => selectCategory(category.name);
-                btn.innerHTML = `
-                    <span>${category.icon}</span>
-                    <span style="flex: 1;">${category.name}</span>
-                    <span class="status-badge status-info">${category.count}</span>
-                `;
+                btn.className = 'category-btn ' + (category.name === window.currentCategory ? 'active' : '');
+                btn.onclick = function() { selectCategory(category.name); };
+                
+                btn.innerHTML = '<span>' + category.icon + '</span>' +
+                               '<span style="flex: 1;">' + category.name + '</span>' +
+                               '<span class="status-badge status-info">' + category.count + '</span>';
+                
                 container.appendChild(btn);
             });
-            console.log('✅ Kategorien erfolgreich gerendert');
+            
+            console.log('✅ Kategorien gerendert:', window.categories.length);
         }
 
         function renderTests() {
-            console.log('🧪 renderTests aufgerufen');
+            console.log('🧪 renderTests() aufgerufen');
             const container = document.getElementById('testList');
             if (!container) {
                 console.error('❌ testList Container nicht gefunden');
                 return;
             }
             
-            const categoryTests = window.tests[window.currentCategory] || [];
-            const dynamicCategoryTests = window.dynamicTests[window.currentCategory] || [];
-            const allTests = [...categoryTests, ...dynamicCategoryTests];
-            
-            console.log('🔍 Tests für', window.currentCategory, ':', allTests.length);
-            
-            let filteredTests = allTests;
-            if (window.statusFilter) {
-                filteredTests = allTests.filter(test => window.testStatuses[test.name] === window.statusFilter);
-            }
+            const tests = window.tests[window.currentCategory] || [];
+            console.log('Tests zu rendern:', tests.length, 'für Kategorie:', window.currentCategory);
             
             container.innerHTML = '';
-            document.getElementById('testCount').textContent = `${filteredTests.length} Tests`;
-            
-            if (filteredTests.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                        <p>Keine Tests für "${window.currentCategory}" gefunden.</p>
-                        <p>Verwenden Sie das Input-Feld im Header, um neue Tests hinzuzufügen.</p>
-                    </div>
-                `;
+            document.getElementById('testCount').textContent = tests.length + ' Tests';
+
+            if (tests.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">' +
+                                    '<p>Keine Tests für "' + window.currentCategory + '" gefunden.</p>' +
+                                    '<p>Verwenden Sie das Input-Feld im Header, um neue Tests hinzuzufügen.</p>' +
+                                    '</div>';
                 return;
             }
-            
-            filteredTests.forEach(test => {
-                const status = window.testStatuses[test.name];
-                const testDiv = document.createElement('div');
-                testDiv.className = `test-point ${status ? 'status-' + status : ''}`;
+
+            tests.forEach(function(test, index) {
+                const testStatus = window.testStatuses[test.name];
                 
-                let statusBadge = '';
-                if (status) {
+                const testDiv = document.createElement('div');
+                testDiv.className = 'test-point ' + (testStatus ? 'status-' + testStatus : '');
+                
+                let statusBadgeHtml = '';
+                if (testStatus) {
                     const statusConfig = {
                         'success': { icon: '✅', text: 'Bestanden' },
                         'error': { icon: '❌', text: 'Fehlgeschlagen' },
                         'warning': { icon: '⏳', text: 'In Bearbeitung' },
                         'info': { icon: '🗑️', text: 'Übersprungen' }
                     };
-                    const config = statusConfig[status];
-                    statusBadge = `<span class="status-badge status-${status}">${config.icon} ${config.text}</span>`;
+                    const config = statusConfig[testStatus];
+                    if (config) {
+                        statusBadgeHtml = '<span class="status-badge status-' + testStatus + '">' + config.icon + ' ' + config.text + '</span>';
+                    }
                 }
-                
-                testDiv.innerHTML = `
-                    <div class="test-point-header">
-                        <div class="flex align-center gap-8">
-                            <span style="font-size: 16px;">${test.icon}</span>
-                            <div style="flex: 1;">
-                                <strong>${test.name}</strong>
-                                ${test.isDynamic ? '<span class="status-badge" style="background: var(--accent-cyan); color: white; margin-left: 8px;">Custom</span>' : ''}
-                            </div>
-                        </div>
-                        ${statusBadge}
-                    </div>
-                    <p class="text-secondary text-sm" style="margin: 4px 0 8px 0;">${test.tooltip}</p>
-                    <div class="test-point-actions">
-                        <button class="btn btn-success btn-small" onclick="setStatus('${test.name}', 'success')" title="Test bestanden">✅</button>
-                        <button class="btn btn-danger btn-small" onclick="setStatus('${test.name}', 'error')" title="Test fehlgeschlagen">❌</button>
-                        <button class="btn btn-warning btn-small" onclick="setStatus('${test.name}', 'warning')" title="Test in Bearbeitung">⏳</button>
-                        <button class="btn btn-info btn-small" onclick="setStatus('${test.name}', 'info')" title="Test übersprungen">🗑️</button>
-                    </div>
-                `;
+
+                testDiv.innerHTML = 
+                    '<div class="test-point-header">' +
+                        '<div class="flex align-center gap-8">' +
+                            '<span style="font-size: 16px;">' + test.icon + '</span>' +
+                            '<div style="flex: 1;">' +
+                                '<strong>' + test.name + '</strong>' +
+                            '</div>' +
+                        '</div>' +
+                        statusBadgeHtml +
+                    '</div>' +
+                    '<p class="text-secondary text-sm" style="margin: 4px 0 8px 0;">' + test.tooltip + '</p>' +
+                    '<div class="test-point-actions">' +
+                        '<button class="btn btn-success btn-small" onclick="setTestStatus(\'' + test.name + '\', \'success\')" title="Test bestanden">✅</button>' +
+                        '<button class="btn btn-danger btn-small" onclick="setTestStatus(\'' + test.name + '\', \'error\')" title="Test fehlgeschlagen">❌</button>' +
+                        '<button class="btn btn-warning btn-small" onclick="setTestStatus(\'' + test.name + '\', \'warning\')" title="Test in Bearbeitung">⏳</button>' +
+                        '<button class="btn btn-info btn-small" onclick="setTestStatus(\'' + test.name + '\', \'info\')" title="Test übersprungen">🗑️</button>' +
+                    '</div>';
                 
                 container.appendChild(testDiv);
             });
+            
+            console.log('✅ Tests gerendert:', tests.length);
         }
 
+        // Event-Handler - SOFORT definiert
         function selectCategory(categoryName) {
+            console.log('📂 Kategorie gewechselt:', categoryName);
             window.currentCategory = categoryName;
-            const category = window.categories.find(cat => cat.name === categoryName);
-            document.getElementById('currentCategoryTitle').textContent = `${category.icon} ${categoryName}`;
+            const category = window.categories.find(function(cat) { return cat.name === categoryName; });
+            if (category) {
+                document.getElementById('currentCategoryTitle').textContent = category.icon + ' ' + categoryName;
+            }
             renderCategories();
             renderTests();
         }
 
-        function setStatus(testName, status) {
+        function setTestStatus(testName, status) {
+            console.log('✅ Status gesetzt:', testName, '=', status);
             window.testStatuses[testName] = status;
             renderTests();
             updateStatusCounts();
@@ -602,20 +444,20 @@
             const allStatuses = Object.values(window.testStatuses);
             const counts = {
                 all: allStatuses.length,
-                success: allStatuses.filter(s => s === 'success').length,
-                error: allStatuses.filter(s => s === 'error').length,
-                warning: allStatuses.filter(s => s === 'warning').length,
-                info: allStatuses.filter(s => s === 'info').length
+                success: allStatuses.filter(function(s) { return s === 'success'; }).length,
+                error: allStatuses.filter(function(s) { return s === 'error'; }).length,
+                warning: allStatuses.filter(function(s) { return s === 'warning'; }).length,
+                info: allStatuses.filter(function(s) { return s === 'info'; }).length
             };
-            
-            document.getElementById('filterAll').textContent = `Alle (${counts.all})`;
-            document.getElementById('filterSuccess').textContent = `✅ (${counts.success})`;
-            document.getElementById('filterError').textContent = `❌ (${counts.error})`;
-            document.getElementById('filterWarning').textContent = `⏳ (${counts.warning})`;
-            document.getElementById('filterInfo').textContent = `🗑️ (${counts.info})`;
+
+            document.getElementById('filterAll').textContent = 'Alle (' + counts.all + ')';
+            document.getElementById('filterSuccess').textContent = '✅ (' + counts.success + ')';
+            document.getElementById('filterError').textContent = '❌ (' + counts.error + ')';
+            document.getElementById('filterWarning').textContent = '⏳ (' + counts.warning + ')';
+            document.getElementById('filterInfo').textContent = '🗑️ (' + counts.info + ')';
         }
 
-        function filterTests(filter) {
+        function setFilter(filter) {
             window.statusFilter = filter;
             renderTests();
         }
@@ -629,19 +471,19 @@
                 return;
             }
             
-            if (!window.dynamicTests[window.currentCategory]) {
-                window.dynamicTests[window.currentCategory] = [];
+            if (!window.tests[window.currentCategory]) {
+                window.tests[window.currentCategory] = [];
             }
             
-            window.dynamicTests[window.currentCategory].push({
+            window.tests[window.currentCategory].push({
                 name: testName,
                 icon: '🔍',
-                tooltip: 'Benutzerdefinierter Test',
-                isDynamic: true
+                tooltip: 'Benutzerdefinierter Test'
             });
             
             input.value = '';
             renderTests();
+            console.log('➕ Test hinzugefügt:', testName);
         }
 
         function removeTest() {
@@ -653,20 +495,23 @@
                 return;
             }
             
-            const categoryTests = window.dynamicTests[window.currentCategory] || [];
-            const testExists = categoryTests.some(test => test.name === testName);
+            const tests = window.tests[window.currentCategory] || [];
+            const newTests = tests.filter(function(test) { return test.name !== testName; });
             
-            if (!testExists) {
-                alert(`Test "${testName}" nicht gefunden`);
+            if (newTests.length === tests.length) {
+                alert('Test "' + testName + '" nicht gefunden');
                 return;
             }
             
-            window.dynamicTests[window.currentCategory] = categoryTests.filter(test => test.name !== testName);
+            window.tests[window.currentCategory] = newTests;
+            delete window.testStatuses[testName];
+            
             input.value = '';
             renderTests();
+            console.log('➖ Test entfernt:', testName);
         }
 
-        function resetTests() {
+        function resetAll() {
             if (confirm('Alle Tests zurücksetzen?')) {
                 window.testStatuses = {};
                 renderTests();
@@ -674,181 +519,48 @@
             }
         }
 
-        function exportPDF() {
-            console.log('📄 PDF-Export wird gestartet...');
-            
-            const categoryTests = window.tests[window.currentCategory] || [];
-            const dynamicCategoryTests = window.dynamicTests[window.currentCategory] || [];
-            const allTests = [...categoryTests, ...dynamicCategoryTests];
-            
-            const printWindow = window.open('', '_blank', 'width=800,height=600');
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>FavOrg AuditLog-Bericht: ${window.currentCategory}</title>
-                    <style>
-                        /* Light Mode für Druck - KEIN Dark Mode */
-                        body { 
-                            font-family: Arial, sans-serif; 
-                            margin: 40px; 
-                            background: white !important;
-                            color: black !important;
-                            -webkit-print-color-adjust: exact;
-                            print-color-adjust: exact;
-                        }
-                        .header { 
-                            text-align: center; 
-                            border-bottom: 2px solid #06b6d4; 
-                            padding-bottom: 20px; 
-                            margin-bottom: 30px; 
-                        }
-                        .test-item { 
-                            padding: 10px; 
-                            margin-bottom: 10px; 
-                            border: 1px solid #ccc; 
-                            border-radius: 5px;
-                            background: white !important;
-                            color: black !important;
-                        }
-                        h1, h2, h3 { color: black !important; }
-                        p, strong { color: black !important; }
-                        @media print {
-                            body { background: white !important; color: black !important; }
-                            .test-item { background: white !important; color: black !important; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <h1>FavOrg AuditLog-Bericht</h1>
-                        <h2>${window.currentCategory}</h2>
-                        <p>Erstellt am: ${new Date().toLocaleString('de-DE')}</p>
-                    </div>
-                    ${allTests.map(test => {
-                        const status = window.testStatuses[test.name] || 'ungeprüft';
-                        return `
-                            <div class="test-item">
-                                <strong>${test.icon} ${test.name}</strong>
-                                <p>${test.tooltip}</p>
-                                <p><strong>Status:</strong> ${status}</p>
-                            </div>
-                        `;
-                    }).join('')}
-                    <script>
-                        // NUR drucken wenn explizit gewünscht - NICHT automatisch
-                        function startPrint() {
-                            setTimeout(() => {
-                                window.print();
-                                window.onafterprint = () => window.close();
-                            }, 500);
-                        }
-                        
-                        // Manueller Druck-Button
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const printBtn = document.createElement('button');
-                            printBtn.textContent = '📄 Drucken';
-                            printBtn.style.cssText = 'position: fixed; top: 10px; right: 10px; padding: 10px; background: #06b6d4; color: white; border: none; border-radius: 5px; cursor: pointer;';
-                            printBtn.onclick = startPrint;
-                            document.body.appendChild(printBtn);
-                        });
-                    </script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
+        function showArchive() {
+            alert('Archiv-Funktionalität wird implementiert');
         }
 
-        // Verbesserte, zuverlässige Initialisierung mit mehr Debugging
-        function init() {
-            console.log('🚀 Init aufgerufen, readyState:', document.readyState);
-            console.log('🔍 Checking DOM elements...');
+        function exportPDF() {
+            alert('PDF-Export wird implementiert');
+        }
+
+        function goBackToFavOrg() {
+            if (window.opener) {
+                window.opener.focus();
+                window.close();
+            } else {
+                window.location.href = '/';
+            }
+        }
+
+        // SOFORTIGE INITIALISIERUNG
+        function initAuditLog() {
+            console.log('🚀 AuditLog Initialisierung gestartet');
             
             try {
-                const categoryList = document.getElementById('categoryList');
-                const testList = document.getElementById('testList');
-                
-                console.log('categoryList:', categoryList);
-                console.log('testList:', testList);
-                
-                if (!categoryList || !testList) {
-                    console.error('❌ DOM-Elemente nicht gefunden');
-                    // Retry nach kurzer Verzögerung
-                    setTimeout(init, 100);
-                    return;
-                }
-                
-                console.log('✅ DOM-Elemente gefunden, starte Rendering...');
-                
-                // Stelle sicher, dass alle globalen Variablen initialisiert sind
-                console.log('window.categories:', window.categories);
-                console.log('window.tests:', window.tests);
-                
-                if (!window.categories || !window.tests) {
-                    console.error('❌ Globale Daten nicht verfügbar');
-                    console.log('Initialisiere Daten...');
-                    
-                    // Fallback: Initialisiere Daten falls nicht vorhanden
-                    if (!window.categories) {
-                        window.categories = [
-                            { name: 'Allgemeines Design', icon: '🎨', count: 4 },
-                            { name: 'Header-Bereich', icon: '🔝', count: 4 },
-                            { name: 'Sidebar-Bereich', icon: '📋', count: 5 },
-                            { name: 'Main-Content', icon: '📄', count: 4 },
-                            { name: 'Bookmark-Karten', icon: '🎴', count: 6 },
-                            { name: 'Einstellungen', icon: '⚙️', count: 4 }
-                        ];
-                    }
-                    
-                    if (!window.tests) {
-                        window.tests = {
-                            'Allgemeines Design': [
-                                { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
-                                { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
-                                { name: 'Responsiveness', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
-                                { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
-                            ]
-                        };
-                    }
-                }
-                
-                console.log('🎯 Starte Rendering-Funktionen...');
                 renderCategories();
                 renderTests();
                 updateStatusCounts();
-                updateArchiveCount(); // Archiv-Count beim Start aktualisieren
-                console.log('🎉 AuditLog initialisiert');
-                
-                // Funktionen global verfügbar machen
-                window.functionsExist = true;
-                console.log('✅ functionsExist gesetzt auf true');
-                
+                console.log('🎉 AuditLog erfolgreich initialisiert');
             } catch (error) {
                 console.error('❌ Initialisierungs-Fehler:', error);
-                // Retry bei Fehler
-                setTimeout(init, 500);
             }
         }
 
-        // Mehrfache Initialisierungsversuche
-        function tryInit() {
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
-            } else {
-                init();
-            }
-            
-            // Backup-Initialisierung nach 1 Sekunde
-            setTimeout(() => {
-                if (!window.functionsExist) {
-                    console.log('🔄 Backup-Initialisierung...');
-                    init();
-                }
-            }, 1000);
+        // Mehrfache Initialisierungs-Strategien
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAuditLog);
+        } else {
+            initAuditLog();
         }
 
-        // Starte Initialisierung
-        tryInit();
+        // Fallback nach 500ms
+        setTimeout(initAuditLog, 500);
+        
+        console.log('📝 AuditLog Script vollständig geladen');
     </script>
 </body>
 </html>
