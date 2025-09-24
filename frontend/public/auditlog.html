@@ -258,7 +258,8 @@
                 <button class="btn btn-info" onclick="filterTests('info')" id="filterInfo">🗑️ (0)</button>
             </div>
             <div class="flex align-center gap-8" style="margin-left: auto;">
-                <button class="btn btn-secondary" onclick="alert('Archiv-Funktion')">📁 Archiv</button>
+                <button class="btn btn-secondary" onclick="saveCurrentTestToArchive()" title="Aktuellen Test ins Archiv speichern">💾 Test speichern</button>
+                <button class="btn btn-secondary" onclick="showArchive()" id="archiveBtn">📁 Archiv (0)</button>
                 <button class="btn btn-secondary" onclick="exportPDF()">📄 PDF-Export</button>
                 <button class="btn btn-secondary" onclick="resetTests()">🗑️ Reset</button>
             </div>
