@@ -663,6 +663,8 @@
         }
 
         function exportPDF() {
+            console.log('📄 PDF-Export wird gestartet...');
+            
             const categoryTests = window.tests[window.currentCategory] || [];
             const dynamicCategoryTests = window.dynamicTests[window.currentCategory] || [];
             const allTests = [...categoryTests, ...dynamicCategoryTests];
@@ -674,9 +676,35 @@
                 <head>
                     <title>FavOrg AuditLog-Bericht: ${window.currentCategory}</title>
                     <style>
-                        body { font-family: Arial, sans-serif; margin: 40px; }
-                        .header { text-align: center; border-bottom: 2px solid #06b6d4; padding-bottom: 20px; margin-bottom: 30px; }
-                        .test-item { padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
+                        /* Light Mode für Druck - KEIN Dark Mode */
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            margin: 40px; 
+                            background: white !important;
+                            color: black !important;
+                            -webkit-print-color-adjust: exact;
+                            print-color-adjust: exact;
+                        }
+                        .header { 
+                            text-align: center; 
+                            border-bottom: 2px solid #06b6d4; 
+                            padding-bottom: 20px; 
+                            margin-bottom: 30px; 
+                        }
+                        .test-item { 
+                            padding: 10px; 
+                            margin-bottom: 10px; 
+                            border: 1px solid #ccc; 
+                            border-radius: 5px;
+                            background: white !important;
+                            color: black !important;
+                        }
+                        h1, h2, h3 { color: black !important; }
+                        p, strong { color: black !important; }
+                        @media print {
+                            body { background: white !important; color: black !important; }
+                            .test-item { background: white !important; color: black !important; }
+                        }
                     </style>
                 </head>
                 <body>
@@ -696,12 +724,22 @@
                         `;
                     }).join('')}
                     <script>
-                        window.onload = () => {
+                        // NUR drucken wenn explizit gewünscht - NICHT automatisch
+                        function startPrint() {
                             setTimeout(() => {
                                 window.print();
                                 window.onafterprint = () => window.close();
-                            }, 1000);
-                        };
+                            }, 500);
+                        }
+                        
+                        // Manueller Druck-Button
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const printBtn = document.createElement('button');
+                            printBtn.textContent = '📄 Drucken';
+                            printBtn.style.cssText = 'position: fixed; top: 10px; right: 10px; padding: 10px; background: #06b6d4; color: white; border: none; border-radius: 5px; cursor: pointer;';
+                            printBtn.onclick = startPrint;
+                            document.body.appendChild(printBtn);
+                        });
                     </script>
                 </body>
                 </html>
