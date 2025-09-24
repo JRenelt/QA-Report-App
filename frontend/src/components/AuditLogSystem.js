@@ -804,7 +804,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     })}
                   </div>
                   
-                  {/* Link zum Handbuch */}
+                  {/* Link zum Handbuch mit verbessertem Mouseover-Effekt */}
                   <div className="mt-4 text-center">
                     <Button
                       onClick={() => {
@@ -854,7 +854,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       }}
                       variant="ghost"
                       size="sm"
-                      className="text-cyan-400 hover:text-cyan-300 text-xs"
+                      className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/30 transition-all duration-200 text-xs px-3 py-2 rounded-md border border-transparent hover:border-cyan-600"
                       title="Öffnet das Handbuch mit detaillierten Testanleitungen"
                     >
                       📖 Detaillierte Testanleitungen im Handbuch
