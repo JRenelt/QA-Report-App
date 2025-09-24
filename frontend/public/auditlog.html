@@ -46,6 +46,41 @@
             gap: 12px;
         }
 
+        .header-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-close-wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .close-input-btn {
+            position: absolute;
+            right: 4px;
+            background: none;
+            border: 2px solid #ef4444;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ef4444;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .close-input-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
         .audit-log-content {
             display: flex;
             gap: 16px;
@@ -83,8 +118,14 @@
             padding: 8px 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            justify-content: space-between;
             z-index: 1000;
+        }
+
+        .footer-left, .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn {
@@ -98,6 +139,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            white-space: nowrap;
         }
 
         .btn-primary { background: var(--accent-cyan); color: white; }
@@ -127,6 +169,7 @@
         .category-btn:hover, .category-btn.active {
             background: var(--accent-cyan);
             color: white;
+            border-color: var(--accent-cyan);
         }
 
         .test-point {
@@ -176,7 +219,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border-primary);
             border-radius: 4px;
-            padding: 8px 12px;
+            padding: 8px 32px 8px 12px;
             color: var(--text-primary);
             font-size: 14px;
             width: 200px;
@@ -216,6 +259,22 @@
         .text-cyan { color: var(--accent-cyan); }
         .text-secondary { color: var(--text-secondary); }
         .text-sm { font-size: 13px; }
+
+        /* Print Styles für PDF-Export */
+        @media print {
+            body { 
+                background: white !important; 
+                color: black !important; 
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .audit-footer, .close-btn { display: none; }
+            .test-point { 
+                background: white !important; 
+                color: black !important; 
+                border: 1px solid #ccc !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -226,8 +285,17 @@
             <div class="flex align-center gap-8">
                 <h2 class="mb-0 text-cyan">🔍 AuditLog-System - Vollbild</h2>
             </div>
-            <div class="flex align-center gap-8">
-                <input type="text" class="input" id="newTestInput" placeholder="Neuer Testname..." />
+            <div class="header-input-group">
+                <div class="input-close-wrapper">
+                    <input 
+                        type="text" 
+                        class="input" 
+                        id="newTestInput" 
+                        placeholder="Neuer Testname..." 
+                        onkeypress="handleInputKeyPress(event)"
+                    />
+                    <button class="close-input-btn" onclick="clearInput()" title="Input leeren">×</button>
+                </div>
                 <button class="btn btn-primary" onclick="addTest()">➕</button>
                 <button class="btn btn-danger" onclick="removeTest()">✕</button>
                 <button class="btn btn-secondary" onclick="goBackToFavOrg()">🏠 FavOrg</button>
@@ -254,29 +322,33 @@
         </div>
 
         <div class="audit-footer">
-            <div class="flex align-center gap-8">
+            <!-- Links: 5 Status-Filter Buttons -->
+            <div class="footer-left">
                 <button class="btn btn-primary" onclick="setFilter('')" id="filterAll">Alle (0)</button>
                 <button class="btn btn-success" onclick="setFilter('success')" id="filterSuccess">✅ (0)</button>
                 <button class="btn btn-danger" onclick="setFilter('error')" id="filterError">❌ (0)</button>
                 <button class="btn btn-warning" onclick="setFilter('warning')" id="filterWarning">⏳ (0)</button>
                 <button class="btn btn-info" onclick="setFilter('info')" id="filterInfo">🗑️ (0)</button>
             </div>
-            <div class="flex align-center gap-8" style="margin-left: auto;">
-                <button class="btn btn-secondary" onclick="showArchive()">📁 Archiv (0)</button>
-                <button class="btn btn-secondary" onclick="exportPDF()">📄 PDF-Export</button>
+            <!-- Rechts: 4 Aktions-Buttons -->
+            <div class="footer-right">
+                <button class="btn btn-secondary" onclick="saveToArchive()">💾 Test speichern</button>
+                <button class="btn btn-secondary" onclick="showArchive()" id="archiveBtn">📁 Archiv (0)</button>
+                <button class="btn btn-secondary" onclick="exportToPDF()">📄 PDF-Export</button>
                 <button class="btn btn-secondary" onclick="resetAll()">🗑️ Reset</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Globale Variablen - SOFORT definiert
+        // Globale Variablen
         window.currentCategory = 'Allgemeines Design';
         window.testStatuses = {};
         window.testNotes = {};
         window.statusFilter = '';
+        window.archivedReports = JSON.parse(localStorage.getItem('favorg-audit-archive') || '[]');
 
-        // Test-Kategorien - SOFORT definiert
+        // Test-Kategorien
         window.categories = [
             { name: 'Allgemeines Design', icon: '🎨', count: 4 },
             { name: 'Header-Bereich', icon: '🔝', count: 4 },
@@ -286,7 +358,7 @@
             { name: 'Einstellungen', icon: '⚙️', count: 4 }
         ];
 
-        // Test-Daten - SOFORT definiert
+        // Test-Daten
         window.tests = {
             'Allgemeines Design': [
                 { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
@@ -329,14 +401,11 @@
             ]
         };
 
-        // Render-Funktionen - SOFORT definiert
+        // Render-Funktionen
         function renderCategories() {
             console.log('🎨 renderCategories() aufgerufen');
             const container = document.getElementById('categoryList');
-            if (!container) {
-                console.error('❌ categoryList Container nicht gefunden');
-                return;
-            }
+            if (!container) return;
             
             container.innerHTML = '';
             
@@ -351,33 +420,31 @@
                 
                 container.appendChild(btn);
             });
-            
-            console.log('✅ Kategorien gerendert:', window.categories.length);
         }
 
         function renderTests() {
             console.log('🧪 renderTests() aufgerufen');
             const container = document.getElementById('testList');
-            if (!container) {
-                console.error('❌ testList Container nicht gefunden');
-                return;
-            }
+            if (!container) return;
             
             const tests = window.tests[window.currentCategory] || [];
-            console.log('Tests zu rendern:', tests.length, 'für Kategorie:', window.currentCategory);
+            let filteredTests = tests;
+            
+            if (window.statusFilter) {
+                filteredTests = tests.filter(test => window.testStatuses[test.name] === window.statusFilter);
+            }
             
             container.innerHTML = '';
-            document.getElementById('testCount').textContent = tests.length + ' Tests';
+            document.getElementById('testCount').textContent = filteredTests.length + ' Tests';
 
-            if (tests.length === 0) {
+            if (filteredTests.length === 0) {
                 container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">' +
                                     '<p>Keine Tests für "' + window.currentCategory + '" gefunden.</p>' +
-                                    '<p>Verwenden Sie das Input-Feld im Header, um neue Tests hinzuzufügen.</p>' +
                                     '</div>';
                 return;
             }
 
-            tests.forEach(function(test, index) {
+            filteredTests.forEach(function(test) {
                 const testStatus = window.testStatuses[test.name];
                 
                 const testDiv = document.createElement('div');
@@ -401,9 +468,7 @@
                     '<div class="test-point-header">' +
                         '<div class="flex align-center gap-8">' +
                             '<span style="font-size: 16px;">' + test.icon + '</span>' +
-                            '<div style="flex: 1;">' +
-                                '<strong>' + test.name + '</strong>' +
-                            '</div>' +
+                            '<div style="flex: 1;"><strong>' + test.name + '</strong></div>' +
                         '</div>' +
                         statusBadgeHtml +
                     '</div>' +
@@ -417,13 +482,10 @@
                 
                 container.appendChild(testDiv);
             });
-            
-            console.log('✅ Tests gerendert:', tests.length);
         }
 
-        // Event-Handler - SOFORT definiert
+        // Event-Handler
         function selectCategory(categoryName) {
-            console.log('📂 Kategorie gewechselt:', categoryName);
             window.currentCategory = categoryName;
             const category = window.categories.find(function(cat) { return cat.name === categoryName; });
             if (category) {
@@ -434,7 +496,6 @@
         }
 
         function setTestStatus(testName, status) {
-            console.log('✅ Status gesetzt:', testName, '=', status);
             window.testStatuses[testName] = status;
             renderTests();
             updateStatusCounts();
@@ -457,9 +518,24 @@
             document.getElementById('filterInfo').textContent = '🗑️ (' + counts.info + ')';
         }
 
+        function updateArchiveCount() {
+            document.getElementById('archiveBtn').textContent = '📁 Archiv (' + window.archivedReports.length + ')';
+        }
+
         function setFilter(filter) {
             window.statusFilter = filter;
             renderTests();
+        }
+
+        // Input-Handler
+        function handleInputKeyPress(event) {
+            if (event.key === 'Enter') {
+                addTest();
+            }
+        }
+
+        function clearInput() {
+            document.getElementById('newTestInput').value = '';
         }
 
         function addTest() {
@@ -483,7 +559,6 @@
             
             input.value = '';
             renderTests();
-            console.log('➕ Test hinzugefügt:', testName);
         }
 
         function removeTest() {
@@ -508,23 +583,148 @@
             
             input.value = '';
             renderTests();
-            console.log('➖ Test entfernt:', testName);
+        }
+
+        // Archiv-Funktionen
+        function saveToArchive() {
+            const tests = window.tests[window.currentCategory] || [];
+            const completedTests = tests.filter(test => window.testStatuses[test.name]);
+            
+            if (completedTests.length === 0) {
+                alert('Keine Tests mit Status zum Speichern gefunden');
+                return;
+            }
+            
+            const report = {
+                id: Date.now(),
+                category: window.currentCategory,
+                timestamp: new Date().toLocaleString('de-DE'),
+                totalTests: tests.length,
+                completedTests: completedTests.length,
+                testStatuses: {...window.testStatuses},
+                testNotes: {...window.testNotes}
+            };
+            
+            window.archivedReports.unshift(report);
+            
+            // Nur die letzten 10 Berichte behalten
+            if (window.archivedReports.length > 10) {
+                window.archivedReports = window.archivedReports.slice(0, 10);
+            }
+            
+            localStorage.setItem('favorg-audit-archive', JSON.stringify(window.archivedReports));
+            updateArchiveCount();
+            
+            alert('Test-Stand für "' + window.currentCategory + '" ins Archiv gespeichert (' + completedTests.length + ' Tests)');
+        }
+
+        function showArchive() {
+            if (window.archivedReports.length === 0) {
+                alert('Keine archivierten Berichte vorhanden');
+                return;
+            }
+            
+            let archiveHtml = 'Archivierte Test-Berichte:\n\n';
+            
+            window.archivedReports.forEach((report, index) => {
+                archiveHtml += (index + 1) + '. ' + report.category + ' - ' + report.timestamp + '\n';
+                archiveHtml += '   ' + report.completedTests + '/' + report.totalTests + ' Tests abgeschlossen\n\n';
+            });
+            
+            archiveHtml += '\nMöchten Sie das Archiv leeren?';
+            
+            if (confirm(archiveHtml)) {
+                window.archivedReports = [];
+                localStorage.removeItem('favorg-audit-archive');
+                updateArchiveCount();
+                alert('Archiv geleert');
+            }
+        }
+
+        // PDF-Export
+        function exportToPDF() {
+            const tests = window.tests[window.currentCategory] || [];
+            
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>FavOrg AuditLog-Bericht: ${window.currentCategory}</title>
+                    <style>
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            margin: 40px; 
+                            background: white !important;
+                            color: black !important;
+                            -webkit-print-color-adjust: exact;
+                            print-color-adjust: exact;
+                        }
+                        .header { 
+                            text-align: center; 
+                            border-bottom: 2px solid #06b6d4; 
+                            padding-bottom: 20px; 
+                            margin-bottom: 30px; 
+                        }
+                        .test-item { 
+                            padding: 10px; 
+                            margin-bottom: 10px; 
+                            border: 1px solid #ccc; 
+                            border-radius: 5px;
+                            background: white !important;
+                            color: black !important;
+                        }
+                        h1, h2, h3 { color: black !important; }
+                        p, strong { color: black !important; }
+                        .print-btn {
+                            position: fixed;
+                            top: 10px;
+                            right: 10px;
+                            padding: 10px 15px;
+                            background: #06b6d4;
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 14px;
+                        }
+                        @media print {
+                            body { background: white !important; color: black !important; }
+                            .test-item, .header, h1, h2, h3, p, strong { background: white !important; color: black !important; }
+                            .print-btn { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <button class="print-btn" onclick="window.print()">📄 Drucken</button>
+                    <div class="header">
+                        <h1>FavOrg AuditLog-Bericht</h1>
+                        <h2>${window.currentCategory}</h2>
+                        <p>Erstellt am: ${new Date().toLocaleString('de-DE')}</p>
+                    </div>
+                    ${tests.map(test => {
+                        const status = window.testStatuses[test.name] || 'ungeprüft';
+                        return `
+                            <div class="test-item">
+                                <strong>${test.icon} ${test.name}</strong>
+                                <p>${test.tooltip}</p>
+                                <p><strong>Status:</strong> ${status}</p>
+                            </div>
+                        `;
+                    }).join('')}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         }
 
         function resetAll() {
             if (confirm('Alle Tests zurücksetzen?')) {
                 window.testStatuses = {};
+                window.testNotes = {};
                 renderTests();
                 updateStatusCounts();
             }
-        }
-
-        function showArchive() {
-            alert('Archiv-Funktionalität wird implementiert');
-        }
-
-        function exportPDF() {
-            alert('PDF-Export wird implementiert');
         }
 
         function goBackToFavOrg() {
@@ -536,7 +736,7 @@
             }
         }
 
-        // SOFORTIGE INITIALISIERUNG
+        // Initialisierung
         function initAuditLog() {
             console.log('🚀 AuditLog Initialisierung gestartet');
             
@@ -544,6 +744,7 @@
                 renderCategories();
                 renderTests();
                 updateStatusCounts();
+                updateArchiveCount();
                 console.log('🎉 AuditLog erfolgreich initialisiert');
             } catch (error) {
                 console.error('❌ Initialisierungs-Fehler:', error);
@@ -557,7 +758,6 @@
             initAuditLog();
         }
 
-        // Fallback nach 500ms
         setTimeout(initAuditLog, 500);
         
         console.log('📝 AuditLog Script vollständig geladen');
