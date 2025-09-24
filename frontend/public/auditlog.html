@@ -189,7 +189,7 @@
 
         .close-btn {
             position: fixed;
-            top: 16px;
+            top: 24px;  /* Angepasst auf gleiche Höhe wie "Test-Bereiche" Header */
             right: 16px;
             background: #ef4444;
             color: white;
@@ -198,6 +198,14 @@
             border-radius: 6px;
             cursor: pointer;
             z-index: 1001;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .close-btn:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+            transition: all 0.2s;
         }
 
         .flex { display: flex; }
