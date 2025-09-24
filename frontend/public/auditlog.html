@@ -62,7 +62,7 @@
             position: absolute;
             right: 4px;
             background: none;
-            border: 2px solid #ef4444;
+            border: 2px solid var(--text-secondary);
             border-radius: 50%;
             width: 24px;
             height: 24px;
@@ -70,15 +70,17 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: #ef4444;
+            color: var(--text-secondary);
             font-size: 12px;
             font-weight: bold;
             z-index: 10;
+            transition: all 0.2s;
         }
 
         .close-input-btn:hover {
-            background: #ef4444;
-            color: white;
+            background: var(--text-secondary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
         }
 
         .audit-log-content {
