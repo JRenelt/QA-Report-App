@@ -2956,79 +2956,83 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                   </div>
                 </div>
 
-                {/* System-Tools - Korrekte 2-Zeilen-Layout */}
+                {/* System-Tools - Echtes 2-Zeilen-Layout: Titel oben, dann 2 Bereiche darunter */}
                 <div className="setting-item">
+                  {/* ERSTE ZEILE: Nur der Titel */}
                   <div className="setting-info">
                     <Label className="setting-label">🔧 System-Tools</Label>
                   </div>
-                  {/* Zweite Zeile: Zwei Bereiche nebeneinander */}
-                  <div className="setting-input-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
-                    
-                    {/* Links: AuditLog-System */}
-                    <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(6, 182, 212, 0.08)', borderRadius: '8px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
-                      <div style={{ marginBottom: '10px' }}>
-                        <strong style={{ color: '#06b6d4', fontSize: '14px', display: 'block' }}>🔍 AuditLog-System</strong>
+                  
+                  {/* ZWEITE ZEILE: Zwei Bereiche nebeneinander */}
+                  <div style={{ marginTop: '12px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                      
+                      {/* Links: AuditLog-System */}
+                      <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(6, 182, 212, 0.08)', borderRadius: '8px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
+                        <div style={{ marginBottom: '10px' }}>
+                          <strong style={{ color: '#06b6d4', fontSize: '14px', display: 'block' }}>🔍 AuditLog-System</strong>
+                        </div>
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <Button 
+                            onClick={() => {
+                              console.log('Opening Audit Log in new window...');
+                              window.open(
+                                '/auditlog.html', 
+                                'AuditLogWindow', 
+                                'width=1200,height=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no'
+                              );
+                              onClose();
+                            }}
+                            className="bg-cyan-600 hover:bg-cyan-700 text-white flex-1"
+                            size="sm"
+                          >
+                            🖥️ Vollbild
+                          </Button>
+                          <Button 
+                            onClick={() => {
+                              console.log('Opening integrated Audit Log...');
+                              onClose();
+                              setTimeout(() => { onOpenAuditLog(); }, 100);
+                            }}
+                            className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
+                            size="sm"
+                          >
+                            📋 Intern
+                          </Button>
+                        </div>
                       </div>
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        <Button 
-                          onClick={() => {
-                            console.log('Opening Audit Log in new window...');
-                            window.open(
-                              '/auditlog.html', 
-                              'AuditLogWindow', 
-                              'width=1200,height=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no'
-                            );
-                            onClose();
-                          }}
-                          className="bg-cyan-600 hover:bg-cyan-700 text-white flex-1"
-                          size="sm"
-                        >
-                          🖥️ Vollbild
-                        </Button>
-                        <Button 
-                          onClick={() => {
-                            console.log('Opening integrated Audit Log...');
-                            onClose();
-                            setTimeout(() => { onOpenAuditLog(); }, 100);
-                          }}
-                          className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
-                          size="sm"
-                        >
-                          📋 Intern
-                        </Button>
-                      </div>
-                    </div>
 
-                    {/* Rechts: System-Dokumentation */}
-                    <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                      <div style={{ marginBottom: '10px' }}>
-                        <strong style={{ color: '#10b981', fontSize: '14px', display: 'block' }}>📚 System-Dokumentation</strong>
-                      </div>
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        <Button 
-                          onClick={() => {
-                            console.log('Opening SysDok...');
-                            window.open('/technical-docs.html', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
-                            onClose();
-                          }}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white flex-1"
-                          size="sm"
-                        >
-                          📄 Tech-Docs
-                        </Button>
-                        <Button 
-                          onClick={() => {
-                            console.log('Opening Help System...');
-                            onClose();
-                            setTimeout(() => { 
-                              document.querySelector('button[title*="Hilfe"]')?.click();
-                            }, 100);
-                          }}
-                          className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
-                          size="sm"
-                        >
-                          📖 Handbuch
-                        </Button>
+                      {/* Rechts: System-Dokumentation */}
+                      <div style={{ display: 'flex', flexDirection: 'column', padding: '12px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                        <div style={{ marginBottom: '10px' }}>
+                          <strong style={{ color: '#10b981', fontSize: '14px', display: 'block' }}>📚 System-Dokumentation</strong>
+                        </div>
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <Button 
+                            onClick={() => {
+                              console.log('Opening SysDok...');
+                              window.open('/technical-docs.html', '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes');
+                              onClose();
+                            }}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white flex-1"
+                            size="sm"
+                          >
+                            📄 Tech-Docs
+                          </Button>
+                          <Button 
+                            onClick={() => {
+                              console.log('Opening Help System...');
+                              onClose();
+                              setTimeout(() => { 
+                                document.querySelector('button[title*="Hilfe"]')?.click();
+                              }, 100);
+                            }}
+                            className="bg-slate-600 hover:bg-slate-700 text-white flex-1"
+                            size="sm"
+                          >
+                            📖 Handbuch
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
