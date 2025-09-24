@@ -271,6 +271,115 @@
         window.testStatuses = {};
         window.dynamicTests = {};
         window.statusFilter = '';
+        window.archivedTests = JSON.parse(localStorage.getItem('auditlog_archive') || '[]');
+
+        // Archiv-Funktionalität implementieren
+        function saveCurrentTestToArchive() {
+            const currentTests = getAllCurrentTests();
+            const archiveEntry = {
+                category: window.currentCategory,
+                timestamp: new Date().toLocaleString('de-DE'),
+                tests: currentTests.map(test => ({
+                    name: test.name,
+                    status: window.testStatuses[test.name] || 'ungeprüft',
+                    icon: test.icon,
+                    tooltip: test.tooltip
+                })),
+                totalTests: currentTests.length,
+                completedTests: Object.keys(window.testStatuses).length
+            };
+            
+            window.archivedTests.unshift(archiveEntry);
+            
+            // Maximal 50 Archiv-Einträge behalten
+            if (window.archivedTests.length > 50) {
+                window.archivedTests = window.archivedTests.slice(0, 50);
+            }
+            
+            localStorage.setItem('auditlog_archive', JSON.stringify(window.archivedTests));
+            updateArchiveCount();
+            
+            alert(`Test-Session für "${window.currentCategory}" wurde ins Archiv gespeichert.\nArchiv enthält jetzt ${window.archivedTests.length} Einträge.`);
+        }
+
+        function getAllCurrentTests() {
+            const categoryTests = window.tests[window.currentCategory] || [];
+            const dynamicCategoryTests = window.dynamicTests[window.currentCategory] || [];
+            return [...categoryTests, ...dynamicCategoryTests];
+        }
+
+        function updateArchiveCount() {
+            const archiveBtn = document.querySelector('button[onclick="alert(\'Archiv-Funktion\')"]');
+            if (archiveBtn) {
+                archiveBtn.textContent = `📁 Archiv (${window.archivedTests.length})`;
+                archiveBtn.onclick = () => showArchive();
+            }
+        }
+
+        function showArchive() {
+            if (window.archivedTests.length === 0) {
+                alert('Archiv ist leer.\nVerwenden Sie "Test speichern" um Tests zu archivieren.');
+                return;
+            }
+            
+            let archiveHtml = `
+                <div style="max-height: 400px; overflow-y: auto; padding: 10px;">
+                    <h3>📁 Test-Archiv (${window.archivedTests.length} Einträge)</h3>
+            `;
+            
+            window.archivedTests.slice(0, 10).forEach((entry, index) => {
+                const completionRate = entry.totalTests > 0 ? Math.round((entry.completedTests / entry.totalTests) * 100) : 0;
+                archiveHtml += `
+                    <div style="border: 1px solid #374151; border-radius: 6px; padding: 8px; margin-bottom: 8px; background: var(--bg-card);">
+                        <strong>${entry.category}</strong> - ${entry.timestamp}<br>
+                        <small>Tests: ${entry.completedTests}/${entry.totalTests} (${completionRate}% abgeschlossen)</small>
+                    </div>
+                `;
+            });
+            
+            if (window.archivedTests.length > 10) {
+                archiveHtml += `<p><em>... und ${window.archivedTests.length - 10} weitere Einträge</em></p>`;
+            }
+            
+            archiveHtml += `
+                    <button onclick="clearArchive()" style="background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-top: 10px;">
+                        🗑️ Archiv leeren
+                    </button>
+                </div>
+            `;
+            
+            const popup = window.open('', 'archive', 'width=500,height=600,scrollbars=yes');
+            popup.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>FavOrg AuditLog Archiv</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; background: #1a1f2e; color: #e5e7eb; margin: 0; padding: 20px; }
+                        h3 { color: #06b6d4; }
+                    </style>
+                </head>
+                <body>
+                    ${archiveHtml}
+                    <script>
+                        function clearArchive() {
+                            if (confirm('Archiv komplett leeren?')) {
+                                window.opener.clearArchive();
+                                window.close();
+                            }
+                        }
+                    </script>
+                </body>
+                </html>
+            `);
+        }
+
+        function clearArchive() {
+            window.archivedTests = [];
+            localStorage.removeItem('auditlog_archive');
+            updateArchiveCount();
+            alert('Archiv wurde geleert.');
+        }
 
         // Test-Daten
         window.categories = [
