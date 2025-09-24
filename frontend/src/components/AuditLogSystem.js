@@ -262,14 +262,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-7xl w-full bg-gray-900 border-gray-700 p-0" 
+        className="w-full bg-gray-900 border-gray-700 p-0" 
         style={{ 
+          width: 'calc(100% - 20px)',
           height: 'calc(100vh - 20px)', 
           margin: '10px auto',
           top: '10px',
-          transform: 'translateX(-50%)',
-          left: '50%',
+          left: '10px',
+          right: '10px',
           position: 'fixed',
+          transform: 'none',
+          maxWidth: 'none',
           maxHeight: 'calc(100vh - 20px)',
           display: 'flex',
           flexDirection: 'column'
