@@ -495,8 +495,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Footer - fixe Höhe */}
-        <div className="bg-gray-800 border-t border-gray-700 p-3 flex items-center justify-between" style={{ minHeight: '60px', marginTop: 'auto' }}>
+        {/* Footer - am Ende des Dialogs */}
+        <div className="bg-gray-800 border-t border-gray-700 p-3 flex items-center justify-between flex-shrink-0" style={{ minHeight: '60px' }}>
           {/* Links: 5 Status-Filter Buttons */}
           <div className="flex items-center gap-2">
             <Button
