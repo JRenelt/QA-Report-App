@@ -26,16 +26,29 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     };
   });
 
-  // Initialize environment detection on first load
+  // Initialize environment detection and ensure current version on first load
   useEffect(() => {
     const saved = localStorage.getItem('favorg-audit-config');
     if (!saved) {
+      // Erste Initialisierung mit aktueller Version und Umgebung
       const updatedConfig = {
         ...auditConfig,
+        version: 'v2.3.0', // Systemvorgabe: aktuelle FavOrg Version
         environment: detectEnvironment()
       };
       setAuditConfig(updatedConfig);
       localStorage.setItem('favorg-audit-config', JSON.stringify(updatedConfig));
+    } else {
+      // Bestehende Config laden aber Version aktualisieren falls veraltet
+      const savedConfig = JSON.parse(saved);
+      if (savedConfig.version !== 'v2.3.0') {
+        const updatedConfig = {
+          ...savedConfig,
+          version: 'v2.3.0' // System-Update der Version
+        };
+        setAuditConfig(updatedConfig);
+        localStorage.setItem('favorg-audit-config', JSON.stringify(updatedConfig));
+      }
     }
   }, []);
   
