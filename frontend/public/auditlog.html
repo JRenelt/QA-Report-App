@@ -146,10 +146,38 @@
 
         .btn-primary { background: var(--accent-cyan); color: white; }
         .btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-primary); }
-        .btn-success { background: #059669; color: white; }
-        .btn-danger { background: #dc2626; color: white; }
-        .btn-warning { background: #d97706; color: white; }
-        .btn-info { background: #2563eb; color: white; }
+        .btn-success { 
+            background: #90ee90; /* Hellgrün als Basis */
+            color: #1f2937; 
+        }
+        .btn-success.active { 
+            background: #059669; /* Dunkelgrün wenn aktiv */
+            color: white; 
+        }
+        .btn-danger { 
+            background: #ffb3ba; /* Hellrot als Basis */
+            color: #1f2937; 
+        }
+        .btn-danger.active { 
+            background: #dc2626; /* Dunkelrot wenn aktiv */
+            color: white; 
+        }
+        .btn-warning { 
+            background: #ffd700; /* HellOrange/Gelb als Basis */
+            color: #1f2937; 
+        }
+        .btn-warning.active { 
+            background: #d97706; /* Dunkelorange wenn aktiv */
+            color: white; 
+        }
+        .btn-info { 
+            background: #add8e6; /* Hellblau als Basis */
+            color: #1f2937; 
+        }
+        .btn-info.active { 
+            background: #2563eb; /* Dunkelblau wenn aktiv */
+            color: white; 
+        }
         .btn-small { padding: 4px 8px; font-size: 12px; }
 
         .category-btn {
