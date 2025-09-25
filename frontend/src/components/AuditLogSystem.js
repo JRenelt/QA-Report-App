@@ -722,9 +722,6 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     return icons[category] || '📂';
   };
 
-  // Test categories
-  const testCategories = Object.keys(predefinedTests);
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
