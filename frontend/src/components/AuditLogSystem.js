@@ -38,14 +38,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   }, []);
   
   // Test-Kategorien
-  const testCategories = [
-    'Allgemeines Design',
-    'Header-Bereich', 
-    'Sidebar-Bereich',
-    'Main-Content',
-    'Bookmark-Karten',
-    'Einstellungen'
-  ];
+  const testCategories = Object.keys(predefinedTests);
 
   // Test-Daten
   const predefinedTests = {
