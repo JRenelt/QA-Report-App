@@ -25,7 +25,7 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
   const [categorySearchTerm, setCategorySearchTerm] = useState('');
   
   const handleCreateMainCategory = () => {
-    const newCategoryName = prompt('Name der neuen Hauptkategorie:');
+    const newCategoryName = window.prompt('Name der neuen Hauptkategorie:');
     if (newCategoryName && newCategoryName.trim()) {
       // Hier würde normalerweise ein API-Call erfolgen
       console.log('Creating main category:', newCategoryName.trim());
