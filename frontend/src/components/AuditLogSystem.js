@@ -53,32 +53,45 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   }, []);
   
-  // Test-Daten
+  // Test-Daten - Erweiterte FavOrg Test-Suite (70+ Testpunkte)
   const predefinedTests = {
     'Allgemeines Design': [
       { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
       { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
       { name: 'Responsiveness', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
-      { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
+      { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' },
+      { name: 'Farbschema Konsistenz', icon: '🎨', tooltip: 'Einheitliches Farbschema in gesamter App' },
+      { name: 'Loading-States', icon: '⏳', tooltip: 'Loading-Indikatoren bei Datenladung' },
+      { name: 'Error-Boundaries', icon: '🚫', tooltip: 'Fehlerbehandlung und Error-States' }
     ],
     'Header-Bereich': [
       { name: 'Logo & Titel Platzierung', icon: '🏷️', tooltip: 'Logo und Titel korrekt positioniert' },
       { name: 'Navigation Icons', icon: '🧭', tooltip: 'Alle Navigation-Icons funktional' },
       { name: 'Bookmark-Anzahl [X]', icon: '🔢', tooltip: 'Bookmark-Counter korrekt angezeigt' },
-      { name: 'Header-Buttons Layout', icon: '🔘', tooltip: 'Button-Layout im Header prüfen' }
+      { name: 'Header-Buttons Layout', icon: '🔘', tooltip: 'Button-Layout im Header prüfen' },
+      { name: 'Suchfeld Funktionalität', icon: '🔍', tooltip: 'Suchfeld responsive und funktional' },
+      { name: 'Status-Filter Dropdown', icon: '📊', tooltip: 'Alle Status-Optionen verfügbar' },
+      { name: 'Theme-Umschalter', icon: '🌓', tooltip: 'Light/Dark Theme Toggle funktional' }
     ],
     'Sidebar-Bereich': [
       { name: 'Kategorie-Liste', icon: '📂', tooltip: 'Kategorien korrekt aufgelistet' },
       { name: 'Drag & Drop Kategorien', icon: '🎯', tooltip: 'Kategorie D&D funktional' },
       { name: 'Resizing Funktionalität', icon: '↔️', tooltip: 'Sidebar-Größenänderung' },
       { name: 'Kategorie-Tooltips', icon: '💬', tooltip: 'Tooltip-Positionierung testen' },
-      { name: 'Unterkategorie-Hierarchie', icon: '🌳', tooltip: 'Hierarchische Darstellung prüfen' }
+      { name: 'Unterkategorie-Hierarchie', icon: '🌳', tooltip: 'Hierarchische Darstellung prüfen' },
+      { name: 'Plus-Symbol für neue Kategorie', icon: '➕', tooltip: 'Kategorie-Erstellung über Plus-Symbol' },
+      { name: 'Kategorie-Zähler', icon: '🔢', tooltip: 'Bookmark-Anzahl pro Kategorie' },
+      { name: 'Aktive Kategorie-Markierung', icon: '🎯', tooltip: 'Visuelle Hervorhebung aktiver Kategorie' },
+      { name: 'Kategorie-Manager Dialog', icon: '⚙️', tooltip: 'Live-Kategorien-Verwaltung Dialog' }
     ],
     'Main-Content': [
       { name: 'Bookmark-Darstellung', icon: '🎴', tooltip: 'Bookmark-Karten Layout' },
       { name: 'Tabellen-Ansicht Toggle', icon: '📋', tooltip: 'List/Grid View umschalten' },
       { name: 'Scroll-Performance', icon: '📜', tooltip: 'Scrolling bei vielen Bookmarks' },
-      { name: 'Leere-State Anzeige', icon: '📭', tooltip: 'Anzeige wenn keine Bookmarks' }
+      { name: 'Leere-State Anzeige', icon: '📭', tooltip: 'Anzeige wenn keine Bookmarks' },
+      { name: 'Pagination/Infinite Scroll', icon: '📄', tooltip: 'Seitennummerierung oder unendliches Scrollen' },
+      { name: 'Sortierung-Optionen', icon: '🔤', tooltip: 'Alphabetische und andere Sortierungen' },
+      { name: 'Bulk-Aktionen', icon: '📦', tooltip: 'Mehrfach-Auswahl und Bulk-Operationen' }
     ],
     'Bookmark-Karten': [
       { name: 'Status-Farb-System', icon: '🎨', tooltip: 'Farben für verschiedene Status' },
@@ -86,13 +99,73 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       { name: 'Action-Buttons Layout', icon: '🔘', tooltip: 'Edit/Delete/Link Button-Layout' },
       { name: 'Drag-Handles sichtbar', icon: '⋮⋮', tooltip: 'Drag-Griffe erkennbar' },
       { name: 'Hover-States', icon: '👆', tooltip: 'Hover-Effekte auf Karten' },
-      { name: 'Status-Badge Position', icon: '🏷️', tooltip: 'Status-Badges korrekt positioniert' }
+      { name: 'Status-Badge Position', icon: '🏷️', tooltip: 'Status-Badges korrekt positioniert' },
+      { name: 'Favicon-Anzeige', icon: '🌐', tooltip: 'Website-Favicons korrekt geladen' },
+      { name: 'URL-Validierung Anzeige', icon: '✅', tooltip: 'Link-Status visuell erkennbar' },
+      { name: 'Bookmark-Beschreibung', icon: '📝', tooltip: 'Vollständige Beschreibung sichtbar' },
+      { name: 'Zeitstempel-Anzeige', icon: '⏰', tooltip: 'Erstellungs- und Änderungsdatum' },
+      { name: 'Kategorie-Zuordnung visuell', icon: '🏷️', tooltip: 'Kategorie-Zugehörigkeit erkennbar' }
+    ],
+    'Import/Export Funktionen': [
+      { name: 'HTML-Import', icon: '📄', tooltip: 'Browser-Favoriten HTML Import' },
+      { name: 'JSON-Export', icon: '💾', tooltip: 'JSON Format Export funktional' },
+      { name: 'CSV-Export', icon: '📊', tooltip: 'CSV Format für Excel-Bearbeitung' },
+      { name: 'XML-Export', icon: '🗂️', tooltip: 'XML Format Export' },
+      { name: 'HTML-Export', icon: '🌐', tooltip: 'HTML Format Export für Browser' },
+      { name: 'Datei-Upload Dialog', icon: '📤', tooltip: 'Upload-Interface benutzerfreundlich' },
+      { name: 'Import-Fortschritt', icon: '⏳', tooltip: 'Fortschrittsanzeige bei großen Imports' },
+      { name: 'Import-Validation', icon: '✔️', tooltip: 'Dateiformate-Validierung vor Import' }
+    ],
+    'Link-Validierung': [
+      { name: 'Tote Links Erkennung', icon: '💀', tooltip: 'Dead Links automatisch erkennen' },
+      { name: 'HTTP Status Codes', icon: '🔢', tooltip: 'Korrekte HTTP Status Code Anzeige' },
+      { name: 'Batch-Validierung', icon: '🔄', tooltip: 'Mehrere Links gleichzeitig prüfen' },
+      { name: 'Validierungs-Fortschritt', icon: '📊', tooltip: 'Progress-Bar bei Validierung' },
+      { name: 'Localhost-Links Schutz', icon: '🏠', tooltip: 'Localhost-Links vor Löschung schützen' },
+      { name: 'Timeout-Behandlung', icon: '⏱️', tooltip: 'Timeout bei langsamen Servern' },
+      { name: 'SSL-Zertifikat Prüfung', icon: '🔐', tooltip: 'HTTPS-Zertifikat Validierung' }
+    ],
+    'Such- & Filterfunktionen': [
+      { name: 'Global-Suche', icon: '🔍', tooltip: 'Suche in allen Bookmarks' },
+      { name: 'Kategorie-Filter', icon: '📂', tooltip: 'Filter nach spezifischen Kategorien' },
+      { name: 'Status-Filter', icon: '🚦', tooltip: 'Filter nach Link-Status' },
+      { name: 'Erweiterte Suche', icon: '🔍', tooltip: 'Titel, URL, Beschreibung durchsuchbar' },
+      { name: 'Suche-Highlighting', icon: '🔆', tooltip: 'Suchbegriffe visuell hervorgehoben' },
+      { name: 'Gespeicherte Suchen', icon: '💾', tooltip: 'Häufige Suchen speichern' },
+      { name: 'Filter-Kombinationen', icon: '⚡', tooltip: 'Mehrere Filter gleichzeitig' }
     ],
     'Einstellungen': [
       { name: 'Tab-Navigation Icons', icon: '🗂️', tooltip: 'Settings-Tabs mit Icons' },
       { name: 'Theme-Einstellungen', icon: '🌙', tooltip: 'Dark/Light Theme Toggle' },
       { name: 'Meldungen Delay Checkbox', icon: '⏰', tooltip: 'Toast-Delay Einstellung' },
-      { name: 'Gefahr-Bereich rot', icon: '⚠️', tooltip: 'Danger-Zone rote Markierung' }
+      { name: 'Gefahr-Bereich rot', icon: '⚠️', tooltip: 'Danger-Zone rote Markierung' },
+      { name: 'Auto-Validierung Timer', icon: '🕐', tooltip: 'Automatische Link-Prüfung Intervall' },
+      { name: 'Import-Einstellungen', icon: '📥', tooltip: 'Standard Import-Optionen' },
+      { name: 'Export-Formate', icon: '📤', tooltip: 'Standard Export-Einstellungen' },
+      { name: 'Backup-Konfiguration', icon: '💾', tooltip: 'Automatische Backups konfigurieren' }
+    ],
+    'Performance & Benutzerfreundlichkeit': [
+      { name: 'Ladezeit unter 2 Sekunden', icon: '⚡', tooltip: 'Initiale Ladezeit optimiert' },
+      { name: 'Keyboard-Shortcuts', icon: '⌨️', tooltip: 'Tastatur-Navigation funktional' },
+      { name: 'Mobile-Responsive', icon: '📱', tooltip: 'Mobile Darstellung optimiert' },
+      { name: 'Touch-Gesten', icon: '👆', tooltip: 'Touch-Bedienung auf Tablets' },
+      { name: 'Offline-Funktionalität', icon: '📡', tooltip: 'Grundfunktionen offline verfügbar' },
+      { name: 'Browser-Kompatibilität', icon: '🌍', tooltip: 'Chrome, Firefox, Safari, Edge' },
+      { name: 'Memory-Usage', icon: '🧠', tooltip: 'Speicherverbrauch bei 1000+ Bookmarks' }
+    ],
+    'Drag & Drop System': [
+      { name: 'Bookmark zwischen Kategorien', icon: '🔄', tooltip: 'Bookmarks zwischen Kategorien verschieben' },
+      { name: 'Excel-ähnliches D&D', icon: '📊', tooltip: 'Excel-ähnliche Drag & Drop Funktionen' },
+      { name: 'Shift-Modus Einfügen', icon: '⇧', tooltip: 'Shift-Modus für präzises Einfügen' },
+      { name: 'Visual Drop-Feedback', icon: '👁️', tooltip: 'Visuelle Rückmeldung beim Ziehen' },
+      { name: 'Cross-Level D&D', icon: '🔀', tooltip: 'Zwischen Haupt- und Unterkategorien' },
+      { name: 'Undo/Redo Funktionalität', icon: '↶', tooltip: 'Rückgängig/Wiederholen von Aktionen' }
+    ],
+    'Easter Eggs & Spezialfunktionen': [
+      { name: 'Catch-Mouse Game', icon: '🐭', tooltip: 'Alt+G öffnet Catch-Mouse Spiel' },
+      { name: 'Keyboard-Shortcuts Alt+G', icon: '🎮', tooltip: 'Alt+G Shortcut funktional' },
+      { name: 'Copyright-Klick Funktion', icon: '©️', tooltip: 'Copyright-Bereich klickbar' },
+      { name: 'Versteckte Funktionen', icon: '🕵️', tooltip: 'Weitere versteckte Features entdecken' }
     ]
   };
 
