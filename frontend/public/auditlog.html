@@ -841,6 +841,31 @@
 
         function setFilter(filter) {
             window.statusFilter = filter;
+            
+            // Aktualisiere Button-Status (aktive CSS-Klassen)
+            const allButtons = ['filterAll', 'filterSuccess', 'filterError', 'filterWarning', 'filterInfo'];
+            allButtons.forEach(buttonId => {
+                const btn = document.getElementById(buttonId);
+                if (btn) {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Markiere aktiven Button
+            let activeButtonId = '';
+            switch(filter) {
+                case '': activeButtonId = 'filterAll'; break;
+                case 'success': activeButtonId = 'filterSuccess'; break;
+                case 'error': activeButtonId = 'filterError'; break;
+                case 'warning': activeButtonId = 'filterWarning'; break;
+                case 'info': activeButtonId = 'filterInfo'; break;
+            }
+            
+            const activeBtn = document.getElementById(activeButtonId);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+            
             renderTests();
         }
 
