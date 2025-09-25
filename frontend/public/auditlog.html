@@ -880,9 +880,39 @@
 
 
 
+        // Alle Tests aller Kategorien sammeln (für vollständigen PDF-Export)
+        function getAllTests() {
+            let allTests = [];
+            const categories = Object.keys(window.tests);
+            
+            categories.forEach(category => {
+                const categoryTests = window.tests[category] || [];
+                const testsWithCategory = categoryTests.map(test => ({
+                    ...test,
+                    category: category,
+                    categoryIcon: getCategoryIcon(category)
+                }));
+                allTests = [...allTests, ...testsWithCategory];
+            });
+            
+            return allTests;
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                'Allgemeines Design': '🎨',
+                'Header-Bereich': '🔝',
+                'Sidebar-Bereich': '📋',
+                'Main-Content': '📄',
+                'Bookmark-Karten': '🎴',
+                'Einstellungen': '⚙️'
+            };
+            return icons[category] || '📂';
+        }
+
         // Erweiterte PDF-Export Funktion mit strukturiertem Bericht
         function exportToPDF() {
-            const tests = window.tests[window.currentCategory] || [];
+            const tests = getAllTests(); // Verwende ALLE Tests statt nur aktuelle Kategorie
             const testResults = calculateTestResults(tests);
             const currentDate = new Date().toLocaleString('de-DE', {
                 year: 'numeric',
@@ -893,7 +923,7 @@
             });
             
             const printWindow = window.open('', '_blank', 'width=900,height=700');
-            printWindow.document.write(generateStructuredReport(tests, testResults, currentDate));
+            printWindow.document.write(generateStructuredReport(tests, testResults, currentDate, 'Alle Bereiche'));
             printWindow.document.close();
         }
 
