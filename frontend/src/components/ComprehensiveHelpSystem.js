@@ -684,7 +684,8 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
               padding: 20px;
               border-radius: 8px;
               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-              color: #000000; /* Schwarze Schrift für alle Sektionen */
+              color: var(--text-color); /* Tech-Doc Stil */
+              border: 1px solid var(--border-color);
             }
             .section h2 { 
               color: #0ea5e9; 
