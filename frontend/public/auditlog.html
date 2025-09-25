@@ -1425,15 +1425,17 @@
                     <button class="print-btn" onclick="window.print()">📄 Bericht drucken</button>
                     
                     <div class="report-header" style="text-align: left;">
-                        <h1 style="text-align: left; margin-bottom: 15px;">📋 Testbericht · FavOrg</h1>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <h1 style="text-align: left; margin: 0;">📋 Testbericht · FavOrg</h1>
+                            <span style="font-size: 18pt; font-weight: 600; color: #06b6d4;">🏷️ ${window.auditConfig.version}</span>
+                        </div>
                         <p style="font-size: 14pt; color: #64748b; margin-bottom: 20px;">AuditLog-System Qualitätsprüfung</p>
                         
-                        <!-- Metadaten kompakt gruppiert -->
+                        <!-- Metadaten kompakt gruppiert - Tester vor Datum -->
                         <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
                             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <span style="font-weight: 600; font-size: 11pt;">📅 ${currentDate}</span>
                                 <span style="font-weight: 600; font-size: 11pt;">👤 ${window.auditConfig.tester}</span>
-                                <span style="font-weight: 600; font-size: 11pt;">🏷️ ${window.auditConfig.version}</span>
+                                <span style="font-weight: 600; font-size: 11pt;">📅 ${currentDate}</span>
                             </div>
                         </div>
                         <div style="margin-bottom: 20px;">
