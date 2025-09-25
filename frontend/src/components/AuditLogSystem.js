@@ -925,7 +925,12 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             <>
               {/* Sidebar: Test-Bereiche */}
               <div className="w-80 bg-gray-800 border-r border-gray-700 p-4 overflow-y-auto">
-                <h3 className="text-lg font-semibold text-cyan-400 mb-4">📋 Test-Bereiche</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-cyan-400">📋 Test-Bereiche</h3>
+                  <span className="bg-orange-600 text-white px-3 py-1 rounded text-sm font-bold">
+                    {testCategories.reduce((total, cat) => total + getCategoryCounter(cat), 0)} offen
+                  </span>
+                </div>
                 <div className="space-y-2">
                   {testCategories.map((category) => {
                     const counter = getCategoryCounter(category);
