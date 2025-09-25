@@ -1515,6 +1515,13 @@
                 renderTests();
                 updateStatusCounts();
                 updateArchiveCount();
+                
+                // Initialisiere Lucide Icons
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                    console.log('✅ Lucide Icons initialisiert');
+                }
+                
                 console.log('🎉 AuditLog erfolgreich initialisiert');
             } catch (error) {
                 console.error('❌ Initialisierungs-Fehler:', error);
