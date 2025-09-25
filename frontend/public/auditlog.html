@@ -596,6 +596,21 @@
         };
 
         // Render-Funktionen
+        function updateSidebarTitle() {
+            const totalOpen = window.categories.reduce((total, cat) => total + cat.count, 0);
+            const titleElement = document.querySelector('.audit-sidebar h3');
+            if (titleElement) {
+                titleElement.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span>📋 Test-Bereiche</span>
+                        <span style="background: #d97706; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">
+                            ${totalOpen} offen
+                        </span>
+                    </div>
+                `;
+            }
+        }
+
         function renderCategories() {
             console.log('🎨 renderCategories() aufgerufen');
             const container = document.getElementById('categoryList');
@@ -606,7 +621,11 @@
             window.categories.forEach(category => {
                 const btn = document.createElement('button');
                 btn.className = 'category-btn ' + (category.name === window.currentCategory ? 'active' : '');
-                btn.onclick = function() { selectCategory(category.name); };
+                btn.onclick = function() { 
+                    selectCategory(category.name);
+                    // Alle Tests der Kategorie anzeigen (Filter zurücksetzen)
+                    setFilter('');
+                };
                 
                 btn.innerHTML = '<span>' + category.icon + '</span>' +
                                '<span style="flex: 1;">' + category.name + '</span>' +
@@ -614,6 +633,9 @@
                 
                 container.appendChild(btn);
             });
+            
+            // Aktualisiere den Sidebar-Titel mit dem Counter
+            updateSidebarTitle();
         }
 
         function renderTests() {
