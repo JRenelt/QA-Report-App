@@ -1313,6 +1313,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             <div className="p-4">
               <label className="block text-sm font-medium text-gray-300 mb-2">Bemerkung:</label>
               <textarea
+                id="noteTextarea"
                 defaultValue={noteDialog.currentNote}
                 placeholder="Bemerkung eingeben..."
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white resize-vertical"
