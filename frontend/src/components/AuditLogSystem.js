@@ -966,19 +966,21 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           </Button>
                         </div>
                         
-                        {/* Rechts: Edit- und Notizen-Buttons */}
+                        {/* Rechts: Edit- und Notizen-Buttons (Outline-Format wie Zahnrad) */}
                         <div className="flex items-center gap-2">
                           <Button
                             onClick={() => handleEditTest(test.name)}
                             size="sm"
-                            className="bg-purple-600 hover:bg-purple-700 text-xs"
+                            variant="outline"
+                            className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white text-xs"
                           >
                             ✏️ Edit
                           </Button>
                           <Button
                             onClick={() => handleAddNote(test.name)}
                             size="sm"
-                            className="bg-indigo-600 hover:bg-indigo-700 text-xs"
+                            variant="outline"
+                            className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white text-xs"
                           >
                             📝 Notiz
                           </Button>
