@@ -689,6 +689,7 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
               background: #f8fafc;
               border-left: 4px solid #0ea5e9;
               border-radius: 0 4px 4px 0;
+              color: #000000; /* Schwarze Schrift in Subsektionen */
             }
             ul { margin: 10px 0; }
             li { margin: 5px 0; }
