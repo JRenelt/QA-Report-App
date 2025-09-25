@@ -173,38 +173,42 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     const currentTest = getCurrentTests().find(test => test.name === testName);
     if (!currentTest) return;
     
-    const newName = prompt('Test-Name bearbeiten:', currentTest.name);
-    if (newName && newName !== currentTest.name) {
-      // Update dynamic tests wenn es ein dynamischer Test ist
-      if (currentTest.isDynamic) {
-        const currentDynamic = dynamicTests[currentCategory] || [];
-        const updatedDynamic = currentDynamic.map(test => 
-          test.name === testName ? { ...test, name: newName } : test
-        );
-        setDynamicTests({
-          ...dynamicTests,
-          [currentCategory]: updatedDynamic
-        });
-        
-        // Update Status und Notes mit neuem Namen
-        const updatedStatuses = { ...testStatuses };
-        const updatedNotes = { ...testNotes };
-        if (updatedStatuses[testName]) {
-          updatedStatuses[newName] = updatedStatuses[testName];
-          delete updatedStatuses[testName];
-        }
-        if (updatedNotes[testName]) {
-          updatedNotes[newName] = updatedNotes[testName];
-          delete updatedNotes[testName];
-        }
-        setTestStatuses(updatedStatuses);
-        setTestNotes(updatedNotes);
-        
-        toast.success('Test-Name aktualisiert');
-      } else {
-        toast.error('Vordefinierte Tests können nicht bearbeitet werden');
-      }
+    if (!currentTest.isDynamic) {
+      toast.error('Vordefinierte Tests können nicht bearbeitet werden');
+      return;
     }
+    
+    setEditTestDialog({ show: true, testName, currentName: currentTest.name });
+  };
+
+  const confirmEditTest = (newName) => {
+    if (newName && newName !== editTestDialog.currentName) {
+      const currentDynamic = dynamicTests[currentCategory] || [];
+      const updatedDynamic = currentDynamic.map(test => 
+        test.name === editTestDialog.testName ? { ...test, name: newName } : test
+      );
+      setDynamicTests({
+        ...dynamicTests,
+        [currentCategory]: updatedDynamic
+      });
+      
+      // Update Status und Notes mit neuem Namen
+      const updatedStatuses = { ...testStatuses };
+      const updatedNotes = { ...testNotes };
+      if (updatedStatuses[editTestDialog.testName]) {
+        updatedStatuses[newName] = updatedStatuses[editTestDialog.testName];
+        delete updatedStatuses[editTestDialog.testName];
+      }
+      if (updatedNotes[editTestDialog.testName]) {
+        updatedNotes[newName] = updatedNotes[editTestDialog.testName];
+        delete updatedNotes[editTestDialog.testName];
+      }
+      setTestStatuses(updatedStatuses);
+      setTestNotes(updatedNotes);
+      
+      toast.success('Test-Name aktualisiert');
+    }
+    setEditTestDialog({ show: false, testName: '', currentName: '' });
   };
 
   const handleAddNote = (testName) => {
