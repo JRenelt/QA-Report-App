@@ -738,6 +738,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           transform: 'none',
           maxWidth: 'none',
           maxHeight: 'calc(100vh - 160px)',
+          zIndex: 9999, // Sehr hohe Priorität für Klick-Events
           display: 'flex',
           flexDirection: 'column'
         }}
