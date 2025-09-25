@@ -122,7 +122,7 @@ class FavoritesService {
         responseType: 'blob'
       });
 
-      const blob = new Blob([response.data], { 
+      const blob = new window.Blob([response.data], { 
         type: this.getContentType(format)
       });
       
