@@ -979,33 +979,49 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       )}
                       
                       <div className="flex items-center justify-between">
-                        {/* Links: Status-Buttons */}
+                        {/* Links: Status-Buttons (blass wenn nicht aktiviert) */}
                         <div className="flex items-center gap-2">
                           <Button
                             onClick={() => setTestStatus(test.name, 'success')}
                             size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-xs"
+                            className={`text-xs ${
+                              testStatuses[test.name] === 'success' 
+                                ? 'bg-green-600 hover:bg-green-700 text-white' 
+                                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
+                            }`}
                           >
                             ✅
                           </Button>
                           <Button
                             onClick={() => setTestStatus(test.name, 'error')}
                             size="sm"
-                            className="bg-red-600 hover:bg-red-700 text-xs"
+                            className={`text-xs ${
+                              testStatuses[test.name] === 'error' 
+                                ? 'bg-red-600 hover:bg-red-700 text-white' 
+                                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
+                            }`}
                           >
                             ❌
                           </Button>
                           <Button
                             onClick={() => setTestStatus(test.name, 'warning')}
                             size="sm"
-                            className="bg-yellow-600 hover:bg-yellow-700 text-xs"
+                            className={`text-xs ${
+                              testStatuses[test.name] === 'warning' 
+                                ? 'bg-yellow-600 hover:bg-yellow-700 text-white' 
+                                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
+                            }`}
                           >
                             ⏳
                           </Button>
                           <Button
                             onClick={() => setTestStatus(test.name, 'info')}
                             size="sm"
-                            className="bg-blue-600 hover:bg-blue-700 text-xs"
+                            className={`text-xs ${
+                              testStatuses[test.name] === 'info' 
+                                ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
+                            }`}
                           >
                             🗑️
                           </Button>
