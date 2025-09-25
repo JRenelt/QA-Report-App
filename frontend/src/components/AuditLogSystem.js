@@ -543,9 +543,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             top: 20px;
             right: 20px;
             padding: 12px 20px;
-            background: #06b6d4;
-            color: white;
-            border: none;
+            background: #111827;
+            color: #9CA3AF;
+            border: 1px solid #374151;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
