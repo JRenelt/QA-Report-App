@@ -98,6 +98,20 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   // Test-Kategorien (dynamisch aus predefinedTests)
   const testCategories = Object.keys(predefinedTests);
 
+  // Berechne Counter für jede Kategorie (ungetestete Tests)
+  const getCategoryCounter = (category) => {
+    const categoryTests = predefinedTests[category] || [];
+    const dynamicCategoryTests = dynamicTests[category] || [];
+    const allCategoryTests = [...categoryTests, ...dynamicCategoryTests];
+    
+    // Zähle ungetestete Tests (ohne Status oder Status ist nicht gesetzt)
+    const untestedCount = allCategoryTests.filter(test => 
+      !testStatuses[test.name] || testStatuses[test.name] === 'ungeprüft'
+    ).length;
+    
+    return untestedCount;
+  };
+
   // Aktuelle Tests berechnen
   const getCurrentTests = () => {
     const baseTests = predefinedTests[currentCategory] || [];
