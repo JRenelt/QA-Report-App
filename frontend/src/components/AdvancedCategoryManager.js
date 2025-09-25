@@ -282,7 +282,7 @@ const AdvancedCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
                     <SelectValue placeholder="Hauptkategorie (Level 1)" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Hauptkategorie (Level 1)</SelectItem>
+                    <SelectItem value="all">Hauptkategorie (Level 1)</SelectItem>
                     {getAllPossibleParents().map(parent => (
                       <SelectItem key={parent.name} value={parent.name}>
                         {parent.path} (Level {parent.level})
