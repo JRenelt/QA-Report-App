@@ -444,11 +444,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             border: 1px solid #e5e7eb;
           }
           .section h2 {
-            color: #06b6d4 !important;
+            color: #111827 !important;
             font-size: 20px;
             margin-bottom: 15px;
             padding-bottom: 8px;
-            border-bottom: 2px solid #06b6d4;
+            border-bottom: 2px solid #111827;
           }
           .test-case {
             padding: 15px;
