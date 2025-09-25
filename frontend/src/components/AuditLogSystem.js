@@ -303,7 +303,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   };
 
   // Generate Structured Report HTML
-  const generateStructuredReport = (tests, results, currentDate) => {
+  const generateStructuredReport = (tests, results, currentDate, reportCategory = null, customStatuses = null, customNotes = null) => {
+    // Verwende custom Status/Notes für Archiv-Berichte oder aktuelle für Live-Export
+    const statusesToUse = customStatuses || testStatuses;
+    const notesToUse = customNotes || testNotes;
+    const categoryToShow = reportCategory || 'Alle Bereiche';
     return `
       <!DOCTYPE html>
       <html lang="de">
