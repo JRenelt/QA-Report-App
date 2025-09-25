@@ -37,9 +37,6 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   }, []);
   
-  // Test-Kategorien
-  const testCategories = Object.keys(predefinedTests);
-
   // Test-Daten
   const predefinedTests = {
     'Allgemeines Design': [
