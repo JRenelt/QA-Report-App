@@ -941,7 +941,7 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
                   <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                     {helpSections[selectedSection].content.title}
                   </h1>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2">
+                  <p className="text-black dark:text-gray-100 mt-2">
                     {helpSections[selectedSection].content.description}
                   </p>
                 </div>
