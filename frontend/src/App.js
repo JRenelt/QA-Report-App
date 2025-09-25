@@ -4106,7 +4106,7 @@ function App() {
               style={{ cursor: 'pointer' }}
               title="Klicken für eine Überraschung..."
             >
-              &copy; Jörg Renelt id2.de Hamburg 2025 Version V2.3.0
+              &copy; Jörg Renelt id2.de Hamburg 2025 Version v2.3.0
             </span>
           </div>
           
