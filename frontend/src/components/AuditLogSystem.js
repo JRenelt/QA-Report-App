@@ -1114,23 +1114,27 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           </button>
                         </div>
                         
-                        {/* Rechts: Edit- und Notizen-Buttons (Outline-Format wie Zahnrad) */}
+                        {/* Rechts: Edit- und Notizen-Buttons (Outline-Format mit Lucide Icons) */}
                         <div className="flex items-center gap-2">
                           <Button
                             onClick={() => handleEditTest(test.name)}
                             size="sm"
                             variant="outline"
-                            className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white text-xs"
+                            className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white text-xs flex items-center gap-1"
+                            title="Test bearbeiten"
                           >
-                            ✏️ Edit
+                            <PencilLine size={12} />
+                            Edit
                           </Button>
                           <Button
                             onClick={() => handleAddNote(test.name)}
                             size="sm"
                             variant="outline"
-                            className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white text-xs"
+                            className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white text-xs flex items-center gap-1"
+                            title="Notiz hinzufügen oder bearbeiten"
                           >
-                            📝 Notiz
+                            <NotebookPen size={12} />
+                            Notiz
                           </Button>
                         </div>
                       </div>
