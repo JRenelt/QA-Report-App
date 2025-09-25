@@ -1047,34 +1047,34 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Footer - am Ende des Dialogs */}
-        <div className="bg-gray-800 border-t border-gray-700 p-3 flex items-center justify-between flex-shrink-0" style={{ minHeight: '60px' }}>
-          {/* Links: 5 Status-Filter Buttons */}
+        {/* Footer - im Vollbild-Design */}
+        <div className="bg-gray-800 border-t border-gray-700 px-4 py-2 flex items-center justify-between flex-shrink-0" style={{ minHeight: '56px' }}>
+          {/* Links: 5 Status-Filter Buttons mit Vollbild-Design */}
           <div className="flex items-center gap-2">
             <Button
               onClick={() => setStatusFilter('')}
-              className={`text-xs ${statusFilter === '' ? 'bg-cyan-600' : 'bg-gray-700'}`}
+              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === '' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
               size="sm"
             >
               Alle ({counts.all})
             </Button>
             <Button
               onClick={() => setStatusFilter('success')}
-              className={`text-xs ${statusFilter === 'success' ? 'bg-green-600' : 'bg-gray-700'}`}
+              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === 'success' ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
               size="sm"
             >
               ✅ ({counts.success})
             </Button>
             <Button
               onClick={() => setStatusFilter('error')}
-              className={`text-xs ${statusFilter === 'error' ? 'bg-red-600' : 'bg-gray-700'}`}
+              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === 'error' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
               size="sm"
             >
               ❌ ({counts.error})
             </Button>
             <Button
               onClick={() => setStatusFilter('warning')}
-              className={`text-xs ${statusFilter === 'warning' ? 'bg-yellow-600' : 'bg-gray-700'}`}
+              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === 'warning' ? 'bg-yellow-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
               size="sm"
             >
               ⏳ ({counts.warning})
