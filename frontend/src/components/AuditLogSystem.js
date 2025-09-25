@@ -1094,8 +1094,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 gap: '6px',
                 whiteSpace: 'nowrap',
                 background: statusFilter === '' ? '#06b6d4' : '#374151',
-                color: statusFilter === '' ? 'white' : '#d1d5db',
-                border: statusFilter === '' ? 'none' : '1px solid #4b5563'
+                color: statusFilter === '' ? 'white' : '#d1d5db'
               }}
             >
               Alle ({counts.all})
