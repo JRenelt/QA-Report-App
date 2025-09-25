@@ -856,7 +856,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         )}
                       </div>
                       <p className="text-gray-400 text-sm mb-3">{test.tooltip}</p>
-                      <div className="flex items-center gap-2">
+                      {/* Notizen-Bereich */}
+                      {testNotes[test.name] && (
+                        <div className="bg-gray-700 p-3 rounded mt-3 mb-3">
+                          <p className="text-cyan-400 text-sm">
+                            <span className="font-medium">💭 Notiz:</span> {testNotes[test.name]}
+                          </p>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {/* Status-Buttons */}
                         <Button
                           onClick={() => setTestStatus(test.name, 'success')}
                           size="sm"
@@ -884,6 +894,22 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           className="bg-blue-600 hover:bg-blue-700 text-xs"
                         >
                           🗑️
+                        </Button>
+                        
+                        {/* Edit- und Notizen-Buttons */}
+                        <Button
+                          onClick={() => handleEditTest(test.name)}
+                          size="sm"
+                          className="bg-purple-600 hover:bg-purple-700 text-xs ml-2"
+                        >
+                          ✏️ Edit
+                        </Button>
+                        <Button
+                          onClick={() => handleAddNote(test.name)}
+                          size="sm"
+                          className="bg-indigo-600 hover:bg-indigo-700 text-xs"
+                        >
+                          📝 Notiz
                         </Button>
                       </div>
                     </div>
