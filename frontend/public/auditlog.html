@@ -951,7 +951,10 @@
         }
 
         // Hilfsfunktion zur Berechnung der Testergebnisse
-        function calculateTestResults(tests) {
+        function calculateTestResults(tests, customStatuses = null, customNotes = null) {
+            // Verwende custom Status/Notes für Archiv-Berichte oder aktuelle für Live-Export
+            const statusesToUse = customStatuses || window.testStatuses;
+            const notesToUse = customNotes || window.testNotes;
             let total = tests.length;
             let passed = 0;
             let failed = 0;
