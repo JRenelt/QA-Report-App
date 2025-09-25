@@ -167,6 +167,64 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     toast.success(`Status "${status}" gesetzt`);
   };
 
+  const handleEditTest = (testName) => {
+    const currentTest = getCurrentTests().find(test => test.name === testName);
+    if (!currentTest) return;
+    
+    const newName = prompt('Test-Name bearbeiten:', currentTest.name);
+    if (newName && newName !== currentTest.name) {
+      // Update dynamic tests wenn es ein dynamischer Test ist
+      if (currentTest.isDynamic) {
+        const currentDynamic = dynamicTests[currentCategory] || [];
+        const updatedDynamic = currentDynamic.map(test => 
+          test.name === testName ? { ...test, name: newName } : test
+        );
+        setDynamicTests({
+          ...dynamicTests,
+          [currentCategory]: updatedDynamic
+        });
+        
+        // Update Status und Notes mit neuem Namen
+        const updatedStatuses = { ...testStatuses };
+        const updatedNotes = { ...testNotes };
+        if (updatedStatuses[testName]) {
+          updatedStatuses[newName] = updatedStatuses[testName];
+          delete updatedStatuses[testName];
+        }
+        if (updatedNotes[testName]) {
+          updatedNotes[newName] = updatedNotes[testName];
+          delete updatedNotes[testName];
+        }
+        setTestStatuses(updatedStatuses);
+        setTestNotes(updatedNotes);
+        
+        toast.success('Test-Name aktualisiert');
+      } else {
+        toast.error('Vordefinierte Tests können nicht bearbeitet werden');
+      }
+    }
+  };
+
+  const handleAddNote = (testName) => {
+    const currentNote = testNotes[testName] || '';
+    const newNote = prompt('Bemerkung hinzufügen/bearbeiten:', currentNote);
+    if (newNote !== null) { // null bedeutet Abbruch
+      if (newNote.trim() === '') {
+        // Leere Notiz = Notiz löschen
+        const updatedNotes = { ...testNotes };
+        delete updatedNotes[testName];
+        setTestNotes(updatedNotes);
+        toast.success('Notiz entfernt');
+      } else {
+        setTestNotes({
+          ...testNotes,
+          [testName]: newNote.trim()
+        });
+        toast.success('Notiz gespeichert');
+      }
+    }
+  };
+
   const handleSaveToArchive = () => {
     const tests = getCurrentTests();
     const completedTests = tests.filter(test => testStatuses[test.name]);
