@@ -284,7 +284,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
   // Enhanced PDF Export with structured report
   const handlePDFExport = () => {
-    const tests = getCurrentTests();
+    const tests = getAllTests(); // Verwende ALLE Tests statt nur aktuelle Kategorie
     const testResults = calculateTestResults(tests);
     const currentDate = new Date().toLocaleString('de-DE', {
       year: 'numeric',
