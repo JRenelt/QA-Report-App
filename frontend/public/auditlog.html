@@ -783,6 +783,28 @@
             }
         }
 
+        function viewReport(index) {
+            const report = window.archivedReports[index];
+            if (!report) return;
+            
+            // Rekonstruiere die Tests aus dem gespeicherten Bericht
+            const savedTests = Object.keys(report.testStatuses).map(testName => ({
+                name: testName,
+                icon: '📋', // Default Icon
+                tooltip: report.testNotes[testName] || 'Test aus Archiv',
+                category: report.category,
+                categoryIcon: getCategoryIcon(report.category)
+            }));
+            
+            const testResults = calculateTestResults(savedTests, report.testStatuses, report.testNotes);
+            
+            const printWindow = window.open('', '_blank', 'width=900,height=700');
+            printWindow.document.write(generateStructuredReport(savedTests, testResults, report.timestamp, report.category, report.testStatuses, report.testNotes));
+            printWindow.document.close();
+            
+            console.log(`Bericht "${report.category}" wird angezeigt`);
+        }
+
         function setFilter(filter) {
             window.statusFilter = filter;
             renderTests();
