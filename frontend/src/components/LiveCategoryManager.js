@@ -461,7 +461,7 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   // Öffne Hilfe-Dialog
-                  alert('Handbuch wird geöffnet - Live-Bearbeitung Features erklärt');
+                  window.alert('Handbuch wird geöffnet - Live-Bearbeitung Features erklärt');
                 }}
               >
                 📚 Live-Bearbeitung Features im Handbuch nachlesen
