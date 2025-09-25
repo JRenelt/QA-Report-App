@@ -1061,84 +1061,242 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Footer - im Vollbild-Design */}
-        <div className="bg-gray-800 border-t border-gray-700 px-4 py-2 flex items-center justify-between flex-shrink-0" style={{ minHeight: '56px' }}>
-          {/* Links: 5 Status-Filter Buttons mit Vollbild-Design */}
+        {/* Footer - Exaktes Vollbild-Design */}
+        <div 
+          className="flex-shrink-0 flex items-center justify-between"
+          style={{
+            position: 'relative',
+            bottom: '0',
+            left: '0',
+            right: '0', 
+            background: 'var(--bg-secondary)',
+            borderTop: '1px solid var(--border-primary)',
+            padding: '8px 16px',
+            zIndex: '1000',
+            minHeight: '56px'
+          }}
+        >
+          {/* Links: 5 Status-Filter Buttons - Vollbild-Style */}
           <div className="flex items-center gap-2">
-            <Button
+            <button
               onClick={() => setStatusFilter('')}
-              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === '' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
-              size="sm"
+              className={statusFilter === '' ? 'btn btn-primary' : 'btn btn-secondary'}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: statusFilter === '' ? '#06b6d4' : '#374151',
+                color: statusFilter === '' ? 'white' : '#d1d5db',
+                border: statusFilter === '' ? 'none' : '1px solid #4b5563'
+              }}
             >
               Alle ({counts.all})
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => setStatusFilter('success')}
-              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === 'success' ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
-              size="sm"
+              className={statusFilter === 'success' ? 'btn btn-success' : 'btn btn-secondary'}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: statusFilter === 'success' ? '#059669' : '#374151',
+                color: statusFilter === 'success' ? 'white' : '#d1d5db',
+                border: statusFilter === 'success' ? 'none' : '1px solid #4b5563'
+              }}
             >
               ✅ ({counts.success})
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => setStatusFilter('error')}
-              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === 'error' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
-              size="sm"
+              className={statusFilter === 'error' ? 'btn btn-danger' : 'btn btn-secondary'}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: statusFilter === 'error' ? '#dc2626' : '#374151',
+                color: statusFilter === 'error' ? 'white' : '#d1d5db',
+                border: statusFilter === 'error' ? 'none' : '1px solid #4b5563'
+              }}
             >
               ❌ ({counts.error})
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => setStatusFilter('warning')}
-              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === 'warning' ? 'bg-yellow-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
-              size="sm"
+              className={statusFilter === 'warning' ? 'btn btn-warning' : 'btn btn-secondary'}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: statusFilter === 'warning' ? '#d97706' : '#374151',
+                color: statusFilter === 'warning' ? 'white' : '#d1d5db',
+                border: statusFilter === 'warning' ? 'none' : '1px solid #4b5563'
+              }}
             >
               ⏳ ({counts.warning})
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => setStatusFilter('info')}
-              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === 'info' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
-              size="sm"
+              className={statusFilter === 'info' ? 'btn btn-info' : 'btn btn-secondary'}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: statusFilter === 'info' ? '#2563eb' : '#374151',
+                color: statusFilter === 'info' ? 'white' : '#d1d5db',
+                border: statusFilter === 'info' ? 'none' : '1px solid #4b5563'
+              }}
             >
               🗑️ ({counts.info})
-            </Button>
+            </button>
           </div>
 
-          {/* Rechts: 5 Aktions-Buttons mit Vollbild-Design */}
+          {/* Rechts: 5 Aktions-Buttons - Vollbild-Style */}
           <div className="flex items-center gap-2">
-            <Button
+            <button
               onClick={openConfigDialog}
-              size="sm"
-              className="bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 text-xs px-3 py-2 rounded font-medium transition-all"
+              className="btn btn-secondary"
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: '#374151',
+                color: '#d1d5db',
+                border: '1px solid #4b5563'
+              }}
             >
               ⚙️ Config
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={handleSaveToArchive}
-              size="sm"
-              className="bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 text-xs px-3 py-2 rounded font-medium transition-all"
+              className="btn btn-secondary"
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: '#374151',
+                color: '#d1d5db',
+                border: '1px solid #4b5563'
+              }}
             >
               💾 Test speichern
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={toggleArchiveView}
-              size="sm"
-              className="bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 text-xs px-3 py-2 rounded font-medium transition-all"
+              className="btn btn-secondary"
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: '#374151',
+                color: '#d1d5db',
+                border: '1px solid #4b5563'
+              }}
             >
               {viewMode === 'archive' ? '📋 Testpunkte' : `📁 Archiv (${archivedReports.length})`}
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={handlePDFExport}
-              size="sm"
-              className="bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 text-xs px-3 py-2 rounded font-medium transition-all"
+              className="btn btn-secondary"
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: '#374151',
+                color: '#d1d5db',
+                border: '1px solid #4b5563'
+              }}
             >
               📄 PDF-Export
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={handleResetAll}
-              size="sm"
-              className="bg-red-600 hover:bg-red-700 text-white border border-red-500 text-xs px-3 py-2 rounded font-medium transition-all"
+              className="btn btn-danger"
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: '#dc2626',
+                color: 'white',
+                border: 'none'
+              }}
             >
               🗑️ Reset
-            </Button>
+            </button>
           </div>
         </div>
       </DialogContent>
