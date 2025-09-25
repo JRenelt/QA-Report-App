@@ -618,8 +618,10 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        <div class="section">
-          <h2>🧪 Testfälle</h2>
+        <!-- Seitenumbruch für Testfälle -->
+        <div style="page-break-before: always;">
+          <div class="section">
+            <h2>🧪 Testfälle</h2>
           ${tests.map((test, index) => {
             const status = statusesToUse[test.name] || 'ungeprüft';
             const notes = notesToUse[test.name];
