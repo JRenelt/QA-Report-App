@@ -1261,6 +1261,81 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Edit Test Dialog */}
+      {editTestDialog.show && (
+        <Dialog open={editTestDialog.show} onOpenChange={() => setEditTestDialog({ show: false, testName: '', currentName: '' })}>
+          <DialogContent className="w-full max-w-md bg-gray-900 border-gray-700" style={{ zIndex: 10001 }}>
+            <div className="bg-gray-800 border-b border-gray-700 p-4">
+              <h3 className="text-lg font-semibold text-cyan-400">✏️ Test bearbeiten</h3>
+            </div>
+            <div className="p-4">
+              <label className="block text-sm font-medium text-gray-300 mb-2">Test-Name:</label>
+              <input
+                type="text"
+                defaultValue={editTestDialog.currentName}
+                placeholder="Neuen Test-Namen eingeben"
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    confirmEditTest(e.target.value);
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+            <div className="bg-gray-800 border-t border-gray-700 p-4 flex justify-end gap-3">
+              <Button onClick={() => setEditTestDialog({ show: false, testName: '', currentName: '' })} variant="outline">
+                Abbrechen
+              </Button>
+              <Button
+                onClick={() => {
+                  const input = document.querySelector('#editTestDialog input');
+                  if (input) confirmEditTest(input.value);
+                }}
+                className="bg-cyan-600 hover:bg-cyan-700"
+              >
+                Speichern
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Note Dialog */}
+      {noteDialog.show && (
+        <Dialog open={noteDialog.show} onOpenChange={() => setNoteDialog({ show: false, testName: '', currentNote: '' })}>
+          <DialogContent className="w-full max-w-md bg-gray-900 border-gray-700" style={{ zIndex: 10001 }}>
+            <div className="bg-gray-800 border-b border-gray-700 p-4">
+              <h3 className="text-lg font-semibold text-cyan-400">📝 Notiz hinzufügen</h3>
+            </div>
+            <div className="p-4">
+              <label className="block text-sm font-medium text-gray-300 mb-2">Bemerkung:</label>
+              <textarea
+                defaultValue={noteDialog.currentNote}
+                placeholder="Bemerkung eingeben..."
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white resize-vertical"
+                rows={4}
+                autoFocus
+              />
+            </div>
+            <div className="bg-gray-800 border-t border-gray-700 p-4 flex justify-end gap-3">
+              <Button onClick={() => setNoteDialog({ show: false, testName: '', currentNote: '' })} variant="outline">
+                Abbrechen
+              </Button>
+              <Button
+                onClick={() => {
+                  const textarea = document.querySelector('#noteDialog textarea');
+                  if (textarea) confirmAddNote(textarea.value);
+                }}
+                className="bg-cyan-600 hover:bg-cyan-700"
+              >
+                Speichern
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </Dialog>
   );
 };
