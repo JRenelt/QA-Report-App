@@ -97,6 +97,29 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     return [...baseTests, ...categoryDynamicTests];
   };
 
+  // Alle Tests aller Kategorien berechnen (für PDF-Export)
+  const getAllTests = () => {
+    let allTests = [];
+    
+    // Sammle alle Tests aus allen Kategorien
+    testCategories.forEach(category => {
+      const baseTests = predefinedTests[category] || [];
+      const categoryDynamicTests = dynamicTests[category] || [];
+      const categoryTests = [...baseTests, ...categoryDynamicTests];
+      
+      // Füge Kategorie-Kontext hinzu
+      const testsWithCategory = categoryTests.map(test => ({
+        ...test,
+        category: category,
+        categoryIcon: getCategoryIcon(category)
+      }));
+      
+      allTests = [...allTests, ...testsWithCategory];
+    });
+    
+    return allTests;
+  };
+
   const getFilteredTests = () => {
     const allTests = getCurrentTests();
     if (!statusFilter) return allTests;
