@@ -519,7 +519,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
         <div class="section">
           <h2>📋 Testobjekt</h2>
-          <p><strong>Testbereich:</strong> ${currentCategory}</p>
+          <p><strong>Testbereich:</strong> ${categoryToShow}</p>
           <p>Testpunkte werden systematisch auf Funktionalität, Design-Konsistenz und Benutzerfreundlichkeit überprüft.</p>
         </div>
 
