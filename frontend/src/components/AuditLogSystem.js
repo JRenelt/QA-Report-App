@@ -1076,15 +1076,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             minHeight: '56px'
           }}
         >
-          {/* Links: 5 Status-Filter Buttons - Vollbild-Style */}
+          {/* Links: 5 Status-Filter Buttons - Korrekte Vollbild-Farben */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setStatusFilter('')}
-              className={statusFilter === '' ? 'btn btn-primary' : 'btn btn-secondary'}
               style={{
                 padding: '8px 12px',
                 borderRadius: '6px',
-                border: 'none',
+                border: statusFilter === '' ? 'none' : '1px solid #4b5563',
                 cursor: 'pointer',
                 fontSize: '14px',
                 fontWeight: '500',
@@ -1094,18 +1093,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 gap: '6px',
                 whiteSpace: 'nowrap',
                 background: statusFilter === '' ? '#06b6d4' : '#374151',
-                color: statusFilter === '' ? 'white' : '#d1d5db'
+                color: statusFilter === '' ? 'white' : '#9ca3af'
               }}
             >
               Alle ({counts.all})
             </button>
             <button
               onClick={() => setStatusFilter('success')}
-              className={statusFilter === 'success' ? 'btn btn-success' : 'btn btn-secondary'}
               style={{
                 padding: '8px 12px',
                 borderRadius: '6px',
-                border: 'none',
+                border: statusFilter === 'success' ? 'none' : '1px solid #4b5563',
                 cursor: 'pointer',
                 fontSize: '14px',
                 fontWeight: '500',
@@ -1115,18 +1113,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 gap: '6px',
                 whiteSpace: 'nowrap',
                 background: statusFilter === 'success' ? '#059669' : '#374151',
-                color: statusFilter === 'success' ? 'white' : '#d1d5db'
+                color: statusFilter === 'success' ? 'white' : '#9ca3af'
               }}
             >
               ✅ ({counts.success})
             </button>
             <button
               onClick={() => setStatusFilter('error')}
-              className={statusFilter === 'error' ? 'btn btn-danger' : 'btn btn-secondary'}
               style={{
                 padding: '8px 12px',
                 borderRadius: '6px',
-                border: 'none',
+                border: statusFilter === 'error' ? 'none' : '1px solid #4b5563',
                 cursor: 'pointer',
                 fontSize: '14px',
                 fontWeight: '500',
@@ -1136,18 +1133,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 gap: '6px',
                 whiteSpace: 'nowrap',
                 background: statusFilter === 'error' ? '#dc2626' : '#374151',
-                color: statusFilter === 'error' ? 'white' : '#d1d5db'
+                color: statusFilter === 'error' ? 'white' : '#9ca3af'
               }}
             >
               ❌ ({counts.error})
             </button>
             <button
               onClick={() => setStatusFilter('warning')}
-              className={statusFilter === 'warning' ? 'btn btn-warning' : 'btn btn-secondary'}
               style={{
                 padding: '8px 12px',
                 borderRadius: '6px',
-                border: 'none',
+                border: statusFilter === 'warning' ? 'none' : '1px solid #4b5563',
                 cursor: 'pointer',
                 fontSize: '14px',
                 fontWeight: '500',
@@ -1157,18 +1153,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 gap: '6px',
                 whiteSpace: 'nowrap',
                 background: statusFilter === 'warning' ? '#d97706' : '#374151',
-                color: statusFilter === 'warning' ? 'white' : '#d1d5db'
+                color: statusFilter === 'warning' ? 'white' : '#9ca3af'
               }}
             >
               ⏳ ({counts.warning})
             </button>
             <button
               onClick={() => setStatusFilter('info')}
-              className={statusFilter === 'info' ? 'btn btn-info' : 'btn btn-secondary'}
               style={{
                 padding: '8px 12px',
                 borderRadius: '6px',
-                border: 'none',
+                border: statusFilter === 'info' ? 'none' : '1px solid #4b5563',
                 cursor: 'pointer',
                 fontSize: '14px',
                 fontWeight: '500',
@@ -1178,7 +1173,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 gap: '6px',
                 whiteSpace: 'nowrap',
                 background: statusFilter === 'info' ? '#2563eb' : '#374151',
-                color: statusFilter === 'info' ? 'white' : '#d1d5db'
+                color: statusFilter === 'info' ? 'white' : '#9ca3af'
               }}
             >
               🗑️ ({counts.info})
