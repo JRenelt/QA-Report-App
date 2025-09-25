@@ -933,52 +933,56 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         </div>
                       )}
                       
-                      <div className="flex items-center gap-2 flex-wrap">
-                        {/* Status-Buttons */}
-                        <Button
-                          onClick={() => setTestStatus(test.name, 'success')}
-                          size="sm"
-                          className="bg-green-600 hover:bg-green-700 text-xs"
-                        >
-                          ✅
-                        </Button>
-                        <Button
-                          onClick={() => setTestStatus(test.name, 'error')}
-                          size="sm"
-                          className="bg-red-600 hover:bg-red-700 text-xs"
-                        >
-                          ❌
-                        </Button>
-                        <Button
-                          onClick={() => setTestStatus(test.name, 'warning')}
-                          size="sm"
-                          className="bg-yellow-600 hover:bg-yellow-700 text-xs"
-                        >
-                          ⏳
-                        </Button>
-                        <Button
-                          onClick={() => setTestStatus(test.name, 'info')}
-                          size="sm"
-                          className="bg-blue-600 hover:bg-blue-700 text-xs"
-                        >
-                          🗑️
-                        </Button>
+                      <div className="flex items-center justify-between">
+                        {/* Links: Status-Buttons */}
+                        <div className="flex items-center gap-2">
+                          <Button
+                            onClick={() => setTestStatus(test.name, 'success')}
+                            size="sm"
+                            className="bg-green-600 hover:bg-green-700 text-xs"
+                          >
+                            ✅
+                          </Button>
+                          <Button
+                            onClick={() => setTestStatus(test.name, 'error')}
+                            size="sm"
+                            className="bg-red-600 hover:bg-red-700 text-xs"
+                          >
+                            ❌
+                          </Button>
+                          <Button
+                            onClick={() => setTestStatus(test.name, 'warning')}
+                            size="sm"
+                            className="bg-yellow-600 hover:bg-yellow-700 text-xs"
+                          >
+                            ⏳
+                          </Button>
+                          <Button
+                            onClick={() => setTestStatus(test.name, 'info')}
+                            size="sm"
+                            className="bg-blue-600 hover:bg-blue-700 text-xs"
+                          >
+                            🗑️
+                          </Button>
+                        </div>
                         
-                        {/* Edit- und Notizen-Buttons */}
-                        <Button
-                          onClick={() => handleEditTest(test.name)}
-                          size="sm"
-                          className="bg-purple-600 hover:bg-purple-700 text-xs ml-2"
-                        >
-                          ✏️ Edit
-                        </Button>
-                        <Button
-                          onClick={() => handleAddNote(test.name)}
-                          size="sm"
-                          className="bg-indigo-600 hover:bg-indigo-700 text-xs"
-                        >
-                          📝 Notiz
-                        </Button>
+                        {/* Rechts: Edit- und Notizen-Buttons */}
+                        <div className="flex items-center gap-2">
+                          <Button
+                            onClick={() => handleEditTest(test.name)}
+                            size="sm"
+                            className="bg-purple-600 hover:bg-purple-700 text-xs"
+                          >
+                            ✏️ Edit
+                          </Button>
+                          <Button
+                            onClick={() => handleAddNote(test.name)}
+                            size="sm"
+                            className="bg-indigo-600 hover:bg-indigo-700 text-xs"
+                          >
+                            📝 Notiz
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))}
