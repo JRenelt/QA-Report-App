@@ -992,52 +992,72 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       )}
                       
                       <div className="flex items-center justify-between">
-                        {/* Links: Status-Buttons (blass wenn nicht aktiviert) */}
+                        {/* Links: Status-Buttons (wie Vollbild-Version, blass wenn inaktiv) */}
                         <div className="flex items-center gap-2">
-                          <Button
+                          <button
                             onClick={() => setTestStatus(test.name, 'success')}
-                            size="sm"
-                            className={`text-xs ${
-                              testStatuses[test.name] === 'success' 
-                                ? 'bg-green-600 hover:bg-green-700 text-white' 
-                                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
-                            }`}
+                            style={{
+                              padding: '6px 12px',
+                              borderRadius: '6px',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '12px',
+                              fontWeight: '500',
+                              transition: 'all 0.2s',
+                              background: testStatuses[test.name] === 'success' ? '#059669' : '#4b5563',
+                              color: testStatuses[test.name] === 'success' ? 'white' : '#9ca3af'
+                            }}
                           >
                             ✅
-                          </Button>
-                          <Button
+                          </button>
+                          <button
                             onClick={() => setTestStatus(test.name, 'error')}
-                            size="sm"
-                            className={`text-xs ${
-                              testStatuses[test.name] === 'error' 
-                                ? 'bg-red-600 hover:bg-red-700 text-white' 
-                                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
-                            }`}
+                            style={{
+                              padding: '6px 12px',
+                              borderRadius: '6px',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '12px',
+                              fontWeight: '500',
+                              transition: 'all 0.2s',
+                              background: testStatuses[test.name] === 'error' ? '#dc2626' : '#4b5563',
+                              color: testStatuses[test.name] === 'error' ? 'white' : '#9ca3af'
+                            }}
                           >
                             ❌
-                          </Button>
-                          <Button
+                          </button>
+                          <button
                             onClick={() => setTestStatus(test.name, 'warning')}
-                            size="sm"
-                            className={`text-xs ${
-                              testStatuses[test.name] === 'warning' 
-                                ? 'bg-yellow-600 hover:bg-yellow-700 text-white' 
-                                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
-                            }`}
+                            style={{
+                              padding: '6px 12px',
+                              borderRadius: '6px',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '12px',
+                              fontWeight: '500',
+                              transition: 'all 0.2s',
+                              background: testStatuses[test.name] === 'warning' ? '#d97706' : '#4b5563',
+                              color: testStatuses[test.name] === 'warning' ? 'white' : '#9ca3af'
+                            }}
                           >
                             ⏳
-                          </Button>
-                          <Button
+                          </button>
+                          <button
                             onClick={() => setTestStatus(test.name, 'info')}
-                            size="sm"
-                            className={`text-xs ${
-                              testStatuses[test.name] === 'info' 
-                                ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
-                            }`}
+                            style={{
+                              padding: '6px 12px',
+                              borderRadius: '6px',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '12px',
+                              fontWeight: '500',
+                              transition: 'all 0.2s',
+                              background: testStatuses[test.name] === 'info' ? '#2563eb' : '#4b5563',
+                              color: testStatuses[test.name] === 'info' ? 'white' : '#9ca3af'
+                            }}
                           >
                             🗑️
-                          </Button>
+                          </button>
                         </div>
                         
                         {/* Rechts: Edit- und Notizen-Buttons (Outline-Format wie Zahnrad) */}
