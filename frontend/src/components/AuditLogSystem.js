@@ -1315,14 +1315,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               overflow: 'hidden'
             }}
           >
-            <div className="bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+            <div className="bg-gray-800 border-b border-gray-700 p-4">
               <h3 className="text-xl font-semibold text-cyan-400">⚙️ AuditLog Konfiguration</h3>
-              <button 
-                onClick={closeConfigDialog}
-                className="text-gray-400 hover:text-white text-2xl leading-none"
-              >
-                &times;
-              </button>
             </div>
             
             <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 240px)' }}>
