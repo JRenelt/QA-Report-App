@@ -1030,7 +1030,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       )}
                       
                       <div className="flex items-center justify-between">
-                        {/* Links: Status-Buttons (wie Vollbild-Version, blass wenn inaktiv) */}
+                        {/* Links: Status-Buttons (mit Lucide Icons) */}
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => setTestStatus(test.name, 'success')}
@@ -1043,10 +1043,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               fontWeight: '500',
                               transition: 'all 0.2s',
                               background: testStatuses[test.name] === 'success' ? '#059669' : '#90ee90', // Hellgrün
-                              color: testStatuses[test.name] === 'success' ? 'white' : '#1f2937'
+                              color: testStatuses[test.name] === 'success' ? 'white' : '#1f2937',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
                             }}
+                            title="Test bestanden"
                           >
-                            ✅
+                            <Check size={14} />
                           </button>
                           <button
                             onClick={() => setTestStatus(test.name, 'error')}
@@ -1059,10 +1063,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               fontWeight: '500',
                               transition: 'all 0.2s',
                               background: testStatuses[test.name] === 'error' ? '#dc2626' : '#ffb3ba', // Hellrot
-                              color: testStatuses[test.name] === 'error' ? 'white' : '#1f2937'
+                              color: testStatuses[test.name] === 'error' ? 'white' : '#1f2937',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
                             }}
+                            title="Test fehlgeschlagen"
                           >
-                            ❌
+                            <X size={14} />
                           </button>
                           <button
                             onClick={() => setTestStatus(test.name, 'warning')}
@@ -1075,10 +1083,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               fontWeight: '500',
                               transition: 'all 0.2s',
                               background: testStatuses[test.name] === 'warning' ? '#d97706' : '#ffd700', // HellOrange/Gelb
-                              color: testStatuses[test.name] === 'warning' ? 'white' : '#1f2937'
+                              color: testStatuses[test.name] === 'warning' ? 'white' : '#1f2937',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
                             }}
+                            title="Test in Bearbeitung"
                           >
-                            ⏳
+                            <Pickaxe size={14} />
                           </button>
                           <button
                             onClick={() => setTestStatus(test.name, 'info')}
@@ -1091,10 +1103,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               fontWeight: '500',
                               transition: 'all 0.2s',
                               background: testStatuses[test.name] === 'info' ? '#2563eb' : '#add8e6', // Hellblau
-                              color: testStatuses[test.name] === 'info' ? 'white' : '#1f2937'
+                              color: testStatuses[test.name] === 'info' ? 'white' : '#1f2937',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
                             }}
+                            title="Test übersprungen"
                           >
-                            🗑️
+                            <CaptionsOff size={14} />
                           </button>
                         </div>
                         
