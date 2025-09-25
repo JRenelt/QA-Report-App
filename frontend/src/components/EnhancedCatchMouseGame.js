@@ -211,13 +211,14 @@ const EnhancedCatchMouseGame = ({ isOpen, onClose }) => {
       }
 
       // Update vehicles (Layer 4)
-      newObjects.vehicles = newObjects.vehicles.map(vehicle => ({
-        ...vehicle,
-        x: vehicle.x + vehicle.speed * vehicle.direction,
-        // Wrap around screen
-        x: vehicle.x < -vehicle.size.width ? CANVAS_WIDTH : 
-           vehicle.x > CANVAS_WIDTH ? -vehicle.size.width : vehicle.x
-      }));
+      newObjects.vehicles = newObjects.vehicles.map(vehicle => {
+        const newX = vehicle.x + vehicle.speed * vehicle.direction;
+        return {
+          ...vehicle,
+          x: newX < -vehicle.size.width ? CANVAS_WIDTH : 
+             newX > CANVAS_WIDTH ? -vehicle.size.width : newX
+        };
+      });
 
       // Update humans (Layer 5)
       newObjects.humans = newObjects.humans.map(human => ({
