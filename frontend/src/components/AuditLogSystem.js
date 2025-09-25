@@ -681,14 +681,19 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             top: 20px;
             right: 20px;
             padding: 10px 16px;
-            background: #111827;
-            color: #9CA3AF;
-            border: 1px solid #374151;
+            background: #6b7280;
+            color: white;
+            border: 1px solid #4b5563;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+          }
+          .print-btn:hover {
+            background: #4b5563;
+            transform: translateY(-1px);
           }
           @media print {
             body { 
