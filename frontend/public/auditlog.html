@@ -508,6 +508,12 @@
             testMethodology: 'Manueller Funktionstest mit definierten Testfällen. Eingaben über Web-Oberfläche, Auswertung durch visuelle Prüfung und Funktionsvalidierung.'
         }));
 
+        // Version-Update wenn veraltet
+        if (window.auditConfig.version !== 'v2.3.0') {
+            window.auditConfig.version = 'v2.3.0';
+            localStorage.setItem('favorg-audit-config', JSON.stringify(window.auditConfig));
+        }
+
         // Test-Kategorien
         window.categories = [
             { name: 'Allgemeines Design', icon: '🎨', count: 4 },
