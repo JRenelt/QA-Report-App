@@ -1344,7 +1344,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       type="text"
                       value={auditConfig.version}
                       onChange={(e) => setAuditConfig({...auditConfig, version: e.target.value})}
-                      placeholder="z.B. v1.2.3"
+                      placeholder="z.B. v2.3.0"
                       className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
                     />
                   </div>
