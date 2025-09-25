@@ -213,22 +213,26 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
   const handleAddNote = (testName) => {
     const currentNote = testNotes[testName] || '';
-    const newNote = prompt('Bemerkung hinzufügen/bearbeiten:', currentNote);
+    setNoteDialog({ show: true, testName, currentNote });
+  };
+
+  const confirmAddNote = (newNote) => {
     if (newNote !== null) { // null bedeutet Abbruch
       if (newNote.trim() === '') {
         // Leere Notiz = Notiz löschen
         const updatedNotes = { ...testNotes };
-        delete updatedNotes[testName];
+        delete updatedNotes[noteDialog.testName];
         setTestNotes(updatedNotes);
         toast.success('Notiz entfernt');
       } else {
         setTestNotes({
           ...testNotes,
-          [testName]: newNote.trim()
+          [noteDialog.testName]: newNote.trim()
         });
         toast.success('Notiz gespeichert');
       }
     }
+    setNoteDialog({ show: false, testName: '', currentNote: '' });
   };
 
   const handleSaveToArchive = () => {
