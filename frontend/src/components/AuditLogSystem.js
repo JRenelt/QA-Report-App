@@ -1327,7 +1327,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               </Button>
               <Button
                 onClick={() => {
-                  const textarea = document.querySelector('#noteDialog textarea');
+                  const textarea = document.getElementById('noteTextarea');
                   if (textarea) confirmAddNote(textarea.value);
                 }}
                 className="bg-cyan-600 hover:bg-cyan-700"
