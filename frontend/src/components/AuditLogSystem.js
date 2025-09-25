@@ -566,20 +566,23 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        <div class="section">
-          <h2>🎯 Ziel des Tests</h2>
-          <p>${auditConfig.testGoal}</p>
-        </div>
+        <!-- Seitenumbruch für neue Seite -->
+        <div style="page-break-before: always;">
+          <div class="section">
+            <h2>🎯 Ziel des Tests</h2>
+            <p>${auditConfig.testGoal}</p>
+          </div>
 
-        <div class="section">
-          <h2>📋 Testobjekt</h2>
-          <p><strong>Testbereich:</strong> ${categoryToShow}</p>
-          <p>Testpunkte werden systematisch auf Funktionalität, Design-Konsistenz und Benutzerfreundlichkeit überprüft.</p>
-        </div>
+          <div class="section">
+            <h2>📋 Testobjekt</h2>
+            <p><strong>Testbereich:</strong> ${categoryToShow}</p>
+            <p>Testpunkte werden systematisch auf Funktionalität, Design-Konsistenz und Benutzerfreundlichkeit überprüft.</p>
+          </div>
 
-        <div class="section">
-          <h2>🔬 Testmethodik</h2>
-          <p>${auditConfig.testMethodology}</p>
+          <div class="section">
+            <h2>🔬 Testmethodik</h2>
+            <p>${auditConfig.testMethodology}</p>
+          </div>
         </div>
 
         <div class="results-summary">
