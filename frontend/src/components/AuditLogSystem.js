@@ -611,24 +611,24 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           .status-warning { background: #f59e0b; color: white; }
           .status-ungeprüft { background: #6b7280; color: white; }
           
-          /* Verbesserte Gesamtübersicht - Kompakt für DIN A4 */
+          /* Verbesserte Gesamtübersicht - Nur Rahmen, keine Hintergrundfarbe */
           .results-summary {
-            background: #111827;
-            color: #9CA3AF !important;
+            border: 2px solid #374151;
+            color: #1f2937 !important;
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
-            border: 1px solid #374151;
+            background: white !important;
             page-break-inside: avoid;
           }
           .results-summary h2 {
             margin-top: 0;
-            color: #9CA3AF !important;
+            color: #1f2937 !important;
             font-size: 14pt;
             margin-bottom: 10px;
           }
           .results-summary p {
-            color: #9CA3AF !important;
+            color: #1f2937 !important;
             font-size: 10pt;
             margin-bottom: 12px;
             line-height: 1.3;
@@ -641,8 +641,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           }
           .result-item {
             text-align: center;
-            background: rgba(17, 24, 39, 0.8);
-            border: 1px solid #374151;
+            background: white;
+            border: 1px solid #d1d5db;
             padding: 8px 4px;
             border-radius: 4px;
           }
@@ -650,12 +650,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             font-size: 16pt;
             font-weight: bold;
             display: block;
-            color: #9CA3AF !important;
+            color: #1f2937 !important;
           }
           .result-label {
             font-size: 8pt;
-            opacity: 0.9;
+            opacity: 0.8;
             line-height: 1.1;
+            color: #6b7280;
           }
           
           .issues-list {
