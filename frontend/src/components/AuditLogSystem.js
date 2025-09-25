@@ -244,7 +244,10 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   };
 
   // Test Results Calculation
-  const calculateTestResults = (tests) => {
+  const calculateTestResults = (tests, customStatuses = null, customNotes = null) => {
+    // Verwende custom Status/Notes für Archiv-Berichte oder aktuelle für Live-Export
+    const statusesToUse = customStatuses || testStatuses;
+    const notesToUse = customNotes || testNotes;
     let total = tests.length;
     let passed = 0;
     let failed = 0;
