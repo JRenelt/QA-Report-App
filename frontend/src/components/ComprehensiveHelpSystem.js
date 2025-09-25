@@ -1022,7 +1022,7 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        <div className="border-t pt-4 text-center text-sm text-gray-500">
+        <div className="border-t pt-4 text-center text-sm text-black dark:text-gray-100">
           <p>
             <strong>Kontakt:</strong> info@id2.de | <strong>Technischer Support:</strong> support@id2.de
           </p>
