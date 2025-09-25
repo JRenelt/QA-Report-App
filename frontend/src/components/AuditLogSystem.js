@@ -1132,7 +1132,22 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       {/* Config Dialog */}
       {showConfigDialog && (
         <Dialog open={showConfigDialog} onOpenChange={setShowConfigDialog}>
-          <DialogContent className="w-full max-w-2xl bg-gray-900 border-gray-700">
+          <DialogContent 
+            className="w-full max-w-2xl bg-gray-900 border-gray-700"
+            style={{
+              position: 'fixed',
+              top: '90px', // 10px Abstand von FavOrg Header (80px)
+              bottom: '60px', // 10px Abstand von FavOrg Footer (50px) 
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 'calc(100% - 40px)', // 20px Gesamtabstand (10px links + 10px rechts)
+              maxWidth: '800px',
+              maxHeight: 'calc(100vh - 160px)', // Höhe zwischen Header und Footer
+              zIndex: 10000, // Höher als AuditLog Dialog (9999)
+              margin: 0,
+              overflow: 'hidden'
+            }}
+          >
             <div className="bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
               <h3 className="text-xl font-semibold text-cyan-400">⚙️ AuditLog Konfiguration</h3>
               <button 
