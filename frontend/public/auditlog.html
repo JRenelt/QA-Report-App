@@ -465,11 +465,11 @@
         <div class="audit-footer">
             <!-- Links: 5 Status-Filter Buttons -->
             <div class="footer-left">
-                <button class="btn btn-primary active" onclick="setFilter('')" id="filterAll">Alle (0)</button>
-                <button class="btn btn-success" onclick="setFilter('success')" id="filterSuccess">✅ (0)</button>
-                <button class="btn btn-danger" onclick="setFilter('error')" id="filterError">❌ (0)</button>
-                <button class="btn btn-warning" onclick="setFilter('warning')" id="filterWarning">⏳ (0)</button>
-                <button class="btn btn-info" onclick="setFilter('info')" id="filterInfo">🗑️ (0)</button>
+                <button class="btn btn-primary active" onclick="setFilter('')" id="filterAll" title="Alle Tests anzeigen">Alle (0)</button>
+                <button class="btn btn-success" onclick="setFilter('success')" id="filterSuccess" title="Nur bestandene Tests anzeigen"><i data-lucide="check"></i> (0)</button>
+                <button class="btn btn-danger" onclick="setFilter('error')" id="filterError" title="Nur fehlgeschlagene Tests anzeigen"><i data-lucide="x"></i> (0)</button>
+                <button class="btn btn-warning" onclick="setFilter('warning')" id="filterWarning" title="Nur Tests in Bearbeitung anzeigen"><i data-lucide="pickaxe"></i> (0)</button>
+                <button class="btn btn-info" onclick="setFilter('info')" id="filterInfo" title="Nur übersprungene Tests anzeigen"><i data-lucide="captions-off"></i> (0)</button>
             </div>
             <!-- Rechts: 5 Aktions-Buttons -->
             <div class="footer-right">
