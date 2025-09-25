@@ -926,25 +926,39 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               <div className="w-80 bg-gray-800 border-r border-gray-700 p-4 overflow-y-auto">
                 <h3 className="text-lg font-semibold text-cyan-400 mb-4">📋 Test-Bereiche</h3>
                 <div className="space-y-2">
-                  {testCategories.map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => setCurrentCategory(category)}
-                      className={`w-full text-left p-3 rounded-lg border transition-all duration-200 flex items-center justify-between ${
-                        currentCategory === category
-                          ? 'bg-cyan-600 text-white border-cyan-500'
-                          : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-cyan-900 hover:border-cyan-600'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="text-lg">{getCategoryIcon(category)}</span>
-                        <span className="font-medium">{category}</span>
-                      </div>
-                      <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs">
-                        {(predefinedTests[category]?.length || 0) + (dynamicTests[category]?.length || 0)}
-                      </span>
-                    </button>
-                  ))}
+                  {testCategories.map((category) => {
+                    const counter = getCategoryCounter(category);
+                    const isCompleted = counter === 0;
+                    
+                    return (
+                      <button
+                        key={category}
+                        onClick={() => setCurrentCategory(category)}
+                        className={`w-full text-left p-3 rounded-lg border transition-all duration-200 flex items-center justify-between ${
+                          currentCategory === category
+                            ? (isCompleted ? 'bg-green-600 text-white border-green-500' : 'bg-cyan-600 text-white border-cyan-500')
+                            : (isCompleted ? 'bg-green-700 border-green-600 text-green-100 hover:bg-green-800' : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-cyan-900 hover:border-cyan-600')
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg">{getCategoryIcon(category)}</span>
+                          <span className="font-medium">{category}</span>
+                        </div>
+                        {counter > 0 && (
+                          <span className={`px-2 py-1 rounded-full text-xs font-bold ${
+                            currentCategory === category
+                              ? 'bg-white text-cyan-600'
+                              : 'bg-cyan-600 text-white'
+                          }`}>
+                            {counter}
+                          </span>
+                        )}
+                        {counter === 0 && (
+                          <span className="text-green-300 text-lg">✓</span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
