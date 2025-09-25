@@ -193,7 +193,7 @@ const AdvancedCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
   };
 
   const deleteCategory = async (categoryName) => {
-    if (!confirm(`Kategorie "${categoryName}" wirklich löschen?`)) return;
+    if (!window.confirm(`Kategorie "${categoryName}" wirklich löschen?`)) return;
 
     try {
       await onSave({
