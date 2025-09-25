@@ -1081,48 +1081,47 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </Button>
             <Button
               onClick={() => setStatusFilter('info')}
-              className={`text-xs ${statusFilter === 'info' ? 'bg-blue-600' : 'bg-gray-700'}`}
+              className={`text-xs px-3 py-2 rounded font-medium transition-all ${statusFilter === 'info' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 border border-gray-600'}`}
               size="sm"
             >
               🗑️ ({counts.info})
             </Button>
           </div>
 
-          {/* Rechts: 5 Aktions-Buttons */}
+          {/* Rechts: 5 Aktions-Buttons mit Vollbild-Design */}
           <div className="flex items-center gap-2">
             <Button
               onClick={openConfigDialog}
               size="sm"
-              className="bg-gray-700 hover:bg-gray-600 text-xs"
+              className="bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 text-xs px-3 py-2 rounded font-medium transition-all"
             >
               ⚙️ Config
             </Button>
             <Button
               onClick={handleSaveToArchive}
               size="sm"
-              className="bg-gray-700 hover:bg-gray-600 text-xs"
+              className="bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 text-xs px-3 py-2 rounded font-medium transition-all"
             >
               💾 Test speichern
             </Button>
             <Button
               onClick={toggleArchiveView}
               size="sm"
-              className="bg-gray-700 hover:bg-gray-600 text-xs"
+              className="bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 text-xs px-3 py-2 rounded font-medium transition-all"
             >
               {viewMode === 'archive' ? '📋 Testpunkte' : `📁 Archiv (${archivedReports.length})`}
             </Button>
             <Button
               onClick={handlePDFExport}
               size="sm"
-              className="bg-gray-700 hover:bg-gray-600 text-xs"
+              className="bg-gray-700 hover:bg-gray-600 text-gray-300 border border-gray-600 text-xs px-3 py-2 rounded font-medium transition-all"
             >
               📄 PDF-Export
             </Button>
             <Button
               onClick={handleResetAll}
               size="sm"
-              variant="outline"
-              className="text-xs"
+              className="bg-red-600 hover:bg-red-700 text-white border border-red-500 text-xs px-3 py-2 rounded font-medium transition-all"
             >
               🗑️ Reset
             </Button>
