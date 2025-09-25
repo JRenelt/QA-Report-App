@@ -728,12 +728,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             <span style="font-weight: 600; font-size: 11pt;">💻 Testumgebung:</span> ${auditConfig.environment}
           </div>
 
-          <!-- Kompakte Gesamtübersicht für DIN A4 -->
+          <!-- Kompakte Gesamtübersicht für DIN A4 - Nur Rahmen -->
           <div class="results-summary">
             <h2>📊 Gesamtübersicht</h2>
             <p>
               ${results.passed} von ${results.total} Testfällen bestanden.
               ${results.failed > 0 ? ' Es wurden ' + results.failed + ' kritische Fehler festgestellt.' : ' Alle kritischen Tests erfolgreich.'}
+              ${results.ungeprüft > 0 ? ` ${results.ungeprüft} Testfälle wurden nicht geprüft.` : ''}
             </p>
             <div class="results-grid">
               <div class="result-item">
