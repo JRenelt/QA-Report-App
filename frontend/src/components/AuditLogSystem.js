@@ -884,6 +884,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       </p>
                       <div className="flex items-center gap-2">
                         <Button
+                          onClick={() => viewReport(report)}
+                          size="sm"
+                          className="bg-blue-600 hover:bg-blue-700 text-xs"
+                        >
+                          👁️ Anzeigen
+                        </Button>
+                        <Button
                           onClick={() => loadReport(index)}
                           size="sm"
                           className="bg-cyan-600 hover:bg-cyan-700 text-xs"
