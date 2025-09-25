@@ -561,8 +561,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         <div class="section">
           <h2>🧪 Testfälle</h2>
           ${tests.map((test, index) => {
-            const status = testStatuses[test.name] || 'ungeprüft';
-            const notes = testNotes[test.name];
+            const status = statusesToUse[test.name] || 'ungeprüft';
+            const notes = notesToUse[test.name];
             let statusText = '';
             let statusClass = '';
             
@@ -584,10 +584,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 statusClass = 'ungeprüft';
             }
             
+            // Zeige Kategorie wenn alle Tests exportiert werden
+            const categoryInfo = test.category ? ` (${test.categoryIcon} ${test.category})` : '';
+            
             return `
               <div class="test-case ${statusClass}">
                 <div class="test-info">
-                  <div class="test-name">${index + 1}. ${test.icon} ${test.name}</div>
+                  <div class="test-name">${index + 1}. ${test.icon} ${test.name}${categoryInfo}</div>
                   <div class="test-description">${test.tooltip}</div>
                   ${notes ? `<div class="test-notes">💭 Notiz: ${notes}</div>` : ''}
                 </div>
