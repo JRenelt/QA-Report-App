@@ -939,7 +939,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     return (
                       <button
                         key={category}
-                        onClick={() => setCurrentCategory(category)}
+                        onClick={() => {
+                          setCurrentCategory(category);
+                          // Zeige alle Tests der Kategorie im Main-Bereich an
+                          setStatusFilter('');
+                        }}
                         className={`w-full text-left p-3 rounded-lg border transition-all duration-200 flex items-center justify-between ${
                           currentCategory === category
                             ? (isCompleted ? 'bg-green-600 text-white border-green-500' : 'bg-cyan-600 text-white border-cyan-500')
