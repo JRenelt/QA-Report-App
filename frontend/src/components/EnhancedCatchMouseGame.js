@@ -66,7 +66,7 @@ const EnhancedCatchMouseGame = ({ isOpen, onClose }) => {
 
   // Load Spielteppich background image
   useEffect(() => {
-    const img = new Image();
+    const img = new window.Image();
     img.onload = () => {
       backgroundImageRef.current = img;
       setBackgroundLoaded(true);
