@@ -1226,8 +1226,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 alignItems: 'center',
                 gap: '6px',
                 whiteSpace: 'nowrap',
-                background: statusFilter === '' ? '#06b6d4' : '#374151',
-                color: statusFilter === '' ? 'white' : '#9ca3af'
+                background: statusFilter === '' ? '#06b6d4' : '#a8dadc', // Hellblau als Basis für "Alle"
+                color: statusFilter === '' ? 'white' : '#1f2937'
               }}
             >
               Alle ({counts.all})
@@ -1246,8 +1246,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 alignItems: 'center',
                 gap: '6px',
                 whiteSpace: 'nowrap',
-                background: statusFilter === 'success' ? '#059669' : '#374151',
-                color: statusFilter === 'success' ? 'white' : '#9ca3af'
+                background: statusFilter === 'success' ? '#059669' : '#90ee90', // Hellgrün
+                color: statusFilter === 'success' ? 'white' : '#1f2937'
               }}
             >
               ✅ ({counts.success})
@@ -1266,8 +1266,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 alignItems: 'center',
                 gap: '6px',
                 whiteSpace: 'nowrap',
-                background: statusFilter === 'error' ? '#dc2626' : '#374151',
-                color: statusFilter === 'error' ? 'white' : '#9ca3af'
+                background: statusFilter === 'error' ? '#dc2626' : '#ffb3ba', // Hellrot
+                color: statusFilter === 'error' ? 'white' : '#1f2937'
               }}
             >
               ❌ ({counts.error})
@@ -1286,8 +1286,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 alignItems: 'center',
                 gap: '6px',
                 whiteSpace: 'nowrap',
-                background: statusFilter === 'warning' ? '#d97706' : '#374151',
-                color: statusFilter === 'warning' ? 'white' : '#9ca3af'
+                background: statusFilter === 'warning' ? '#d97706' : '#ffd700', // HellOrange/Gelb
+                color: statusFilter === 'warning' ? 'white' : '#1f2937'
               }}
             >
               ⏳ ({counts.warning})
@@ -1306,8 +1306,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 alignItems: 'center',
                 gap: '6px',
                 whiteSpace: 'nowrap',
-                background: statusFilter === 'info' ? '#2563eb' : '#374151',
-                color: statusFilter === 'info' ? 'white' : '#9ca3af'
+                background: statusFilter === 'info' ? '#2563eb' : '#add8e6', // Hellblau
+                color: statusFilter === 'info' ? 'white' : '#1f2937'
               }}
             >
               🗑️ ({counts.info})
