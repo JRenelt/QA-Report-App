@@ -1093,7 +1093,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       <p className="text-gray-400 text-sm mb-3">
                         Bericht erstellt am {report.timestamp} mit {report.completedTests} abgeschlossenen Tests
                       </p>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center justify-end gap-2">
                         <Button
                           onClick={() => viewReport(report)}
                           size="sm"
