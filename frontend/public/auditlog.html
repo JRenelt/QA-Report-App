@@ -981,7 +981,7 @@
                         issues.push({
                             name: test.name,
                             type: 'WARNUNG',
-                            description: window.testNotes[test.name] || 'Verbesserung empfohlen'
+                            description: notesToUse[test.name] || 'Verbesserung empfohlen'
                         });
                         break;
                     default:
