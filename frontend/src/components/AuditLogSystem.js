@@ -256,7 +256,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     let issues = [];
     
     tests.forEach(test => {
-      const status = testStatuses[test.name] || 'ungeprüft';
+      const status = statusesToUse[test.name] || 'ungeprüft';
       switch(status) {
         case 'success':
           passed++;
@@ -266,7 +266,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           issues.push({
             name: test.name,
             type: 'FEHLER',
-            description: testNotes[test.name] || 'Kritischer Fehler festgestellt'
+            description: notesToUse[test.name] || 'Kritischer Fehler festgestellt'
           });
           break;
         case 'warning':
@@ -274,7 +274,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           issues.push({
             name: test.name,
             type: 'WARNUNG',
-            description: testNotes[test.name] || 'Verbesserung empfohlen'
+            description: notesToUse[test.name] || 'Verbesserung empfohlen'
           });
           break;
         default:
