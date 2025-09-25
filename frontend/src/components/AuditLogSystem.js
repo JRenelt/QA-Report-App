@@ -470,6 +470,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     const statusesToUse = customStatuses || testStatuses;
     const notesToUse = customNotes || testNotes;
     const categoryToShow = reportCategory || 'Alle Bereiche';
+    
+    // Gruppiere Tests nach Kategorien für bessere Übersichtlichkeit
+    const testsByCategory = {};
+    tests.forEach(test => {
+      const category = test.category || 'Sonstige';
+      if (!testsByCategory[category]) {
+        testsByCategory[category] = [];
+      }
+      testsByCategory[category].push(test);
+    });
+    
     return `
       <!DOCTYPE html>
       <html lang="de">
@@ -479,43 +490,45 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         <style>
           body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 30px; 
+            margin: 20px; 
             background: white !important;
             color: #333 !important;
-            line-height: 1.5;
+            line-height: 1.4;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+            font-size: 11pt;
           }
           .report-header { 
             text-align: center; 
             border-bottom: 3px solid #06b6d4; 
-            padding-bottom: 25px; 
-            margin-bottom: 40px;
+            padding-bottom: 20px; 
+            margin-bottom: 25px;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            padding: 30px;
+            padding: 25px;
             border-radius: 8px;
           }
           .report-header h1 {
             color: #1a365d !important;
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 28px;
+            margin-bottom: 8px;
             font-weight: 700;
           }
           .metadata-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 15px;
+            margin-bottom: 20px;
             background: #f8fafc;
-            padding: 20px;
+            padding: 15px;
             border-radius: 6px;
             border-left: 4px solid #06b6d4;
           }
           .metadata-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #e2e8f0;
+            font-size: 10pt;
           }
           .metadata-label {
             font-weight: 600;
@@ -526,27 +539,42 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             font-weight: 500;
           }
           .section {
-            margin-bottom: 35px;
-            padding: 20px;
+            margin-bottom: 25px;
+            padding: 15px;
             border-radius: 6px;
             border: 1px solid #e5e7eb;
           }
           .section h2 {
             color: #111827 !important;
-            font-size: 20px;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
+            font-size: 16pt;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
             border-bottom: 2px solid #111827;
           }
+          .category-section {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+          }
+          .category-title {
+            color: #06b6d4 !important;
+            font-size: 14pt;
+            font-weight: 700;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: #f0f9ff;
+            border-left: 4px solid #06b6d4;
+            border-radius: 4px;
+          }
           .test-case {
-            padding: 15px;
-            margin-bottom: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
             background: white;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            font-size: 10pt;
           }
           .test-case.success { border-color: #10b981; background: #f0fdf4; }
           .test-case.error { border-color: #ef4444; background: #fef2f2; }
@@ -557,59 +585,79 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           }
           .test-name {
             font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 5px;
+            font-size: 11pt;
+            margin-bottom: 4px;
           }
           .test-description {
             color: #6b7280;
-            font-size: 14px;
-            margin-bottom: 8px;
+            font-size: 9pt;
+            margin-bottom: 6px;
           }
           .test-notes {
             font-style: italic;
             color: #4b5563;
-            font-size: 13px;
+            font-size: 9pt;
           }
           .status-badge {
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 9pt;
             text-align: center;
-            min-width: 80px;
+            min-width: 70px;
           }
           .status-success { background: #10b981; color: white; }
           .status-error { background: #ef4444; color: white; }
           .status-warning { background: #f59e0b; color: white; }
           .status-ungeprüft { background: #6b7280; color: white; }
+          
+          /* Verbesserte Gesamtübersicht - Kompakt für DIN A4 */
           .results-summary {
-            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-            color: white !important;
-            padding: 25px;
-            border-radius: 8px;
-            margin-bottom: 25px;
+            background: #111827;
+            color: #9CA3AF !important;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #374151;
+            page-break-inside: avoid;
+          }
+          .results-summary h2 {
+            margin-top: 0;
+            color: #9CA3AF !important;
+            font-size: 14pt;
+            margin-bottom: 10px;
+          }
+          .results-summary p {
+            color: #9CA3AF !important;
+            font-size: 10pt;
+            margin-bottom: 12px;
+            line-height: 1.3;
           }
           .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 10px;
           }
           .result-item {
             text-align: center;
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 6px;
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid #374151;
+            padding: 8px 4px;
+            border-radius: 4px;
           }
           .result-number {
-            font-size: 28px;
+            font-size: 16pt;
             font-weight: bold;
             display: block;
+            color: #9CA3AF !important;
           }
           .result-label {
-            font-size: 12px;
+            font-size: 8pt;
             opacity: 0.9;
+            line-height: 1.1;
           }
+          
           .issues-list {
             list-style: none;
             padding: 0;
@@ -617,33 +665,41 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           .issue-item {
             background: #fef2f2;
             border-left: 4px solid #ef4444;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 0 6px 6px 0;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 0 4px 4px 0;
+            font-size: 10pt;
           }
           .issue-type {
             font-weight: 700;
             color: #dc2626;
-            font-size: 14px;
+            font-size: 10pt;
           }
           .print-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 12px 20px;
+            padding: 10px 16px;
             background: #111827;
             color: #9CA3AF;
             border: 1px solid #374151;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
           }
           @media print {
-            body { background: white !important; color: #333 !important; }
+            body { 
+              background: white !important; 
+              color: #333 !important;
+              margin: 15px !important;
+              font-size: 10pt;
+            }
             .print-btn { display: none; }
-            .section { page-break-inside: avoid; }
+            .section, .category-section { page-break-inside: avoid; }
+            .report-header { page-break-after: avoid; }
+            .results-summary { page-break-inside: avoid; }
           }
         </style>
       </head>
@@ -651,47 +707,47 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         <button class="print-btn" onclick="window.print()">📄 Bericht drucken</button>
         
         <div class="report-header" style="text-align: left;">
-          <h1 style="text-align: left; margin-bottom: 20px;">📋 Testbericht · FavOrg</h1>
-          <p style="font-size: 16px; color: #64748b; margin-bottom: 30px;">AuditLog-System Qualitätsprüfung</p>
+          <h1 style="text-align: left; margin-bottom: 15px;">📋 Testbericht · FavOrg</h1>
+          <p style="font-size: 14pt; color: #64748b; margin-bottom: 20px;">AuditLog-System Qualitätsprüfung</p>
           
           <!-- Metadaten kompakt gruppiert -->
-          <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
-            <div style="display: flex; gap: 10px;">
-              <span style="font-weight: 600;">📅 ${currentDate}</span>
-              <span style="font-weight: 600;">👤 ${auditConfig.tester}</span>
-              <span style="font-weight: 600;">🏷️ ${auditConfig.version}</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span style="font-weight: 600; font-size: 11pt;">📅 ${currentDate}</span>
+              <span style="font-weight: 600; font-size: 11pt;">👤 ${auditConfig.tester}</span>
+              <span style="font-weight: 600; font-size: 11pt;">🏷️ ${auditConfig.version}</span>
             </div>
           </div>
-          <div style="margin-bottom: 30px;">
-            <span style="font-weight: 600;">💻 Testumgebung:</span> ${auditConfig.environment}
+          <div style="margin-bottom: 20px;">
+            <span style="font-weight: 600; font-size: 11pt;">💻 Testumgebung:</span> ${auditConfig.environment}
           </div>
 
-          <!-- Gesamtübersicht direkt auf erster Seite -->
-          <div class="results-summary" style="margin-top: 30px; background: #111827; border: 1px solid #374151;">
-            <h2 style="margin-top: 0; color: #9CA3AF;">📊 Gesamtübersicht</h2>
-            <p style="color: #9CA3AF; font-size: 16px; margin-bottom: 20px;">
+          <!-- Kompakte Gesamtübersicht für DIN A4 -->
+          <div class="results-summary">
+            <h2>📊 Gesamtübersicht</h2>
+            <p>
               ${results.passed} von ${results.total} Testfällen bestanden.
               ${results.failed > 0 ? ' Es wurden ' + results.failed + ' kritische Fehler festgestellt.' : ' Alle kritischen Tests erfolgreich.'}
             </p>
             <div class="results-grid">
-              <div class="result-item" style="background: rgba(17, 24, 39, 0.8); border: 2px solid #374151;">
-                <span class="result-number" style="color: #9CA3AF;">${results.total}</span>
+              <div class="result-item">
+                <span class="result-number">${results.total}</span>
                 <span class="result-label">Gesamt</span>
               </div>
-              <div class="result-item" style="background: rgba(17, 24, 39, 0.8); border: 2px solid #374151;">
-                <span class="result-number" style="color: #9CA3AF;">${results.passed}</span>
+              <div class="result-item">
+                <span class="result-number">${results.passed}</span>
                 <span class="result-label">✅ Bestanden</span>
               </div>
-              <div class="result-item" style="background: rgba(17, 24, 39, 0.8); border: 2px solid #374151;">
-                <span class="result-number" style="color: #9CA3AF;">${results.failed}</span>
+              <div class="result-item">
+                <span class="result-number">${results.failed}</span>
                 <span class="result-label">❌ Fehler</span>
               </div>
-              <div class="result-item" style="background: rgba(17, 24, 39, 0.8); border: 2px solid #374151;">
-                <span class="result-number" style="color: #9CA3AF;">${results.warning}</span>
+              <div class="result-item">
+                <span class="result-number">${results.warning}</span>
                 <span class="result-label">⚠️ Warnung</span>
               </div>
-              <div class="result-item" style="background: rgba(17, 24, 39, 0.8); border: 2px solid #374151;">
-                <span class="result-number" style="color: #9CA3AF;">${results.ungeprüft}</span>
+              <div class="result-item">
+                <span class="result-number">${results.ungeprüft}</span>
                 <span class="result-label">⏳ Ungeprüft</span>
               </div>
             </div>
@@ -717,52 +773,55 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        <!-- Gesamtübersicht entfernt - ist jetzt auf Seite 1 -->
-
-        <!-- Seitenumbruch für Testfälle -->
+        <!-- Testfälle mit Bereichsüberschriften -->
         <div style="page-break-before: always;">
           <div class="section">
-            <h2>🧪 Testfälle</h2>
-          ${tests.map((test, index) => {
-            const status = statusesToUse[test.name] || 'ungeprüft';
-            const notes = notesToUse[test.name];
-            let statusText = '';
-            let statusClass = '';
-            
-            switch(status) {
-              case 'success':
-                statusText = 'OK';
-                statusClass = 'success';
-                break;
-              case 'error':
-                statusText = 'FEHLER';
-                statusClass = 'error';
-                break;
-              case 'warning':
-                statusText = 'WARNUNG';  
-                statusClass = 'warning';
-                break;
-              default:
-                statusText = 'UNGEPRÜFT';
-                statusClass = 'ungeprüft';
-            }
-            
-            // Zeige Kategorie wenn alle Tests exportiert werden
-            const categoryInfo = test.category ? ` (${test.categoryIcon} ${test.category})` : '';
-            
-            return `
-              <div class="test-case ${statusClass}">
-                <div class="test-info">
-                  <div class="test-name">${index + 1}. ${test.icon} ${test.name}${categoryInfo}</div>
-                  <div class="test-description">${test.tooltip}</div>
-                  ${notes ? `<div class="test-notes">💭 Notiz: ${notes}</div>` : ''}
+            <h2>🧪 Testfälle nach Bereichen</h2>
+            ${Object.keys(testsByCategory).map(category => {
+              const categoryTests = testsByCategory[category];
+              return `
+                <div class="category-section">
+                  <div class="category-title">
+                    ${getCategoryIcon(category)} ${category} (${categoryTests.length} Tests)
+                  </div>
+                  ${categoryTests.map((test, index) => {
+                    const status = statusesToUse[test.name] || 'ungeprüft';
+                    const notes = notesToUse[test.name];
+                    let statusText = '';
+                    let statusClass = '';
+                    
+                    switch(status) {
+                      case 'success':
+                        statusText = 'OK';
+                        statusClass = 'success';
+                        break;
+                      case 'error':
+                        statusText = 'FEHLER';
+                        statusClass = 'error';
+                        break;
+                      case 'warning':
+                        statusText = 'WARNUNG';  
+                        statusClass = 'warning';
+                        break;
+                      default:
+                        statusText = 'UNGEPRÜFT';
+                        statusClass = 'ungeprüft';
+                    }
+                    
+                    return `
+                      <div class="test-case ${statusClass}">
+                        <div class="test-info">
+                          <div class="test-name">${test.icon} ${test.name}</div>
+                          <div class="test-description">${test.tooltip}</div>
+                          ${notes ? `<div class="test-notes">💭 Notiz: ${notes}</div>` : ''}
+                        </div>
+                        <div class="status-badge status-${statusClass}">[${statusText}]</div>
+                      </div>
+                    `;
+                  }).join('')}
                 </div>
-                <div class="status-badge status-${statusClass}">[${statusText}]</div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-
+              `;
+            }).join('')}
           </div>
         </div>
 
@@ -798,6 +857,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             <p>Detaillierte Testdaten und Screenshots sind im internen AuditLog-System archiviert.</p>
             <p><strong>Berichts-ID:</strong> AuditLog-${Date.now()}</p>
             <p><strong>Generiert von:</strong> FavOrg AuditLog-System ${auditConfig.version}</p>
+            <p><strong>Testumfang:</strong> ${tests.length} Testpunkte in ${Object.keys(testsByCategory).length} Bereichen</p>
           </div>
         </div>
       </body>
