@@ -649,14 +649,23 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           <meta charset="UTF-8">
           <title>FavOrg - Benutzerhandbuch</title>
           <style>
+            :root {
+              --primary-color: #1e40af;
+              --secondary-color: #3b82f6;
+              --accent-color: #06b6d4;
+              --text-color: #1f2937;
+              --bg-color: #f8fafc;
+              --border-color: #e5e7eb;
+              --code-bg: #f1f5f9;
+            }
             body { 
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
               line-height: 1.6; 
-              color: #000000; /* Schwarz für besseren Kontrast */
+              color: var(--text-color); /* Tech-Doc Stil */
               max-width: 800px; 
               margin: 0 auto; 
               padding: 20px;
-              background: #ffffff; /* Weißer Hintergrund */
+              background-color: var(--bg-color); /* Tech-Doc Hintergrund */
             }
             .header { 
               text-align: center; 
