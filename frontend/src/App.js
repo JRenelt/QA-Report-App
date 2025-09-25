@@ -2983,7 +2983,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                           className="bg-cyan-600 hover:bg-cyan-700 text-white flex-1"
                           size="sm"
                         >
-                          🖥️ Vollbild
+                          📊 Neues Fenster
                         </Button>
                         <Button 
                           onClick={() => {
