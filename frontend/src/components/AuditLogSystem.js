@@ -549,27 +549,20 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       <body>
         <button class="print-btn" onclick="window.print()">📄 Bericht drucken</button>
         
-        <div class="report-header">
-          <h1>📋 Testbericht · FavOrg</h1>
-          <p style="font-size: 18px; color: #64748b; margin: 0;">AuditLog-System Qualitätsprüfung</p>
-        </div>
-
-        <div class="metadata-grid">
-          <div class="metadata-item">
-            <span class="metadata-label">📅 Datum:</span>
-            <span class="metadata-value">${currentDate}</span>
+        <div class="report-header" style="text-align: left;">
+          <h1 style="text-align: left; margin-bottom: 20px;">📋 Testbericht · FavOrg</h1>
+          <p style="font-size: 16px; color: #64748b; margin-bottom: 30px;">AuditLog-System Qualitätsprüfung</p>
+          
+          <!-- Metadaten kompakt gruppiert -->
+          <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 10px;">
+              <span style="font-weight: 600;">📅 ${currentDate}</span>
+              <span style="font-weight: 600;">👤 ${auditConfig.tester}</span>
+              <span style="font-weight: 600;">🏷️ ${auditConfig.version}</span>
+            </div>
           </div>
-          <div class="metadata-item">
-            <span class="metadata-label">👤 Tester:</span>
-            <span class="metadata-value">${auditConfig.tester}</span>
-          </div>
-          <div class="metadata-item">
-            <span class="metadata-label">🏷️ Version:</span>
-            <span class="metadata-value">${auditConfig.version}</span>
-          </div>
-          <div class="metadata-item">
-            <span class="metadata-label">💻 Testumgebung:</span>
-            <span class="metadata-value">${auditConfig.environment}</span>
+          <div style="margin-bottom: 30px;">
+            <span style="font-weight: 600;">💻 Testumgebung:</span> ${auditConfig.environment}
           </div>
         </div>
 
