@@ -652,11 +652,11 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
             body { 
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
               line-height: 1.6; 
-              color: #333; 
+              color: #000000; /* Schwarz für besseren Kontrast */
               max-width: 800px; 
               margin: 0 auto; 
               padding: 20px;
-              background: #f8fafc;
+              background: #ffffff; /* Weißer Hintergrund */
             }
             .header { 
               text-align: center; 
