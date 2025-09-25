@@ -1565,9 +1565,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 color: '#d1d5db',
                 border: '1px solid #4b5563'
               }}
-              title="Strukturierten Test-Bericht als PDF exportieren"
+              title="Quality Assurance-Bericht, also Qualitätssicherungsbericht."
             >
-              📄 PDF-Export
+              📄 QA-Bericht
             </button>
             <button
               onClick={handleResetAll}
