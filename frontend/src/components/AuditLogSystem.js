@@ -1339,7 +1339,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </button>
           </div>
 
-          {/* Rechts: 5 Aktions-Buttons - Vollbild-Style */}
+          {/* Rechts: 5 Aktions-Buttons - Mit Tooltips */}
           <div className="flex items-center gap-2">
             <button
               onClick={openConfigDialog}
@@ -1359,6 +1359,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 color: '#d1d5db',
                 border: '1px solid #4b5563'
               }}
+              title="Berichts-Konfiguration bearbeiten"
             >
               ⚙️ Config
             </button>
@@ -1380,6 +1381,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 color: '#d1d5db',
                 border: '1px solid #4b5563'
               }}
+              title="Aktuellen Test-Stand ins Archiv speichern"
             >
               💾 Test speichern
             </button>
@@ -1401,6 +1403,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 color: '#d1d5db',
                 border: '1px solid #4b5563'
               }}
+              title={viewMode === 'archive' ? 'Zurück zu Testpunkten' : 'Archivierte Berichte anzeigen'}
             >
               {viewMode === 'archive' ? '📋 Testpunkte' : `📁 Archiv (${archivedReports.length})`}
             </button>
@@ -1422,6 +1425,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 color: '#d1d5db',
                 border: '1px solid #4b5563'
               }}
+              title="Strukturierten Test-Bericht als PDF exportieren"
             >
               📄 PDF-Export
             </button>
@@ -1443,6 +1447,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 color: 'white',
                 border: 'none'
               }}
+              title="Alle Test-Status und Notizen zurücksetzen"
             >
               🗑️ Reset
             </button>
