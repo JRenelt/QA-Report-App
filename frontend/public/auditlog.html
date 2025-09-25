@@ -737,6 +737,7 @@
                                 Bericht erstellt am ${report.timestamp} mit ${report.completedTests} abgeschlossenen Tests
                             </p>
                             <div class="test-point-actions">
+                                <button class="btn btn-info btn-small" onclick="viewReport(${index})" title="Bericht anzeigen">👁️ Anzeigen</button>
                                 <button class="btn btn-primary btn-small" onclick="loadReport(${index})" title="Bericht laden">📥 Laden</button>
                                 <button class="btn btn-danger btn-small" onclick="deleteReport(${index})" title="Bericht löschen">🗑️ Löschen</button>
                             </div>
