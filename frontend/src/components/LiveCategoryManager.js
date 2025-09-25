@@ -166,7 +166,7 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
   };
 
   const deleteCategory = async (categoryName) => {
-    if (!confirm(`Kategorie "${categoryName}" wirklich löschen?\nAlle Unterkategorien werden ebenfalls gelöscht.`)) {
+    if (!window.confirm(`Kategorie "${categoryName}" wirklich löschen?\nAlle Unterkategorien werden ebenfalls gelöscht.`)) {
       return;
     }
 
