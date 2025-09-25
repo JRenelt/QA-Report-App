@@ -638,6 +638,29 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   };
 
+  const viewReport = (report) => {
+    // Rekonstruiere die Tests aus dem gespeicherten Bericht
+    const savedTests = Object.keys(report.testStatuses).map(testName => ({
+      name: testName,
+      icon: '📋', // Default Icon
+      tooltip: report.testNotes[testName] || 'Test aus Archiv'
+    }));
+    
+    const testResults = calculateTestResults(savedTests, report.testStatuses, report.testNotes);
+    const reportDate = report.timestamp;
+    
+    const printWindow = window.open('', '_blank', 'width=900,height=700');
+    printWindow.document.write(generateArchivedReport(savedTests, testResults, reportDate, report));
+    printWindow.document.close();
+    
+    toast.success(`Bericht "${report.category}" wird angezeigt`);
+  };
+
+  // Generate Archived Report HTML (für gespeicherte Berichte)
+  const generateArchivedReport = (tests, results, reportDate, originalReport) => {
+    return generateStructuredReport(tests, results, reportDate, originalReport.category, originalReport.testStatuses, originalReport.testNotes);
+  };
+
   // Status-Counts berechnen
   const getStatusCounts = () => {
     const allStatuses = Object.values(testStatuses);
