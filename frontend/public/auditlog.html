@@ -823,6 +823,11 @@
             }
             
             document.getElementById('testCount').textContent = window.archivedReports.length + ' Berichte';
+            
+            // Initialisiere Lucide Icons nach dem Rendern
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
             document.getElementById('currentCategoryTitle').textContent = '📁 Archivierte Test-Berichte';
         }
 
