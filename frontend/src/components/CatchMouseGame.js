@@ -173,15 +173,16 @@ const CatchMouseGame = ({ isOpen, onClose }) => {
       }));
 
       // Update animals
-      newObjects.animals = newObjects.animals.map(animal => ({
-        ...animal,
-        x: animal.x + Math.cos(animal.direction) * animal.speed,
-        y: animal.y + Math.sin(animal.direction) * animal.speed,
-        direction: animal.direction + (Math.random() - 0.5) * 0.1, // Random movement
-        // Wrap around screen
-        x: animal.x < 0 ? CANVAS_WIDTH : animal.x > CANVAS_WIDTH ? 0 : animal.x,
-        y: animal.y < 0 ? CANVAS_HEIGHT : animal.y > CANVAS_HEIGHT ? 0 : animal.y
-      }));
+      newObjects.animals = newObjects.animals.map(animal => {
+        const newX = animal.x + Math.cos(animal.direction) * animal.speed;
+        const newY = animal.y + Math.sin(animal.direction) * animal.speed;
+        return {
+          ...animal,
+          x: newX < 0 ? CANVAS_WIDTH : newX > CANVAS_WIDTH ? 0 : newX,
+          y: newY < 0 ? CANVAS_HEIGHT : newY > CANVAS_HEIGHT ? 0 : newY,
+          direction: animal.direction + (Math.random() - 0.5) * 0.1 // Random movement
+        };
+      });
 
       return newObjects;
     });
