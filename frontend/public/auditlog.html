@@ -1182,6 +1182,17 @@
             const statusesToUse = customStatuses || window.testStatuses;
             const notesToUse = customNotes || window.testNotes;
             const categoryToShow = reportCategory || window.currentCategory;
+            
+            // Gruppiere Tests nach Kategorien für bessere Übersichtlichkeit
+            const testsByCategory = {};
+            tests.forEach(test => {
+              const category = test.category || categoryToShow || 'Sonstige';
+              if (!testsByCategory[category]) {
+                testsByCategory[category] = [];
+              }
+              testsByCategory[category].push(test);
+            });
+            
             return `
                 <!DOCTYPE html>
                 <html lang="de">
@@ -1191,43 +1202,45 @@
                     <style>
                         body { 
                             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                            margin: 30px; 
+                            margin: 20px; 
                             background: white !important;
                             color: #333 !important;
-                            line-height: 1.5;
+                            line-height: 1.4;
                             -webkit-print-color-adjust: exact;
                             print-color-adjust: exact;
+                            font-size: 11pt;
                         }
                         .report-header { 
                             text-align: center; 
                             border-bottom: 3px solid #06b6d4; 
-                            padding-bottom: 25px; 
-                            margin-bottom: 40px;
+                            padding-bottom: 20px; 
+                            margin-bottom: 25px;
                             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-                            padding: 30px;
+                            padding: 25px;
                             border-radius: 8px;
                         }
                         .report-header h1 {
                             color: #1a365d !important;
-                            font-size: 32px;
-                            margin-bottom: 10px;
+                            font-size: 28px;
+                            margin-bottom: 8px;
                             font-weight: 700;
                         }
                         .metadata-grid {
                             display: grid;
                             grid-template-columns: 1fr 1fr;
-                            gap: 20px;
-                            margin-bottom: 30px;
+                            gap: 15px;
+                            margin-bottom: 20px;
                             background: #f8fafc;
-                            padding: 20px;
+                            padding: 15px;
                             border-radius: 6px;
                             border-left: 4px solid #06b6d4;
                         }
                         .metadata-item {
                             display: flex;
                             justify-content: space-between;
-                            padding: 8px 0;
+                            padding: 6px 0;
                             border-bottom: 1px solid #e2e8f0;
+                            font-size: 10pt;
                         }
                         .metadata-label {
                             font-weight: 600;
@@ -1238,27 +1251,42 @@
                             font-weight: 500;
                         }
                         .section {
-                            margin-bottom: 35px;
-                            padding: 20px;
+                            margin-bottom: 25px;
+                            padding: 15px;
                             border-radius: 6px;
                             border: 1px solid #e5e7eb;
                         }
                         .section h2 {
+                            color: #111827 !important;
+                            font-size: 16pt;
+                            margin-bottom: 12px;
+                            padding-bottom: 6px;
+                            border-bottom: 2px solid #111827;
+                        }
+                        .category-section {
+                            margin-bottom: 20px;
+                            page-break-inside: avoid;
+                        }
+                        .category-title {
                             color: #06b6d4 !important;
-                            font-size: 20px;
-                            margin-bottom: 15px;
-                            padding-bottom: 8px;
-                            border-bottom: 2px solid #06b6d4;
+                            font-size: 14pt;
+                            font-weight: 700;
+                            margin-bottom: 10px;
+                            padding: 8px 12px;
+                            background: #f0f9ff;
+                            border-left: 4px solid #06b6d4;
+                            border-radius: 4px;
                         }
                         .test-case {
-                            padding: 15px;
-                            margin-bottom: 12px;
-                            border: 2px solid #e5e7eb;
-                            border-radius: 6px;
+                            padding: 12px;
+                            margin-bottom: 8px;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 4px;
                             background: white;
                             display: flex;
                             align-items: center;
                             justify-content: space-between;
+                            font-size: 10pt;
                         }
                         .test-case.success { border-color: #10b981; background: #f0fdf4; }
                         .test-case.error { border-color: #ef4444; background: #fef2f2; }
@@ -1269,59 +1297,80 @@
                         }
                         .test-name {
                             font-weight: 600;
-                            font-size: 16px;
-                            margin-bottom: 5px;
+                            font-size: 11pt;
+                            margin-bottom: 4px;
                         }
                         .test-description {
                             color: #6b7280;
-                            font-size: 14px;
-                            margin-bottom: 8px;
+                            font-size: 9pt;
+                            margin-bottom: 6px;
                         }
                         .test-notes {
                             font-style: italic;
                             color: #4b5563;
-                            font-size: 13px;
+                            font-size: 9pt;
                         }
                         .status-badge {
-                            padding: 8px 16px;
-                            border-radius: 20px;
+                            padding: 6px 12px;
+                            border-radius: 15px;
                             font-weight: 600;
-                            font-size: 14px;
+                            font-size: 9pt;
                             text-align: center;
-                            min-width: 80px;
+                            min-width: 70px;
                         }
                         .status-success { background: #10b981; color: white; }
                         .status-error { background: #ef4444; color: white; }
                         .status-warning { background: #f59e0b; color: white; }
                         .status-ungeprüft { background: #6b7280; color: white; }
+                        
+                        /* Gesamtübersicht - Nur Rahmen, keine Hintergrundfarbe */
                         .results-summary {
-                            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-                            color: white !important;
-                            padding: 25px;
-                            border-radius: 8px;
-                            margin-bottom: 25px;
+                            border: 2px solid #374151;
+                            color: #1f2937 !important;
+                            padding: 15px;
+                            border-radius: 6px;
+                            margin-bottom: 20px;
+                            background: white !important;
+                            page-break-inside: avoid;
+                        }
+                        .results-summary h2 {
+                            margin-top: 0;
+                            color: #1f2937 !important;
+                            font-size: 14pt;
+                            margin-bottom: 10px;
+                        }
+                        .results-summary p {
+                            color: #1f2937 !important;
+                            font-size: 10pt;
+                            margin-bottom: 12px;
+                            line-height: 1.3;
                         }
                         .results-grid {
                             display: grid;
-                            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                            gap: 15px;
-                            margin-top: 15px;
+                            grid-template-columns: repeat(5, 1fr);
+                            gap: 8px;
+                            margin-top: 10px;
                         }
                         .result-item {
                             text-align: center;
-                            background: rgba(255,255,255,0.1);
-                            padding: 15px;
-                            border-radius: 6px;
+                            background: white;
+                            border: 1px solid #d1d5db;
+                            padding: 8px 4px;
+                            border-radius: 4px;
                         }
                         .result-number {
-                            font-size: 28px;
+                            font-size: 16pt;
                             font-weight: bold;
                             display: block;
+                            color: #1f2937 !important;
                         }
                         .result-label {
-                            font-size: 12px;
-                            opacity: 0.9;
+                            font-size: 8pt;
+                            opacity: 0.8;
+                            line-height: 1.1;
+                            color: #6b7280;
                         }
+                        
                         .issues-list {
                             list-style: none;
                             padding: 0;
@@ -1329,181 +1378,212 @@
                         .issue-item {
                             background: #fef2f2;
                             border-left: 4px solid #ef4444;
-                            padding: 15px;
-                            margin-bottom: 10px;
-                            border-radius: 0 6px 6px 0;
+                            padding: 12px;
+                            margin-bottom: 8px;
+                            border-radius: 0 4px 4px 0;
+                            font-size: 10pt;
                         }
                         .issue-type {
                             font-weight: 700;
                             color: #dc2626;
-                            font-size: 14px;
+                            font-size: 10pt;
                         }
                         .print-btn {
                             position: fixed;
                             top: 20px;
                             right: 20px;
-                            padding: 12px 20px;
-                            background: #06b6d4;
+                            padding: 10px 16px;
+                            background: #6b7280;
                             color: white;
-                            border: none;
+                            border: 1px solid #4b5563;
                             border-radius: 6px;
                             cursor: pointer;
-                            font-size: 14px;
+                            font-size: 12px;
                             font-weight: 600;
                             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                            transition: all 0.2s;
+                        }
+                        .print-btn:hover {
+                            background: #4b5563;
+                            transform: translateY(-1px);
                         }
                         @media print {
-                            body { background: white !important; color: #333 !important; }
+                            body { 
+                                background: white !important; 
+                                color: #333 !important;
+                                margin: 15px !important;
+                                font-size: 10pt;
+                            }
                             .print-btn { display: none; }
-                            .section { page-break-inside: avoid; }
+                            .section, .category-section { page-break-inside: avoid; }
+                            .report-header { page-break-after: avoid; }
+                            .results-summary { page-break-inside: avoid; }
                         }
                     </style>
                 </head>
                 <body>
                     <button class="print-btn" onclick="window.print()">📄 Bericht drucken</button>
                     
-                    <div class="report-header">
-                        <h1>📋 Testbericht · FavOrg</h1>
-                        <p style="font-size: 18px; color: #64748b; margin: 0;">AuditLog-System Qualitätsprüfung</p>
-                    </div>
-
-                    <div class="metadata-grid">
-                        <div class="metadata-item">
-                            <span class="metadata-label">📅 Datum:</span>
-                            <span class="metadata-value">${currentDate}</span>
-                        </div>
-                        <div class="metadata-item">
-                            <span class="metadata-label">👤 Tester:</span>
-                            <span class="metadata-value">${window.auditConfig.tester}</span>
-                        </div>
-                        <div class="metadata-item">
-                            <span class="metadata-label">🏷️ Version:</span>
-                            <span class="metadata-value">${window.auditConfig.version}</span>
-                        </div>
-                        <div class="metadata-item">
-                            <span class="metadata-label">💻 Testumgebung:</span>
-                            <span class="metadata-value">${window.auditConfig.environment}</span>
-                        </div>
-                    </div>
-
-                    <div class="section">
-                        <h2>🎯 Ziel des Tests</h2>
-                        <p>${window.auditConfig.testGoal}</p>
-                    </div>
-
-                    <div class="section">
-                        <h2>📋 Testobjekt</h2>
-                        <p><strong>Testbereich:</strong> ${categoryToShow}</p>
-                        <p>Testpunkte werden systematisch auf Funktionalität, Design-Konsistenz und Benutzerfreundlichkeit überprüft.</p>
-                    </div>
-
-                    <div class="section">
-                        <h2>🔬 Testmethodik</h2>
-                        <p>${window.auditConfig.testMethodology}</p>
-                    </div>
-
-                    <div class="results-summary">
-                        <h2 style="margin-top: 0; color: white;">📊 Testergebnisse</h2>
-                        <p style="color: rgba(255,255,255,0.9);">
-                            ${results.passed} von ${results.total} Testfällen bestanden.
-                            ${results.failed > 0 ? ' Es wurden ' + results.failed + ' kritische Fehler festgestellt.' : ' Alle kritischen Tests erfolgreich.'}
-                        </p>
-                        <div class="results-grid">
-                            <div class="result-item">
-                                <span class="result-number">${results.total}</span>
-                                <span class="result-label">Gesamt</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="result-number">${results.passed}</span>
-                                <span class="result-label">✅ Bestanden</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="result-number">${results.failed}</span>
-                                <span class="result-label">❌ Fehler</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="result-number">${results.warning}</span>
-                                <span class="result-label">⚠️ Warnung</span>
-                            </div>
-                            <div class="result-item">
-                                <span class="result-number">${results.ungeprüft}</span>
-                                <span class="result-label">⏳ Ungeprüft</span>
+                    <div class="report-header" style="text-align: left;">
+                        <h1 style="text-align: left; margin-bottom: 15px;">📋 Testbericht · FavOrg</h1>
+                        <p style="font-size: 14pt; color: #64748b; margin-bottom: 20px;">AuditLog-System Qualitätsprüfung</p>
+                        
+                        <!-- Metadaten kompakt gruppiert -->
+                        <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span style="font-weight: 600; font-size: 11pt;">📅 ${currentDate}</span>
+                                <span style="font-weight: 600; font-size: 11pt;">👤 ${window.auditConfig.tester}</span>
+                                <span style="font-weight: 600; font-size: 11pt;">🏷️ ${window.auditConfig.version}</span>
                             </div>
                         </div>
-                    </div>
+                        <div style="margin-bottom: 20px;">
+                            <span style="font-weight: 600; font-size: 11pt;">💻 Testumgebung:</span> ${window.auditConfig.environment}
+                        </div>
 
-                    <div class="section">
-                        <h2>🧪 Testfälle</h2>
-                        ${tests.map((test, index) => {
-                            const status = statusesToUse[test.name] || 'ungeprüft';
-                            const notes = notesToUse[test.name];
-                            let statusText = '';
-                            let statusClass = '';
-                            
-                            switch(status) {
-                                case 'success':
-                                    statusText = 'OK';
-                                    statusClass = 'success';
-                                    break;
-                                case 'error':
-                                    statusText = 'FEHLER';
-                                    statusClass = 'error';
-                                    break;
-                                case 'warning':
-                                    statusText = 'WARNUNG';
-                                    statusClass = 'warning';
-                                    break;
-                                default:
-                                    statusText = 'UNGEPRÜFT';
-                                    statusClass = 'ungeprüft';
-                            }
-                            
-                            // Zeige Kategorie wenn alle Tests exportiert werden
-                            const categoryInfo = test.category ? ` (${test.categoryIcon} ${test.category})` : '';
-                            
-                            return `
-                                <div class="test-case ${statusClass}">
-                                    <div class="test-info">
-                                        <div class="test-name">${index + 1}. ${test.icon} ${test.name}${categoryInfo}</div>
-                                        <div class="test-description">${test.tooltip}</div>
-                                        ${notes ? `<div class="test-notes">💭 Notiz: ${notes}</div>` : ''}
-                                    </div>
-                                    <div class="status-badge status-${statusClass}">[${statusText}]</div>
+                        <!-- Kompakte Gesamtübersicht für DIN A4 - Nur Rahmen -->
+                        <div class="results-summary">
+                            <h2>📊 Gesamtübersicht</h2>
+                            <p>
+                                ${results.passed} von ${results.total} Testfällen bestanden.
+                                ${results.failed > 0 ? ' Es wurden ' + results.failed + ' kritische Fehler festgestellt.' : ' Alle kritischen Tests erfolgreich.'}
+                                ${results.ungeprüft > 0 ? ` ${results.ungeprüft} Testfälle wurden nicht geprüft.` : ''}
+                            </p>
+                            <div class="results-grid">
+                                <div class="result-item">
+                                    <span class="result-number">${results.total}</span>
+                                    <span class="result-label">Gesamt</span>
                                 </div>
-                            `;
-                        }).join('')}
-                    </div>
-
-                    ${results.issues.length > 0 ? `
-                        <div class="section">
-                            <h2>⚠️ Abweichungen und Probleme</h2>
-                            <ul class="issues-list">
-                                ${results.issues.map(issue => `
-                                    <li class="issue-item">
-                                        <div class="issue-type">${issue.type}: ${issue.name}</div>
-                                        <p>${issue.description}</p>
-                                    </li>
-                                `).join('')}
-                            </ul>
+                                <div class="result-item">
+                                    <span class="result-number">${results.passed}</span>
+                                    <span class="result-label">✅ Bestanden</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-number">${results.failed}</span>
+                                    <span class="result-label">❌ Fehler</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-number">${results.warning}</span>
+                                    <span class="result-label">⚠️ Warnung</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-number">${results.ungeprüft}</span>
+                                    <span class="result-label">⏳ Ungeprüft</span>
+                                </div>
+                            </div>
                         </div>
-                    ` : ''}
-
-                    <div class="section">
-                        <h2>💡 Fazit und Empfehlungen</h2>
-                        <p>
-                            ${results.failed === 0 ? 
-                                `Das ${window.currentCategory} System ist vollständig funktionsfähig. Alle ${results.passed} kritischen Tests wurden erfolgreich bestanden.` :
-                                `Das ${window.currentCategory} System weist ${results.failed} kritische Fehler auf. Vor der Freigabe müssen diese Probleme behoben und erneut getestet werden.`
-                            }
-                        </p>
-                        ${results.warning > 0 ? `<p><strong>Empfehlung:</strong> ${results.warning} Verbesserungen sollten für eine optimale Benutzererfahrung umgesetzt werden.</p>` : ''}
                     </div>
 
-                    <div class="section">
-                        <h2>📎 Anhang</h2>
-                        <p>Detaillierte Testdaten und Screenshots sind im internen AuditLog-System archiviert.</p>
-                        <p><strong>Berichts-ID:</strong> AuditLog-${Date.now()}</p>
-                        <p><strong>Generiert von:</strong> FavOrg AuditLog-System v${window.auditConfig.version}</p>
+                    <!-- Seitenumbruch für neue Seite -->
+                    <div style="page-break-before: always;">
+                        <div class="section">
+                            <h2>🎯 Ziel des Tests</h2>
+                            <p>${window.auditConfig.testGoal}</p>
+                        </div>
+
+                        <div class="section">
+                            <h2>📋 Testobjekt</h2>
+                            <p><strong>Testbereich:</strong> ${categoryToShow}</p>
+                            <p>Testpunkte werden systematisch auf Funktionalität, Design-Konsistenz und Benutzerfreundlichkeit überprüft.</p>
+                        </div>
+
+                        <div class="section">
+                            <h2>🔬 Testmethodik</h2>
+                            <p>${window.auditConfig.testMethodology}</p>
+                        </div>
+                    </div>
+
+                    <!-- Testfälle mit Bereichsüberschriften - ALLE Tests (auch ungetestete) -->
+                    <div style="page-break-before: always;">
+                        <div class="section">
+                            <h2>🧪 Testfälle nach Bereichen (Alle Tests für Transparenz)</h2>
+                            <p style="color: #6b7280; font-style: italic; margin-bottom: 20px;">
+                                <strong>Hinweis:</strong> Zur Transparenz und Risikoabschätzung werden alle definierten Testpunkte aufgeführt, 
+                                unabhängig davon ob sie bereits getestet wurden oder nicht.
+                            </p>
+                            ${Object.keys(testsByCategory).map(category => {
+                                const categoryTests = testsByCategory[category];
+                                return `
+                                    <div class="category-section">
+                                        <div class="category-title">
+                                            ${getCategoryIcon(category)} ${category} (${categoryTests.length} Tests)
+                                        </div>
+                                        ${categoryTests.map((test, index) => {
+                                            const status = statusesToUse[test.name] || 'ungeprüft';
+                                            const notes = notesToUse[test.name];
+                                            let statusText = '';
+                                            let statusClass = '';
+                                            
+                                            switch(status) {
+                                                case 'success':
+                                                    statusText = 'OK';
+                                                    statusClass = 'success';
+                                                    break;
+                                                case 'error':
+                                                    statusText = 'FEHLER';
+                                                    statusClass = 'error';
+                                                    break;
+                                                case 'warning':
+                                                    statusText = 'WARNUNG';  
+                                                    statusClass = 'warning';
+                                                    break;
+                                                default:
+                                                    statusText = 'UNGEPRÜFT';
+                                                    statusClass = 'ungeprüft';
+                                            }
+                                            
+                                            return `
+                                                <div class="test-case ${statusClass}">
+                                                    <div class="test-info">
+                                                        <div class="test-name">${test.icon} ${test.name}</div>
+                                                        <div class="test-description">${test.tooltip}</div>
+                                                        ${notes ? `<div class="test-notes">💭 Notiz: ${notes}</div>` : ''}
+                                                    </div>
+                                                    <div class="status-badge status-${statusClass}">[${statusText}]</div>
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Seitenumbruch für Abweichungen, Fazit und Anhang -->
+                    <div style="page-break-before: always;">
+                        ${results.issues.length > 0 ? `
+                            <div class="section">
+                                <h2>⚠️ Abweichungen und Probleme</h2>
+                                <ul class="issues-list">
+                                    ${results.issues.map(issue => `
+                                        <li class="issue-item">
+                                            <div class="issue-type">${issue.type}: ${issue.name}</div>
+                                            <p>${issue.description}</p>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+
+                        <div class="section">
+                            <h2>💡 Fazit und Empfehlungen</h2>
+                            <p>
+                                ${results.failed === 0 ? 
+                                    `Das ${categoryToShow} System ist vollständig funktionsfähig. Alle ${results.passed} kritischen Tests wurden erfolgreich bestanden.` :
+                                    `Das ${categoryToShow} System weist ${results.failed} kritische Fehler auf. Vor der Freigabe müssen diese Probleme behoben und erneut getestet werden.`
+                                }
+                            </p>
+                            ${results.warning > 0 ? `<p><strong>Empfehlung:</strong> ${results.warning} Verbesserungen sollten für eine optimale Benutzererfahrung umgesetzt werden.</p>` : ''}
+                            ${results.ungeprüft > 0 ? `<p><strong>Hinweis:</strong> ${results.ungeprüft} Testpunkte wurden noch nicht geprüft und sollten für eine vollständige Qualitätssicherung nachgeholt werden.</p>` : ''}
+                        </div>
+
+                        <div class="section">
+                            <h2>📎 Anhang</h2>
+                            <p>Detaillierte Testdaten und Screenshots sind im internen AuditLog-System archiviert.</p>
+                            <p><strong>Berichts-ID:</strong> AuditLog-${Date.now()}</p>
+                            <p><strong>Generiert von:</strong> FavOrg AuditLog-System ${window.auditConfig.version}</p>
+                            <p><strong>Testumfang:</strong> ${tests.length} Testpunkte in ${Object.keys(testsByCategory).length} Bereichen</p>
+                            <p><strong>Testabdeckung:</strong> ${Math.round((results.passed + results.failed + results.warning) / results.total * 100)}% (${results.passed + results.failed + results.warning}/${results.total} Tests durchgeführt)</p>
+                        </div>
                     </div>
                 </body>
                 </html>
