@@ -577,6 +577,37 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           <div style="margin-bottom: 30px;">
             <span style="font-weight: 600;">💻 Testumgebung:</span> ${auditConfig.environment}
           </div>
+
+          <!-- Gesamtübersicht direkt auf erster Seite -->
+          <div class="results-summary" style="margin-top: 30px;">
+            <h2 style="margin-top: 0; color: white;">📊 Gesamtübersicht</h2>
+            <p style="color: rgba(255,255,255,0.9); font-size: 16px; margin-bottom: 20px;">
+              ${results.passed} von ${results.total} Testfällen bestanden.
+              ${results.failed > 0 ? ' Es wurden ' + results.failed + ' kritische Fehler festgestellt.' : ' Alle kritischen Tests erfolgreich.'}
+            </p>
+            <div class="results-grid">
+              <div class="result-item" style="background: rgba(6, 182, 212, 0.2); border: 2px solid #06b6d4;">
+                <span class="result-number" style="color: #06b6d4;">${results.total}</span>
+                <span class="result-label">Gesamt</span>
+              </div>
+              <div class="result-item" style="background: rgba(16, 185, 129, 0.2); border: 2px solid #10b981;">
+                <span class="result-number" style="color: #10b981;">${results.passed}</span>
+                <span class="result-label">✅ Bestanden</span>
+              </div>
+              <div class="result-item" style="background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444;">
+                <span class="result-number" style="color: #ef4444;">${results.failed}</span>
+                <span class="result-label">❌ Fehler</span>
+              </div>
+              <div class="result-item" style="background: rgba(245, 158, 11, 0.2); border: 2px solid #f59e0b;">
+                <span class="result-number" style="color: #f59e0b;">${results.warning}</span>
+                <span class="result-label">⚠️ Warnung</span>
+              </div>
+              <div class="result-item" style="background: rgba(107, 114, 128, 0.2); border: 2px solid #6b7280;">
+                <span class="result-number" style="color: #6b7280;">${results.ungeprüft}</span>
+                <span class="result-label">⏳ Ungeprüft</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Seitenumbruch für neue Seite -->
