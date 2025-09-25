@@ -1789,6 +1789,12 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Sidebar Width beim ersten Laden initialisieren
+  useEffect(() => {
+    // CSS-Variable beim ersten Laden setzen
+    document.documentElement.style.setProperty('--sidebar-width', `${sidebarWidth}px`);
+  }, []);
+
   // Sidebar Width im LocalStorage speichern und CSS-Variable setzen
   useEffect(() => {
     localStorage.setItem('favorg-sidebar-width', sidebarWidth.toString());
