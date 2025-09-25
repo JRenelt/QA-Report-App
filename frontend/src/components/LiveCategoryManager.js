@@ -405,7 +405,7 @@ const LiveCategoryManager = ({ isOpen, onClose, categories, onSave }) => {
                   window.parent.setShowHelp(true);
                 } else {
                   // Fallback: Neues Fenster
-                  alert('Bitte öffnen Sie das Handbuch über das Hilfe-Menü');
+                  window.alert('Bitte öffnen Sie das Handbuch über das Hilfe-Menü');
                 }
               }}
               className="help-link-btn"
