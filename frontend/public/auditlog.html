@@ -668,10 +668,10 @@
                     '</div>' +
                     '<p class="text-secondary text-sm" style="margin: 4px 0 8px 0;">' + test.tooltip + '</p>' +
                     '<div class="test-point-actions">' +
-                        '<button class="btn btn-success btn-small" onclick="setTestStatus(\'' + test.name + '\', \'success\')" title="Test bestanden">✅</button>' +
-                        '<button class="btn btn-danger btn-small" onclick="setTestStatus(\'' + test.name + '\', \'error\')" title="Test fehlgeschlagen">❌</button>' +
-                        '<button class="btn btn-warning btn-small" onclick="setTestStatus(\'' + test.name + '\', \'warning\')" title="Test in Bearbeitung">⏳</button>' +
-                        '<button class="btn btn-info btn-small" onclick="setTestStatus(\'' + test.name + '\', \'info\')" title="Test übersprungen">🗑️</button>' +
+                        '<button class="btn btn-success btn-small' + (testStatuses[test.name] === 'success' ? ' active' : '') + '" onclick="setTestStatus(\'' + test.name + '\', \'success\')" title="Test bestanden">✅</button>' +
+                        '<button class="btn btn-danger btn-small' + (testStatuses[test.name] === 'error' ? ' active' : '') + '" onclick="setTestStatus(\'' + test.name + '\', \'error\')" title="Test fehlgeschlagen">❌</button>' +
+                        '<button class="btn btn-warning btn-small' + (testStatuses[test.name] === 'warning' ? ' active' : '') + '" onclick="setTestStatus(\'' + test.name + '\', \'warning\')" title="Test in Bearbeitung">⏳</button>' +
+                        '<button class="btn btn-info btn-small' + (testStatuses[test.name] === 'info' ? ' active' : '') + '" onclick="setTestStatus(\'' + test.name + '\', \'info\')" title="Test übersprungen">🗑️</button>' +
                     '</div>';
                 
                 container.appendChild(testDiv);
