@@ -1157,8 +1157,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 gap: '6px',
                 whiteSpace: 'nowrap',
                 background: statusFilter === 'warning' ? '#d97706' : '#374151',
-                color: statusFilter === 'warning' ? 'white' : '#d1d5db',
-                border: statusFilter === 'warning' ? 'none' : '1px solid #4b5563'
+                color: statusFilter === 'warning' ? 'white' : '#d1d5db'
               }}
             >
               ⏳ ({counts.warning})
