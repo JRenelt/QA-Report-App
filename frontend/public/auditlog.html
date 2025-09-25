@@ -712,6 +712,11 @@
                 
                 container.appendChild(testDiv);
             });
+            
+            // Initialisiere Lucide Icons nach dem Rendern
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         }
 
         // Event-Handler
