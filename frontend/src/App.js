@@ -3390,7 +3390,7 @@ const ImpressumDialog = ({ isOpen, onClose }) => {
             </h3>
             <p style={{ margin: '4px 0' }}>
               <strong>FavOrg</strong> - Bookmark Manager<br/>
-              Version: V2.3.0<br/>
+              Version: v2.3.0<br/>
               Copyright © 2025 Jörg Renelt
             </p>
           </div>
