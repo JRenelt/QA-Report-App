@@ -993,7 +993,11 @@
         }
 
         // Hilfsfunktion zur Generierung des strukturierten Berichts
-        function generateStructuredReport(tests, results, currentDate) {
+        function generateStructuredReport(tests, results, currentDate, reportCategory = null, customStatuses = null, customNotes = null) {
+            // Verwende custom Status/Notes für Archiv-Berichte oder aktuelle für Live-Export
+            const statusesToUse = customStatuses || window.testStatuses;
+            const notesToUse = customNotes || window.testNotes;
+            const categoryToShow = reportCategory || window.currentCategory;
             return `
                 <!DOCTYPE html>
                 <html lang="de">
