@@ -1042,8 +1042,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               fontSize: '12px',
                               fontWeight: '500',
                               transition: 'all 0.2s',
-                              background: testStatuses[test.name] === 'success' ? '#059669' : '#4b5563',
-                              color: testStatuses[test.name] === 'success' ? 'white' : '#9ca3af'
+                              background: testStatuses[test.name] === 'success' ? '#059669' : '#90ee90', // Hellgrün
+                              color: testStatuses[test.name] === 'success' ? 'white' : '#1f2937'
                             }}
                           >
                             ✅
@@ -1058,8 +1058,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               fontSize: '12px',
                               fontWeight: '500',
                               transition: 'all 0.2s',
-                              background: testStatuses[test.name] === 'error' ? '#dc2626' : '#4b5563',
-                              color: testStatuses[test.name] === 'error' ? 'white' : '#9ca3af'
+                              background: testStatuses[test.name] === 'error' ? '#dc2626' : '#ffb3ba', // Hellrot
+                              color: testStatuses[test.name] === 'error' ? 'white' : '#1f2937'
                             }}
                           >
                             ❌
@@ -1074,8 +1074,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               fontSize: '12px',
                               fontWeight: '500',
                               transition: 'all 0.2s',
-                              background: testStatuses[test.name] === 'warning' ? '#d97706' : '#4b5563',
-                              color: testStatuses[test.name] === 'warning' ? 'white' : '#9ca3af'
+                              background: testStatuses[test.name] === 'warning' ? '#d97706' : '#ffd700', // HellOrange/Gelb
+                              color: testStatuses[test.name] === 'warning' ? 'white' : '#1f2937'
                             }}
                           >
                             ⏳
@@ -1090,8 +1090,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               fontSize: '12px',
                               fontWeight: '500',
                               transition: 'all 0.2s',
-                              background: testStatuses[test.name] === 'info' ? '#2563eb' : '#4b5563',
-                              color: testStatuses[test.name] === 'info' ? 'white' : '#9ca3af'
+                              background: testStatuses[test.name] === 'info' ? '#2563eb' : '#add8e6', // Hellblau
+                              color: testStatuses[test.name] === 'info' ? 'white' : '#1f2937'
                             }}
                           >
                             🗑️
