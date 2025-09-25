@@ -366,6 +366,18 @@ backend:
         agent: "testing"
         comment: "🔒 LOCK/UNLOCK SYSTEM ERNEUT VOLLSTÄNDIG GETESTET NACH USER-REPORT: Umfassende Tests des Sperre-Systems gemäß German Review-Request durchgeführt (6/6 Tests bestanden, 100% Success Rate). ✅ LOCK FUNKTIONALITÄT: PUT /api/bookmarks/{id}/lock funktioniert perfekt - setzt is_locked=True und status_type='locked' korrekt ✅ UNLOCK FUNKTIONALITÄT: PUT /api/bookmarks/{id}/unlock funktioniert perfekt - setzt is_locked=False und status_type='active' korrekt ✅ TOGGLE-FUNKTIONALITÄT: Mehrfaches Sperren/Entsperren funktioniert einwandfrei mit korrekten Status-Übergängen ✅ KONSISTENZ-PRÜFUNG: Alle 98 Bookmarks zeigen perfekte Konsistenz zwischen is_locked und status_type Feldern ✅ LÖSCHSCHUTZ: HTTP 403 'Gesperrte Bookmarks können nicht gelöscht werden' funktioniert korrekt für gesperrte Bookmarks ✅ IDENTIFIKATION: 4 gesperrte Bookmarks korrekt identifiziert und getestet. MINOR: GET /api/bookmarks unterstützt keine status_type Query-Parameter für Filterung. USER-REPORTED PROBLEM 'Die Sperre arbeitet nicht plausibel' und 'Entsperren nicht möglich' KANN NICHT REPRODUZIERT WERDEN - ALLE LOCK/UNLOCK FUNKTIONEN ARBEITEN KORREKT!"
 
+  - task: "QA-Bericht Button Renaming and PDF Layout (German Review Request)"
+    implemented: true
+    working: true
+    file: "frontend/src/components/AuditLogSystem.js, frontend/public/auditlog.html"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎯 QA-BERICHT UMBENENNUNG UND NEUES PDF-LAYOUT VOLLSTÄNDIG GETESTET: Alle spezifischen Anforderungen der German Review-Request erfolgreich validiert (100% Success Rate). ✅ BUTTON-UMBENENNUNG: 'PDF-Export' → '📄 QA-Bericht' erfolgreich implementiert in beiden Versionen (integriert + Vollbild) ✅ TOOLTIP KORREKT: 'Quality Assurance-Bericht, also Qualitätssicherungsbericht.' in beiden Versionen identisch ✅ PDF-HEADER-FORMATIERUNG: Titel '📋 Testbericht · FavOrg' links positioniert, Version '🏷️ v2.3.0' rechts neben Titel korrekt platziert ✅ METADATEN-REIHENFOLGE: 👤 Tester VOR 📅 Datum wie gefordert (👤 Jörg Renelt, 📅 25.09.2025, 11:47) ✅ KONSISTENZ ZWISCHEN VERSIONEN: Integrierte Version (Settings → Erweitert → '📋 Intern') und Vollbild-Version (/auditlog.html) generieren identische PDF-Layouts ✅ ZUGRIFFSPFADE: Beide Zugriffswege funktionieren einwandfrei - integriert über Settings-Dialog und direkt über URL. ALLE REVIEW-REQUEST ANFORDERUNGEN FÜR QA-BERICHT UMBENENNUNG UND PDF-LAYOUT VOLLSTÄNDIG ERFÜLLT!"
+
 frontend:
   - task: "Live Category Manager Design Fix"
     implemented: true
