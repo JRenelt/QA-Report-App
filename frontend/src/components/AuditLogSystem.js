@@ -1230,7 +1230,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             minHeight: '56px'
           }}
         >
-          {/* Links: 5 Status-Filter Buttons - Korrekte Vollbild-Farben */}
+          {/* Links: 5 Status-Filter Buttons - Mit Lucide Icons */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setStatusFilter('')}
@@ -1249,6 +1249,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 background: statusFilter === '' ? '#06b6d4' : '#a8dadc', // Hellblau als Basis für "Alle"
                 color: statusFilter === '' ? 'white' : '#1f2937'
               }}
+              title="Alle Tests anzeigen"
             >
               Alle ({counts.all})
             </button>
@@ -1269,8 +1270,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 background: statusFilter === 'success' ? '#059669' : '#90ee90', // Hellgrün
                 color: statusFilter === 'success' ? 'white' : '#1f2937'
               }}
+              title="Nur bestandene Tests anzeigen"
             >
-              ✅ ({counts.success})
+              <Check size={16} /> ({counts.success})
             </button>
             <button
               onClick={() => setStatusFilter('error')}
@@ -1289,8 +1291,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 background: statusFilter === 'error' ? '#dc2626' : '#ffb3ba', // Hellrot
                 color: statusFilter === 'error' ? 'white' : '#1f2937'
               }}
+              title="Nur fehlgeschlagene Tests anzeigen"
             >
-              ❌ ({counts.error})
+              <X size={16} /> ({counts.error})
             </button>
             <button
               onClick={() => setStatusFilter('warning')}
@@ -1309,8 +1312,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 background: statusFilter === 'warning' ? '#d97706' : '#ffd700', // HellOrange/Gelb
                 color: statusFilter === 'warning' ? 'white' : '#1f2937'
               }}
+              title="Nur Tests in Bearbeitung anzeigen"
             >
-              ⏳ ({counts.warning})
+              <Pickaxe size={16} /> ({counts.warning})
             </button>
             <button
               onClick={() => setStatusFilter('info')}
@@ -1329,8 +1333,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 background: statusFilter === 'info' ? '#2563eb' : '#add8e6', // Hellblau
                 color: statusFilter === 'info' ? 'white' : '#1f2937'
               }}
+              title="Nur übersprungene Tests anzeigen"
             >
-              🗑️ ({counts.info})
+              <CaptionsOff size={16} /> ({counts.info})
             </button>
           </div>
 
