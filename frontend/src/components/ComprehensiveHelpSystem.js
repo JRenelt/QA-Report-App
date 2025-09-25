@@ -636,6 +636,24 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           }
         ]
       }
+    },
+    'auditlog-system': {
+      title: '🔍 AuditLog-System',
+      content: {
+        description: 'Professionelles Testprotokoll-System für systematische Qualitätsprüfungen mit intelligenten Countern, automatisierten Berichten und erweiterten PDF-Export-Funktionen.',
+        sections: [
+          {
+            title: 'Grundlegende Bedienung',
+            content: `
+              <h4>System-Zugang:</h4>
+              <p>📍 <strong>Pfad:</strong> Einstellungen → Erweitert → AuditLog-System</p>
+              <ul>
+                <li><strong>📊 Neues Fenster:</strong> Separates Browserfenster mit voller Funktionalität</li>
+                <li><strong>📋 Intern:</strong> Integrierte Ansicht mit intelligenten Test-Countern</li>
+              </ul>`
+          }
+        ]
+      }
     }
   };
 
