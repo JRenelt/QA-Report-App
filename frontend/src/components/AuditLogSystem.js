@@ -1291,7 +1291,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               </Button>
               <Button
                 onClick={() => {
-                  const input = document.querySelector('#editTestDialog input');
+                  const input = document.getElementById('editTestInput');
                   if (input) confirmEditTest(input.value);
                 }}
                 className="bg-cyan-600 hover:bg-cyan-700"
