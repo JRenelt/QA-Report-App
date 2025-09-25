@@ -869,7 +869,7 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
       `;
 
       // Create blob and download
-      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const blob = new window.Blob([htmlContent], { type: 'text/html' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
