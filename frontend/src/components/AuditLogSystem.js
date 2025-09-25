@@ -1115,8 +1115,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 gap: '6px',
                 whiteSpace: 'nowrap',
                 background: statusFilter === 'success' ? '#059669' : '#374151',
-                color: statusFilter === 'success' ? 'white' : '#d1d5db',
-                border: statusFilter === 'success' ? 'none' : '1px solid #4b5563'
+                color: statusFilter === 'success' ? 'white' : '#d1d5db'
               }}
             >
               ✅ ({counts.success})
