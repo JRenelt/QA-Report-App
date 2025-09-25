@@ -80,6 +80,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     ]
   };
 
+  // Test-Kategorien (dynamisch aus predefinedTests)
+  const testCategories = Object.keys(predefinedTests);
+
   // Aktuelle Tests berechnen
   const getCurrentTests = () => {
     const baseTests = predefinedTests[currentCategory] || [];
