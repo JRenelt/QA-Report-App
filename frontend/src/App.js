@@ -2120,7 +2120,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
                   {/* Info-Button direkt neben "Kategorien" */}
                   <button
                     className="category-info-btn-inline"
-                    onClick={() => alert('Kategorie-Hilfe: Drag & Drop zwischen Ebenen, Shift für Einfügemodus')}
+                    onClick={() => window.alert('Kategorie-Hilfe: Drag & Drop zwischen Ebenen, Shift für Einfügemodus')}
                     title="Kategorie-Hilfe"
                   >
                     <div className="info-circle-large">i</div>
