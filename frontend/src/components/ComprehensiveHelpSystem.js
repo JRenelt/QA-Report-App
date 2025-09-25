@@ -696,10 +696,10 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
             .subsection {
               margin: 15px 0;
               padding: 15px;
-              background: #f8fafc;
-              border-left: 4px solid #0ea5e9;
+              background: var(--code-bg);
+              border-left: 4px solid var(--accent-color);
               border-radius: 0 4px 4px 0;
-              color: #000000; /* Schwarze Schrift in Subsektionen */
+              color: var(--text-color); /* Tech-Doc Stil */
             }
             ul { margin: 10px 0; }
             li { margin: 5px 0; }
