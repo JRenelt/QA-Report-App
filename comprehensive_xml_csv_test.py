@@ -16,7 +16,7 @@ import tempfile
 import os
 from datetime import datetime
 
-BACKEND_URL = "https://log-inspector-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://pdf-report-boost.preview.emergentagent.com/api"
 
 def test_xml_import_detailed():
     """Detaillierter XML Import Test gemäß German Review Request"""

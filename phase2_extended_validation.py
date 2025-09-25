@@ -7,7 +7,7 @@ import asyncio
 import aiohttp
 import json
 
-BACKEND_URL = "https://log-inspector-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://pdf-report-boost.preview.emergentagent.com/api"
 
 async def test_multiple_test_data_cycles():
     """Test multiple cycles of test data creation to ensure consistency"""

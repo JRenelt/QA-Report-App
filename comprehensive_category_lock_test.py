@@ -15,7 +15,7 @@ from typing import Dict, Any, List
 
 class ComprehensiveCategoryLockTester:
     def __init__(self):
-        self.base_url = "https://log-inspector-1.preview.emergentagent.com/api"
+        self.base_url = "https://pdf-report-boost.preview.emergentagent.com/api"
         self.test_results = []
         self.test_category_id = None
         self.test_category_name = f"LockTestCategory_{uuid.uuid4().hex[:8]}"

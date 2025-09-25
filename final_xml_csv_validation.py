@@ -10,7 +10,7 @@ import tempfile
 import os
 from datetime import datetime
 
-BACKEND_URL = "https://log-inspector-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://pdf-report-boost.preview.emergentagent.com/api"
 
 def clean_test_data():
     """Entferne vorherige Test-Bookmarks für saubere Tests"""
