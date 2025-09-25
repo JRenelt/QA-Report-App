@@ -1168,7 +1168,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               </button>
             </div>
             
-            <div className="p-6">
+            <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 240px)' }}>
               <div className="space-y-6">
                 <h4 className="text-lg text-cyan-400 font-semibold border-b border-gray-700 pb-2">
                   📋 Berichts-Metadaten
