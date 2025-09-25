@@ -963,7 +963,7 @@
             let issues = [];
             
             tests.forEach(test => {
-                const status = window.testStatuses[test.name] || 'ungeprüft';
+                const status = statusesToUse[test.name] || 'ungeprüft';
                 switch(status) {
                     case 'success':
                         passed++;
@@ -973,7 +973,7 @@
                         issues.push({
                             name: test.name,
                             type: 'FEHLER',
-                            description: window.testNotes[test.name] || 'Kritischer Fehler festgestellt'
+                            description: notesToUse[test.name] || 'Kritischer Fehler festgestellt'
                         });
                         break;
                     case 'warning':
