@@ -650,6 +650,20 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
               <ul>
                 <li><strong>📊 Neues Fenster:</strong> Separates Browserfenster mit voller Funktionalität</li>
                 <li><strong>📋 Intern:</strong> Integrierte Ansicht mit intelligenten Test-Countern</li>
+              </ul>
+              
+              <h4>Intelligente Test-Counter:</h4>
+              <ul>
+                <li><strong>📊 Counter-System:</strong> Zeigt ungetestete Tests pro Kategorie an</li>
+                <li><strong>🔵→🟢 Farbwechsel:</strong> Blau (offen) → Grün (abgeschlossen)</li>
+                <li><strong>✓ Completion:</strong> Grüner Haken bei vollständig getesteten Bereichen</li>
+              </ul>
+              
+              <h4>Erweiterte PDF-Reports:</h4>
+              <ul>
+                <li><strong>⚙️ Config:</strong> Konfigurierbare Metadaten (Tester, Version, Umgebung)</li>
+                <li><strong>📊 Gesamtübersicht:</strong> Grafische Auswertung bereits auf Seite 1</li>
+                <li><strong>🗂️ Archiv:</strong> 👁️ Anzeigen, 📥 Laden, 🗑️ Löschen von gespeicherten Berichten</li>
               </ul>`
           }
         ]
