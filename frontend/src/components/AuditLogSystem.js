@@ -13,6 +13,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const [archivedReports, setArchivedReports] = useState([]);
   const [dynamicTests, setDynamicTests] = useState({});
   const [showConfigDialog, setShowConfigDialog] = useState(false);
+  const [editTestDialog, setEditTestDialog] = useState({ show: false, testName: '', currentName: '' });
+  const [noteDialog, setNoteDialog] = useState({ show: false, testName: '', currentNote: '' });
   const [auditConfig, setAuditConfig] = useState(() => {
     const saved = localStorage.getItem('favorg-audit-config');
     return saved ? JSON.parse(saved) : {
