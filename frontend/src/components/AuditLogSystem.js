@@ -740,21 +740,59 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   };
 
   const viewReport = (report) => {
-    // Rekonstruiere die Tests aus dem gespeicherten Bericht
-    const savedTests = Object.keys(report.testStatuses).map(testName => ({
-      name: testName,
-      icon: '📋', // Default Icon
-      tooltip: report.testNotes[testName] || 'Test aus Archiv'
-    }));
+    // Rekonstruiere ALLE Tests aus dem gespeicherten Bericht (nicht nur aktuelle Kategorie)
+    const savedTests = Object.keys(report.testStatuses).map(testName => {
+      // Finde den ursprünglichen Test in allen Kategorien
+      let originalTest = null;
+      testCategories.forEach(category => {
+        const categoryTests = predefinedTests[category] || [];
+        const found = categoryTests.find(test => test.name === testName);
+        if (found) {
+          originalTest = { 
+            ...found, 
+            category: category,
+            categoryIcon: getCategoryIcon(category)
+          };
+        }
+      });
+      
+      // Falls nicht in predefined Tests gefunden, dynamische Tests prüfen
+      if (!originalTest) {
+        testCategories.forEach(category => {
+          const dynamicCategoryTests = dynamicTests[category] || [];
+          const found = dynamicCategoryTests.find(test => test.name === testName);
+          if (found) {
+            originalTest = { 
+              ...found, 
+              category: category,
+              categoryIcon: getCategoryIcon(category)
+            };
+          }
+        });
+      }
+      
+      // Fallback wenn Test nicht gefunden
+      if (!originalTest) {
+        originalTest = {
+          name: testName,
+          icon: '📋',
+          tooltip: report.testNotes[testName] || 'Archivierter Test',
+          category: report.category,
+          categoryIcon: getCategoryIcon(report.category)
+        };
+      }
+      
+      return originalTest;
+    });
     
     const testResults = calculateTestResults(savedTests, report.testStatuses, report.testNotes);
     const reportDate = report.timestamp;
     
     const printWindow = window.open('', '_blank', 'width=900,height=700');
-    printWindow.document.write(generateArchivedReport(savedTests, testResults, reportDate, report));
+    printWindow.document.write(generateStructuredReport(savedTests, testResults, reportDate, 'Alle Bereiche (Archiv)', report.testStatuses, report.testNotes));
     printWindow.document.close();
     
-    toast.success(`Bericht "${report.category}" wird angezeigt`);
+    toast.success(`Archivierter Bericht wird angezeigt (${savedTests.length} Tests)`);
   };
 
   // Generate Archived Report HTML (für gespeicherte Berichte)
