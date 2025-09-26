@@ -4024,6 +4024,27 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Moderner Loading Overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center">
+          <div className="bg-gray-800 border border-gray-700 rounded-lg p-8 flex flex-col items-center space-y-4 min-w-[300px]">
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-cyan-900 border-t-cyan-400 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-cyan-500 rounded-full animate-pulse"></div>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-cyan-400 mb-2">🔄 FavOrg arbeitet...</h3>
+              <p className="text-gray-300 text-sm">System verarbeitet Ihre Anfrage</p>
+            </div>
+            <div className="flex space-x-1">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <Toaster 
         position="top-center"
         richColors 
