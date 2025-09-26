@@ -4167,6 +4167,67 @@ function App() {
       {/* App-Fußzeile - außerhalb der app-body */}
       <footer className="app-footer">
         <div className="footer-content">
+          {/* Pagination Controls - Tonband-Style */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center space-x-4 pb-2 border-b border-gray-600 mb-4">
+              <div className="flex items-center space-x-2 text-sm text-gray-400">
+                <span>Seite {currentPage}/{totalPages}</span>
+                <span className="text-gray-500">•</span>
+                <span>{baseFilteredBookmarks.length} Bookmarks</span>
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                {/* Erste Seite */}
+                <button
+                  onClick={() => handlePageChange(1)}
+                  disabled={currentPage === 1}
+                  className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  title="Erste Seite"
+                >
+                  <ChevronFirst size={18} />
+                </button>
+                
+                {/* Schnell zurück */}
+                <button
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 5))}
+                  disabled={currentPage <= 5}
+                  className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  title="5 Seiten zurück"
+                >
+                  <Rewind size={18} />
+                </button>
+                
+                {/* Aktuelle Seiten */}
+                <div className="flex items-center bg-gray-700 rounded-lg px-3 py-1">
+                  <span className="text-cyan-400 font-mono text-sm">
+                    {Math.max(1, currentPage - 2)}-{Math.min(totalPages, currentPage + 2)}
+                  </span>
+                </div>
+                
+                {/* Schnell vor */}
+                <button
+                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 5))}
+                  disabled={currentPage >= totalPages - 4}
+                  className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  title="5 Seiten vor"
+                >
+                  <FastForward size={18} />
+                </button>
+                
+                {/* Letzte Seite */}
+                <button
+                  onClick={() => handlePageChange(totalPages)}
+                  disabled={currentPage === totalPages}
+                  className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  title="Letzte Seite"
+                >
+                  <ChevronLast size={18} />
+                </button>
+              </div>
+            </div>
+          )}
+          
+          {/* Existierende Footer-Inhalte */}
           <div className="footer-left">
             <span 
               className="footer-copyright copyright-game-trigger"
