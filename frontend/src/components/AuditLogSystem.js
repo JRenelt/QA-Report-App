@@ -451,12 +451,15 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         const updatedNotes = { ...testNotes };
         delete updatedNotes[noteDialog.testName];
         setTestNotes(updatedNotes);
+        localStorage.setItem('favorg-audit-testNotes', JSON.stringify(updatedNotes));
         toast.success('Notiz entfernt');
       } else {
-        setTestNotes({
+        const updatedNotes = {
           ...testNotes,
           [noteDialog.testName]: newNote.trim()
-        });
+        };
+        setTestNotes(updatedNotes);
+        localStorage.setItem('favorg-audit-testNotes', JSON.stringify(updatedNotes));
         toast.success('Notiz gespeichert');
       }
     }
