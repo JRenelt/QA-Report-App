@@ -1246,17 +1246,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               </div>
 
               {/* Main: Testpunkte */}
-              <div className="flex-1 bg-gray-900 p-4 overflow-y-auto">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-cyan-400">
+              <div className="flex-1 bg-gray-900 p-3 overflow-y-auto">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base font-semibold text-cyan-400">
                     {getCategoryIcon(currentCategory)} {currentCategory}
                   </h3>
-                  <span className="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                  <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs">
                     {currentTests.length} Tests
                   </span>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {currentTests.map((test) => (
                     <div
                       key={test.name}
