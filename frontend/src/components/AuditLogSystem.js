@@ -1138,9 +1138,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         }}
       >
         {/* Header */}
-        <div className="bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between" style={{ minHeight: '60px' }}>
+        <div className="bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between" style={{ minHeight: '50px' }}>
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-cyan-400">🔍 AuditLog-System - Intern</h2>
+            <h2 className="text-lg font-semibold text-cyan-400">🔍 AuditLog-System - Intern</h2>
             <button
               onClick={() => {
                 const newWindow = window.open('/auditlog.html', '_blank', 'width=1200,height=800');
@@ -1153,7 +1153,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               className="text-gray-400 hover:text-cyan-400 transition-colors duration-200 p-1 rounded hover:bg-gray-700"
               title="FavOrg im Neuen Fenster öffnen"
             >
-              <SquareArrowOutUpRight size={18} />
+              <SquareArrowOutUpRight size={16} />
             </button>
           </div>
           <div className="flex items-center gap-2">
@@ -1161,37 +1161,25 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               <input
                 type="text"
                 placeholder="Neuer Testname..."
-                className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white text-sm pr-8 w-60"
+                className="bg-gray-700 border border-gray-600 rounded px-2 py-1 text-white text-sm pr-6 w-52"
                 value={newTestName}
                 onChange={(e) => setNewTestName(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddTest()}
               />
               <button
                 onClick={() => setNewTestName('')}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5 bg-none border-2 border-gray-500 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-500 hover:text-gray-900 text-xs transition-all"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-none border border-gray-500 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-500 hover:text-gray-900 text-xs transition-all"
                 title="Input leeren"
               >
                 ×
               </button>
             </div>
-            <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700">
+            <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-xs px-2 py-1">
               ➕
             </Button>
-            <Button onClick={handleRemoveTest} size="sm" variant="outline" className="bg-red-600 hover:bg-red-700 text-white border-red-600">
+            <Button onClick={handleRemoveTest} size="sm" variant="outline" className="bg-red-600 hover:bg-red-700 text-white border-red-600 text-xs px-2 py-1">
               ✕
             </Button>
-            <div 
-              className="w-12 h-8 opacity-0 pointer-events-none" 
-              style={{ 
-                background: 'transparent', 
-                minWidth: '50px',
-                content: '""',
-                display: 'inline-block'
-              }}
-              title="Spacing Element"
-            >
-              {/* Transparentes 50px Element für Layout-Kontrolle */}
-            </div>
           </div>
         </div>
 
