@@ -1238,8 +1238,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         key={category}
                         onClick={() => {
                           setCurrentCategory(category);
-                          // Zeige alle Tests der Kategorie im Main-Bereich an
                           setStatusFilter('');
+                          // Scrolle zum Anfang der Test-Liste
+                          setTimeout(() => {
+                            const mainContent = document.querySelector('.flex-1.bg-gray-900.p-3.overflow-y-auto');
+                            if (mainContent) {
+                              mainContent.scrollTop = 0;
+                            }
+                          }, 100);
                         }}
                         className={`w-full text-left p-2 rounded-lg border transition-all duration-200 flex items-center justify-between ${
                           hasErrors 
