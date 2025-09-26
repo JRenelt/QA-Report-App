@@ -4227,37 +4227,29 @@ function App() {
             </div>
           )}
           
-          {/* Existierende Footer-Inhalte */}
-          <div className="footer-left">
-            <span 
-              className="footer-copyright copyright-game-trigger"
-              onClick={() => setShowEasterEgg(true)}
-              style={{ cursor: 'pointer' }}
-              title="Klicken für eine Überraschung..."
-            >
-              &copy; Jörg Renelt id2.de Hamburg 2025 Version v2.3.0
-            </span>
-          </div>
-          
-          <div className="footer-center">
-            <span className="footer-stats">
-              {statistics ? (
-                <>
-                  {statistics.active_links || 0} Aktiv • 
-                  {statistics.dead_links || 0} Tot • 
-                  {statistics.total_categories || 0} Kategorien
-                </>
-              ) : (
-                'Lade Statistiken...'
-              )}
-            </span>
-          </div>
-          
-          <div className="footer-right">
-            <button 
-              onClick={() => setShowImpressum(true)}
-              className="footer-link"
-              title="Impressum"
+          {/* Footer-Hauptzeile */}
+          <div className="flex items-center justify-between">
+            {/* Links: Status-Zahlen */}
+            <div className="flex items-center space-x-4 text-sm text-gray-400">
+              <span>{bookmarks.filter(b => b.status_type === 'active' || b.is_active).length} Aktiv</span>
+              <span>{bookmarks.filter(b => b.status_type === 'dead' || b.is_dead_link).length} Tot</span>
+              <span>{categories.length} Kategorie{categories.length !== 1 ? 'n' : ''}</span>
+            </div>
+
+            {/* Mitte: Copyright (zentriert) */}
+            <div className="text-center">
+              <span 
+                className="footer-copyright copyright-game-trigger text-gray-400 cursor-pointer hover:text-cyan-400 transition-colors"
+                onClick={handleCopyrightClick}
+              >
+                © 2024 FavOrg - Bookmark Manager
+              </span>
+            </div>
+
+            {/* Rechts: Impressum */}
+            <button
+              onClick={() => setShowHelp(true)}
+              className="text-gray-400 hover:text-cyan-400 transition-colors flex items-center space-x-1"
             >
               <FileText className="w-4 h-4 mr-1" />
               Impressum
