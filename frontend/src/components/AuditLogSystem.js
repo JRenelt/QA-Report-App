@@ -1211,7 +1211,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 <div className="space-y-2">
                   {testCategories.map((category) => {
                     const counter = getCategoryCounter(category);
+                    const errorCount = getCategoryErrorCounter(category);
                     const isCompleted = counter === 0;
+                    const hasErrors = errorCount > 0;
                     
                     return (
                       <button
@@ -1222,10 +1224,13 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           setStatusFilter('');
                         }}
                         className={`w-full text-left p-3 rounded-lg border transition-all duration-200 flex items-center justify-between ${
-                          currentCategory === category
+                          hasErrors 
+                            ? 'bg-gray-700 border-red-500 text-gray-300 hover:bg-red-900 hover:border-red-400' 
+                            : currentCategory === category
                             ? (isCompleted ? 'bg-green-600 text-white border-green-500' : 'bg-cyan-600 text-white border-cyan-500')
                             : (isCompleted ? 'bg-green-700 border-green-600 text-green-100 hover:bg-green-800' : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-cyan-900 hover:border-cyan-600')
                         }`}
+                        style={hasErrors ? { borderWidth: '5px' } : {}}
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-lg">{getCategoryIcon(category)}</span>
