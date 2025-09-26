@@ -4167,9 +4167,9 @@ function App() {
       {/* App-Fußzeile - außerhalb der app-body */}
       <footer className="app-footer">
         <div className="footer-content">
-          <div className="flex items-center justify-between">
-            {/* Links: Copyright */}
-            <div className="flex-1 text-left">
+          <div className="flex w-full">
+            {/* Links: Copyright (33,3%) - links ausgerichtet */}
+            <div className="w-1/3 text-left flex items-center">
               <span 
                 className="footer-copyright copyright-game-trigger text-gray-400 cursor-pointer hover:text-cyan-400 transition-colors"
                 onClick={() => setShowEasterEgg(true)}
@@ -4178,8 +4178,8 @@ function App() {
               </span>
             </div>
 
-            {/* Mitte: Seitensteuerung (zentriert) */}
-            <div className="flex-1 flex justify-center">
+            {/* Mitte: Seitensteuerung (33,3%) - zentriert */}
+            <div className="w-1/3 flex justify-center items-center">
               {totalPages > 1 && (
                 <div className="flex items-center space-x-3">
                   {/* Erste Seite */}
@@ -4232,8 +4232,8 @@ function App() {
               )}
             </div>
 
-            {/* Rechts: Impressum */}
-            <div className="flex-1 text-right">
+            {/* Rechts: Impressum (33,3%) - rechts ausgerichtet */}
+            <div className="w-1/3 text-right flex items-center justify-end">
               <button
                 onClick={() => setShowHelp(true)}
                 className="text-gray-400 hover:text-cyan-400 transition-colors flex items-center space-x-1"
