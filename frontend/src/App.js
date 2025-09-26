@@ -4174,7 +4174,7 @@ function App() {
                 className="footer-copyright copyright-game-trigger text-gray-400 cursor-pointer hover:text-cyan-400 transition-colors"
                 onClick={() => setShowEasterEgg(true)}
               >
-                © 2024 FavOrg - Bookmark Manager
+                © 2025 Hamburg - Jörg Renelt - FavOrg
               </span>
             </div>
 
