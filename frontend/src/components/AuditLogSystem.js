@@ -1235,7 +1235,12 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           <span className="text-lg">{getCategoryIcon(category)}</span>
                           <span className="font-medium">{category}</span>
                         </div>
-                        {counter > 0 && (
+                        {/* Status Anzeige: Fehler-Counter, normaler Counter oder grüner Haken */}
+                        {hasErrors ? (
+                          <span className="px-2 py-1 rounded-full text-xs font-bold bg-red-600 text-white">
+                            ❌ {errorCount}
+                          </span>
+                        ) : counter > 0 ? (
                           <span className={`px-2 py-1 rounded-full text-xs font-bold ${
                             currentCategory === category
                               ? 'bg-white text-cyan-600'
@@ -1243,8 +1248,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           }`}>
                             {counter}
                           </span>
-                        )}
-                        {counter === 0 && (
+                        ) : (
                           <span className="text-green-300 text-lg">✓</span>
                         )}
                       </button>
