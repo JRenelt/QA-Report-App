@@ -8,10 +8,20 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const [currentCategory, setCurrentCategory] = useState('Allgemeines Design');
   const [viewMode, setViewMode] = useState('tests'); // 'tests', 'archive'
   const [newTestName, setNewTestName] = useState('');
-  const [testStatuses, setTestStatuses] = useState({});
-  const [testNotes, setTestNotes] = useState({});
+  // Test States - mit localStorage-Persistierung
+  const [testStatuses, setTestStatuses] = useState(() => {
+    const saved = localStorage.getItem('favorg-audit-testStatuses');
+    return saved ? JSON.parse(saved) : {};
+  });
+  const [testNotes, setTestNotes] = useState(() => {
+    const saved = localStorage.getItem('favorg-audit-testNotes');
+    return saved ? JSON.parse(saved) : {};
+  });
   const [statusFilter, setStatusFilter] = useState('');
-  const [archivedReports, setArchivedReports] = useState([]);
+  const [archivedReports, setArchivedReports] = useState(() => {
+    const saved = localStorage.getItem('favorg-audit-archivedReports');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [dynamicTests, setDynamicTests] = useState({});
   const [showConfigDialog, setShowConfigDialog] = useState(false);
   const [editTestDialog, setEditTestDialog] = useState({ show: false, testName: '', currentName: '' });
