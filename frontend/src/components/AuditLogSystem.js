@@ -63,6 +63,21 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     }
   }, []);
   
+  // Persistiere testStatuses bei Änderungen
+  useEffect(() => {
+    localStorage.setItem('favorg-audit-testStatuses', JSON.stringify(testStatuses));
+  }, [testStatuses]);
+
+  // Persistiere testNotes bei Änderungen
+  useEffect(() => {
+    localStorage.setItem('favorg-audit-testNotes', JSON.stringify(testNotes));
+  }, [testNotes]);
+
+  // Persistiere archivedReports bei Änderungen
+  useEffect(() => {
+    localStorage.setItem('favorg-audit-archivedReports', JSON.stringify(archivedReports));
+  }, [archivedReports]);
+  
   // Test-Daten - Erweiterte FavOrg Test-Suite (70+ Testpunkte)
   const predefinedTests = {
     'AuditLog-System': [
