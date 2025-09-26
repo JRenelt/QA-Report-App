@@ -531,12 +531,12 @@
     </div>
 
     <script>
-        // Globale Variablen
+        // Globale Variablen - mit localStorage-Persistierung
         window.currentCategory = 'Allgemeines Design';
-        window.testStatuses = {};
-        window.testNotes = {};
+        window.testStatuses = JSON.parse(localStorage.getItem('favorg-audit-testStatuses') || '{}');
+        window.testNotes = JSON.parse(localStorage.getItem('favorg-audit-testNotes') || '{}');
         window.statusFilter = '';
-        window.archivedReports = JSON.parse(localStorage.getItem('favorg-audit-archive') || '[]');
+        window.archivedReports = JSON.parse(localStorage.getItem('favorg-audit-archivedReports') || '[]');
         window.viewMode = 'tests'; // 'tests' oder 'archive'
         
         // Config-Variablen (mit Defaults und LocalStorage-Persistierung)
