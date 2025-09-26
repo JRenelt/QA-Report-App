@@ -4167,7 +4167,7 @@ function App() {
       {/* App-Fußzeile - außerhalb der app-body */}
       <footer className="app-footer">
         <div className="footer-content">
-          {/* Pagination Controls - Tonband-Style */}
+          {/* Pagination Controls - Tonband-Style (Zentriert) */}
           {totalPages > 1 && (
             <div className="flex items-center justify-center space-x-4 pb-2 border-b border-gray-600 mb-4">
               <div className="flex items-center space-x-2 text-sm text-gray-400">
