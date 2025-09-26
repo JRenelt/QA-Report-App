@@ -1174,7 +1174,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             <h2 className="text-lg font-semibold text-cyan-400">🔍 AuditLog-System - Intern</h2>
             <button
               onClick={() => {
-                const newWindow = window.open('/auditlog.html', '_blank', 'width=1200,height=800');
+                const newWindow = window.open('/', '_blank', 'width=1200,height=800');
                 if (newWindow) {
                   newWindow.focus();
                 } else {
@@ -1182,7 +1182,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 }
               }}
               className="text-gray-400 hover:text-cyan-400 transition-colors duration-200 p-1 rounded hover:bg-gray-700"
-              title="FavOrg im Neuen Fenster öffnen"
+              title="FavOrg Hauptseite öffnen"
             >
               <SquareArrowOutUpRight size={16} />
             </button>
