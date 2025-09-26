@@ -789,8 +789,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           }
           .print-btn {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            bottom: 20px;
+            left: 20px;
             padding: 10px 16px;
             background: #6b7280;
             color: white;
