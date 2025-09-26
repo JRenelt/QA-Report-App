@@ -368,6 +368,32 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const setTestStatus = (testName, status) => {
     setTestStatuses({...testStatuses, [testName]: status});
     toast.success(`Status "${status}" gesetzt`);
+    
+    // Auto-Navigation zum nächsten Test wenn erfolgreich markiert
+    if (status === 'success') {
+      setTimeout(() => {
+        const currentTests = getCurrentTests();
+        const currentIndex = currentTests.findIndex(test => test.name === testName);
+        const nextTest = currentTests[currentIndex + 1];
+        
+        if (nextTest) {
+          // Scrolle zum nächsten Test
+          const nextTestElement = document.querySelector(`[data-test-name="${nextTest.name}"]`);
+          if (nextTestElement) {
+            nextTestElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center' 
+            });
+            // Kurzer Highlight-Effekt
+            nextTestElement.style.transition = 'all 0.3s';
+            nextTestElement.style.backgroundColor = 'rgba(6, 182, 212, 0.2)';
+            setTimeout(() => {
+              nextTestElement.style.backgroundColor = '';
+            }, 1000);
+          }
+        }
+      }, 300);
+    }
   };
 
   const handleEditTest = (testName) => {
