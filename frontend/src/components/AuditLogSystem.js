@@ -593,7 +593,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   };
 
   // Generate Structured Report HTML
-  const generateStructuredReport = (tests, results, currentDate, reportCategory = null, customStatuses = null, customNotes = null) => {
+  const generateStructuredReport = (tests, results, currentDate, reportCategory = null, customStatuses = null, customNotes = null, autoClose = false) => {
     // Verwende custom Status/Notes für Archiv-Berichte oder aktuelle für Live-Export
     const statusesToUse = customStatuses || testStatuses;
     const notesToUse = customNotes || testNotes;
