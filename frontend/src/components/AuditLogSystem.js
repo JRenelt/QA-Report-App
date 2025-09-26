@@ -374,11 +374,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     const currentTest = getCurrentTests().find(test => test.name === testName);
     if (!currentTest) return;
     
-    if (!currentTest.isDynamic) {
-      toast.error('Vordefinierte Tests können nicht bearbeitet werden');
-      return;
-    }
-    
+    // Alle Tests sind jetzt editierbar - keine Einschränkung mehr
     setEditTestDialog({ show: true, testName, currentName: currentTest.name });
   };
 
