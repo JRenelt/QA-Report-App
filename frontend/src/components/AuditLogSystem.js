@@ -368,7 +368,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   const setTestStatus = (testName, status) => {
     setTestStatuses(prev => {
       const updated = { ...prev, [testName]: status };
-      localStorage.setItem('auditlog-test-statuses', JSON.stringify(updated));
+      localStorage.setItem('favorg-audit-testStatuses', JSON.stringify(updated));
       
       // Auto-Navigation zum nächsten Test wenn erfolgreich markiert
       if (status === 'success') {
