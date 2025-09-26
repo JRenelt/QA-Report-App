@@ -579,17 +579,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     });
     
     const printWindow = window.open('', '_blank', 'width=900,height=700');
-    printWindow.document.write(generateStructuredReport(testedTests, testResults, currentDate, null, null, null, true)); // true für auto-close
+    printWindow.document.write(generateStructuredReport(testedTests, testResults, currentDate));
     printWindow.document.close();
     
-    // Auto-Close nach 3 Sekunden für "Geprüft"-Bericht
-    setTimeout(() => {
-      if (printWindow && !printWindow.closed) {
-        printWindow.focus();
-        printWindow.print();
-        printWindow.close();
-      }
-    }, 3000);
+    // Normales Verhalten - kein Auto-Print oder Auto-Close
+    toast.success(`QA-Bericht (Geprüft) mit ${testedTests.length} Tests generiert`);
   };
 
   // Generate Structured Report HTML
