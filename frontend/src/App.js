@@ -4007,8 +4007,8 @@ function App() {
     }
   };
 
-  // Filter bookmarks based on search and status
-  const filteredBookmarks = bookmarks.filter(bookmark => {
+  // Filter bookmarks based on search and status - Basis für Pagination
+  const baseFilteredBookmarks = bookmarks.filter(bookmark => {
     // Search filter - durchsucht Titel, URL, Kategorie und Beschreibung
     if (searchQuery) {
       const searchLower = searchQuery.toLowerCase();
@@ -4034,6 +4034,26 @@ function App() {
 
     return true;
   });
+
+  // Pagination-Logik für bessere Performance
+  const totalPages = Math.ceil(baseFilteredBookmarks.length / bookmarksPerPage);
+  const startIndex = (currentPage - 1) * bookmarksPerPage;
+  const endIndex = startIndex + bookmarksPerPage;
+  const filteredBookmarks = baseFilteredBookmarks.slice(startIndex, endIndex);
+
+  // Pagination Handler
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+      // Scroll nach oben bei Seitenwechsel
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Reset Pagination bei Filter-Änderungen
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter]);
 
   // Calculate counts for various statuses
   const deadLinksCount = bookmarks.filter(b => b.status_type === 'dead' || b.is_dead_link).length;
