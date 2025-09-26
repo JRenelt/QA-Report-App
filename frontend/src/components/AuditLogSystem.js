@@ -1034,6 +1034,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     if (window.confirm('Alle Tests zurücksetzen?')) {
       setTestStatuses({});
       setTestNotes({});
+      // localStorage leeren
+      localStorage.setItem('favorg-audit-testStatuses', JSON.stringify({}));
+      localStorage.setItem('favorg-audit-testNotes', JSON.stringify({}));
       toast.success('Alle Tests zurückgesetzt');
     }
   };
