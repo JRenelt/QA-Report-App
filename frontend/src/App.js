@@ -4087,6 +4087,7 @@ function App() {
         filteredCount={filteredBookmarks.length}
         hasValidated={statistics?.total_bookmarks > 0}
         hasDuplicatesMarked={hasDuplicatesMarked}
+        appSettings={appSettings}
       />
 
       <div className={`app-body ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
