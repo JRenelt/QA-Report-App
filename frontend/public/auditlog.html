@@ -868,6 +868,7 @@
 
         function setTestStatus(testName, status) {
             window.testStatuses[testName] = status;
+            localStorage.setItem('favorg-audit-testStatuses', JSON.stringify(window.testStatuses));
             renderTests();
             updateStatusCounts();
         }
