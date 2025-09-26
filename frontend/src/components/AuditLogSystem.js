@@ -1696,7 +1696,29 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               }}
               title="Quality Assurance-Bericht, also Qualitätssicherungsbericht."
             >
-              📄 QA-Bericht
+              📄 QA-Bericht (Alle)
+            </button>
+            <button
+              onClick={handlePDFExportTested}
+              className="btn btn-secondary"
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                background: '#059669',
+                color: 'white',
+                border: '1px solid #10b981'
+              }}
+              title="Nur getestete Tests als QA-Bericht exportieren"
+            >
+              📄 QA-Bericht (Geprüft)
             </button>
             <button
               onClick={handleResetAll}
