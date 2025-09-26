@@ -4205,7 +4205,7 @@ function App() {
                   {/* Aktuelle Seiten-Anzeige */}
                   <div className="flex items-center bg-gray-700 rounded-lg px-3 py-1">
                     <span className="text-cyan-400 font-mono text-sm">
-                      Seite {currentPage} von {totalPages}
+                      [{currentPage}-{totalPages}]
                     </span>
                   </div>
                   
