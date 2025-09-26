@@ -1025,7 +1025,7 @@
             
             if (confirm(`Bericht "${report.category}" vom ${report.timestamp} löschen?`)) {
                 window.archivedReports.splice(index, 1);
-                localStorage.setItem('favorg-audit-archive', JSON.stringify(window.archivedReports));
+                localStorage.setItem('favorg-audit-archivedReports', JSON.stringify(window.archivedReports));
                 renderArchiveView();
                 updateArchiveCount();
                 alert('Bericht gelöscht');
