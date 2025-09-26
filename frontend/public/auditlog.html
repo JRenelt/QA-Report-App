@@ -873,6 +873,38 @@
             updateStatusCounts();
         }
 
+        function addNote(testName) {
+            const currentNote = window.testNotes[testName] || '';
+            const newNote = prompt(`Notiz für "${testName}":`, currentNote);
+            if (newNote !== null) {
+                if (newNote.trim() === '') {
+                    delete window.testNotes[testName];
+                } else {
+                    window.testNotes[testName] = newNote.trim();
+                }
+                localStorage.setItem('favorg-audit-testNotes', JSON.stringify(window.testNotes));
+                renderTests();
+            }
+        }
+
+        function editTest(testName) {
+            const newName = prompt(`Test umbenennen "${testName}":`, testName);
+            if (newName && newName.trim() !== '' && newName !== testName) {
+                // Übertrage Status und Notizen zum neuen Namen
+                if (window.testStatuses[testName]) {
+                    window.testStatuses[newName] = window.testStatuses[testName];
+                    delete window.testStatuses[testName];
+                    localStorage.setItem('favorg-audit-testStatuses', JSON.stringify(window.testStatuses));
+                }
+                if (window.testNotes[testName]) {
+                    window.testNotes[newName] = window.testNotes[testName];
+                    delete window.testNotes[testName];
+                    localStorage.setItem('favorg-audit-testNotes', JSON.stringify(window.testNotes));
+                }
+                renderTests();
+            }
+        }
+
         function updateStatusCounts() {
             const allStatuses = Object.values(window.testStatuses);
             const counts = {
