@@ -1702,9 +1702,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 alignItems: 'center',
                 gap: '6px',
                 whiteSpace: 'nowrap',
-                background: '#374151',
-                color: '#d1d5db',
-                border: '1px solid #4b5563'
+                background: viewMode === 'archive' ? 'white' : '#374151',
+                color: viewMode === 'archive' ? '#1f2937' : '#d1d5db',
+                border: viewMode === 'archive' ? '1px solid #d1d5db' : '1px solid #4b5563'
               }}
               title={viewMode === 'archive' ? 'Zurück zu Testpunkten' : 'Archivierte Berichte anzeigen'}
             >
