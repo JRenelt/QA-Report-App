@@ -2898,6 +2898,23 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                 
                 <div className="setting-item">
                   <div className="setting-info">
+                    <Label className="setting-label">Tooltips anzeigen</Label>
+                    <span className="setting-description">Hilfe-Tooltips bei Hover über Buttons und Elemente ein-/ausschalten (default: True)</span>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={appSettings.showTooltips}
+                    onChange={(e) => {
+                      const updated = {...appSettings, showTooltips: e.target.checked};
+                      onSettingsChange(updated);
+                      localStorage.setItem('favorg-app-settings', JSON.stringify(updated));
+                    }}
+                    className="setting-checkbox"
+                  />
+                </div>
+                
+                <div className="setting-item">
+                  <div className="setting-info">
                     <Label className="setting-label">Automatische Synchronisation</Label>
                     <span className="setting-description">Änderungen automatisch speichern</span>
                   </div>
