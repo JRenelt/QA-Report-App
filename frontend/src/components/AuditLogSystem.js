@@ -1285,9 +1285,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                           <span className="text-lg">{test.icon}</span>
                           <div>
                             <strong className="text-white">{test.name}</strong>
-                            {test.isDynamic && (
-                              <span className="ml-2 bg-cyan-600 text-white px-2 py-1 rounded text-xs">Custom</span>
-                            )}
+                            {/* Alle Tests sind jetzt editierbar - "Custom" Badge entfernt */}
                           </div>
                         </div>
                         {testStatuses[test.name] && (
