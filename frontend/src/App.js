@@ -4108,7 +4108,7 @@ function App() {
         duplicateCount={duplicateCount}
         localhostCount={localhostCount}
         totalBookmarks={bookmarks.length}
-        filteredCount={filteredBookmarks.length}
+        filteredCount={baseFilteredBookmarks.length}
         hasValidated={statistics?.total_bookmarks > 0}
         hasDuplicatesMarked={hasDuplicatesMarked}
         appSettings={appSettings}
