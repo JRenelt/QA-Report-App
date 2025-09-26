@@ -2,7 +2,7 @@ import requests
 import json
 
 def debug_category_operations():
-    base_url = "https://pdf-report-boost.preview.emergentagent.com/api"
+    base_url = "https://qa-toolkit.preview.emergentagent.com/api"
     
     print("🔍 DEBUGGING CATEGORY OPERATIONS")
     print("=" * 50)

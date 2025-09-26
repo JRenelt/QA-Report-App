@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 class FocusedBackendTester:
-    def __init__(self, base_url="https://pdf-report-boost.preview.emergentagent.com"):
+    def __init__(self, base_url="https://qa-toolkit.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0

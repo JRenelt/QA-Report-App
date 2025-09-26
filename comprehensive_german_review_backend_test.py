@@ -27,7 +27,7 @@ import uuid
 class ComprehensiveGermanReviewTester:
     def __init__(self):
         # Use backend URL from environment
-        self.base_url = os.getenv('REACT_APP_BACKEND_URL', 'https://pdf-report-boost.preview.emergentagent.com')
+        self.base_url = os.getenv('REACT_APP_BACKEND_URL', 'https://qa-toolkit.preview.emergentagent.com')
         self.api_url = f"{self.base_url}/api"
         self.session = None
         
