@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from './ui/dialog';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
-import { Settings, FileText, Archive, Printer, RotateCcw, Save, Eye, Download, Trash2, Edit, StickyNote, TestTube2, CheckCircle, XCircle, Clock, AlertTriangle, Check, X, Pickaxe, CaptionsOff, PencilLine, NotebookPen } from 'lucide-react';
+import { Settings, FileText, Archive, Printer, RotateCcw, Save, Eye, Download, Trash2, Edit, StickyNote, TestTube2, CheckCircle, XCircle, Clock, AlertTriangle, Check, X, Pickaxe, CaptionsOff, PencilLine, NotebookPen, SquareArrowOutUpRight } from 'lucide-react';
 
 const AuditLogSystem = ({ isOpen, onClose }) => {
   const [currentCategory, setCurrentCategory] = useState('Allgemeines Design');
