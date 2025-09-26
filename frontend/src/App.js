@@ -4240,7 +4240,7 @@ function App() {
             <div className="text-center">
               <span 
                 className="footer-copyright copyright-game-trigger text-gray-400 cursor-pointer hover:text-cyan-400 transition-colors"
-                onClick={handleCopyrightClick}
+                onClick={() => setShowEasterEgg(true)}
               >
                 © 2024 FavOrg - Bookmark Manager
               </span>
@@ -4248,7 +4248,7 @@ function App() {
 
             {/* Rechts: Impressum */}
             <button
-              onClick={() => setShowHelp(true)}
+              onClick={() => setShowImpressum(true)}
               className="text-gray-400 hover:text-cyan-400 transition-colors flex items-center space-x-1"
             >
               <FileText className="w-4 h-4 mr-1" />
