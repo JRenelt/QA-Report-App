@@ -3467,6 +3467,7 @@ function App() {
     const saved = localStorage.getItem('favorg-app-settings');
     return saved ? JSON.parse(saved) : {
       melungenDelay: false, // Neue Einstellung für Toast-Verhalten
+      showTooltips: true, // Neue Einstellung für Tooltip-Anzeige
       theme: 'dark',
       autoSync: true,
       notifications: true
