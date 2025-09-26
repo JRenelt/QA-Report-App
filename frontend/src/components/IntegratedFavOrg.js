@@ -15,6 +15,10 @@ import ComprehensiveHelpDialog from './ComprehensiveHelpDialog';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const IntegratedFavOrg = () => {
+  // Loading State hinzufügen
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
+  
   // States
   const [bookmarks, setBookmarks] = useState([]);
   const [categories, setCategories] = useState([]);
