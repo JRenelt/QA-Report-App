@@ -4167,77 +4167,9 @@ function App() {
       {/* App-Fußzeile - außerhalb der app-body */}
       <footer className="app-footer">
         <div className="footer-content">
-          {/* Pagination Controls - Tonband-Style (Zentriert) */}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-center space-x-4 pb-2 border-b border-gray-600 mb-4">
-              <div className="flex items-center space-x-2 text-sm text-gray-400">
-                <span>Seite {currentPage}/{totalPages}</span>
-                <span className="text-gray-500">•</span>
-                <span>{baseFilteredBookmarks.length} Bookmarks</span>
-              </div>
-              
-              <div className="flex items-center space-x-3">
-                {/* Erste Seite */}
-                <button
-                  onClick={() => handlePageChange(1)}
-                  disabled={currentPage === 1}
-                  className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                  title="Erste Seite"
-                >
-                  <ChevronFirst size={18} />
-                </button>
-                
-                {/* Schnell zurück */}
-                <button
-                  onClick={() => handlePageChange(Math.max(1, currentPage - 5))}
-                  disabled={currentPage <= 5}
-                  className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                  title="5 Seiten zurück"
-                >
-                  <Rewind size={18} />
-                </button>
-                
-                {/* Aktuelle Seiten */}
-                <div className="flex items-center bg-gray-700 rounded-lg px-3 py-1">
-                  <span className="text-cyan-400 font-mono text-sm">
-                    {Math.max(1, currentPage - 2)}-{Math.min(totalPages, currentPage + 2)}
-                  </span>
-                </div>
-                
-                {/* Schnell vor */}
-                <button
-                  onClick={() => handlePageChange(Math.min(totalPages, currentPage + 5))}
-                  disabled={currentPage >= totalPages - 4}
-                  className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                  title="5 Seiten vor"
-                >
-                  <FastForward size={18} />
-                </button>
-                
-                {/* Letzte Seite */}
-                <button
-                  onClick={() => handlePageChange(totalPages)}
-                  disabled={currentPage === totalPages}
-                  className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                  title="Letzte Seite"
-                >
-                  <ChevronLast size={18} />
-                </button>
-              </div>
-            </div>
-          )}
-          
-          {/* Footer-Hauptzeile */}
           <div className="flex items-center justify-between">
-            {/* Links: Status-Zahlen */}
-            <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <span>{bookmarks.filter(b => b.status_type === 'active' || b.is_active).length} Aktiv</span>
-              <span>{bookmarks.filter(b => b.status_type === 'dead' || b.is_dead_link).length} Tot</span>
-              <span>{categories.length} Kategorie{categories.length !== 1 ? 'n' : ''}</span>
-            </div>
-
-            {/* Mitte: Copyright (zentriert) */}
-            <div className="text-center">
+            {/* Links: Copyright */}
+            <div className="flex-1 text-left">
               <span 
                 className="footer-copyright copyright-game-trigger text-gray-400 cursor-pointer hover:text-cyan-400 transition-colors"
                 onClick={() => setShowEasterEgg(true)}
@@ -4246,14 +4178,70 @@ function App() {
               </span>
             </div>
 
+            {/* Mitte: Seitensteuerung (zentriert) */}
+            <div className="flex-1 flex justify-center">
+              {totalPages > 1 && (
+                <div className="flex items-center space-x-3">
+                  {/* Erste Seite */}
+                  <button
+                    onClick={() => handlePageChange(1)}
+                    disabled={currentPage === 1}
+                    className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    title="Erste Seite"
+                  >
+                    <ChevronFirst size={18} />
+                  </button>
+                  
+                  {/* Eine Seite zurück */}
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    title="Eine Seite zurück"
+                  >
+                    <Rewind size={18} />
+                  </button>
+                  
+                  {/* Aktuelle Seiten-Anzeige */}
+                  <div className="flex items-center bg-gray-700 rounded-lg px-3 py-1">
+                    <span className="text-cyan-400 font-mono text-sm">
+                      Seite {currentPage} von {totalPages}
+                    </span>
+                  </div>
+                  
+                  {/* Eine Seite vor */}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    title="Eine Seite vor"
+                  >
+                    <FastForward size={18} />
+                  </button>
+                  
+                  {/* Letzte Seite */}
+                  <button
+                    onClick={() => handlePageChange(totalPages)}
+                    disabled={currentPage === totalPages}
+                    className="p-2 text-gray-300 hover:text-cyan-400 hover:bg-gray-700 rounded transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    title="Letzte Seite"
+                  >
+                    <ChevronLast size={18} />
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* Rechts: Impressum */}
-            <button
-              onClick={() => setShowHelp(true)}
-              className="text-gray-400 hover:text-cyan-400 transition-colors flex items-center space-x-1"
-            >
-              <FileText className="w-4 h-4 mr-1" />
-              Impressum
-            </button>
+            <div className="flex-1 text-right">
+              <button
+                onClick={() => setShowHelp(true)}
+                className="text-gray-400 hover:text-cyan-400 transition-colors flex items-center space-x-1"
+              >
+                <FileText className="w-4 h-4 mr-1" />
+                Impressum
+              </button>
+            </div>
           </div>
         </div>
       </footer>
