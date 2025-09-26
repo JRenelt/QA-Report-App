@@ -554,8 +554,13 @@
             localStorage.setItem('favorg-audit-config', JSON.stringify(window.auditConfig));
         }
 
-        // Test-Kategorien - Erweiterte FavOrg Test-Suite (70+ Testpunkte)
+        // Test-Kategorien - Erweiterte FavOrg Test-Suite + AuditLog Meta-Tests
         window.categories = [
+            { name: 'AuditLog-System', icon: '📋', count: 12 },
+            { name: 'AuditLog PDF-Export', icon: '📄', count: 8 },
+            { name: 'AuditLog Archiv-System', icon: '📁', count: 7 },
+            { name: 'AuditLog Config-System', icon: '⚙️', count: 8 },
+            { name: 'AuditLog Lucide Icons', icon: '✨', count: 7 },
             { name: 'Allgemeines Design', icon: '🎨', count: 7 },
             { name: 'Header-Bereich', icon: '🔝', count: 7 },
             { name: 'Sidebar-Bereich', icon: '📋', count: 9 },
@@ -570,8 +575,60 @@
             { name: 'Easter Eggs & Spezialfunktionen', icon: '🎮', count: 4 }
         ];
 
-        // Test-Daten - Erweiterte FavOrg Test-Suite
+        // Test-Daten - Erweiterte FavOrg Test-Suite + AuditLog Meta-Tests
         window.tests = {
+            'AuditLog-System': [
+                { name: 'Titel-Anzeige korrekt', icon: '📋', tooltip: 'Test-Bereiche Titel mit Counter wird korrekt angezeigt' },
+                { name: 'Neuanlegen Funktion', icon: '➕', tooltip: 'Neue Testpunkte können hinzugefügt werden' },
+                { name: 'Löschfunktion', icon: '🗑️', tooltip: 'Testpunkte können entfernt werden' },
+                { name: 'Sidebar Counter-Logik', icon: '🔢', tooltip: 'Counter zeigen korrekte Anzahl offener Tests' },
+                { name: 'Kategorie-Klick Navigation', icon: '👆', tooltip: 'Klick auf Kategorie zeigt alle Tests des Bereichs' },
+                { name: 'Status-Button Funktionalität', icon: '🔘', tooltip: 'Alle 4 Status-Buttons (Success, Error, Warning, Info) funktional' },
+                { name: 'Edit-Button Funktionalität', icon: '✏️', tooltip: 'Edit-Button öffnet Bearbeitungsdialog' },
+                { name: 'Notiz-Button Funktionalität', icon: '📝', tooltip: 'Notiz-Button ermöglicht Kommentare zu Tests' },
+                { name: 'Filter-System Footer', icon: '🔍', tooltip: 'Footer-Filter (Alle, Success, Error, Warning, Info) funktional' },
+                { name: 'Counter-Update dynamisch', icon: '🔄', tooltip: 'Counter aktualisieren sich bei Status-Änderungen' },
+                { name: 'Sidebar-Layout korrekt', icon: '📐', tooltip: 'Sidebar 10px Abstand, 100% Breite, korrekte Positionierung' },
+                { name: 'Tooltips bei Buttons', icon: '💬', tooltip: 'Alle Buttons zeigen korrekte Tooltips bei Hover' }
+            ],
+            'AuditLog PDF-Export': [
+                { name: 'QA-Bericht Button', icon: '📄', tooltip: 'Button heißt "QA-Bericht" mit korrektem Tooltip' },
+                { name: 'PDF-Header Layout', icon: '🏷️', tooltip: 'Titel links, Version rechts im PDF-Header' },
+                { name: 'Metadaten-Reihenfolge', icon: '👤', tooltip: 'Tester vor Datum in PDF-Metadaten' },
+                { name: 'Gesamtübersicht Design', icon: '📊', tooltip: 'Nur Rahmen, keine Hintergrundfarbe in Gesamtübersicht' },
+                { name: 'Bereichsüberschriften', icon: '🗂️', tooltip: 'Tests nach Kategorien gruppiert mit Überschriften' },
+                { name: 'Alle Tests sichtbar', icon: '👁️', tooltip: 'Auch ungetestete Tests für Transparenz angezeigt' },
+                { name: 'DIN A4 Optimierung', icon: '📄', tooltip: 'Kompakte Formatierung für Druckbarkeit' },
+                { name: 'Print-Button interaktiv', icon: '🖱️', tooltip: 'Grauer Print-Button mit Hover-Effekt' }
+            ],
+            'AuditLog Archiv-System': [
+                { name: 'Test speichern Funktion', icon: '💾', tooltip: 'Aktueller Test-Stand kann ins Archiv gespeichert werden' },
+                { name: 'Archiv anzeigen Toggle', icon: '📁', tooltip: 'Wechsel zwischen Testpunkten und Archiv-Ansicht' },
+                { name: 'Archiv-Counter korrekt', icon: '🔢', tooltip: 'Archiv-Button zeigt korrekte Anzahl gespeicherter Berichte' },
+                { name: 'Anzeigen Button Archiv', icon: '👁️', tooltip: '👁️ Anzeigen Button für archivierte Berichte funktional' },
+                { name: 'Laden Button Archiv', icon: '📥', tooltip: 'Archivierte Test-Stände können geladen werden' },
+                { name: 'Löschen Button Archiv', icon: '🗑️', tooltip: 'Archivierte Berichte können entfernt werden' },
+                { name: 'Archiv-Persistierung', icon: '💾', tooltip: 'Archivierte Daten bleiben nach Browser-Refresh erhalten' }
+            ],
+            'AuditLog Config-System': [
+                { name: 'Config Dialog öffnen', icon: '⚙️', tooltip: 'Config-Button öffnet Konfigurationsdialog' },
+                { name: 'Tester-Name Eingabe', icon: '👤', tooltip: 'Tester-Name kann eingegeben und gespeichert werden' },
+                { name: 'Version Eingabe', icon: '🏷️', tooltip: 'Versions-Nummer kann eingegeben und gespeichert werden' },
+                { name: 'Testumgebung Eingabe', icon: '💻', tooltip: 'Testumgebung kann eingegeben und gespeichert werden' },
+                { name: 'Testziel Eingabe', icon: '🎯', tooltip: 'Testziel kann eingegeben und gespeichert werden' },
+                { name: 'Testmethodik Eingabe', icon: '🔬', tooltip: 'Testmethodik kann eingegeben und gespeichert werden' },
+                { name: 'Config speichern', icon: '💾', tooltip: 'Konfiguration wird korrekt gespeichert' },
+                { name: 'Config persistieren', icon: '🔄', tooltip: 'Konfiguration bleibt nach Browser-Refresh erhalten' }
+            ],
+            'AuditLog Lucide Icons': [
+                { name: 'Status Icons Check', icon: '✅', tooltip: 'Check-Icon für Success-Status funktional' },
+                { name: 'Status Icons X', icon: '❌', tooltip: 'X-Icon für Error-Status funktional' },
+                { name: 'Status Icons Pickaxe', icon: '⚠️', tooltip: 'Pickaxe-Icon für Warning-Status funktional' },
+                { name: 'Status Icons CaptionsOff', icon: '📴', tooltip: 'CaptionsOff-Icon für Info-Status funktional' },
+                { name: 'Edit Icon PencilLine', icon: '✏️', tooltip: 'PencilLine-Icon für Edit-Button funktional' },
+                { name: 'Notiz Icon NotebookPen', icon: '📝', tooltip: 'NotebookPen-Icon für Notiz-Button funktional' },
+                { name: 'Icons initialisierung', icon: '🔄', tooltip: 'Lucide Icons werden korrekt beim Laden initialisiert' }
+            ],
             'Allgemeines Design': [
                 { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
                 { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
