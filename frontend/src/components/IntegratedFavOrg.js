@@ -15,16 +15,13 @@ import ComprehensiveHelpDialog from './ComprehensiveHelpDialog';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const IntegratedFavOrg = () => {
-  // Loading State hinzufügen
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
-  
   // States
   const [bookmarks, setBookmarks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [statistics, setStatistics] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
   const [showExtraInfo, setShowExtraInfo] = useState(false); // Extra Info Kartenansicht = 0 (versteckt)
 
   // Dialog States
