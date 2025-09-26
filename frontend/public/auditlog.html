@@ -1169,7 +1169,7 @@
                 window.archivedReports = window.archivedReports.slice(0, 10);
             }
             
-            localStorage.setItem('favorg-audit-archive', JSON.stringify(window.archivedReports));
+            localStorage.setItem('favorg-audit-archivedReports', JSON.stringify(window.archivedReports));
             updateArchiveCount();
             
             alert('Test-Stand für "' + window.currentCategory + '" ins Archiv gespeichert (' + completedTests.length + ' Tests)');
