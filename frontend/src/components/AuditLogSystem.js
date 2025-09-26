@@ -266,8 +266,10 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
 
   // Helper function to get error counter for category
   const getCategoryErrorCounter = (category) => {
-    const categoryTests = getFilteredTests(category);
-    return categoryTests.filter(test => testStatuses[test.name] === 'error').length;
+    const categoryTests = predefinedTests[category] || [];
+    const dynamicCategoryTests = dynamicTests[category] || [];
+    const allCategoryTests = [...categoryTests, ...dynamicCategoryTests];
+    return allCategoryTests.filter(test => testStatuses[test.name] === 'error').length;
   };
 
   // Berechne Counter für jede Kategorie (ungetestete Tests)
