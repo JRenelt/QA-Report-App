@@ -539,7 +539,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     return { total, passed, failed, warning, ungeprüft, issues };
   };
 
-  // Enhanced PDF Export with structured report
+  // Export-Funktionen mit Option für nur getestete Tests
   const handlePDFExport = () => {
     const tests = getAllTests(); // Verwende ALLE Tests statt nur aktuelle Kategorie
     const testResults = calculateTestResults(tests);
@@ -553,6 +553,25 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     
     const printWindow = window.open('', '_blank', 'width=900,height=700');
     printWindow.document.write(generateStructuredReport(tests, testResults, currentDate));
+    printWindow.document.close();
+  };
+
+  const handlePDFExportTested = () => {
+    const allTests = getAllTests();
+    const testedTests = allTests.filter(test => 
+      testStatuses[test.name] && testStatuses[test.name] !== 'ungeprüft'
+    );
+    const testResults = calculateTestResults(testedTests);
+    const currentDate = new Date().toLocaleString('de-DE', {
+      year: 'numeric',
+      month: '2-digit', 
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    const printWindow = window.open('', '_blank', 'width=900,height=700');
+    printWindow.document.write(generateStructuredReport(testedTests, testResults, currentDate));
     printWindow.document.close();
   };
 
