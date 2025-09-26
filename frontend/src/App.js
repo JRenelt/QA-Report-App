@@ -4178,9 +4178,9 @@ function App() {
               </span>
             </div>
 
-            {/* Mitte: Seitensteuerung (33,3%) - zentriert */}
+            {/* Mitte: Seitensteuerung (33,3%) - zentriert - Ausgeblendet wenn AuditLog aktiv */}
             <div className="w-1/3 flex justify-center items-center">
-              {totalPages > 1 && (
+              {!showAuditLog && totalPages > 1 && (
                 <div className="flex items-center space-x-3">
                   {/* Erste Seite */}
                   <button
