@@ -3454,6 +3454,10 @@ function App() {
   const [statistics, setStatistics] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
+  // Pagination States für bessere Performance
+  const [currentPage, setCurrentPage] = useState(1);
+  const [bookmarksPerPage] = useState(50); // 50 Bookmarks pro Seite
+  
   // UI State
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSubcategory, setActiveSubcategory] = useState(null);
