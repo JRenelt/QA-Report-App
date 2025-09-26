@@ -434,6 +434,10 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       setTestStatuses(updatedStatuses);
       setTestNotes(updatedNotes);
       
+      // localStorage aktualisieren
+      localStorage.setItem('favorg-audit-testStatuses', JSON.stringify(updatedStatuses));
+      localStorage.setItem('favorg-audit-testNotes', JSON.stringify(updatedNotes));
+      
       toast.success('Test-Name aktualisiert');
     }
     setEditTestDialog({ show: false, testName: '', currentName: '' });
