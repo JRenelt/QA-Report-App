@@ -1455,6 +1455,16 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                             <NotebookPen size={12} />
                             Notiz
                           </Button>
+                          <Button
+                            onClick={() => setTestStatus(test.name, null)}
+                            size="sm"
+                            variant="outline"
+                            className="border-gray-500 text-gray-400 hover:bg-gray-600 hover:text-white text-xs flex items-center gap-1"
+                            title="Status zurücksetzen"
+                          >
+                            <RotateCcw size={12} />
+                            Reset
+                          </Button>
                         </div>
                       </div>
                     </div>
