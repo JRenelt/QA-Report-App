@@ -1554,7 +1554,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             right: '0', 
             background: 'var(--bg-secondary)',
             borderTop: '1px solid var(--border-primary)',
-            padding: '8px 16px',
+            padding: '3px 16px',
             zIndex: '1000',
             minHeight: '56px'
           }}
