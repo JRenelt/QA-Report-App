@@ -1237,7 +1237,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         }}
       >
         {/* Header */}
-        <div className="bg-gray-800 border-b border-gray-700 p-2 flex items-center justify-between" style={{ minHeight: '45px' }}>
+        <div className="bg-gray-800 border-b border-gray-700 p-1.5 flex items-center justify-between" style={{ minHeight: '40px' }}>
           <div className="flex items-center gap-3">
             <h2 className="text-lg font-semibold text-cyan-400">🔍 AuditLog - System</h2>
           </div>
