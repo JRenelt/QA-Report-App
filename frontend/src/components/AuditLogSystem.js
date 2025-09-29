@@ -1356,7 +1356,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-3">
                           <span className="text-lg">{test.icon}</span>
-                          <div>
+                          <div className="flex items-center gap-2">
+                            {/* Test-ID vor dem Testpunkt */}
+                            <span className="text-xs font-mono bg-gray-700 px-2 py-1 rounded text-cyan-400">
+                              {generateTestId(currentCategory, test.name, index)}
+                            </span>
                             <strong className="text-white">{test.name}</strong>
                             {/* Alle Tests sind jetzt editierbar - "Custom" Badge entfernt */}
                           </div>
