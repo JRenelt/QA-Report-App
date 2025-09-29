@@ -994,7 +994,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   <div class="category-title">
                     ${getCategoryIcon(category)} ${category} (${categoryTests.length} Tests)
                   </div>
-                  ${categoryTests.map((test, index) => {
+                  ${categoryTests.map((test, testIndex) => {
                     const status = statusesToUse[test.name] || 'ungeprüft';
                     const notes = notesToUse[test.name];
                     let statusText = '';
