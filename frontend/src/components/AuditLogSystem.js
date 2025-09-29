@@ -1287,7 +1287,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               <div className="w-72 bg-gray-800 border-r border-gray-700 p-3 overflow-y-auto">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-base font-semibold text-cyan-400">📋 Test-Bereiche</h3>
-                  <span className="bg-orange-600 text-white px-2 py-1 rounded text-xs font-bold" title="Noch zu erledigende Testpunkte">
+                  <span className="bg-orange-600 text-white px-2 py-1 rounded text-xs font-bold" title={auditConfig.showTooltips ? "Noch zu erledigende Testpunkte" : ""}>
                     {testCategories.reduce((total, cat) => total + getCategoryCounter(cat), 0)} offen
                   </span>
                 </div>
