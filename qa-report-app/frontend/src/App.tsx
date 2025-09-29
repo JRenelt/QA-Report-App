@@ -4,8 +4,8 @@ import './App.css';
 
 function App() {
   const [currentLanguage, setCurrentLanguage] = useState<'de' | 'en'>('de');
-  const [currentUser, setCurrentUser] = useState('Demo User');
-  const [currentRole, setCurrentRole] = useState('QA-Tester');
+  const [currentUser] = useState('Demo User');
+  const [currentRole] = useState('QA-Tester');
 
   const translations = {
     de: {
