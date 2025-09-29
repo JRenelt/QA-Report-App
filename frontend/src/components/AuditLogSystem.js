@@ -1348,8 +1348,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               </div>
 
               {/* Main: Testpunkte */}
-              <div className="flex-1 bg-gray-900 p-3 overflow-y-auto">
-                <div className="flex items-center justify-between mb-3">
+              <div className="flex-1 bg-gray-900 p-2 overflow-y-auto">
+                <div className="flex items-center justify-between mb-2">
                   <h3 className="text-base font-semibold text-cyan-400">
                     {getCategoryIcon(currentCategory)} {currentCategory}
                   </h3>
