@@ -1312,7 +1312,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                             }
                           }, 100);
                         }}
-                        className={`w-full text-left p-2 rounded-lg border transition-all duration-200 flex items-center justify-between ${
+                        className={`w-full text-left p-1.5 rounded-lg border transition-all duration-200 flex items-center justify-between ${
                           hasErrors 
                             ? 'bg-gray-700 border-red-500 text-gray-300 hover:bg-red-900 hover:border-red-400' 
                             : currentCategory === category
