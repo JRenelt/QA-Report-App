@@ -1235,20 +1235,6 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
         <div className="bg-gray-800 border-b border-gray-700 p-2 flex items-center justify-between" style={{ minHeight: '45px' }}>
           <div className="flex items-center gap-3">
             <h2 className="text-lg font-semibold text-cyan-400">🔍 AuditLog - System</h2>
-            <button
-              onClick={() => {
-                const newWindow = window.open('/', '_blank', 'width=1200,height=800');
-                if (newWindow) {
-                  newWindow.focus();
-                } else {
-                  toast.error('Popup blockiert! Bitte erlauben Sie Popups für diese Seite.');
-                }
-              }}
-              className="text-gray-400 hover:text-cyan-400 transition-colors duration-200 p-1 rounded hover:bg-gray-700"
-              title="FavOrg Hauptseite öffnen"
-            >
-              <SquareArrowOutUpRight size={16} />
-            </button>
           </div>
           <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
