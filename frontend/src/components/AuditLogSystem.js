@@ -1446,7 +1446,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               alignItems: 'center',
                               justifyContent: 'center'
                             }}
-                            title="Test fehlgeschlagen"
+                            title={auditConfig.showTooltips ? "Test fehlgeschlagen" : ""}
                           >
                             <X size={14} />
                           </button>
