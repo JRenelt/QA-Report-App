@@ -1227,37 +1227,42 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             </button>
           </div>
           <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <div className="relative flex-1 min-w-0">
               <input
                 type="text"
                 placeholder="Neuer Testname..."
-                className="w-full bg-gray-700 border border-gray-600 rounded px-2 py-1 text-white text-sm pr-8"
+                className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-1 text-white text-sm pr-8"
                 value={newTestName}
                 onChange={(e) => setNewTestName(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddTest()}
               />
-              <button
-                onClick={() => setNewTestName('')}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-gray-600 border-none rounded-full flex items-center justify-center text-white hover:bg-gray-500 text-xs transition-all"
-                title="Input leeren"
-              >
-                ×
-              </button>
+              {newTestName && (
+                <button
+                  onClick={() => setNewTestName('')}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-gray-500 rounded-full flex items-center justify-center text-white hover:bg-gray-400 text-xs transition-all"
+                  title="Input leeren"
+                >
+                  ×
+                </button>
+              )}
             </div>
-            <div className="flex gap-2 ml-2">
-              <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-xs px-2 py-1" title="Test wird neu angelegt">
-                ➕
-              </Button>
-              <Button 
-                onClick={handleRemoveTest} 
-                size="sm" 
-                variant="outline" 
-                className="bg-red-600 hover:bg-red-700 text-white border-red-600 text-xs px-2 py-1 outline-2 outline-red-400" 
-                title="Der benannte Test wird endgültig entfernt"
-              >
-                ×
-              </Button>
-            </div>
+            
+            {/* Separate Button-Container ohne Überlappung */}
+            <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-xs px-3 py-1" title="Test wird neu angelegt">
+              ➕
+            </Button>
+            
+            <Button 
+              onClick={handleRemoveTest} 
+              size="sm" 
+              variant="outline" 
+              className="bg-red-600 hover:bg-red-700 text-white border-red-600 text-xs px-3 py-1" 
+              title="Der benannte Test wird endgültig entfernt"
+            >
+              🗑️
+            </Button>
+          </div>
           </div>
         </div>
 
