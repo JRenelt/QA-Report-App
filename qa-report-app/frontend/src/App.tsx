@@ -1,6 +1,144 @@
-import React, { useState } from 'react';
-import { ChevronDown, User, Building2, FolderOpen, TestTube } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronDown, User, Building2, FolderOpen, TestTube, CheckCircle, XCircle, Clock } from 'lucide-react';
 import './App.css';
+
+interface HealthStatus {
+  status: 'healthy' | 'error' | 'loading';
+  app?: string;
+  version?: string;
+  error?: string;
+}
+
+const SystemStatus: React.FC = () => {
+  const [backendHealth, setBackendHealth] = useState<HealthStatus>({ status: 'loading' });
+
+  useEffect(() => {
+    const checkBackendHealth = async () => {
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8002';
+        const response = await fetch(`${backendUrl}/health`);
+        const data = await response.json();
+        
+        if (response.ok) {
+          setBackendHealth({
+            status: 'healthy',
+            app: data.app,
+            version: data.version
+          });
+        } else {
+          setBackendHealth({
+            status: 'error',
+            error: `HTTP ${response.status}`
+          });
+        }
+      } catch (error) {
+        setBackendHealth({
+          status: 'error',
+          error: error instanceof Error ? error.message : 'Connection failed'
+        });
+      }
+    };
+
+    checkBackendHealth();
+    const interval = setInterval(checkBackendHealth, 30000); // Check every 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'healthy':
+        return <CheckCircle className="h-5 w-5 text-green-500" />;
+      case 'error':
+        return <XCircle className="h-5 w-5 text-red-500" />;
+      case 'loading':
+      default:
+        return <Clock className="h-5 w-5 text-yellow-500" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'healthy':
+        return 'bg-green-400';
+      case 'error':
+        return 'bg-red-400';
+      case 'loading':
+      default:
+        return 'bg-yellow-400';
+    }
+  };
+
+  return (
+    <div className="mt-12 bg-white shadow rounded-lg">
+      <div className="px-4 py-5 sm:p-6">
+        <h3 className="text-lg leading-6 font-medium text-qa-gray-900">
+          System Status
+        </h3>
+        <div className="mt-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className={`h-2 w-2 rounded-full ${getStatusColor(backendHealth.status)}`}></div>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-qa-gray-700">
+                  Backend: {backendHealth.status === 'healthy' ? 'Connected' : 
+                           backendHealth.status === 'error' ? 'Error' : 'Connecting...'}
+                </p>
+                {backendHealth.app && (
+                  <p className="text-xs text-qa-gray-500">
+                    {backendHealth.app} v{backendHealth.version}
+                  </p>
+                )}
+                {backendHealth.error && (
+                  <p className="text-xs text-red-500">
+                    {backendHealth.error}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex-shrink-0">
+              {getStatusIcon(backendHealth.status)}
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="h-2 w-2 bg-green-400 rounded-full"></div>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-qa-gray-700">
+                  Database: SQLite (Development)
+                </p>
+              </div>
+            </div>
+            <div className="flex-shrink-0">
+              <CheckCircle className="h-5 w-5 text-green-500" />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="h-2 w-2 bg-green-400 rounded-full"></div>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-qa-gray-700">
+                  Frontend: React + Tailwind CSS
+                </p>
+              </div>
+            </div>
+            <div className="flex-shrink-0">
+              <CheckCircle className="h-5 w-5 text-green-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function App() {
   const [currentLanguage, setCurrentLanguage] = useState<'de' | 'en'>('de');
