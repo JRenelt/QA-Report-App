@@ -1482,7 +1482,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         </div>
                         
                         {/* Rechts: Edit- und Notizen-Buttons (Outline-Format mit Lucide Icons) */}
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5">
                           <Button
                             onClick={() => handleEditTest(test.name)}
                             size="sm"
