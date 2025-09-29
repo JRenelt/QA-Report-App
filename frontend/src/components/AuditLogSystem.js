@@ -1350,7 +1350,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     <div
                       key={test.name}
                       data-test-name={test.name}
-                      className={`bg-gray-800 rounded-lg p-2 border-2 transition-all duration-200 ${
+                      className={`bg-gray-800 rounded-lg p-1.5 border-2 transition-all duration-200 ${
                         testStatuses[test.name] === 'success' ? 'border-green-500' :
                         testStatuses[test.name] === 'error' ? 'border-red-500' :
                         testStatuses[test.name] === 'warning' ? 'border-yellow-500' :
