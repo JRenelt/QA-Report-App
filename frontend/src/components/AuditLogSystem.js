@@ -1004,9 +1004,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 `).join('')}
               </ul>
             </div>
-          ` : ''}
+          ` : `
+            <div class="section">
+              <h2>✅ Keine Abweichungen</h2>
+              <p>Alle Tests wurden erfolgreich durchgeführt ohne kritische Probleme.</p>
+            </div>
+          `}
 
-          <div class="section">
+          <div class="section" style="margin-top: 20px;">
             <h2>💡 Fazit und Empfehlungen</h2>
             <p>
               ${results.failed === 0 ? 
@@ -1017,7 +1022,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             ${results.warning > 0 ? `<p><strong>Empfehlung:</strong> ${results.warning} Verbesserungen sollten für eine optimale Benutzererfahrung umgesetzt werden.</p>` : ''}
           </div>
 
-          <div class="section">
+          <div class="section" style="margin-top: 20px;">
             <h2>📎 Anhang</h2>
             <p>Detaillierte Testdaten und Screenshots sind im internen AuditLog-System archiviert.</p>
             <p><strong>Berichts-ID:</strong> AuditLog-${Date.now()}</p>
