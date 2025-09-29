@@ -189,35 +189,7 @@ function App() {
         </div>
 
         {/* Status Section */}
-        <div className="mt-12 bg-white shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <h3 className="text-lg leading-6 font-medium text-qa-gray-900">
-              System Status
-            </h3>
-            <div className="mt-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="h-2 w-2 bg-green-400 rounded-full"></div>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-qa-gray-700">
-                    Backend: Connected
-                  </p>
-                </div>
-              </div>
-              <div className="mt-2 flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="h-2 w-2 bg-green-400 rounded-full"></div>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-qa-gray-700">
-                    Database: Online
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SystemStatus />
       </main>
     </div>
   );
