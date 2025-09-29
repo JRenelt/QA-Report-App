@@ -33,7 +33,8 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       version: 'v2.3.0', // Systemvorgabe: aktuelle FavOrg Version
       environment: 'Windows 11, Chrome 117',
       testGoal: 'Überprüfung aller Funktionen und Fehlermeldungen des FavOrg AuditLog-Systems.',
-      testMethodology: 'Manueller Funktionstest mit definierten Testfällen. Eingaben über Web-Oberfläche, Auswertung durch visuelle Prüfung und Funktionsvalidierung.'
+      testMethodology: 'Manueller Funktionstest mit definierten Testfällen. Eingaben über Web-Oberfläche, Auswertung durch visuelle Prüfung und Funktionsvalidierung.',
+      showMetadata: true // Neuer Toggle für Berichts-Metadaten
     };
   });
 
