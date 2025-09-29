@@ -1021,7 +1021,12 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     return `
                       <div class="test-case ${statusClass}">
                         <div class="test-info">
-                          <div class="test-name">${test.icon} ${test.name}</div>
+                          <div class="test-name">
+                            <span class="test-id" style="font-family: monospace; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-right: 8px; color: #0891b2;">
+                              ${generateTestId(category, test.name, testIndex)}
+                            </span>
+                            ${test.icon} ${test.name}
+                          </div>
                           <div class="test-description">${test.tooltip}</div>
                           ${notes ? `<div class="test-notes">💭 Notiz: ${notes}</div>` : ''}
                         </div>
