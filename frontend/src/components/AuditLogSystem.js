@@ -1278,7 +1278,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                     {testCategories.reduce((total, cat) => total + getCategoryCounter(cat), 0)} offen
                   </span>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {testCategories.map((category) => {
                     const counter = getCategoryCounter(category);
                     const errorCount = getCategoryErrorCounter(category);
