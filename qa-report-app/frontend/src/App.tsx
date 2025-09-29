@@ -65,24 +65,24 @@ function App() {
               
               {/* Main Navigation */}
               <div className="hidden md:ml-8 md:flex md:space-x-8">
-                <a href="#" className="nav-link-active border-b-2 border-qa-primary-600 py-2 px-1 text-sm">
+                <button className="nav-link-active border-b-2 border-qa-primary-600 py-2 px-1 text-sm">
                   {t.dashboard}
-                </a>
-                <a href="#" className="nav-link py-2 px-1 text-sm">
+                </button>
+                <button className="nav-link py-2 px-1 text-sm">
                   {t.companies}
-                </a>
-                <a href="#" className="nav-link py-2 px-1 text-sm">
+                </button>
+                <button className="nav-link py-2 px-1 text-sm">
                   {t.projects}
-                </a>
-                <a href="#" className="nav-link py-2 px-1 text-sm">
+                </button>
+                <button className="nav-link py-2 px-1 text-sm">
                   {t.testSuites}
-                </a>
-                <a href="#" className="nav-link py-2 px-1 text-sm">
+                </button>
+                <button className="nav-link py-2 px-1 text-sm">
                   {t.reports}
-                </a>
-                <a href="#" className="nav-link py-2 px-1 text-sm">
+                </button>
+                <button className="nav-link py-2 px-1 text-sm">
                   {t.archive}
-                </a>
+                </button>
               </div>
             </div>
 
