@@ -1551,6 +1551,16 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                             <RotateCcw size={12} />
                             Reset
                           </Button>
+                          <Button
+                            onClick={() => handleDeleteTest(test.name)}
+                            size="sm"
+                            variant="outline"
+                            className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white text-xs flex items-center gap-1"
+                            title={auditConfig.showTooltips ? "Test löschen" : ""}
+                          >
+                            <Trash2 size={12} />
+                            Löschen
+                          </Button>
                         </div>
                       </div>
                     </div>
