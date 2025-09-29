@@ -274,20 +274,22 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     return allCategoryTests.filter(test => testStatuses[test.name] === 'error').length;
   };
 
-  // Funktion zur Generierung von Test-IDs nach neuen Konventionen
+  // Funktion zur Generierung von Test-IDs nach korrigierten Konventionen
   const generateTestId = (categoryName, testName, testIndex) => {
-    // Erste Buchstaben jedes Wortes ohne Sonderzeichen
+    // Erste Buchstaben jedes Wortes, Sonderzeichen wie /, \, & trennen Wörter
     const generateCategoryId = (name) => {
-      const words = name.split(/[\s-]+/); // Split bei Leerzeichen und Bindestrichen
+      // Split bei Leerzeichen, Bindestrichen UND Sonderzeichen /, \, &
+      const words = name.split(/[\s\-\/\\&]+/).filter(word => word.length > 0);
       let id = words.map(word => word.charAt(0).toUpperCase()).join('');
       
-      // Bei Duplikaten: weitere Buchstaben vom letzten Wort hinzufügen
-      const existingIds = ['AD', 'HB', 'SB', 'MC', 'FB', 'IE', 'LV', 'DE', 'P', 'B', 'EE', 'AMT'];
+      // Prüfe auf Duplikate und erweitere bei Bedarf mit Buchstaben vom letzten Wort
+      const existingIds = ['AD', 'HB', 'SB', 'MC', 'FB', 'IE', 'LV', 'DE', 'PE', 'BF', 'EE', 'AMT'];
       let counter = 1;
       const originalId = id;
       const lastWord = words[words.length - 1];
       
       while (existingIds.includes(id) && counter < lastWord.length) {
+        // Füge weitere Buchstaben vom letzten Wort hinzu
         id = originalId.slice(0, -1) + lastWord.substring(0, counter + 1).toUpperCase();
         counter++;
       }
@@ -299,15 +301,15 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       'Allgemeines Design': 'AD',           // Allgemeines Design
       'Header-Bereich': 'HB',               // Header-Bereich 
       'Sidebar-Bereich': 'SB',              // Sidebar-Bereich
-      'Main-Content': 'MC',                 // Main-Content
+      'Main-Content': 'MC',                 // Main-Content (Bindestrich ignoriert)
       'Footer-Bereich': 'FB',               // Footer-Bereich
-      'Import/Export': 'IE',                // Import/Export
-      'Link-Validierung': 'LV',             // Link-Validierung
-      'Duplikat-Erkennung': 'DE',           // Duplikat-Erkennung
-      'Performance': 'PE',                  // Performance (P wäre zu kurz, PE um Konflikte zu vermeiden)
-      'Benutzerfreundlichkeit': 'BF',       // Benutzerfreundlichkeit
+      'Import/Export': 'IE',                // Import/Export (/ trennt Wörter)
+      'Link-Validierung': 'LV',             // Link-Validierung (Bindestrich ignoriert)
+      'Duplikat-Erkennung': 'DE',           // Duplikat-Erkennung (Bindestrich ignoriert)
+      'Performance': 'PE',                  // Performance (ein Wort)
+      'Benutzerfreundlichkeit': 'BF',       // Benutzerfreundlichkeit (ein Wort)
       'Easter Eggs': 'EE',                  // Easter Eggs
-      'AuditLog Meta-Tests': 'AMT'          // AuditLog Meta-Tests
+      'AuditLog Meta-Tests': 'AMT'          // AuditLog Meta-Tests (Bindestrich ignoriert)
     };
     
     const categoryId = categoryMap[categoryName] || generateCategoryId(categoryName);
