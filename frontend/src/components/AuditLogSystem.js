@@ -1045,9 +1045,14 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           ${results.issues.length > 0 ? `
             <h2>⚠️ Abweichungen und Probleme</h2>
             <ul class="issues-list">
-              ${results.issues.map(issue => `
+              ${results.issues.map((issue, issueIndex) => `
                 <li class="issue-item">
-                  <div class="issue-type">${issue.type}: ${issue.name}</div>
+                  <div class="issue-type">
+                    <span class="test-id" style="font-family: monospace; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-right: 8px; color: #0891b2;">
+                      ${issue.id || `ERR${(issueIndex + 1).toString().padStart(4, '0')}`}
+                    </span>
+                    ${issue.type}: ${issue.name}
+                  </div>
                   <p>${issue.description}</p>
                 </li>
               `).join('')}
