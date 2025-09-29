@@ -1466,7 +1466,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                               alignItems: 'center',
                               justifyContent: 'center'
                             }}
-                            title="Test in Bearbeitung"
+                            title={auditConfig.showTooltips ? "Test in Bearbeitung" : ""}
                           >
                             <Pickaxe size={14} />
                           </button>
