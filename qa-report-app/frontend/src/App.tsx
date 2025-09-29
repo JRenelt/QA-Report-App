@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, User, Settings, LogOut, Building2, FolderOpen, TestTube } from 'lucide-react';
+import { ChevronDown, User, Building2, FolderOpen, TestTube } from 'lucide-react';
 import './App.css';
 
 function App() {
