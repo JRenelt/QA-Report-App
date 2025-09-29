@@ -338,6 +338,49 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     return [...baseTests, ...categoryDynamicTests];
   };
 
+  // Helper function to get current test by name
+  const getCurrentTestByName = (testName) => {
+    const allTests = getCurrentTests();
+    return allTests.find(test => test.name === testName);
+  };
+
+  const handleDeleteTest = (testName) => {
+    const currentTest = getCurrentTestByName(testName);
+    if (!currentTest) return;
+    
+    if (!currentTest.isDynamic) {
+      toast.error('Vordefinierte Tests können nicht gelöscht werden');
+      return;
+    }
+    
+    // Lösche dynamischen Test
+    const updatedTests = { ...dynamicTests };
+    if (updatedTests[currentCategory]) {
+      updatedTests[currentCategory] = updatedTests[currentCategory].filter(test => test.name !== testName);
+      if (updatedTests[currentCategory].length === 0) {
+        delete updatedTests[currentCategory];
+      }
+    }
+    setDynamicTests(updatedTests);
+    
+    // Entferne auch Status und Notizen
+    setTestStatuses(prev => {
+      const updated = { ...prev };
+      delete updated[testName];
+      localStorage.setItem('favorg-audit-testStatuses', JSON.stringify(updated));
+      return updated;
+    });
+    
+    setTestNotes(prev => {
+      const updated = { ...prev };
+      delete updated[testName];
+      localStorage.setItem('favorg-audit-testNotes', JSON.stringify(updated));
+      return updated;
+    });
+    
+    toast.success(`Test "${testName}" wurde gelöscht`);
+  };
+
   // Alle Tests aller Kategorien berechnen (für PDF-Export)
   const getAllTests = () => {
     let allTests = [];
