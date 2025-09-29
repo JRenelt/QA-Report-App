@@ -1295,9 +1295,9 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               onKeyPress={(e) => e.key === 'Enter' && handleAddTest()}
             />
             
-            {/* Nur Add-Button - Delete-Button komplett entfernt */}
-            <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-xs px-3 py-1" title={auditConfig.showTooltips ? "Test wird neu angelegt" : ""}>
-              ➕
+            {/* Neuen Test erstellen - klarer Button */}
+            <Button onClick={handleAddTest} size="sm" className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 flex items-center gap-2" title={auditConfig.showTooltips ? "Neuen Test erstellen" : ""}>
+              ➕ Test erstellen
             </Button>
           </div>
           </div>
