@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv('/app/frontend/.env')
-BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://qa-toolkit.preview.emergentagent.com')
+BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://test-suite-portal.preview.emergentagent.com')
 API_BASE = f"{BACKEND_URL}/api"
 
 async def debug_category_lock():

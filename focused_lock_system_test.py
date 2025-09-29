@@ -10,7 +10,7 @@ import json
 from datetime import datetime
 
 class LockSystemTester:
-    def __init__(self, base_url="https://qa-toolkit.preview.emergentagent.com"):
+    def __init__(self, base_url="https://test-suite-portal.preview.emergentagent.com"):
         self.base_url = base_url
         self.test_bookmark_id = None
 

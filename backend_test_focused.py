@@ -24,7 +24,7 @@ import json
 from datetime import datetime
 
 class FavOrgBackendTester:
-    def __init__(self, base_url="https://qa-toolkit.preview.emergentagent.com"):
+    def __init__(self, base_url="https://test-suite-portal.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0

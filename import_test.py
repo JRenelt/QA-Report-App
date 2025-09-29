@@ -12,7 +12,7 @@ import sys
 from datetime import datetime
 
 # Backend URL aus .env Datei
-BACKEND_URL = "https://qa-toolkit.preview.emergentagent.com/api"
+BACKEND_URL = "https://test-suite-portal.preview.emergentagent.com/api"
 
 class ImportTester:
     def __init__(self):

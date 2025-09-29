@@ -16,7 +16,7 @@ import tempfile
 import os
 from datetime import datetime
 
-BACKEND_URL = "https://qa-toolkit.preview.emergentagent.com/api"
+BACKEND_URL = "https://test-suite-portal.preview.emergentagent.com/api"
 
 def test_xml_import_detailed():
     """Detaillierter XML Import Test gemäß German Review Request"""
