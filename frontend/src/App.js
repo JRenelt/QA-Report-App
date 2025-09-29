@@ -2905,16 +2905,23 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                     <Label className="setting-label">Tooltips anzeigen</Label>
                     <span className="setting-description">Hilfe-Tooltips bei Hover über Buttons und Elemente ein-/ausschalten (default: True)</span>
                   </div>
-                  <input 
-                    type="checkbox" 
-                    checked={appSettings.showTooltips}
-                    onChange={(e) => {
-                      const updated = {...appSettings, showTooltips: e.target.checked};
+                  <button
+                    onClick={() => {
+                      const updated = {...appSettings, showTooltips: !appSettings.showTooltips};
                       onSettingsChange(updated);
                       localStorage.setItem('favorg-app-settings', JSON.stringify(updated));
                     }}
-                    className="setting-checkbox"
-                  />
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 ${
+                      appSettings.showTooltips ? 'bg-cyan-600' : 'bg-gray-400'
+                    }`}
+                    title="Tooltips ein-/ausblenden"
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        appSettings.showTooltips ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
                 </div>
                 
                 <div className="setting-item">
