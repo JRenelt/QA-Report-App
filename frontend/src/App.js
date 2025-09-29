@@ -2929,12 +2929,19 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                     <Label className="setting-label">Automatische Synchronisation</Label>
                     <span className="setting-description">Änderungen automatisch speichern</span>
                   </div>
-                  <input 
-                    type="checkbox" 
-                    checked={settings.autoSync}
-                    onChange={(e) => setSettings({...settings, autoSync: e.target.checked})}
-                    className="setting-checkbox"
-                  />
+                  <button
+                    onClick={() => setSettings({...settings, autoSync: !settings.autoSync})}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 ${
+                      settings.autoSync ? 'bg-cyan-600' : 'bg-gray-400'
+                    }`}
+                    title="Automatische Synchronisation ein-/ausschalten"
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        settings.autoSync ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
                 </div>
 
                 <div className="setting-item">
