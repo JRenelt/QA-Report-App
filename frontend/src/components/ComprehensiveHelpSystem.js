@@ -570,70 +570,62 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
     },
     auditlog: {
       title: 'AuditLog-System',
-      icon: <Grid className="w-5 h-5" />,
+      icon: <Settings className="w-5 h-5" />,
       content: {
-        title: '🔍 Systematische Qualitätsprüfung',
-        description: 'Das AuditLog-System ermöglicht eine methodische Überprüfung aller FavOrg-Funktionen mit strukturierten Testbereichen und detaillierter Dokumentation.',
+        title: '🔍 AuditLog - System v2.3.0',
+        description: 'Das integrierte QA-System für systematische Qualitätsprüfung und Dokumentation aller FavOrg-Funktionen.',
+        features: [
+          'Umfassende Test-Bereiche (88+ Testpunkte)',
+          'Status-Tracking mit visuellen Indikatoren',
+          'Strukturierte PDF-Berichtserstellung',
+          'Archiv-System für Test-Dokumentation',
+          'Meta-Tests für System-Selbstprüfung',
+          'Responsive UI mit kompakter Darstellung',
+          'Tooltip-System für Benutzerführung',
+          'Toggle-basierte Konfiguration'
+        ],
         sections: [
           {
-            title: 'Zugriff und Navigation',
-            steps: [
-              '⚙️ **Öffnen**: Einstellungen → Erweitert → AuditLog',
-              '📂 **Bereiche**: 13 Test-Kategorien von Design bis Performance',
-              '🔄 **Navigation**: Toggle zwischen "Bereiche" und "Test anzeigen"',
-              '🔗 **FavOrg-Link**: Direkter Zugriff auf Hauptanwendung zum Testen'
+            title: 'Test-Bereiche Verwaltung',
+            items: [
+              'Allgemeines Design und Layout-Konsistenz',
+              'Header-Bereich und Navigation',
+              'Sidebar-Bereich und Kategorien', 
+              'Main-Content und Test-Darstellung',
+              'Footer-Bereich und Aktions-Buttons',
+              'Import/Export Funktionen',
+              'Link-Validierung und Duplikat-Erkennung',
+              'Performance und Benutzerfreundlichkeit'
             ]
           },
           {
-            title: 'Test-Bereiche Übersicht',
-            steps: [
-              '🎨 **Allgemeines Design**: UI-Kompaktheit, Dark Theme, Responsiveness, Typographie',
-              '🔝 **Header-Bereich**: Logo, Action-Buttons, Icons, Status-Buttons',
-              '📋 **Sidebar-Bereich**: Kategorien-Tree, Collapse/Expand, Navigation',
-              '🔍 **Search-Section**: Suchfeld, Erweiterte Suche, Status-Filter',
-              '📄 **Main-Content**: Grid Layout, View Toggle, Scrolling',
-              '🎴 **Bookmark-Karten**: Card Design, Status-Badges, Lock/Edit Buttons',
-              '🗨️ **Dialoge & Modals**: Bookmark-Dialog, Einstellungen, Hilfe-System',
-              '🧭 **Navigation & Routing**: Sidebar-Navigation, Breadcrumb, Deep Links',
-              '🎯 **Drag & Drop System**: Bookmark/Category D&D, Cross-Level Movement',
-              '🎛️ **Filter & Sortierung**: Status-Filter, Kombinierte Filter',
-              '📤 **Import/Export**: HTML Import, JSON/XML Export, Testdaten',
-              '⚙️ **Einstellungen**: Theme-Switch, System-Tools, Meldungen',
-              '⚡ **Performance & Responsive**: Load Speed, Mobile/Tablet/Desktop'
+            title: 'Status-System',
+            items: [
+              '✅ Erfolgreich: Grüner Haken für bestandene Tests',
+              '❌ Fehlgeschlagen: Rotes X für kritische Probleme',
+              '⏳ In Bearbeitung: Orange für laufende Tests',
+              '🗑️ Ungeprüft: Blau für noch nicht getestete Bereiche',
+              'Reset-Button: Status einzelner Tests zurücksetzen'
             ]
           },
           {
-            title: 'Testpunkt-Management',
-            steps: [
-              '🔍 **Testpunkt-Suche**: Suchfeld zum Filtern spezifischer Testpunkte',
-              '📝 **Status-Tracking**: Bestanden (✅), Fehlgeschlagen (❌), In Bearbeitung (⏳) mit Zeitstempel',
-              '✏️ **Notizen-System**: Bleistift-Button zum Hinzufügen von Test-Notizen',
-              '🎨 **Visuelle Kennzeichnung**: Grüner/Roter/Blauer Rahmen je nach Test-Status',
-              '🧪 **Eigene Tests**: Über Inputfeld benutzerdefinierte Tests hinzufügen',
-              '📊 **Fortschritts-Tracking**: Live-Counter in Footer für alle Status-Kategorien'
-            ]
-          },
-          {
-            title: 'Bericht-System',
-            steps: [
-              '📋 **Archiv-Funktion**: Alle Testberichte werden automatisch archiviert',
-              '📊 **Status-Übersicht**: Kumulierte Darstellung aller Test-Status',
-              '📄 **PDF-Export**: HTML-Export für PDF-Druck der Testergebnisse',
-              '📥 **Berichte laden**: Laden einzelner Berichte aus dem Archiv',
-              '🗑️ **Bereinigung**: Selective oder komplette Löschung von Testberichten',
-              '📈 **Historische Verfolgung**: Verlauf der durchgeführten Tests einsehbar'
-            ]
-          },
-          {
-            title: 'Testmethodik',
-            steps: [
-              '🎯 **Systematisches Vorgehen**: Schritt-für-Schritt durch alle Bereiche',
-              '🔗 **Parallel-Testing**: FavOrg in separatem Fenster für Live-Tests',
-              '📋 **Checklisten-Prinzip**: Strukturierte Abarbeitung aller Testpunkte',
-              '🏷️ **Status-Markierung**: Eindeutige Kennzeichnung des Testfortschritts',
-              '📊 **Qualitätssicherung**: Vollständige Dokumentation für Nachvollziehbarkeit'
+            title: 'Berichts-System',
+            items: [
+              'QA-Bericht (Alle): Vollständiger Test-Überblick',
+              'QA-Bericht (Geprüft): Nur getestete Bereiche',
+              'PDF-Export mit Metadaten-Kontrolle',
+              'Archiv-Funktionen für Verlaufs-Tracking',
+              'Strukturierte Darstellung mit DIN A4 Optimierung'
             ]
           }
+        ],
+        quickStart: [
+          '1. Öffnen Sie das AuditLog über Settings → Erweitert → AuditLog-System',
+          '2. Wählen Sie einen Test-Bereich in der Sidebar aus',
+          '3. Führen Sie Tests durch und setzen Sie entsprechende Status',
+          '4. Fügen Sie Notizen zu kritischen Punkten hinzu',
+          '5. Generieren Sie PDF-Berichte für Dokumentation',
+          '6. Nutzen Sie das Archiv für historische Vergleiche'
         ]
       }
     },
