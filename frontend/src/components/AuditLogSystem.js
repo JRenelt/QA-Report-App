@@ -1341,7 +1341,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="space-y-1">
-                  {currentTests.map((test) => (
+                  {currentTests.map((test, index) => (
                     <div
                       key={test.name}
                       data-test-name={test.name}
