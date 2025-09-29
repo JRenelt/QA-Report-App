@@ -1264,7 +1264,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               className="bg-red-600 hover:bg-red-700 text-white border-red-600 text-xs px-3 py-1" 
               title={auditConfig.showTooltips ? "Der benannte Test wird endgültig entfernt" : ""}
             >
-              ×
+              🗑️
             </Button>
           </div>
           </div>
