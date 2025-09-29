@@ -1846,9 +1846,29 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
             
             <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 240px)' }}>
               <div className="space-y-6">
-                <h4 className="text-lg text-cyan-400 font-semibold border-b border-gray-700 pb-2">
-                  📋 Berichts-Metadaten
-                </h4>
+                <div className="flex items-center justify-between border-b border-gray-700 pb-2">
+                  <h4 className="text-lg text-cyan-400 font-semibold">
+                    📋 Berichts-Metadaten
+                  </h4>
+                  
+                  {/* Tooltip Toggle unmittelbar rechts neben Überschrift */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium text-gray-300">Tooltip anzeigen</span>
+                    <button
+                      onClick={() => setAuditConfig({...auditConfig, showTooltips: !auditConfig.showTooltips})}
+                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 ${
+                        auditConfig.showTooltips ? 'bg-cyan-600' : 'bg-gray-400'
+                      }`}
+                      title="AuditLog Tooltips ein-/ausschalten"
+                    >
+                      <span
+                        className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
+                          auditConfig.showTooltips ? 'translate-x-5' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
                 
                 {/* Toggle für Berichts-Metadaten anzeigen/verbergen */}
                 <div className="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
