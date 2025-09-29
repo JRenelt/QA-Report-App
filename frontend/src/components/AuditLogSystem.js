@@ -1014,45 +1014,43 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        <!-- Seitenumbruch für Abweichungen, Fazit und Anhang -->
-        <div style="page-break-before: always;">
+        <!-- Abweichungen und Probleme (keine separate Seite) -->
+        <div class="section" style="margin-top: 30px;">
           ${results.issues.length > 0 ? `
-            <div class="section">
-              <h2>⚠️ Abweichungen und Probleme</h2>
-              <ul class="issues-list">
-                ${results.issues.map(issue => `
-                  <li class="issue-item">
-                    <div class="issue-type">${issue.type}: ${issue.name}</div>
-                    <p>${issue.description}</p>
-                  </li>
-                `).join('')}
-              </ul>
-            </div>
+            <h2>⚠️ Abweichungen und Probleme</h2>
+            <ul class="issues-list">
+              ${results.issues.map(issue => `
+                <li class="issue-item">
+                  <div class="issue-type">${issue.type}: ${issue.name}</div>
+                  <p>${issue.description}</p>
+                </li>
+              `).join('')}
+            </ul>
           ` : `
-            <div class="section">
-              <h2>✅ Keine Abweichungen</h2>
-              <p>Alle Tests wurden erfolgreich durchgeführt ohne kritische Probleme.</p>
-            </div>
+            <h2>✅ Keine Abweichungen</h2>
+            <p>Alle Tests wurden erfolgreich durchgeführt ohne kritische Probleme.</p>
           `}
+        </div>
 
-          <div class="section" style="margin-top: 20px;">
-            <h2>💡 Fazit und Empfehlungen</h2>
-            <p>
-              ${results.failed === 0 ? 
-                `Das ${categoryToShow} System ist vollständig funktionsfähig. Alle ${results.passed} kritischen Tests wurden erfolgreich bestanden.` :
-                `Das ${categoryToShow} System weist ${results.failed} kritische Fehler auf. Vor der Freigabe müssen diese Probleme behoben und erneut getestet werden.`
-              }
-            </p>
-            ${results.warning > 0 ? `<p><strong>Empfehlung:</strong> ${results.warning} Verbesserungen sollten für eine optimale Benutzererfahrung umgesetzt werden.</p>` : ''}
-          </div>
+        <!-- Fazit und Empfehlungen -->
+        <div class="section" style="margin-top: 30px;">
+          <h2>💡 Fazit und Empfehlungen</h2>
+          <p>
+            ${results.failed === 0 ? 
+              `Das ${categoryToShow} System ist vollständig funktionsfähig. Alle ${results.passed} kritischen Tests wurden erfolgreich bestanden.` :
+              `Das ${categoryToShow} System weist ${results.failed} kritische Fehler auf. Vor der Freigabe müssen diese Probleme behoben und erneut getestet werden.`
+            }
+          </p>
+          ${results.warning > 0 ? `<p><strong>Empfehlung:</strong> ${results.warning} Verbesserungen sollten für eine optimale Benutzererfahrung umgesetzt werden.</p>` : ''}
+        </div>
 
-          <div class="section" style="margin-top: 20px;">
-            <h2>📎 Anhang</h2>
-            <p>Detaillierte Testdaten und Screenshots sind im internen AuditLog-System archiviert.</p>
-            <p><strong>Berichts-ID:</strong> AuditLog-${Date.now()}</p>
-            <p><strong>Generiert von:</strong> FavOrg AuditLog-System ${auditConfig.version}</p>
-            <p><strong>Testumfang:</strong> ${tests.length} Testpunkte in ${Object.keys(testsByCategory).length} Bereichen</p>
-          </div>
+        <!-- Anhang -->
+        <div class="section" style="margin-top: 30px;">
+          <h2>📎 Anhang</h2>
+          <p>Detaillierte Testdaten und Screenshots sind im internen AuditLog-System archiviert.</p>
+          <p><strong>Berichts-ID:</strong> AuditLog-${Date.now()}</p>
+          <p><strong>Generiert von:</strong> FavOrg AuditLog-System ${auditConfig.version}</p>
+          <p><strong>Testumfang:</strong> ${tests.length} Testpunkte in ${Object.keys(testsByCategory).length} Bereichen</p>
         </div>
       </body>
       </html>
