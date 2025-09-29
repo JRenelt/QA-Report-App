@@ -1214,7 +1214,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
               />
               <button
                 onClick={() => setNewTestName('')}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-none border border-gray-500 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-500 hover:text-gray-900 text-xs transition-all"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-gray-600 border-none rounded-full flex items-center justify-center text-white hover:bg-gray-500 text-xs transition-all"
                 title="Input leeren"
               >
                 ×
