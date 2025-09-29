@@ -19,7 +19,7 @@ from models import User
 from auth import get_current_user
 
 # Route imports
-from routes import auth, users, companies, projects, test_suites, test_cases, reports
+from routes import auth, users, companies, projects, test_suites
 
 # Security
 security = HTTPBearer()
