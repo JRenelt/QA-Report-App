@@ -274,24 +274,43 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     return allCategoryTests.filter(test => testStatuses[test.name] === 'error').length;
   };
 
-  // Funktion zur Generierung von Test-IDs
+  // Funktion zur Generierung von Test-IDs nach neuen Konventionen
   const generateTestId = (categoryName, testName, testIndex) => {
+    // Erste Buchstaben jedes Wortes ohne Sonderzeichen
+    const generateCategoryId = (name) => {
+      const words = name.split(/[\s-]+/); // Split bei Leerzeichen und Bindestrichen
+      let id = words.map(word => word.charAt(0).toUpperCase()).join('');
+      
+      // Bei Duplikaten: weitere Buchstaben vom letzten Wort hinzufügen
+      const existingIds = ['AD', 'HB', 'SB', 'MC', 'FB', 'IE', 'LV', 'DE', 'P', 'B', 'EE', 'AMT'];
+      let counter = 1;
+      const originalId = id;
+      const lastWord = words[words.length - 1];
+      
+      while (existingIds.includes(id) && counter < lastWord.length) {
+        id = originalId.slice(0, -1) + lastWord.substring(0, counter + 1).toUpperCase();
+        counter++;
+      }
+      
+      return id;
+    };
+
     const categoryMap = {
-      'Allgemeines Design': 'ADG',
-      'Header-Bereich': 'HDR', 
-      'Sidebar-Bereich': 'SBR',
-      'Main-Content': 'MCT',
-      'Footer-Bereich': 'FTR',
-      'Import/Export': 'IEX',
-      'Link-Validierung': 'LVA',
-      'Duplikat-Erkennung': 'DUP',
-      'Performance': 'PER',
-      'Benutzerfreundlichkeit': 'UXD',
-      'Easter Eggs': 'EGG',
-      'AuditLog Meta-Tests': 'AUD'
+      'Allgemeines Design': 'AD',           // Allgemeines Design
+      'Header-Bereich': 'HB',               // Header-Bereich 
+      'Sidebar-Bereich': 'SB',              // Sidebar-Bereich
+      'Main-Content': 'MC',                 // Main-Content
+      'Footer-Bereich': 'FB',               // Footer-Bereich
+      'Import/Export': 'IE',                // Import/Export
+      'Link-Validierung': 'LV',             // Link-Validierung
+      'Duplikat-Erkennung': 'DE',           // Duplikat-Erkennung
+      'Performance': 'PE',                  // Performance (P wäre zu kurz, PE um Konflikte zu vermeiden)
+      'Benutzerfreundlichkeit': 'BF',       // Benutzerfreundlichkeit
+      'Easter Eggs': 'EE',                  // Easter Eggs
+      'AuditLog Meta-Tests': 'AMT'          // AuditLog Meta-Tests
     };
     
-    const categoryId = categoryMap[categoryName] || 'GEN';
+    const categoryId = categoryMap[categoryName] || generateCategoryId(categoryName);
     const testId = (testIndex + 1).toString().padStart(4, '0');
     return `${categoryId}${testId}`;
   };
