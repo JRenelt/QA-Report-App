@@ -1010,11 +1010,11 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                         statusClass = 'error';
                         break;
                       case 'warning':
-                        statusText = 'WARNUNG';  
+                        statusText = 'In Bearbeitung';  
                         statusClass = 'warning';
                         break;
                       default:
-                        statusText = 'UNGEPRÜFT';
+                        statusText = 'Übersprungen';
                         statusClass = 'ungeprüft';
                     }
                     
