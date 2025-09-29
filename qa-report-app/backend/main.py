@@ -74,8 +74,6 @@ app.include_router(users.router, prefix="/api/users", tags=["User Management"])
 app.include_router(companies.router, prefix="/api/companies", tags=["Companies"])
 app.include_router(projects.router, prefix="/api/projects", tags=["Projects"])
 app.include_router(test_suites.router, prefix="/api/test-suites", tags=["Test Suites"])
-app.include_router(test_cases.router, prefix="/api/test-cases", tags=["Test Cases"])
-app.include_router(reports.router, prefix="/api/reports", tags=["Reports & Export"])
 
 if __name__ == "__main__":
     import uvicorn
