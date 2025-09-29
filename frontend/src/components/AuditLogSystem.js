@@ -274,6 +274,28 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     return allCategoryTests.filter(test => testStatuses[test.name] === 'error').length;
   };
 
+  // Funktion zur Generierung von Test-IDs
+  const generateTestId = (categoryName, testName, testIndex) => {
+    const categoryMap = {
+      'Allgemeines Design': 'ADG',
+      'Header-Bereich': 'HDR', 
+      'Sidebar-Bereich': 'SBR',
+      'Main-Content': 'MCT',
+      'Footer-Bereich': 'FTR',
+      'Import/Export': 'IEX',
+      'Link-Validierung': 'LVA',
+      'Duplikat-Erkennung': 'DUP',
+      'Performance': 'PER',
+      'Benutzerfreundlichkeit': 'UXD',
+      'Easter Eggs': 'EGG',
+      'AuditLog Meta-Tests': 'AUD'
+    };
+    
+    const categoryId = categoryMap[categoryName] || 'GEN';
+    const testId = (testIndex + 1).toString().padStart(4, '0');
+    return `${categoryId}${testId}`;
+  };
+
   // Berechne Counter für jede Kategorie (ungetestete Tests)
   const getCategoryCounter = (category) => {
     const categoryTests = predefinedTests[category] || [];
