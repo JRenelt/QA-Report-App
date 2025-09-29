@@ -1472,7 +1472,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                             }}
                             title={auditConfig.showTooltips ? "Test übersprungen" : ""}
                           >
-                            <CaptionsOff size={14} />
+                            <SkipForward size={14} />
                           </button>
                         </div>
                         
