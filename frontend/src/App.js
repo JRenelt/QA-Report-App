@@ -2999,21 +2999,6 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData, appSettin
                       <div style={{ display: 'flex', gap: '6px' }}>
                         <Button 
                           onClick={() => {
-                            console.log('Opening Audit Log in new window...');
-                            window.open(
-                              `${window.location.origin}/auditlog.html`, 
-                              'AuditLogWindow', 
-                              'width=1200,height=800,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no'
-                            );
-                            onClose();
-                          }}
-                          className="bg-cyan-600 hover:bg-cyan-700 text-white flex-1"
-                          size="sm"
-                        >
-                          📊 Neues Fenster
-                        </Button>
-                        <Button 
-                          onClick={() => {
                             console.log('Opening integrated Audit Log...');
                             onClose();
                             setTimeout(() => { 
