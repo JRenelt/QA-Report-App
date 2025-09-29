@@ -1215,10 +1215,10 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                 ×
               </button>
             </div>
-            <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-xs px-2 py-1">
+            <Button onClick={handleAddTest} size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-xs px-2 py-1" title="Test wird neu angelegt">
               ➕
             </Button>
-            <Button onClick={handleRemoveTest} size="sm" variant="outline" className="bg-red-600 hover:bg-red-700 text-white border-red-600 text-xs px-2 py-1">
+            <Button onClick={handleRemoveTest} size="sm" variant="outline" className="bg-red-600 hover:bg-red-700 text-white border-red-600 text-xs px-2 py-1" title="Der benannte Test wird endgültig entfernt">
               ✕
             </Button>
           </div>
