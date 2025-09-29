@@ -1841,6 +1841,26 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                   📋 Berichts-Metadaten
                 </h4>
                 
+                {/* Toggle für Berichts-Metadaten anzeigen/verbergen */}
+                <div className="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                  <span className="text-sm font-medium text-gray-300">
+                    Metadaten in Berichten anzeigen
+                  </span>
+                  <button
+                    onClick={() => setAuditConfig({...auditConfig, showMetadata: !auditConfig.showMetadata})}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 ${
+                      auditConfig.showMetadata ? 'bg-cyan-600' : 'bg-gray-400'
+                    }`}
+                    title="Berichts-Metadaten ein-/ausblenden"
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        auditConfig.showMetadata ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+                
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
