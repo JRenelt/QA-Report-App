@@ -1499,7 +1499,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
                             size="sm"
                             variant="outline"
                             className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white text-xs flex items-center gap-1"
-                            title="Test bearbeiten"
+                            title={auditConfig.showTooltips ? "Test bearbeiten" : ""}
                           >
                             <PencilLine size={12} />
                             Edit
