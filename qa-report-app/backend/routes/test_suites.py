@@ -70,12 +70,12 @@ async def create_test_suite(
 ):
     """Create new test suite"""
     # Verify project access
-    access_check = text("""
+    access_check = """
         SELECT p.id FROM projects p
         LEFT JOIN project_users pu ON p.id = pu.project_id
         WHERE p.id = :project_id 
           AND (p.created_by = :user_id OR pu.user_id = :user_id OR pu.access_level IN ('owner', 'editor') OR :user_role = 'admin')
-    """)
+    """
     access = await database.fetch_one(access_check, {
         "project_id": suite_data.project_id,
         "user_id": current_user.id,
