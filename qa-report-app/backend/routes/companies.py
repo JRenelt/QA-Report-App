@@ -35,11 +35,11 @@ async def create_company(
     current_user: User = Depends(require_qa_or_admin)
 ):
     """Create new company"""
-    query = text("""
+    query = """
         INSERT INTO companies (name, description, logo_url, created_by)
         VALUES (:name, :description, :logo_url, :created_by)
         RETURNING id, name, description, logo_url, created_by, created_at, updated_at
-    """)
+    """
     
     result = await database.fetch_one(query, {
         "name": company_data.name,
