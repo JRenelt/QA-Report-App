@@ -36,10 +36,10 @@ async def create_project(
 ):
     """Create new project with template"""
     # Verify company access
-    company_check = text("""
+    company_check = """
         SELECT id FROM companies 
         WHERE id = :company_id AND (created_by = :user_id OR :user_role = 'admin')
-    """)
+    """
     company = await database.fetch_one(company_check, {
         "company_id": project_data.company_id,
         "user_id": current_user.id,
