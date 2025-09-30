@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "version": "1.0",
+    "created": "2024-09-30T10:00:00Z",
+    "template_type": "favorg_migration",
+    "description": "Vollständige FavOrg AuditLog Testpunkte für Migration zur QA-Report-App"
+  },
+  "companies": [
+    {
+      "name": "FavOrg Migration",
+      "description": "Migrierte Testpunkte aus dem FavOrg AuditLog System"
+    }
+  ],
+  "projects": [
+    {
+      "name": "FavOrg Web-App QA",
+      "company_name": "FavOrg Migration", 
+      "template_type": "web_app_qa",
+      "description": "Qualitätssicherung für FavOrg Bookmark-Anwendung",
+      "status": "active"
+    }
+  ],
+  "test_suites": [
+    {
+      "name": "Allgemeines Design",
+      "project_name": "FavOrg Web-App QA",
+      "icon": "🎨",
+      "description": "Tests für UI/UX Design und Layout",
+      "sort_order": 1
+    },
+    {
+      "name": "Header-Bereich", 
+      "project_name": "FavOrg Web-App QA",
+      "icon": "📋",
+      "description": "Tests für Navigation und Header-Funktionalität",
+      "sort_order": 2
+    },
+    {
+      "name": "Sidebar-Bereich",
+      "project_name": "FavOrg Web-App QA",
+      "icon": "📂",
+      "description": "Tests für Seitenleiste und Kategorien",
+      "sort_order": 3
+    },
+    {
+      "name": "Main-Content",
+      "project_name": "FavOrg Web-App QA", 
+      "icon": "📄",
+      "description": "Tests für Hauptinhalt und Funktionen",
+      "sort_order": 4
+    },
+    {
+      "name": "Bookmark-Verwaltung",
+      "project_name": "FavOrg Web-App QA",
+      "icon": "⭐",
+      "description": "Tests für Bookmark-Funktionalitäten",
+      "sort_order": 5
+    },
+    {
+      "name": "Meta-Testing",
+      "project_name": "FavOrg Web-App QA",
+      "icon": "🔧", 
+      "description": "Tests für QA-System selbst",
+      "sort_order": 6
+    }
+  ],
+  "test_cases": [
+    {
+      "test_id": "AD0001",
+      "name": "Corporate Identity prüfen",
+      "suite_name": "Allgemeines Design",
+      "description": "Überprüfung der Einhaltung der Corporate Design Guidelines",
+      "expected_result": "Alle Farben, Fonts und Logos entsprechen dem Corporate Design",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "AD0002",
+      "name": "Responsive Design testen", 
+      "suite_name": "Allgemeines Design",
+      "description": "Test der Darstellung auf verschiedenen Bildschirmgrößen",
+      "expected_result": "Layout passt sich korrekt an Desktop, Tablet und Mobile an",
+      "priority": 1,
+      "sort_order": 2
+    },
+    {
+      "test_id": "AD0003",
+      "name": "Farbkontraste prüfen",
+      "suite_name": "Allgemeines Design",
+      "description": "Barrierefreiheit der Farbkontraste testen",
+      "expected_result": "Alle Texte haben ausreichenden Kontrast (WCAG 2.1 AA)",
+      "priority": 2,
+      "sort_order": 3
+    },
+    {
+      "test_id": "AD0004",
+      "name": "Loading-Indikatoren testen",
+      "suite_name": "Allgemeines Design",
+      "description": "Funktionalität der Lade-Animationen prüfen", 
+      "expected_result": "Moderne Loading-Indikatoren werden korrekt angezeigt",
+      "priority": 3,
+      "sort_order": 4
+    },
+    {
+      "test_id": "HB0001",
+      "name": "Navigation Links prüfen",
+      "suite_name": "Header-Bereich",
+      "description": "Alle Navigations-Links funktionieren korrekt",
+      "expected_result": "Alle Links führen zur korrekten Seite ohne Fehler",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "HB0002",
+      "name": "Benutzer-Dropdown testen",
+      "suite_name": "Header-Bereich", 
+      "description": "Benutzer-Menü öffnet und schließt korrekt",
+      "expected_result": "Dropdown öffnet sich bei Klick und zeigt korrekte Optionen",
+      "priority": 2,
+      "sort_order": 2
+    },
+    {
+      "test_id": "HB0003", 
+      "name": "Tooltip-System testen",
+      "suite_name": "Header-Bereich",
+      "description": "Funktionalität des Tooltip-Toggle-Systems",
+      "expected_result": "Tooltips können ein-/ausgeschaltet werden und funktionieren korrekt",
+      "priority": 2,
+      "sort_order": 3
+    },
+    {
+      "test_id": "HB0004",
+      "name": "Such-Funktionalität testen",
+      "suite_name": "Header-Bereich",
+      "description": "Suchfeld und Suchergebnisse prüfen",
+      "expected_result": "Suche liefert relevante Ergebnisse und funktioniert performant",
+      "priority": 1,
+      "sort_order": 4
+    },
+    {
+      "test_id": "SB0001",
+      "name": "Kategorien-Navigation testen",
+      "suite_name": "Sidebar-Bereich",
+      "description": "Navigation zwischen verschiedenen Kategorien",
+      "expected_result": "Kategorien werden korrekt geladen und angezeigt",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "SB0002",
+      "name": "Kategorie-Counter prüfen",
+      "suite_name": "Sidebar-Bereich",
+      "description": "Anzeige der Anzahl Items pro Kategorie",
+      "expected_result": "Counter zeigen korrekte Anzahl und aktualisieren sich automatisch",
+      "priority": 2,
+      "sort_order": 2
+    },
+    {
+      "test_id": "SB0003",
+      "name": "Sidebar Collapse testen", 
+      "suite_name": "Sidebar-Bereich",
+      "description": "Ein-/Ausklappen der Seitenleiste",
+      "expected_result": "Sidebar lässt sich problemlos ein- und ausklappen",
+      "priority": 3,
+      "sort_order": 3
+    },
+    {
+      "test_id": "MC0001",
+      "name": "Pagination testen",
+      "suite_name": "Main-Content",
+      "description": "Paginierung mit Tape-Recorder Icons",
+      "expected_result": "Seitennavigation funktioniert mit korrekten Lucide Icons",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "MC0002",
+      "name": "Content-Loading prüfen",
+      "suite_name": "Main-Content",
+      "description": "Laden von Inhalten und Performance",
+      "expected_result": "Inhalte laden schnell und ohne Fehler",
+      "priority": 1,
+      "sort_order": 2
+    },
+    {
+      "test_id": "MC0003",
+      "name": "Footer-Layout testen",
+      "suite_name": "Main-Content",
+      "description": "Footer mit Copyright, Pagination, Impressum",
+      "expected_result": "Footer-Layout entspricht Spezifikation (links/mitte/rechts)",
+      "priority": 2,
+      "sort_order": 3
+    },
+    {
+      "test_id": "BV0001",
+      "name": "Bookmark hinzufügen",
+      "suite_name": "Bookmark-Verwaltung",
+      "description": "Neue Bookmarks erstellen und speichern",
+      "expected_result": "Bookmarks werden korrekt gespeichert und angezeigt", 
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "BV0002",
+      "name": "Bookmark bearbeiten",
+      "suite_name": "Bookmark-Verwaltung",
+      "description": "Bestehende Bookmarks editieren",
+      "expected_result": "Änderungen werden gespeichert und sofort sichtbar",
+      "priority": 1,
+      "sort_order": 2
+    },
+    {
+      "test_id": "BV0003",
+      "name": "Bookmark löschen",
+      "suite_name": "Bookmark-Verwaltung",
+      "description": "Bookmarks entfernen mit Bestätigung",
+      "expected_result": "Löschvorgang funktioniert mit Sicherheitsabfrage",
+      "priority": 1,
+      "sort_order": 3
+    },
+    {
+      "test_id": "BV0004",
+      "name": "Kategorien zuordnen",
+      "suite_name": "Bookmark-Verwaltung",
+      "description": "Bookmarks in Kategorien organisieren",
+      "expected_result": "Zuordnung funktioniert und wird korrekt angezeigt",
+      "priority": 2,
+      "sort_order": 4
+    },
+    {
+      "test_id": "MT0001",
+      "name": "AuditLog UI testen",
+      "suite_name": "Meta-Testing",
+      "description": "QA-System Benutzeroberfläche prüfen",
+      "expected_result": "AuditLog öffnet sich korrekt und ist bedienbar",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "MT0002",
+      "name": "Test-Status Persistierung",
+      "suite_name": "Meta-Testing",
+      "description": "localStorage Funktionalität für Test-Status",
+      "expected_result": "Test-Status bleiben nach Seitenreload erhalten",
+      "priority": 1,
+      "sort_order": 2
+    },
+    {
+      "test_id": "MT0003",
+      "name": "PDF-Export testen",
+      "suite_name": "Meta-Testing",
+      "description": "Export der QA-Berichte als PDF",
+      "expected_result": "PDF wird korrekt generiert mit allen Tests/nur getesteten",
+      "priority": 2,
+      "sort_order": 3
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+test_id,name,suite_name,description,expected_result,priority,sort_order
+TS0001,Beispiel Testfall,Beispiel Test-Suite,Detaillierte Beschreibung des Testfalls,Erwartetes Ergebnis nach Testdurchführung,1,1
+TS0002,Zweiter Testfall,Beispiel Test-Suite,Noch ein Testfall zur Demonstration,Auch hier das erwartete Ergebnis,2,2

@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "version": "1.0",
+    "created": "2024-09-30T10:00:00Z",
+    "template_type": "empty",
+    "description": "Leeres Template für QA-Report Import - Füllen Sie die Felder nach Ihren Bedürfnissen aus"
+  },
+  "companies": [
+    {
+      "name": "Ihre Firma GmbH",
+      "description": "Beschreibung Ihrer Firma"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Ihr Projekt Name",
+      "company_name": "Ihre Firma GmbH",
+      "template_type": "web_app_qa",
+      "description": "Beschreibung Ihres QA-Projekts",
+      "status": "active"
+    }
+  ],
+  "test_suites": [
+    {
+      "name": "Beispiel Test-Suite",
+      "project_name": "Ihr Projekt Name",
+      "icon": "🎨",
+      "description": "Beschreibung der Test-Kategorie",
+      "sort_order": 1
+    }
+  ],
+  "test_cases": [
+    {
+      "test_id": "TS0001",
+      "name": "Beispiel Testfall",
+      "suite_name": "Beispiel Test-Suite",
+      "description": "Detaillierte Beschreibung des Testfalls",
+      "expected_result": "Erwartetes Ergebnis nach Testdurchführung",
+      "priority": 1,
+      "sort_order": 1
+    }
+  ]
+}
