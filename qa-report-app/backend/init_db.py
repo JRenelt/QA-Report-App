@@ -39,10 +39,10 @@ async def seed_initial_data():
         # Create admin user
         admin_password_hash = hash_password("admin123")
         
-        admin_query = text("""
+        admin_query = """
             INSERT INTO users (username, email, first_name, last_name, hashed_password, role, language_preference, is_active)
             VALUES (:username, :email, :first_name, :last_name, :hashed_password, :role, :language_preference, :is_active)
-        """)
+        """
         
         await database.execute(admin_query, {
             "username": "admin",
