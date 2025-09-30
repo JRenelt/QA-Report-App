@@ -371,7 +371,7 @@ function App() {
         </div>
 
         {/* Status Section */}
-        <SystemStatus />
+        <SystemStatus authToken={authToken} />
       </main>
     </div>
   );
