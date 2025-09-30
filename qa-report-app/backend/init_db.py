@@ -5,10 +5,11 @@ Database Initialization Script
 import asyncio
 from sqlalchemy import text
 from database import database, engine, metadata
-from passlib.context import CryptContext
+import bcrypt
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def hash_password(password: str) -> str:
+    """Simple bcrypt password hashing"""
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 async def create_tables():
     """Create all database tables"""
