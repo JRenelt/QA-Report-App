@@ -46,6 +46,7 @@ const Dashboard: React.FC<DashboardProps> = ({ authToken, currentUser, language 
   const [testSuites, setTestSuites] = useState<TestSuite[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'companies' | 'projects' | 'testSuites'>('companies');
+  const [selectedTestSuite, setSelectedTestSuite] = useState<TestSuite | null>(null);
 
   const translations = {
     de: {
