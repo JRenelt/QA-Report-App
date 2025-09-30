@@ -53,7 +53,7 @@ async def create_company(
 @router.get("/{company_id}", response_model=Company)
 async def get_company(company_id: int, current_user: User = Depends(get_current_user)):
     """Get specific company"""
-    query = text("""
+    query = """
         SELECT c.id, c.name, c.description, c.logo_url, c.created_by, c.created_at, c.updated_at
         FROM companies c
         LEFT JOIN projects p ON c.id = p.company_id
@@ -61,7 +61,7 @@ async def get_company(company_id: int, current_user: User = Depends(get_current_
         WHERE c.id = :company_id
           AND (c.created_by = :user_id OR pu.user_id = :user_id OR :user_role = 'admin')
         LIMIT 1
-    """)
+    """
     result = await database.fetch_one(query, {
         "company_id": company_id,
         "user_id": current_user.id,
