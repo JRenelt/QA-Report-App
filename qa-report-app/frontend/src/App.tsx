@@ -10,7 +10,7 @@ interface HealthStatus {
   error?: string;
 }
 
-const SystemStatus: React.FC = () => {
+const SystemStatus: React.FC<{ authToken: string | null }> = ({ authToken }) => {
   const [backendHealth, setBackendHealth] = useState<HealthStatus>({ status: 'loading' });
 
   useEffect(() => {
