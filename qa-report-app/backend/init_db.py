@@ -36,7 +36,8 @@ async def seed_initial_data():
             return True
             
         # Create admin user
-        admin_password_hash = pwd_context.hash("admin123")
+        admin_password = "admin123"[:72]  # Truncate to 72 bytes for bcrypt
+        admin_password_hash = pwd_context.hash(admin_password)
         
         admin_query = text("""
             INSERT INTO users (username, email, first_name, last_name, hashed_password, role, language_preference, is_active)
