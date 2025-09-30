@@ -44,7 +44,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 async def get_user_by_username(username: str) -> Optional[dict]:
     """Get user from database by username"""
     query = text("""
-        SELECT id, username, email, password_hash, first_name, last_name, 
+        SELECT id, username, email, hashed_password as password_hash, first_name, last_name, 
                role, is_active, created_at, updated_at, language_preference
         FROM users 
         WHERE username = :username AND is_active = true
