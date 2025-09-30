@@ -143,8 +143,22 @@ const SystemStatus: React.FC = () => {
 
 function App() {
   const [currentLanguage, setCurrentLanguage] = useState<'de' | 'en'>('de');
-  const [currentUser] = useState('Demo User');
-  const [currentRole] = useState('QA-Tester');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  // Check for existing authentication on app load
+  useEffect(() => {
+    const savedToken = localStorage.getItem('qa_token');
+    const savedUser = localStorage.getItem('qa_user');
+    
+    if (savedToken && savedUser) {
+      setAuthToken(savedToken);
+      setCurrentUser(JSON.parse(savedUser));
+      setIsAuthenticated(true);
+      setCurrentLanguage(JSON.parse(savedUser).language_preference?.toLowerCase() || 'de');
+    }
+  }, []);
 
   const translations = {
     de: {
