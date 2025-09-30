@@ -56,7 +56,8 @@ async def seed_initial_data():
         })
         
         # Create demo QA tester
-        qa_password_hash = pwd_context.hash("demo123")
+        qa_password = "demo123"[:72]  # Truncate to 72 bytes for bcrypt
+        qa_password_hash = pwd_context.hash(qa_password)
         
         await database.execute(admin_query, {
             "username": "qa_demo",
