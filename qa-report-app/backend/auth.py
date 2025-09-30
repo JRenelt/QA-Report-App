@@ -29,7 +29,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def get_password_hash(password: str) -> str:
     """Hash password"""
-    return pwd_context.hash(password)
+    # Truncate password to 72 bytes for bcrypt
+    truncated_password = password[:72] if isinstance(password, str) else password
+    return pwd_context.hash(truncated_password)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Create JWT access token"""
