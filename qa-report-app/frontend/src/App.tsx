@@ -299,76 +299,13 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {/* Hero Section */}
+        {/* Dashboard */}
         <div className="px-4 py-6 sm:px-0">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-qa-gray-900 sm:text-5xl">
-              {t.welcome}
-            </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-qa-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              {t.subtitle}
-            </p>
-            <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-              <div className="rounded-md shadow">
-                <button className="btn-primary w-full flex items-center justify-center px-8 py-3 text-base md:py-4 md:text-lg md:px-10">
-                  {t.getStarted}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Feature Cards */}
-        <div className="mt-12">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Company Management Card */}
-            <div className="card p-6">
-              <div className="flex items-center">
-                <Building2 className="h-8 w-8 text-qa-primary-600" />
-                <h3 className="ml-3 text-lg font-medium text-qa-gray-900">{t.companies}</h3>
-              </div>
-              <p className="mt-2 text-sm text-qa-gray-500">
-                {t.selectCompany}
-              </p>
-              <div className="mt-4">
-                <button className="btn-secondary text-sm">
-                  {t.selectCompany}
-                </button>
-              </div>
-            </div>
-
-            {/* Project Management Card */}
-            <div className="card p-6">
-              <div className="flex items-center">
-                <FolderOpen className="h-8 w-8 text-qa-primary-600" />
-                <h3 className="ml-3 text-lg font-medium text-qa-gray-900">{t.projects}</h3>
-              </div>
-              <p className="mt-2 text-sm text-qa-gray-500">
-                {t.createProject}
-              </p>
-              <div className="mt-4">
-                <button className="btn-secondary text-sm">
-                  {t.createProject}
-                </button>
-              </div>
-            </div>
-
-            {/* Test Management Card */}
-            <div className="card p-6">
-              <div className="flex items-center">
-                <TestTube className="h-8 w-8 text-qa-primary-600" />
-                <h3 className="ml-3 text-lg font-medium text-qa-gray-900">{t.testSuites}</h3>
-              </div>
-              <p className="mt-2 text-sm text-qa-gray-500">
-                {t.manageTests}
-              </p>
-              <div className="mt-4">
-                <button className="btn-secondary text-sm">
-                  {t.manageTests}
-                </button>
-              </div>
-            </div>
-          </div>
+          <Dashboard 
+            authToken={authToken!} 
+            currentUser={currentUser} 
+            language={currentLanguage} 
+          />
         </div>
 
         {/* Status Section */}
