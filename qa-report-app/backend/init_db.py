@@ -5,7 +5,11 @@ Database Initialization Script
 import asyncio
 from sqlalchemy import text
 from database import database, engine, metadata
-from auth import get_password_hash
+import hashlib
+
+def simple_hash_password(password: str) -> str:
+    """Simple SHA256 password hashing for demo purposes"""
+    return hashlib.sha256(password.encode()).hexdigest()
 
 async def create_tables():
     """Create all database tables"""
