@@ -53,11 +53,11 @@ async def create_project(
         )
     
     # Create project
-    query = text("""
+    query = """
         INSERT INTO projects (company_id, name, description, template_type, status, created_by)
         VALUES (:company_id, :name, :description, :template_type, :status, :created_by)
         RETURNING id, company_id, name, description, template_type, status, created_by, created_at, updated_at
-    """)
+    """
     
     result = await database.fetch_one(query, {
         "company_id": project_data.company_id,
