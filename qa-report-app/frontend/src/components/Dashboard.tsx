@@ -175,7 +175,17 @@ const Dashboard: React.FC<DashboardProps> = ({ authToken, currentUser, language 
   }
 
   return (
-    <div className="space-y-6">
+    <>
+      {selectedTestSuite && (
+        <TestSuiteManager
+          testSuite={selectedTestSuite}
+          authToken={authToken}
+          language={language}
+          onClose={() => setSelectedTestSuite(null)}
+        />
+      )}
+      
+      <div className="space-y-6">
       {/* Dashboard Header */}
       <div className="bg-white shadow rounded-lg p-6">
         <h1 className="text-2xl font-bold text-qa-gray-900 mb-2">{t.dashboard}</h1>
