@@ -3,7 +3,6 @@ Company Management Routes
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import text
 from typing import List
 from database import database
 from models import User, Company, CompanyCreate
