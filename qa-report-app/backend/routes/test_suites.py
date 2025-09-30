@@ -88,11 +88,11 @@ async def create_test_suite(
             detail="No edit access to this project"
         )
     
-    query = text("""
+    query = """
         INSERT INTO test_suites (project_id, name, description, icon, sort_order)
         VALUES (:project_id, :name, :description, :icon, :sort_order)
         RETURNING id, project_id, name, description, icon, sort_order, created_at
-    """)
+    """
     
     result = await database.fetch_one(query, {
         "project_id": suite_data.project_id,
