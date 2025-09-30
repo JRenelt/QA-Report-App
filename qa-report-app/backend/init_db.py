@@ -137,10 +137,10 @@ async def seed_initial_data():
             await database.execute(test_suite_query, suite)
         
         # Create demo test cases
-        test_case_query = text("""
+        test_case_query = """
             INSERT INTO test_cases (test_id, name, description, priority, expected_result, sort_order, test_suite_id, is_predefined)
             VALUES (:test_id, :name, :description, :priority, :expected_result, :sort_order, :test_suite_id, :is_predefined)
-        """)
+        """
         
         test_cases = [
             # Allgemeines Design Tests
