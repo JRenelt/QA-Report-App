@@ -203,6 +203,26 @@ function App() {
     setCurrentLanguage(prev => prev === 'de' ? 'en' : 'de');
   };
 
+  const handleLogin = (token: string, user: any) => {
+    setAuthToken(token);
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    setCurrentLanguage(user.language_preference?.toLowerCase() || 'de');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('qa_token');
+    localStorage.removeItem('qa_user');
+    setAuthToken(null);
+    setCurrentUser(null);
+    setIsAuthenticated(false);
+  };
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return <LoginForm onLogin={handleLogin} language={currentLanguage} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Header */}
