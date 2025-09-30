@@ -37,7 +37,7 @@ async def seed_initial_data():
             return True
             
         # Create admin user
-        admin_password_hash = get_password_hash("admin123")
+        admin_password_hash = simple_hash_password("admin123")
         
         admin_query = """
             INSERT INTO users (username, email, first_name, last_name, hashed_password, role, language_preference, is_active)
