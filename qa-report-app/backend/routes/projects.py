@@ -104,10 +104,10 @@ async def create_default_test_suites(project_id: int, template_type: str):
     suites = templates.get(template_type, [])
     
     for suite in suites:
-        query = text("""
+        query = """
             INSERT INTO test_suites (project_id, name, icon, sort_order)
             VALUES (:project_id, :name, :icon, :sort_order)
-        """)
+        """
         await database.execute(query, {
             "project_id": project_id,
             "name": suite["name"],
