@@ -52,7 +52,7 @@ async def seed_initial_data():
         })
         
         # Create demo QA tester
-        qa_password_hash = hash_password("demo123")
+        qa_password_hash = get_password_hash("demo123")
         
         await database.execute(admin_query, {
             "username": "qa_demo",
