@@ -82,10 +82,10 @@ async def seed_initial_data():
         })
         
         # Create demo project
-        project_query = text("""
+        project_query = """
             INSERT INTO projects (name, description, template_type, status, company_id, created_by)
             VALUES (:name, :description, :template_type, :status, :company_id, :created_by)
-        """)
+        """
         
         await database.execute(project_query, {
             "name": "Web-App QA Projekt",
