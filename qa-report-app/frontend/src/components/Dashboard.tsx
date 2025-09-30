@@ -409,6 +409,7 @@ const Dashboard: React.FC<DashboardProps> = ({ authToken, currentUser, language 
         </div>
       </div>
     </div>
+    </>
   );
 };
 
