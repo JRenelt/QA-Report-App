@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Building2, FolderOpen, TestTube, Plus, Eye, Edit, Trash2, Users, Calendar, CheckCircle } from 'lucide-react';
+import TestSuiteManager from './TestSuiteManager';
 
 interface Company {
   id: number;
