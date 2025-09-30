@@ -382,7 +382,10 @@ const Dashboard: React.FC<DashboardProps> = ({ authToken, currentUser, language 
                         <div className="text-xs text-qa-gray-500 mb-3">
                           {formatDate(testSuite.created_at)}
                         </div>
-                        <button className="w-full btn-secondary text-xs py-1">
+                        <button 
+                          onClick={() => setSelectedTestSuite(testSuite)}
+                          className="w-full btn-secondary text-xs py-1"
+                        >
                           <TestTube className="h-3 w-3 mr-1" />
                           Tests verwalten
                         </button>
