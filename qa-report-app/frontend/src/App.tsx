@@ -274,12 +274,21 @@ function App() {
                 <div className="flex items-center space-x-2">
                   <User className="h-5 w-5 text-qa-gray-400" />
                   <div className="text-sm">
-                    <div className="font-medium text-qa-gray-900">{currentUser}</div>
-                    <div className="text-qa-gray-500">{currentRole}</div>
+                    <div className="font-medium text-qa-gray-900">
+                      {currentUser?.first_name} {currentUser?.last_name}
+                    </div>
+                    <div className="text-qa-gray-500">
+                      {currentUser?.role === 'admin' ? 'Administrator' : 
+                       currentUser?.role === 'qa_tester' ? 'QA-Tester' : 'Reviewer'}
+                    </div>
                   </div>
                 </div>
-                <button className="flex items-center text-qa-gray-400 hover:text-qa-gray-600">
-                  <ChevronDown className="h-4 w-4" />
+                <button 
+                  onClick={handleLogout}
+                  className="flex items-center text-qa-gray-400 hover:text-red-600 transition-colors"
+                  title={currentLanguage === 'de' ? 'Abmelden' : 'Logout'}
+                >
+                  <LogOut className="h-4 w-4" />
                 </button>
               </div>
             </div>
