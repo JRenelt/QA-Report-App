@@ -70,10 +70,10 @@ async def seed_initial_data():
         })
         
         # Create demo company
-        company_query = text("""
+        company_query = """
             INSERT INTO companies (name, description, created_by)
             VALUES (:name, :description, :created_by)
-        """)
+        """
         
         company_result = await database.execute(company_query, {
             "name": "Demo Unternehmen GmbH",
