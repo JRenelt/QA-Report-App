@@ -55,7 +55,7 @@ async def get_user_by_username(username: str) -> Optional[dict]:
 async def get_user_by_id(user_id: int) -> Optional[dict]:
     """Get user from database by ID"""
     query = text("""
-        SELECT id, username, email, password_hash, first_name, last_name, 
+        SELECT id, username, email, hashed_password as password_hash, first_name, last_name, 
                role, is_active, created_at, updated_at, language_preference
         FROM users 
         WHERE id = :user_id AND is_active = true
