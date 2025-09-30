@@ -97,10 +97,10 @@ async def seed_initial_data():
         })
         
         # Create demo test suites
-        test_suite_query = text("""
+        test_suite_query = """
             INSERT INTO test_suites (name, description, icon, sort_order, project_id)
             VALUES (:name, :description, :icon, :sort_order, :project_id)
-        """)
+        """
         
         test_suites = [
             {
