@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get("/", response_model=List[Project])
 async def get_projects(current_user: User = Depends(get_current_user)):
     """Get all projects user has access to"""
-    query = text("""
+    query = """
         SELECT DISTINCT p.id, p.company_id, p.name, p.description, p.template_type, 
                p.status, p.created_by, p.created_at, p.updated_at
         FROM projects p
@@ -22,7 +22,7 @@ async def get_projects(current_user: User = Depends(get_current_user)):
            OR pu.user_id = :user_id 
            OR :user_role = 'admin'
         ORDER BY p.updated_at DESC
-    """)
+    """
     result = await database.fetch_all(query, {
         "user_id": current_user.id,
         "user_role": current_user.role
