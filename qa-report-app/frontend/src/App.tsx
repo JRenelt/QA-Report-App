@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, User, Building2, FolderOpen, TestTube, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { ChevronDown, User, Building2, FolderOpen, TestTube, CheckCircle, XCircle, Clock, LogOut } from 'lucide-react';
+import LoginForm from './components/LoginForm';
 import './App.css';
 
 interface HealthStatus {
