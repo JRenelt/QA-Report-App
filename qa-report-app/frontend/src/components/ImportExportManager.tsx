@@ -474,19 +474,19 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
                       <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
                         <div className="text-center p-2 bg-green-50 rounded">
                           <div className="font-semibold text-green-800">
-                            {Object.values(importResult.result.created).reduce((a: number, b: number) => Number(a) + Number(b), 0)}
+                            {Object.values(importResult.result.created as Record<string, number>).reduce((sum, value) => sum + value, 0)}
                           </div>
                           <div className="text-green-600">{t.created}</div>
                         </div>
                         <div className="text-center p-2 bg-blue-50 rounded">
                           <div className="font-semibold text-blue-800">
-                            {Object.values(importResult.result.updated).reduce((a: number, b: number) => Number(a) + Number(b), 0)}
+                            {Object.values(importResult.result.updated as Record<string, number>).reduce((sum, value) => sum + value, 0)}
                           </div>
                           <div className="text-blue-600">{t.updated}</div>
                         </div>
                         <div className="text-center p-2 bg-gray-50 rounded">
                           <div className="font-semibold text-gray-800">
-                            {Object.values(importResult.result.skipped).reduce((a: number, b: number) => Number(a) + Number(b), 0)}
+                            {Object.values(importResult.result.skipped as Record<string, number>).reduce((sum, value) => sum + value, 0)}
                           </div>
                           <div className="text-gray-600">{t.skipped}</div>
                         </div>
