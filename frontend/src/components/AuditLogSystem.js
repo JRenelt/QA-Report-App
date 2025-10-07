@@ -243,6 +243,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     };
 
     const categoryMap = {
+      'Allgemeines Design': 'AD',           // Allgemeines Design
       'Testpunkt Kopfzeile': 'TK',          // Testpunkt Kopfzeile
       'Navigation Bereich': 'NB',           // Navigation Bereich 
       'Suchfeld Bereich': 'SB',             // Suchfeld Bereich
