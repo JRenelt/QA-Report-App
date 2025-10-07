@@ -312,7 +312,7 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
                   <div className="card p-4">
                     <h4 className="font-medium text-qa-gray-900 mb-2">{t.currentData}</h4>
                     <p className="text-sm text-qa-gray-600 mb-4">Template mit Ihren aktuellen Daten</p>
-                    <div className="space-y-2">
+                    <div className="grid grid-cols-3 gap-2">
                       <button
                         onClick={() => handleTemplateGeneration('current', 'json')}
                         disabled={loading}
@@ -326,6 +326,13 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
                         className="w-full btn-secondary text-sm py-2"
                       >
                         CSV {loading ? t.downloading : t.generateTemplate}
+                      </button>
+                      <button
+                        onClick={() => handleTemplateGeneration('current', 'excel')}
+                        disabled={loading}
+                        className="w-full btn-secondary text-sm py-2"
+                      >
+                        Excel {loading ? t.downloading : t.generateTemplate}
                       </button>
                     </div>
                   </div>
