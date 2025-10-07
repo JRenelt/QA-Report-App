@@ -649,11 +649,45 @@ async def _convert_to_csv(data: Dict[str, Any]) -> str:
     return output.getvalue()
 
 async def _convert_to_excel(data: Dict[str, Any]) -> bytes:
-    """Convert template data to Excel format (placeholder)"""
-    # For now, return CSV content as Excel would require additional library
-    # In production, use openpyxl or similar
-    csv_content = await _convert_to_csv(data)
-    return csv_content.encode()
+    """Convert template data to Excel format using openpyxl"""
+    import pandas as pd
+    from io import BytesIO
+    
+    output = BytesIO()
+    
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        # Companies sheet
+        if "companies" in data and data["companies"]:
+            companies_df = pd.DataFrame(data["companies"])
+            companies_df.to_excel(writer, sheet_name='Unternehmen', index=False)
+        
+        # Projects sheet
+        if "projects" in data and data["projects"]:
+            projects_df = pd.DataFrame(data["projects"])
+            projects_df.to_excel(writer, sheet_name='Projekte', index=False)
+        
+        # Test suites sheet
+        if "test_suites" in data and data["test_suites"]:
+            suites_df = pd.DataFrame(data["test_suites"])
+            suites_df.to_excel(writer, sheet_name='Test-Bereiche', index=False)
+        
+        # Test cases sheet (main content)
+        if "test_cases" in data and data["test_cases"]:
+            cases_df = pd.DataFrame(data["test_cases"])
+            cases_df.to_excel(writer, sheet_name='Testfälle', index=False)
+        
+        # Test results sheet (if available)
+        if "test_results" in data and data["test_results"]:
+            results_df = pd.DataFrame(data["test_results"])
+            results_df.to_excel(writer, sheet_name='Testergebnisse', index=False)
+        
+        # Meta information sheet
+        if "meta" in data:
+            meta_df = pd.DataFrame([data["meta"]])
+            meta_df.to_excel(writer, sheet_name='Meta-Daten', index=False)
+    
+    output.seek(0)
+    return output.read()
 
 async def _parse_csv_import(csv_content: str) -> Dict[str, Any]:
     """Parse CSV import content to template format"""
