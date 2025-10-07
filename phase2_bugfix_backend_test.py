@@ -16,7 +16,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://test-suite-portal.preview.emergentagent.com/api"
+BACKEND_URL = "https://qa-testing-hub.preview.emergentagent.com/api"
 
 class Phase2BugFixTester:
     def __init__(self):

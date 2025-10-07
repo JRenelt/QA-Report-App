@@ -13,7 +13,7 @@ from datetime import datetime
 import sys
 
 # Backend URL aus .env
-BACKEND_URL = "https://test-suite-portal.preview.emergentagent.com/api"
+BACKEND_URL = "https://qa-testing-hub.preview.emergentagent.com/api"
 
 def print_header(title):
     """Print formatted header"""
