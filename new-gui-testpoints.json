@@ -1,0 +1,642 @@
+{
+  "gui_testpoints": {
+    "1_testpunkt_kopfzeile": [
+      {
+        "test_id": "TK0001",
+        "name": "Logo Ort: Links",
+        "description": "Logo ist korrekt links in der Kopfzeile positioniert",
+        "priority": 1,
+        "expected_result": "Logo erscheint links im Header und ist erkennbar",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "TK0002", 
+        "name": "Logo Hover-Effekt",
+        "description": "Logo reagiert bei Maus-Hover korrekt",
+        "priority": 2,
+        "expected_result": "Visueller Feedback bei Hover, keine Fehler",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "TK0003",
+        "name": "Logo Click-Funktion",
+        "description": "Logo-Klick führt zur korrekten Aktion",
+        "priority": 1,
+        "expected_result": "Homepage-Redirect oder definierte Aktion wird ausgeführt",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "BOM0001",
+        "name": "Button Ort: Mittig",
+        "description": "Haupt-Navigation-Buttons sind mittig platziert",
+        "priority": 1,
+        "expected_result": "Buttons befinden sich zentriert im Header-Bereich",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "NFB0001",
+        "name": "Neu Button - Neue Favorit",
+        "description": "Button 'Neue Favorit' ist vorhanden und funktional",
+        "priority": 1,
+        "expected_result": "Button öffnet Dialog für neue Favoriten-Erstellung",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "NFBD0001",
+        "name": "Neu Button Design",
+        "description": "Design und Styling des 'Neue Favorit' Buttons",
+        "priority": 2,
+        "expected_result": "Button hat korrektes Design, Farben und Abmessungen",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "NFBH0001",
+        "name": "Neu Button Hover-Effekt",
+        "description": "Hover-Effekt des 'Neue Favorit' Buttons",
+        "priority": 2,
+        "expected_result": "Smooth Hover-Animation und Farbwechsel",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "NFBC0001",
+        "name": "Neu Button Click-Funktion",
+        "description": "Click-Funktionalität des 'Neue Favorit' Buttons",
+        "priority": 1,
+        "expected_result": "Dialog öffnet sich korrekt ohne Fehler",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "DW0001",
+        "name": "Datei Wählen - Favoriten Import",
+        "description": "Import-Button für Favoriten-Dateien",
+        "priority": 1,
+        "expected_result": "File-Dialog öffnet sich für Import-Funktionalität",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "DWB0001",
+        "name": "Datei Wählen Button Design",
+        "description": "Design des Import-Buttons",
+        "priority": 2,
+        "expected_result": "Button hat korrektes Styling und Icon",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "DWBH0001",
+        "name": "Datei Wählen Button Hover",
+        "description": "Hover-Effekt des Import-Buttons",
+        "priority": 2,
+        "expected_result": "Visueller Feedback bei Hover",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "DWBF0001",
+        "name": "Datei Wählen Button Funktion",
+        "description": "Funktionalität des Import-Buttons",
+        "priority": 1,
+        "expected_result": "File-Browser öffnet sich korrekt",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "FE0001",
+        "name": "Fav Export Button",
+        "description": "Export-Button für Favoriten",
+        "priority": 1,
+        "expected_result": "Export-Funktionen sind zugänglich",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "FEB0001",
+        "name": "Fav Export Button Design",
+        "description": "Design des Export-Buttons",
+        "priority": 2,
+        "expected_result": "Button hat korrektes Styling und ist erkennbar",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "FEBH0001",
+        "name": "Fav Export Button Hover",
+        "description": "Hover-Effekt des Export-Buttons",
+        "priority": 2,
+        "expected_result": "Smooth Hover-Animation",
+        "category": "Testpunkt Kopfzeile"
+      },
+      {
+        "test_id": "FEBF0001",
+        "name": "Fav Export Button Funktion",
+        "description": "Funktionalität des Export-Buttons",
+        "priority": 1,
+        "expected_result": "Export-Dialog oder -Menü öffnet sich",
+        "category": "Testpunkt Kopfzeile"
+      }
+    ],
+    "2_navigation_bereich": [
+      {
+        "test_id": "NB0001",
+        "name": "Navigation Layout",
+        "description": "Gesamtlayout der Navigation prüfen",
+        "priority": 1,
+        "expected_result": "Navigation ist vollständig sichtbar und korrekt positioniert",
+        "category": "Navigation Bereich"
+      },
+      {
+        "test_id": "NBI0001",
+        "name": "Navigation Icons",
+        "description": "Alle Icons in der Navigation sind korrekt dargestellt",
+        "priority": 2,
+        "expected_result": "Icons sind scharf, korrekt ausgerichtet und laden schnell",
+        "category": "Navigation Bereich"
+      },
+      {
+        "test_id": "NBH0001",
+        "name": "Navigation Hover-Effekte",
+        "description": "Hover-Effekte aller Navigationselemente",
+        "priority": 2,
+        "expected_result": "Smooth Hover-Animationen ohne Flackern",
+        "category": "Navigation Bereich"
+      },
+      {
+        "test_id": "NBK0001",
+        "name": "Navigation Keyboard-Navigation",
+        "description": "Tastatur-Navigation durch Menüpunkte",
+        "priority": 2,
+        "expected_result": "Tab-Navigation funktioniert korrekt",
+        "category": "Navigation Bereich"
+      }
+    ],
+    "3_suchfeld_bereich": [
+      {
+        "test_id": "SF0001",
+        "name": "Suchfeld Position",
+        "description": "Suchfeld ist korrekt im Header positioniert",
+        "priority": 1,
+        "expected_result": "Suchfeld sichtbar und erreichbar im Header",
+        "category": "Suchfeld Bereich"
+      },
+      {
+        "test_id": "SFD0001",
+        "name": "Suchfeld Design",
+        "description": "Design und Styling des Suchfeldes",
+        "priority": 2,
+        "expected_result": "Suchfeld hat korrektes Design und Placeholder-Text",
+        "category": "Suchfeld Bereich"
+      },
+      {
+        "test_id": "SFP0001",
+        "name": "Suchfeld Placeholder",
+        "description": "Placeholder-Text im Suchfeld",
+        "priority": 2,
+        "expected_result": "Placeholder ist lesbar und beschreibend",
+        "category": "Suchfeld Bereich"
+      },
+      {
+        "test_id": "SFF0001",
+        "name": "Suchfeld Funktion",
+        "description": "Such-Funktionalität des Eingabefelds",
+        "priority": 1,
+        "expected_result": "Suche funktioniert bei Eingabe und Enter-Taste",
+        "category": "Suchfeld Bereich"
+      },
+      {
+        "test_id": "SFAR0001",
+        "name": "Suchfeld Auto-Vervollständigung",
+        "description": "Auto-Vervollständigung/Suggestion-Funktion",
+        "priority": 2,
+        "expected_result": "Relevante Suchvorschläge erscheinen bei Eingabe",
+        "category": "Suchfeld Bereich"
+      },
+      {
+        "test_id": "SFL0001",
+        "name": "Suchfeld Lösch-Button",
+        "description": "Clear/Reset-Button im Suchfeld",
+        "priority": 2,
+        "expected_result": "X-Button löscht Suchfeld-Inhalt",
+        "category": "Suchfeld Bereich"
+      }
+    ],
+    "4_sidebar_bereich": [
+      {
+        "test_id": "SB0001",
+        "name": "Sidebar Sichtbarkeit",
+        "description": "Sidebar ist korrekt sichtbar und positioniert",
+        "priority": 1,
+        "expected_result": "Sidebar ist vollständig sichtbar links im Layout",
+        "category": "Sidebar Bereich"
+      },
+      {
+        "test_id": "SBW0001",
+        "name": "Sidebar Breite",
+        "description": "Sidebar hat korrekte Breite und Proportionen",
+        "priority": 2,
+        "expected_result": "Sidebar-Breite ist angemessen und responsive",
+        "category": "Sidebar Bereich"
+      },
+      {
+        "test_id": "SBRS0001",
+        "name": "Sidebar Resize-Funktion",
+        "description": "Sidebar kann in der Breite verändert werden",
+        "priority": 2,
+        "expected_result": "Sidebar lässt sich durch Ziehen verbreitern/verschmälern",
+        "category": "Sidebar Bereich"
+      },
+      {
+        "test_id": "SBKL0001",
+        "name": "Sidebar Kategorie-Liste",
+        "description": "Kategorie-Liste wird korrekt angezeigt",
+        "priority": 1,
+        "expected_result": "Alle Kategorien sind sichtbar und auswählbar",
+        "category": "Sidebar Bereich"
+      },
+      {
+        "test_id": "SBKC0001",
+        "name": "Sidebar Kategorie-Counter",
+        "description": "Counter zeigen korrekte Anzahl je Kategorie",
+        "priority": 1,
+        "expected_result": "Counter entsprechen tatsächlicher Anzahl von Favoriten",
+        "category": "Sidebar Bereich"
+      },
+      {
+        "test_id": "SBKH0001",
+        "name": "Sidebar Kategorie-Hover",
+        "description": "Hover-Effekte bei Kategorie-Elementen",
+        "priority": 2,
+        "expected_result": "Visueller Feedback bei Hover über Kategorien",
+        "category": "Sidebar Bereich"
+      },
+      {
+        "test_id": "SBKK0001",
+        "name": "Sidebar Kategorie-Klick",
+        "description": "Klick auf Kategorie filtert Hauptinhalt",
+        "priority": 1,
+        "expected_result": "Hauptbereich zeigt nur Favoriten der gewählten Kategorie",
+        "category": "Sidebar Bereich"
+      },
+      {
+        "test_id": "SBNK0001",
+        "name": "Sidebar Neue Kategorie Button",
+        "description": "Button zum Erstellen neuer Kategorien",
+        "priority": 1,
+        "expected_result": "Plus-Button ermöglicht Erstellung neuer Kategorien",
+        "category": "Sidebar Bereich"
+      }
+    ],
+    "5_hauptinhalt_bereich": [
+      {
+        "test_id": "HI0001",
+        "name": "Hauptinhalt Layout",
+        "description": "Gesamtlayout des Hauptinhalt-Bereichs",
+        "priority": 1,
+        "expected_result": "Hauptinhalt füllt verfügbaren Raum korrekt aus",
+        "category": "Hauptinhalt Bereich"
+      },
+      {
+        "test_id": "HIFL0001",
+        "name": "Hauptinhalt Favoriten-Liste",
+        "description": "Liste der Favoriten wird korrekt dargestellt",
+        "priority": 1,
+        "expected_result": "Alle Favoriten sind sichtbar und korrekt formatiert",
+        "category": "Hauptinhalt Bereich"
+      },
+      {
+        "test_id": "HIFK0001",
+        "name": "Hauptinhalt Favoriten-Karten",
+        "description": "Einzelne Favoriten-Karten Design und Layout",
+        "priority": 1,
+        "expected_result": "Jede Karte zeigt alle notwendigen Informationen",
+        "category": "Hauptinhalt Bereich"
+      },
+      {
+        "test_id": "HIFKH0001",
+        "name": "Hauptinhalt Favoriten-Karten Hover",
+        "description": "Hover-Effekte auf Favoriten-Karten",
+        "priority": 2,
+        "expected_result": "Smooth Hover-Animation auf Karten",
+        "category": "Hauptinhalt Bereich"
+      },
+      {
+        "test_id": "HIFAB0001",
+        "name": "Hauptinhalt Favoriten Action-Buttons",
+        "description": "Action-Buttons (Edit, Delete, Link) auf Karten",
+        "priority": 1,
+        "expected_result": "Alle Action-Buttons sind funktional",
+        "category": "Hauptinhalt Bereich"
+      },
+      {
+        "test_id": "HIFABH0001",
+        "name": "Hauptinhalt Action-Buttons Hover",
+        "description": "Hover-Effekte der Action-Buttons",
+        "priority": 2,
+        "expected_result": "Button-Hover zeigt korrekte visueller Feedback",
+        "category": "Hauptinhalt Bereich"
+      },
+      {
+        "test_id": "HIFABF0001",
+        "name": "Hauptinhalt Action-Buttons Funktion",
+        "description": "Funktionalität aller Action-Buttons",
+        "priority": 1,
+        "expected_result": "Edit öffnet Dialog, Delete löscht, Link öffnet URL",
+        "category": "Hauptinhalt Bereich"
+      },
+      {
+        "test_id": "HIDR0001",
+        "name": "Hauptinhalt Drag & Drop",
+        "description": "Drag & Drop Funktionalität zwischen Kategorien",
+        "priority": 1,
+        "expected_result": "Favoriten können zwischen Kategorien verschoben werden",
+        "category": "Hauptinhalt Bereich"
+      }
+    ],
+    "6_footer_bereich": [
+      {
+        "test_id": "FB0001",
+        "name": "Footer Sichtbarkeit",
+        "description": "Footer ist am unteren Rand sichtbar",
+        "priority": 1,
+        "expected_result": "Footer wird korrekt am Seitenende angezeigt",
+        "category": "Footer Bereich"
+      },
+      {
+        "test_id": "FBL0001",
+        "name": "Footer Layout Links",
+        "description": "Linke Seite des Footers (Copyright)",
+        "priority": 2,
+        "expected_result": "Copyright-Informationen sind links sichtbar",
+        "category": "Footer Bereich"
+      },
+      {
+        "test_id": "FBM0001",
+        "name": "Footer Mitte",
+        "description": "Mittlerer Bereich des Footers (Pagination)",
+        "priority": 1,
+        "expected_result": "Pagination-Kontrollen sind zentriert im Footer",
+        "category": "Footer Bereich"
+      },
+      {
+        "test_id": "FBMI0001",
+        "name": "Footer Mitte Icons",
+        "description": "Pagination-Icons (Tape-Recorder Style)",
+        "priority": 2,
+        "expected_result": "Icons sind korrekt und haben 'Tape-Recorder' Stil",
+        "category": "Footer Bereich"
+      },
+      {
+        "test_id": "FBMIH0001",
+        "name": "Footer Mitte Icons Hover",
+        "description": "Hover-Effekte der Pagination-Icons",
+        "priority": 2,
+        "expected_result": "Icons reagieren auf Hover mit visueller Feedback",
+        "category": "Footer Bereich"
+      },
+      {
+        "test_id": "FBMIF0001",
+        "name": "Footer Mitte Icons Funktion",
+        "description": "Funktionalität der Pagination-Icons",
+        "priority": 1,
+        "expected_result": "Navigation zwischen Seiten funktioniert korrekt",
+        "category": "Footer Bereich"
+      },
+      {
+        "test_id": "FBR0001",
+        "name": "Footer Rechts",
+        "description": "Rechte Seite des Footers (Impressum)",
+        "priority": 2,
+        "expected_result": "Impressum-Link ist rechts im Footer sichtbar",
+        "category": "Footer Bereich"
+      },
+      {
+        "test_id": "FBRH0001",
+        "name": "Footer Rechts Hover",
+        "description": "Hover-Effekt des Impressum-Links",
+        "priority": 2,
+        "expected_result": "Link zeigt Hover-Effekt",
+        "category": "Footer Bereich"
+      },
+      {
+        "test_id": "FBRF0001",
+        "name": "Footer Rechts Funktion",
+        "description": "Funktionalität des Impressum-Links",
+        "priority": 2,
+        "expected_result": "Link führt zur korrekten Impressum-Seite",
+        "category": "Footer Bereich"
+      }
+    ],
+    "7_dialoge_und_modals": [
+      {
+        "test_id": "DM0001",
+        "name": "Dialog Öffnung",
+        "description": "Dialoge öffnen sich korrekt",
+        "priority": 1,
+        "expected_result": "Alle Dialoge erscheinen ohne Verzögerung oder Fehler",
+        "category": "Dialoge und Modals"
+      },
+      {
+        "test_id": "DMO0001",
+        "name": "Dialog Overlay",
+        "description": "Overlay/Hintergrund bei geöffneten Dialogen",
+        "priority": 2,
+        "expected_result": "Hintergrund ist abgedunkelt/unscharf während Dialog offen",
+        "category": "Dialoge und Modals"
+      },
+      {
+        "test_id": "DMS0001",
+        "name": "Dialog Schließen X",
+        "description": "X-Button zum Schließen von Dialogen",
+        "priority": 1,
+        "expected_result": "X-Button schließt Dialog ohne Datenverlust-Warnung wenn nötig",
+        "category": "Dialoge und Modals"
+      },
+      {
+        "test_id": "DMSH0001",
+        "name": "Dialog Schließen X Hover",
+        "description": "Hover-Effekt des X-Schließen-Buttons",
+        "priority": 2,
+        "expected_result": "X-Button zeigt visuellen Feedback bei Hover",
+        "category": "Dialoge und Modals"
+      },
+      {
+        "test_id": "DMSF0001",
+        "name": "Dialog Schließen X Funktion",
+        "description": "Funktionalität des X-Schließen-Buttons",
+        "priority": 1,
+        "expected_result": "Dialog schließt sich beim Klick auf X",
+        "category": "Dialoge und Modals"
+      },
+      {
+        "test_id": "DME0001",
+        "name": "Dialog ESC-Taste",
+        "description": "Dialog schließen mit ESC-Taste",
+        "priority": 2,
+        "expected_result": "ESC-Taste schließt aktiven Dialog",
+        "category": "Dialoge und Modals"
+      },
+      {
+        "test_id": "DMCK0001",
+        "name": "Dialog Click-Outside",
+        "description": "Dialog schließen durch Klick außerhalb",
+        "priority": 2,
+        "expected_result": "Klick außerhalb des Dialogs schließt diesen",
+        "category": "Dialoge und Modals"
+      }
+    ],
+    "8_formular_eingaben": [
+      {
+        "test_id": "FE0001",
+        "name": "Formular Eingabefelder",
+        "description": "Alle Eingabefelder sind funktional",
+        "priority": 1,
+        "expected_result": "Text kann in alle Felder eingegeben werden",
+        "category": "Formular Eingaben"
+      },
+      {
+        "test_id": "FEV0001",
+        "name": "Formular Validierung",
+        "description": "Client-seitige Formular-Validierung",
+        "priority": 1,
+        "expected_result": "Ungültige Eingaben werden vor Submit abgefangen",
+        "category": "Formular Eingaben"
+      },
+      {
+        "test_id": "FEVF0001",
+        "name": "Formular Validierung Fehlermeldungen",
+        "description": "Fehlermeldungen bei ungültigen Eingaben",
+        "priority": 1,
+        "expected_result": "Klare, verständliche Fehlermeldungen werden angezeigt",
+        "category": "Formular Eingaben"
+      },
+      {
+        "test_id": "FES0001",
+        "name": "Formular Submit-Button",
+        "description": "Submit/Speichern-Button Funktionalität",
+        "priority": 1,
+        "expected_result": "Button sendet Formular und zeigt Erfolg/Fehler",
+        "category": "Formular Eingaben"
+      },
+      {
+        "test_id": "FESH0001",
+        "name": "Formular Submit-Button Hover",
+        "description": "Hover-Effekt des Submit-Buttons",
+        "priority": 2,
+        "expected_result": "Button zeigt visuellen Feedback bei Hover",
+        "category": "Formular Eingaben"
+      },
+      {
+        "test_id": "FEA0001",
+        "name": "Formular Abbrechen-Button",
+        "description": "Abbrechen/Cancel-Button Funktionalität",
+        "priority": 2,
+        "expected_result": "Button schließt Formular ohne Speichern",
+        "category": "Formular Eingaben"
+      }
+    ],
+    "9_loading_und_feedback": [
+      {
+        "test_id": "LF0001",
+        "name": "Loading Indicator",
+        "description": "Loading-Animationen während Datenoperationen",
+        "priority": 1,
+        "expected_result": "Spinner/Animation zeigt Ladevorgang an",
+        "category": "Loading und Feedback"
+      },
+      {
+        "test_id": "LFM0001",
+        "name": "Loading Indicator Modern",
+        "description": "Moderner Stil der Loading-Indikatoren",
+        "priority": 2,
+        "expected_result": "Loading-Animation ist modern und smooth",
+        "category": "Loading und Feedback"
+      },
+      {
+        "test_id": "TM0001",
+        "name": "Toast Messages",
+        "description": "Toast-Nachrichten für Benutzer-Feedback",
+        "priority": 1,
+        "expected_result": "Erfolg/Fehler-Nachrichten erscheinen als Toast",
+        "category": "Loading und Feedback"
+      },
+      {
+        "test_id": "TMP0001",
+        "name": "Toast Messages Position",
+        "description": "Positionierung der Toast-Nachrichten",
+        "priority": 2,
+        "expected_result": "Toasts erscheinen an konsistenter Position",
+        "category": "Loading und Feedback"
+      },
+      {
+        "test_id": "TMD0001",
+        "name": "Toast Messages Dauer",
+        "description": "Anzeigedauer der Toast-Nachrichten",
+        "priority": 2,
+        "expected_result": "Toasts verschwinden nach angemessener Zeit automatisch",
+        "category": "Loading und Feedback"
+      }
+    ],
+    "10_responsive_design": [
+      {
+        "test_id": "RD0001",
+        "name": "Desktop Darstellung",
+        "description": "Korrekte Darstellung auf Desktop-Bildschirmen",
+        "priority": 1,
+        "expected_result": "Layout nutzt Desktop-Platz optimal aus",
+        "category": "Responsive Design"
+      },
+      {
+        "test_id": "RT0001",
+        "name": "Tablet Darstellung",
+        "description": "Responsive Darstellung auf Tablet-Geräten",
+        "priority": 1,
+        "expected_result": "Layout passt sich an Tablet-Bildschirme an",
+        "category": "Responsive Design"
+      },
+      {
+        "test_id": "RM0001",
+        "name": "Mobile Darstellung",
+        "description": "Mobile-optimierte Darstellung",
+        "priority": 1,
+        "expected_result": "App ist auf Smartphones vollständig nutzbar",
+        "category": "Responsive Design"
+      },
+      {
+        "test_id": "RBP0001",
+        "name": "Responsive Breakpoints",
+        "description": "Übergänge zwischen verschiedenen Bildschirmgrößen",
+        "priority": 2,
+        "expected_result": "Smooth Übergänge an allen Breakpoints",
+        "category": "Responsive Design"
+      }
+    ],
+    "11_tastatur_und_accessibility": [
+      {
+        "test_id": "TA0001",
+        "name": "Tastatur-Navigation",
+        "description": "Vollständige Navigation per Tastatur",
+        "priority": 2,
+        "expected_result": "Alle Funktionen sind per Tab/Enter erreichbar",
+        "category": "Tastatur und Accessibility"
+      },
+      {
+        "test_id": "TT0001",
+        "name": "Tooltips Toggle",
+        "description": "Toggle-Funktion für Tooltips in Einstellungen",
+        "priority": 2,
+        "expected_result": "Tooltips können ein-/ausgeschaltet werden",
+        "category": "Tastatur und Accessibility"
+      },
+      {
+        "test_id": "TTF0001",
+        "name": "Tooltips Funktion",
+        "description": "Funktionalität der Tooltips",
+        "priority": 2,
+        "expected_result": "Tooltips erscheinen bei Hover und sind informativ",
+        "category": "Tastatur und Accessibility"
+      },
+      {
+        "test_id": "FK0001",
+        "name": "Focus-Indikatoren",
+        "description": "Sichtbare Focus-Indikatoren bei Tastatur-Navigation",
+        "priority": 2,
+        "expected_result": "Aktives Element ist klar erkennbar",
+        "category": "Tastatur und Accessibility"
+      }
+    ]
+  }
+}
