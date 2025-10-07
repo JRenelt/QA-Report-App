@@ -486,7 +486,7 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
                         </div>
                         <div className="text-center p-2 bg-gray-50 rounded">
                           <div className="font-semibold text-gray-800">
-                            {Object.values(importResult.result.skipped).reduce((a: any, b: any) => a + b, 0)}
+                            {Object.values(importResult.result.skipped).reduce((a: number, b: number) => a + b, 0)}
                           </div>
                           <div className="text-gray-600">{t.skipped}</div>
                         </div>
