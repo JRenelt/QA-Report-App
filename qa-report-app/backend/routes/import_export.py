@@ -153,7 +153,7 @@ async def export_current_data(
         )
     
     return StreamingResponse(
-        io.BytesIO(content.encode()),
+        io.BytesIO(content.encode() if isinstance(content, str) else content),
         media_type=media_type,
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
