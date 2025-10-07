@@ -169,66 +169,32 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       { name: 'Dialog ESC-Taste', icon: '⌨️', tooltip: 'Dialog schließen mit ESC-Taste' },
       { name: 'Dialog Click-Outside', icon: '🖱️', tooltip: 'Dialog schließen durch Klick außerhalb' }
     ],
-    'Import/Export Funktionen': [
-      { name: 'HTML-Import', icon: '📄', tooltip: 'Browser-Favoriten HTML Import' },
-      { name: 'JSON-Export', icon: '💾', tooltip: 'JSON Format Export funktional' },
-      { name: 'CSV-Export', icon: '📊', tooltip: 'CSV Format für Excel-Bearbeitung' },
-      { name: 'XML-Export', icon: '🗂️', tooltip: 'XML Format Export' },
-      { name: 'HTML-Export', icon: '🌐', tooltip: 'HTML Format Export für Browser' },
-      { name: 'Datei-Upload Dialog', icon: '📤', tooltip: 'Upload-Interface benutzerfreundlich' },
-      { name: 'Import-Fortschritt', icon: '⏳', tooltip: 'Fortschrittsanzeige bei großen Imports' },
-      { name: 'Import-Validation', icon: '✔️', tooltip: 'Dateiformate-Validierung vor Import' }
+    'Formular Eingaben': [
+      { name: 'Formular Eingabefelder', icon: '📝', tooltip: 'Alle Eingabefelder sind funktional' },
+      { name: 'Formular Validierung', icon: '✅', tooltip: 'Client-seitige Formular-Validierung' },
+      { name: 'Formular Validierung Fehlermeldungen', icon: '⚠️', tooltip: 'Fehlermeldungen bei ungültigen Eingaben' },
+      { name: 'Formular Submit-Button', icon: '💾', tooltip: 'Submit/Speichern-Button Funktionalität' },
+      { name: 'Formular Submit-Button Hover', icon: '✨', tooltip: 'Hover-Effekt des Submit-Buttons' },
+      { name: 'Formular Abbrechen-Button', icon: '❌', tooltip: 'Abbrechen/Cancel-Button Funktionalität' }
     ],
-    'Link-Validierung': [
-      { name: 'Tote Links Erkennung', icon: '💀', tooltip: 'Dead Links automatisch erkennen' },
-      { name: 'HTTP Status Codes', icon: '🔢', tooltip: 'Korrekte HTTP Status Code Anzeige' },
-      { name: 'Batch-Validierung', icon: '🔄', tooltip: 'Mehrere Links gleichzeitig prüfen' },
-      { name: 'Validierungs-Fortschritt', icon: '📊', tooltip: 'Progress-Bar bei Validierung' },
-      { name: 'Localhost-Links Schutz', icon: '🏠', tooltip: 'Localhost-Links vor Löschung schützen' },
-      { name: 'Timeout-Behandlung', icon: '⏱️', tooltip: 'Timeout bei langsamen Servern' },
-      { name: 'SSL-Zertifikat Prüfung', icon: '🔐', tooltip: 'HTTPS-Zertifikat Validierung' }
+    'Loading und Feedback': [
+      { name: 'Loading Indicator', icon: '⏳', tooltip: 'Loading-Animationen während Datenoperationen' },
+      { name: 'Loading Indicator Modern', icon: '✨', tooltip: 'Moderner Stil der Loading-Indikatoren' },
+      { name: 'Toast Messages', icon: '💬', tooltip: 'Toast-Nachrichten für Benutzer-Feedback' },
+      { name: 'Toast Messages Position', icon: '📍', tooltip: 'Positionierung der Toast-Nachrichten' },
+      { name: 'Toast Messages Dauer', icon: '⏱️', tooltip: 'Anzeigedauer der Toast-Nachrichten' }
     ],
-    'Such- & Filterfunktionen': [
-      { name: 'Global-Suche', icon: '🔍', tooltip: 'Suche in allen Bookmarks' },
-      { name: 'Kategorie-Filter', icon: '📂', tooltip: 'Filter nach spezifischen Kategorien' },
-      { name: 'Status-Filter', icon: '🚦', tooltip: 'Filter nach Link-Status' },
-      { name: 'Erweiterte Suche', icon: '🔍', tooltip: 'Titel, URL, Beschreibung durchsuchbar' },
-      { name: 'Suche-Highlighting', icon: '🔆', tooltip: 'Suchbegriffe visuell hervorgehoben' },
-      { name: 'Gespeicherte Suchen', icon: '💾', tooltip: 'Häufige Suchen speichern' },
-      { name: 'Filter-Kombinationen', icon: '⚡', tooltip: 'Mehrere Filter gleichzeitig' }
+    'Responsive Design': [
+      { name: 'Desktop Darstellung', icon: '🖥️', tooltip: 'Korrekte Darstellung auf Desktop-Bildschirmen' },
+      { name: 'Tablet Darstellung', icon: '📱', tooltip: 'Responsive Darstellung auf Tablet-Geräten' },
+      { name: 'Mobile Darstellung', icon: '📱', tooltip: 'Mobile-optimierte Darstellung' },
+      { name: 'Responsive Breakpoints', icon: '🔧', tooltip: 'Übergänge zwischen verschiedenen Bildschirmgrößen' }
     ],
-    'Einstellungen': [
-      { name: 'Tab-Navigation Icons', icon: '🗂️', tooltip: 'Settings-Tabs mit Icons' },
-      { name: 'Theme-Einstellungen', icon: '🌙', tooltip: 'Dark/Light Theme Toggle' },
-      { name: 'Meldungen Delay Checkbox', icon: '⏰', tooltip: 'Toast-Delay Einstellung' },
-      { name: 'Gefahr-Bereich rot', icon: '⚠️', tooltip: 'Danger-Zone rote Markierung' },
-      { name: 'Auto-Validierung Timer', icon: '🕐', tooltip: 'Automatische Link-Prüfung Intervall' },
-      { name: 'Import-Einstellungen', icon: '📥', tooltip: 'Standard Import-Optionen' },
-      { name: 'Export-Formate', icon: '📤', tooltip: 'Standard Export-Einstellungen' },
-      { name: 'Backup-Konfiguration', icon: '💾', tooltip: 'Automatische Backups konfigurieren' }
-    ],
-    'Performance & Benutzerfreundlichkeit': [
-      { name: 'Ladezeit unter 2 Sekunden', icon: '⚡', tooltip: 'Initiale Ladezeit optimiert' },
-      { name: 'Keyboard-Shortcuts', icon: '⌨️', tooltip: 'Tastatur-Navigation funktional' },
-      { name: 'Mobile-Responsive', icon: '📱', tooltip: 'Mobile Darstellung optimiert' },
-      { name: 'Touch-Gesten', icon: '👆', tooltip: 'Touch-Bedienung auf Tablets' },
-      { name: 'Offline-Funktionalität', icon: '📡', tooltip: 'Grundfunktionen offline verfügbar' },
-      { name: 'Browser-Kompatibilität', icon: '🌍', tooltip: 'Chrome, Firefox, Safari, Edge' },
-      { name: 'Memory-Usage', icon: '🧠', tooltip: 'Speicherverbrauch bei 1000+ Bookmarks' }
-    ],
-    'Drag & Drop System': [
-      { name: 'Bookmark zwischen Kategorien', icon: '🔄', tooltip: 'Bookmarks zwischen Kategorien verschieben' },
-      { name: 'Excel-ähnliches D&D', icon: '📊', tooltip: 'Excel-ähnliche Drag & Drop Funktionen' },
-      { name: 'Shift-Modus Einfügen', icon: '⇧', tooltip: 'Shift-Modus für präzises Einfügen' },
-      { name: 'Visual Drop-Feedback', icon: '👁️', tooltip: 'Visuelle Rückmeldung beim Ziehen' },
-      { name: 'Cross-Level D&D', icon: '🔀', tooltip: 'Zwischen Haupt- und Unterkategorien' },
-      { name: 'Undo/Redo Funktionalität', icon: '↶', tooltip: 'Rückgängig/Wiederholen von Aktionen' }
-    ],
-    'Easter Eggs & Spezialfunktionen': [
-      { name: 'Catch-Mouse Game', icon: '🐭', tooltip: 'Alt+G öffnet Catch-Mouse Spiel' },
-      { name: 'Keyboard-Shortcuts Alt+G', icon: '🎮', tooltip: 'Alt+G Shortcut funktional' },
-      { name: 'Copyright-Klick Funktion', icon: '©️', tooltip: 'Copyright-Bereich klickbar' },
-      { name: 'Versteckte Funktionen', icon: '🕵️', tooltip: 'Weitere versteckte Features entdecken' }
+    'Tastatur und Accessibility': [
+      { name: 'Tastatur-Navigation', icon: '⌨️', tooltip: 'Vollständige Navigation per Tastatur' },
+      { name: 'Tooltips Toggle', icon: '💡', tooltip: 'Toggle-Funktion für Tooltips in Einstellungen' },
+      { name: 'Tooltips Funktion', icon: '💬', tooltip: 'Funktionalität der Tooltips' },
+      { name: 'Focus-Indikatoren', icon: '🎯', tooltip: 'Sichtbare Focus-Indikatoren bei Tastatur-Navigation' }
     ]
   };
 
