@@ -97,6 +97,16 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   
   // Test-Daten - GUI-orientierte FavOrg Test-Suite
   const predefinedTests = {
+    'Allgemeines Design': [
+      { name: 'Desktop Darstellung', icon: '🖥️', tooltip: 'Korrekte Darstellung auf Desktop-Bildschirmen' },
+      { name: 'Tablet Darstellung', icon: '📱', tooltip: 'Responsive Darstellung auf Tablet-Geräten' },
+      { name: 'Mobile Darstellung', icon: '📱', tooltip: 'Mobile-optimierte Darstellung' },
+      { name: 'Responsive Breakpoints', icon: '🔧', tooltip: 'Übergänge zwischen verschiedenen Bildschirmgrößen' },
+      { name: 'Dark Theme Konsistenz', icon: '🌙', tooltip: 'Dark Theme wird einheitlich angewendet' },
+      { name: 'Loading-Indikatoren', icon: '⏳', tooltip: 'Loading-Animationen während Datenoperationen' },
+      { name: 'Farbschema Konsistenz', icon: '🎨', tooltip: 'Einheitliches Farbschema in gesamter App' },
+      { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' }
+    ],
     'Testpunkt Kopfzeile': [
       { name: 'Logo Ort: Links', icon: '🏷️', tooltip: 'Logo ist korrekt links in der Kopfzeile positioniert' },
       { name: 'Logo Hover-Effekt', icon: '🎯', tooltip: 'Logo reagiert bei Maus-Hover korrekt' },
