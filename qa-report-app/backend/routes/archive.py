@@ -98,7 +98,7 @@ async def list_archives(
                 "project_name": archive["project_name"],
                 "name": archive["name"],
                 "description": archive["description"],
-                "created_at": archive["created_at"].isoformat(),
+                "created_at": archive["created_at"].isoformat() if hasattr(archive["created_at"], 'isoformat') else str(archive["created_at"]),
                 "created_by": f"{archive['first_name']} {archive['last_name']}"
             }
             for archive in archives
