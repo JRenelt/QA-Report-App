@@ -1182,12 +1182,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   // Kategorie-Icon Mapping
   const getCategoryIcon = (category) => {
     const icons = {
-      'Allgemeines Design': '🎨',
-      'Header-Bereich': '🔝',
-      'Sidebar-Bereich': '📋',
-      'Main-Content': '📄',
-      'Bookmark-Karten': '🎴',
-      'Einstellungen': '⚙️'
+      'Testpunkt Kopfzeile': '🔝',
+      'Navigation Bereich': '🧭',
+      'Suchfeld Bereich': '🔍',
+      'Sidebar Bereich': '📋',
+      'Hauptinhalt Bereich': '📄',
+      'Footer Bereich': '🔻',
+      'Dialoge und Modals': '📂',
+      'Formular Eingaben': '📝',
+      'Loading und Feedback': '⏳',
+      'Responsive Design': '📱',
+      'Tastatur und Accessibility': '⌨️'
     };
     return icons[category] || '📂';
   };
