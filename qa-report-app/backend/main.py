@@ -82,6 +82,7 @@ app.include_router(projects.router, prefix="/api/projects", tags=["Projects"])
 app.include_router(test_suites.router, prefix="/api/test-suites", tags=["Test Suites"])
 app.include_router(test_cases.router, prefix="/api/test-cases", tags=["Test Cases"])
 app.include_router(test_results.router, prefix="/api/test-results", tags=["Test Results"])
+app.include_router(import_export.router, prefix="/api/import-export", tags=["Import/Export"])
 
 if __name__ == "__main__":
     import uvicorn
