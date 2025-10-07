@@ -350,7 +350,7 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
                   <p className="text-sm text-qa-gray-600 mb-4">
                     Exportieren Sie Ihre vollständigen QA-Daten inklusive Test-Ergebnisse
                   </p>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     <button
                       onClick={() => handleDataExport('json', true)}
                       disabled={loading}
@@ -364,6 +364,13 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
                       className="btn-secondary"
                     >
                       CSV {loading ? t.downloading : t.exportCurrent}
+                    </button>
+                    <button
+                      onClick={() => handleDataExport('excel', true)}
+                      disabled={loading}
+                      className="btn-primary"
+                    >
+                      Excel {loading ? t.downloading : t.exportCurrent}
                     </button>
                   </div>
                 </div>
