@@ -124,3 +124,15 @@ reports_table = Table(
     Column("created_by", Integer, ForeignKey("users.id"), nullable=False),
     Column("created_at", DateTime, nullable=False, server_default=func.now()),
 )
+
+archives_table = Table(
+    "archives",
+    metadata,
+    Column("id", Integer, primary_key=True, index=True),
+    Column("name", String(100), nullable=False),
+    Column("description", Text),
+    Column("project_id", Integer, ForeignKey("projects.id"), nullable=False),
+    Column("archive_data", Text, nullable=False),  # JSON as text
+    Column("created_by", Integer, ForeignKey("users.id"), nullable=False),
+    Column("created_at", DateTime, nullable=False, server_default=func.now()),
+)
