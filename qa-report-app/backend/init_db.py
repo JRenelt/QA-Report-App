@@ -104,29 +104,29 @@ async def seed_initial_data():
         
         test_suites = [
             {
-                "name": "Allgemeines Design",
-                "description": "Tests für UI/UX Design und Layout",
+                "name": "Responsive Design & Layout",
+                "description": "Tests für responsive Darstellung und allgemeines Layout",
                 "icon": "🎨",
                 "sort_order": 1,
                 "project_id": 1
             },
             {
-                "name": "Header-Bereich", 
-                "description": "Tests für Navigation und Header-Funktionalität",
-                "icon": "📋", 
+                "name": "Kopfzeile (Header)", 
+                "description": "Logo, Navigation, Buttons und Header-Funktionalität",
+                "icon": "🔝", 
                 "sort_order": 2,
                 "project_id": 1
             },
             {
-                "name": "Sidebar-Bereich",
-                "description": "Tests für Seitenleiste und Kategorien",
+                "name": "Sidebar & Kategorien",
+                "description": "Seitenleiste, Kategorie-Liste und Navigation",
                 "icon": "📂",
                 "sort_order": 3,
                 "project_id": 1
             },
             {
-                "name": "Main-Content",
-                "description": "Tests für Hauptinhalt und Funktionen",
+                "name": "Hauptinhalt & Favoriten",
+                "description": "Favoriten-Karten, Actions und Drag&Drop",
                 "icon": "📄",
                 "sort_order": 4,
                 "project_id": 1
