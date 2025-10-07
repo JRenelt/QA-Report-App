@@ -115,43 +115,19 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       { name: 'Fav Export Button Hover', icon: '✨', tooltip: 'Hover-Effekt des Export-Buttons' },
       { name: 'Fav Export Button Funktion', icon: '💾', tooltip: 'Funktionalität des Export-Buttons' }
     ],
-    'AuditLog PDF-Export': [
-      { name: 'QA-Bericht Button', icon: '📄', tooltip: 'Button heißt "QA-Bericht" mit korrektem Tooltip' },
-      { name: 'PDF-Header Layout', icon: '🏷️', tooltip: 'Titel links, Version rechts im PDF-Header' },
-      { name: 'Metadaten-Reihenfolge', icon: '👤', tooltip: 'Tester vor Datum in PDF-Metadaten' },
-      { name: 'Gesamtübersicht Design', icon: '📊', tooltip: 'Nur Rahmen, keine Hintergrundfarbe in Gesamtübersicht' },
-      { name: 'Bereichsüberschriften', icon: '🗂️', tooltip: 'Tests nach Kategorien gruppiert mit Überschriften' },
-      { name: 'Alle Tests sichtbar', icon: '👁️', tooltip: 'Auch ungetestete Tests für Transparenz angezeigt' },
-      { name: 'DIN A4 Optimierung', icon: '📄', tooltip: 'Kompakte Formatierung für Druckbarkeit' },
-      { name: 'Print-Button interaktiv', icon: '🖱️', tooltip: 'Grauer Print-Button mit Hover-Effekt' }
+    'Navigation Bereich': [
+      { name: 'Navigation Layout', icon: '📐', tooltip: 'Gesamtlayout der Navigation prüfen' },
+      { name: 'Navigation Icons', icon: '🎯', tooltip: 'Alle Icons in der Navigation sind korrekt dargestellt' },
+      { name: 'Navigation Hover-Effekte', icon: '✨', tooltip: 'Hover-Effekte aller Navigationselemente' },
+      { name: 'Navigation Keyboard-Navigation', icon: '⌨️', tooltip: 'Tastatur-Navigation durch Menüpunkte' }
     ],
-    'AuditLog Archiv-System': [
-      { name: 'Test speichern Funktion', icon: '💾', tooltip: 'Aktueller Test-Stand kann ins Archiv gespeichert werden' },
-      { name: 'Archiv anzeigen Toggle', icon: '📁', tooltip: 'Wechsel zwischen Testpunkten und Archiv-Ansicht' },
-      { name: 'Archiv-Counter korrekt', icon: '🔢', tooltip: 'Archiv-Button zeigt korrekte Anzahl gespeicherter Berichte' },
-      { name: 'Anzeigen Button Archiv', icon: '👁️', tooltip: '👁️ Anzeigen Button für archivierte Berichte funktional' },
-      { name: 'Laden Button Archiv', icon: '📥', tooltip: 'Archivierte Test-Stände können geladen werden' },
-      { name: 'Löschen Button Archiv', icon: '🗑️', tooltip: 'Archivierte Berichte können entfernt werden' },
-      { name: 'Archiv-Persistierung', icon: '💾', tooltip: 'Archivierte Daten bleiben nach Browser-Refresh erhalten' }
-    ],
-    'AuditLog Config-System': [
-      { name: 'Config Dialog öffnen', icon: '⚙️', tooltip: 'Config-Button öffnet Konfigurationsdialog' },
-      { name: 'Tester-Name Eingabe', icon: '👤', tooltip: 'Tester-Name kann eingegeben und gespeichert werden' },
-      { name: 'Version Eingabe', icon: '🏷️', tooltip: 'Versions-Nummer kann eingegeben und gespeichert werden' },
-      { name: 'Testumgebung Eingabe', icon: '💻', tooltip: 'Testumgebung kann eingegeben und gespeichert werden' },
-      { name: 'Testziel Eingabe', icon: '🎯', tooltip: 'Testziel kann eingegeben und gespeichert werden' },
-      { name: 'Testmethodik Eingabe', icon: '🔬', tooltip: 'Testmethodik kann eingegeben und gespeichert werden' },
-      { name: 'Config speichern', icon: '💾', tooltip: 'Konfiguration wird korrekt gespeichert' },
-      { name: 'Config persistieren', icon: '🔄', tooltip: 'Konfiguration bleibt nach Browser-Refresh erhalten' }
-    ],
-    'AuditLog Lucide Icons': [
-      { name: 'Status Icons Check', icon: '✅', tooltip: 'Check-Icon für Success-Status funktional' },
-      { name: 'Status Icons X', icon: '❌', tooltip: 'X-Icon für Error-Status funktional' },
-      { name: 'Status Icons Pickaxe', icon: '⚠️', tooltip: 'Pickaxe-Icon für Warning-Status funktional' },
-      { name: 'Status Icons CaptionsOff', icon: '📴', tooltip: 'CaptionsOff-Icon für Info-Status funktional' },
-      { name: 'Edit Icon PencilLine', icon: '✏️', tooltip: 'PencilLine-Icon für Edit-Button funktional' },
-      { name: 'Notiz Icon NotebookPen', icon: '📝', tooltip: 'NotebookPen-Icon für Notiz-Button funktional' },
-      { name: 'Icons initialisierung', icon: '🔄', tooltip: 'Lucide Icons werden korrekt beim Laden initialisiert' }
+    'Suchfeld Bereich': [
+      { name: 'Suchfeld Position', icon: '🔍', tooltip: 'Suchfeld ist korrekt im Header positioniert' },
+      { name: 'Suchfeld Design', icon: '🎨', tooltip: 'Design und Styling des Suchfeldes' },
+      { name: 'Suchfeld Placeholder', icon: '📝', tooltip: 'Placeholder-Text im Suchfeld' },
+      { name: 'Suchfeld Funktion', icon: '🔎', tooltip: 'Such-Funktionalität des Eingabefelds' },
+      { name: 'Suchfeld Auto-Vervollständigung', icon: '💡', tooltip: 'Auto-Vervollständigung/Suggestion-Funktion' },
+      { name: 'Suchfeld Lösch-Button', icon: '❌', tooltip: 'Clear/Reset-Button im Suchfeld' }
     ],
     'Allgemeines Design': [
       { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
