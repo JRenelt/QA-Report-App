@@ -1,0 +1,264 @@
+{
+  "template_info": {
+    "name": "FavOrg GUI-Migration Template",
+    "description": "GUI-orientierte Testpunkte für FavOrg-Migration",
+    "version": "2.0.0",
+    "created_date": "2025-01-16",
+    "total_testcases": 24,
+    "note": "Testpunkte orientieren sich an der tatsächlichen GUI-Struktur der FavOrg-App"
+  },
+  "companies": [
+    {
+      "name": "FavOrg Web-App Projekt",
+      "description": "GUI-orientierte Qualitätssicherung der FavOrg Web-Applikation"
+    }
+  ],
+  "projects": [
+    {
+      "name": "FavOrg GUI QA-Tests",
+      "description": "Systematische GUI-Tests für FavOrg basierend auf realer Benutzer-Interaktion",
+      "template_type": "favorg_gui_migration",
+      "status": "active"
+    }
+  ],
+  "test_suites": [
+    {
+      "name": "Responsive Design & Layout",
+      "description": "Tests für responsive Darstellung und allgemeines Layout",
+      "icon": "🎨"
+    },
+    {
+      "name": "Kopfzeile (Header)", 
+      "description": "Logo, Navigation, Buttons und Header-Funktionalität",
+      "icon": "🔝"
+    },
+    {
+      "name": "Sidebar & Kategorien",
+      "description": "Seitenleiste, Kategorie-Liste und Navigation", 
+      "icon": "📂"
+    },
+    {
+      "name": "Hauptinhalt & Favoriten",
+      "description": "Favoriten-Karten, Actions und Drag&Drop",
+      "icon": "📄"
+    }
+  ],
+  "test_cases": [
+    {
+      "test_id": "RDL001",
+      "name": "Mobile Responsive Design",
+      "suite_name": "Responsive Design & Layout",
+      "description": "Überprüfung der mobilen Darstellung auf verschiedenen Geräten",
+      "expected_result": "App passt sich korrekt an mobile Bildschirmgrößen an",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "RDL002",
+      "name": "Desktop Layout Konsistenz",
+      "suite_name": "Responsive Design & Layout",
+      "description": "Konsistente Darstellung auf Desktop-Bildschirmen",
+      "expected_result": "Layout bleibt auf allen Desktop-Auflösungen stabil",
+      "priority": 1,
+      "sort_order": 2
+    },
+    {
+      "test_id": "RDL003",
+      "name": "Tablet Darstellung",
+      "suite_name": "Responsive Design & Layout",
+      "description": "Optimale Nutzung des Tablet-Bildschirms",
+      "expected_result": "Sidebar und Hauptinhalt sind auf Tablets gut nutzbar",
+      "priority": 2,
+      "sort_order": 3
+    },
+    {
+      "test_id": "RDL004",
+      "name": "Touch-Gesten Support",
+      "suite_name": "Responsive Design & Layout",
+      "description": "Unterstützung für Touch-Bedienung auf mobilen Geräten",
+      "expected_result": "Alle Interaktionen funktionieren per Touch",
+      "priority": 2,
+      "sort_order": 4
+    },
+    {
+      "test_id": "RDL005",
+      "name": "Farbschema & Kontraste",
+      "suite_name": "Responsive Design & Layout",
+      "description": "Barrierefreie Farbgestaltung und ausreichende Kontraste",
+      "expected_result": "Alle Texte sind gut lesbar, WCAG-konform",
+      "priority": 2,
+      "sort_order": 5
+    },
+    {
+      "test_id": "RDL006",
+      "name": "Loading States & Animationen",
+      "suite_name": "Responsive Design & Layout",
+      "description": "Lade-Indikatoren und Übergangsanimationen",
+      "expected_result": "Smooth Animationen, klare Loading-States",
+      "priority": 3,
+      "sort_order": 6
+    },
+    {
+      "test_id": "KH001",
+      "name": "Logo & Branding",
+      "suite_name": "Kopfzeile (Header)",
+      "description": "FavOrg Logo und Corporate Identity im Header",
+      "expected_result": "Logo ist sichtbar und verlinkt zur Startseite",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "KH002",
+      "name": "Hauptnavigation",
+      "suite_name": "Kopfzeile (Header)",
+      "description": "Navigation zwischen verschiedenen App-Bereichen",
+      "expected_result": "Alle Navigationspunkte sind erreichbar und funktional",
+      "priority": 1,
+      "sort_order": 2
+    },
+    {
+      "test_id": "KH003",
+      "name": "Suchfunktion",
+      "suite_name": "Kopfzeile (Header)",
+      "description": "Globale Suche nach Favoriten und Kategorien",
+      "expected_result": "Suche liefert relevante Ergebnisse in Echtzeit",
+      "priority": 1,
+      "sort_order": 3
+    },
+    {
+      "test_id": "KH004",
+      "name": "Benutzer-Menü",
+      "suite_name": "Kopfzeile (Header)",
+      "description": "Dropdown mit Benutzeroptionen und Einstellungen",
+      "expected_result": "Menü öffnet sich korrekt, alle Optionen funktional",
+      "priority": 2,
+      "sort_order": 4
+    },
+    {
+      "test_id": "KH005",
+      "name": "Benachrichtigungen",
+      "suite_name": "Kopfzeile (Header)",
+      "description": "Anzeige von System- und Benutzer-Benachrichtigungen",
+      "expected_result": "Notifications werden korrekt angezeigt und verwaltet",
+      "priority": 2,
+      "sort_order": 5
+    },
+    {
+      "test_id": "KH006",
+      "name": "Quick Actions",
+      "suite_name": "Kopfzeile (Header)",
+      "description": "Schnellzugriff-Buttons für häufige Aktionen",
+      "expected_result": "Buttons sind gut erreichbar und reagieren sofort",
+      "priority": 3,
+      "sort_order": 6
+    },
+    {
+      "test_id": "SK001",
+      "name": "Kategorien-Liste",
+      "suite_name": "Sidebar & Kategorien",
+      "description": "Anzeige aller verfügbaren Favoriten-Kategorien",
+      "expected_result": "Kategorien werden vollständig und korrekt geladen",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "SK002",
+      "name": "Kategorie-Navigation",
+      "suite_name": "Sidebar & Kategorien",
+      "description": "Wechsel zwischen verschiedenen Kategorien",
+      "expected_result": "Kategorie-Wechsel funktioniert ohne Verzögerung",
+      "priority": 1,
+      "sort_order": 2
+    },
+    {
+      "test_id": "SK003",
+      "name": "Favoriten-Counter",
+      "suite_name": "Sidebar & Kategorien",
+      "description": "Anzeige der Anzahl Favoriten pro Kategorie",
+      "expected_result": "Counter sind aktuell und aktualisieren sich automatisch",
+      "priority": 2,
+      "sort_order": 3
+    },
+    {
+      "test_id": "SK004",
+      "name": "Sidebar Collapse/Expand",
+      "suite_name": "Sidebar & Kategorien",
+      "description": "Ein- und Ausklappen der Seitenleiste",
+      "expected_result": "Sidebar lässt sich smooth ein-/ausklappen",
+      "priority": 2,
+      "sort_order": 4
+    },
+    {
+      "test_id": "SK005",
+      "name": "Kategorie-Management",
+      "suite_name": "Sidebar & Kategorien",
+      "description": "Erstellen, Bearbeiten und Löschen von Kategorien",
+      "expected_result": "Alle CRUD-Operationen für Kategorien funktionieren",
+      "priority": 2,
+      "sort_order": 5
+    },
+    {
+      "test_id": "SK006",
+      "name": "Drag & Drop Kategorien",
+      "suite_name": "Sidebar & Kategorien",
+      "description": "Neuordnung von Kategorien per Drag & Drop",
+      "expected_result": "Kategorien lassen sich intuitiv neu anordnen",
+      "priority": 3,
+      "sort_order": 6
+    },
+    {
+      "test_id": "HF001",
+      "name": "Favoriten-Karten Anzeige",
+      "suite_name": "Hauptinhalt & Favoriten",
+      "description": "Darstellung der Favoriten als Karten im Hauptbereich",
+      "expected_result": "Favoriten werden als ansprechende Karten dargestellt",
+      "priority": 1,
+      "sort_order": 1
+    },
+    {
+      "test_id": "HF002",
+      "name": "Favorit hinzufügen",
+      "suite_name": "Hauptinhalt & Favoriten",
+      "description": "Neue Favoriten über das Interface hinzufügen",
+      "expected_result": "Favoriten können einfach hinzugefügt werden",
+      "priority": 1,
+      "sort_order": 2
+    },
+    {
+      "test_id": "HF003",
+      "name": "Favorit bearbeiten",
+      "suite_name": "Hauptinhalt & Favoriten",
+      "description": "Bestehende Favoriten editieren und aktualisieren",
+      "expected_result": "Bearbeitung funktioniert intuitiv und speichert korrekt",
+      "priority": 1,
+      "sort_order": 3
+    },
+    {
+      "test_id": "HF004",
+      "name": "Favorit löschen",
+      "suite_name": "Hauptinhalt & Favoriten",
+      "description": "Favoriten mit Bestätigung entfernen",
+      "expected_result": "Löschvorgang mit Sicherheitsabfrage funktioniert",
+      "priority": 1,
+      "sort_order": 4
+    },
+    {
+      "test_id": "HF005",
+      "name": "Drag & Drop Favoriten",
+      "suite_name": "Hauptinhalt & Favoriten",
+      "description": "Favoriten zwischen Kategorien verschieben",
+      "expected_result": "Drag & Drop funktioniert smooth zwischen Kategorien",
+      "priority": 2,
+      "sort_order": 5
+    },
+    {
+      "test_id": "HF006",
+      "name": "Bulk-Aktionen",
+      "suite_name": "Hauptinhalt & Favoriten",
+      "description": "Mehrere Favoriten gleichzeitig bearbeiten",
+      "expected_result": "Mehrfachauswahl und Bulk-Operationen funktionieren",
+      "priority": 3,
+      "sort_order": 6
+    }
+  ]
+}
