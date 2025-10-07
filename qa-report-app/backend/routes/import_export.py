@@ -716,6 +716,92 @@ async def _parse_csv_import(csv_content: str) -> Dict[str, Any]:
         "test_cases": test_cases
     }
 
+async def _parse_excel_import(excel_content: bytes) -> Dict[str, Any]:
+    """Parse Excel import content to template format"""
+    import pandas as pd
+    from io import BytesIO
+    
+    # Read Excel file
+    excel_file = BytesIO(excel_content)
+    
+    # Try to read different sheets
+    try:
+        all_sheets = pd.read_excel(excel_file, sheet_name=None)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Excel file parsing error: {str(e)}"
+        )
+    
+    data = {
+        "meta": {
+            "version": "1.0",
+            "created": datetime.now().isoformat(),
+            "template_type": "excel_import"
+        }
+    }
+    
+    # Parse companies sheet
+    if 'Unternehmen' in all_sheets:
+        companies_df = all_sheets['Unternehmen']
+        data["companies"] = companies_df.to_dict('records')
+    elif 'companies' in all_sheets:
+        companies_df = all_sheets['companies']  
+        data["companies"] = companies_df.to_dict('records')
+    
+    # Parse projects sheet
+    if 'Projekte' in all_sheets:
+        projects_df = all_sheets['Projekte']
+        data["projects"] = projects_df.to_dict('records')
+    elif 'projects' in all_sheets:
+        projects_df = all_sheets['projects']
+        data["projects"] = projects_df.to_dict('records')
+    
+    # Parse test suites sheet
+    if 'Test-Bereiche' in all_sheets:
+        suites_df = all_sheets['Test-Bereiche']
+        data["test_suites"] = suites_df.to_dict('records')
+    elif 'test_suites' in all_sheets:
+        suites_df = all_sheets['test_suites']
+        data["test_suites"] = suites_df.to_dict('records')
+    
+    # Parse test cases sheet (main content)
+    test_cases = []
+    if 'Testfälle' in all_sheets:
+        cases_df = all_sheets['Testfälle']
+    elif 'test_cases' in all_sheets:
+        cases_df = all_sheets['test_cases']
+    elif 'Sheet1' in all_sheets:  # Default Excel sheet
+        cases_df = all_sheets['Sheet1']
+    else:
+        # Use the first sheet as test cases
+        first_sheet_name = list(all_sheets.keys())[0]
+        cases_df = all_sheets[first_sheet_name]
+    
+    if not cases_df.empty:
+        for _, row in cases_df.iterrows():
+            test_cases.append({
+                "test_id": str(row.get("test_id", "")).strip(),
+                "name": str(row.get("name", "")).strip(),
+                "suite_name": str(row.get("suite_name", "")).strip(),
+                "description": str(row.get("description", "")).strip(),
+                "expected_result": str(row.get("expected_result", "")).strip(),
+                "priority": int(row.get("priority", 3)),
+                "sort_order": int(row.get("sort_order", 1))
+            })
+    
+    data["test_cases"] = test_cases
+    
+    # Parse test results if available
+    if 'Testergebnisse' in all_sheets:
+        results_df = all_sheets['Testergebnisse']
+        data["test_results"] = results_df.to_dict('records')
+    elif 'test_results' in all_sheets:
+        results_df = all_sheets['test_results']
+        data["test_results"] = results_df.to_dict('records')
+    
+    return data
+
 async def _validate_import_data(data: Dict[str, Any]) -> Dict[str, Any]:
     """Validate import data structure and content"""
     errors = []
