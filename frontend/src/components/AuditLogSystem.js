@@ -149,27 +149,25 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       { name: 'Hauptinhalt Action-Buttons Funktion', icon: '⚡', tooltip: 'Edit öffnet Dialog, Delete löscht, Link öffnet URL' },
       { name: 'Hauptinhalt Drag & Drop', icon: '🔄', tooltip: 'Drag & Drop Funktionalität zwischen Kategorien' }
     ],
-    'Main-Content': [
-      { name: 'Bookmark-Darstellung', icon: '🎴', tooltip: 'Bookmark-Karten Layout' },
-      { name: 'Tabellen-Ansicht Toggle', icon: '📋', tooltip: 'List/Grid View umschalten' },
-      { name: 'Scroll-Performance', icon: '📜', tooltip: 'Scrolling bei vielen Bookmarks' },
-      { name: 'Leere-State Anzeige', icon: '📭', tooltip: 'Anzeige wenn keine Bookmarks' },
-      { name: 'Pagination/Infinite Scroll', icon: '📄', tooltip: 'Seitennummerierung oder unendliches Scrollen' },
-      { name: 'Sortierung-Optionen', icon: '🔤', tooltip: 'Alphabetische und andere Sortierungen' },
-      { name: 'Bulk-Aktionen', icon: '📦', tooltip: 'Mehrfach-Auswahl und Bulk-Operationen' }
+    'Footer Bereich': [
+      { name: 'Footer Sichtbarkeit', icon: '👁️', tooltip: 'Footer ist am unteren Rand sichtbar' },
+      { name: 'Footer Layout Links', icon: '👈', tooltip: 'Linke Seite des Footers (Copyright)' },
+      { name: 'Footer Mitte', icon: '⏸️', tooltip: 'Mittlerer Bereich des Footers (Pagination)' },
+      { name: 'Footer Mitte Icons', icon: '📼', tooltip: 'Pagination-Icons (Tape-Recorder Style)' },
+      { name: 'Footer Mitte Icons Hover', icon: '✨', tooltip: 'Hover-Effekte der Pagination-Icons' },
+      { name: 'Footer Mitte Icons Funktion', icon: '⚡', tooltip: 'Navigation zwischen Seiten funktioniert korrekt' },
+      { name: 'Footer Rechts', icon: '👉', tooltip: 'Rechte Seite des Footers (Impressum)' },
+      { name: 'Footer Rechts Hover', icon: '✨', tooltip: 'Hover-Effekt des Impressum-Links' },
+      { name: 'Footer Rechts Funktion', icon: '🔗', tooltip: 'Link führt zur korrekten Impressum-Seite' }
     ],
-    'Bookmark-Karten': [
-      { name: 'Status-Farb-System', icon: '🎨', tooltip: 'Farben für verschiedene Status' },
-      { name: 'Lock/Unlock Buttons', icon: '🔒', tooltip: 'Sperr-Funktionalität testen' },
-      { name: 'Action-Buttons Layout', icon: '🔘', tooltip: 'Edit/Delete/Link Button-Layout' },
-      { name: 'Drag-Handles sichtbar', icon: '⋮⋮', tooltip: 'Drag-Griffe erkennbar' },
-      { name: 'Hover-States', icon: '👆', tooltip: 'Hover-Effekte auf Karten' },
-      { name: 'Status-Badge Position', icon: '🏷️', tooltip: 'Status-Badges korrekt positioniert' },
-      { name: 'Favicon-Anzeige', icon: '🌐', tooltip: 'Website-Favicons korrekt geladen' },
-      { name: 'URL-Validierung Anzeige', icon: '✅', tooltip: 'Link-Status visuell erkennbar' },
-      { name: 'Bookmark-Beschreibung', icon: '📝', tooltip: 'Vollständige Beschreibung sichtbar' },
-      { name: 'Zeitstempel-Anzeige', icon: '⏰', tooltip: 'Erstellungs- und Änderungsdatum' },
-      { name: 'Kategorie-Zuordnung visuell', icon: '🏷️', tooltip: 'Kategorie-Zugehörigkeit erkennbar' }
+    'Dialoge und Modals': [
+      { name: 'Dialog Öffnung', icon: '📂', tooltip: 'Dialoge öffnen sich korrekt' },
+      { name: 'Dialog Overlay', icon: '🌫️', tooltip: 'Overlay/Hintergrund bei geöffneten Dialogen' },
+      { name: 'Dialog Schließen X', icon: '❌', tooltip: 'X-Button zum Schließen von Dialogen' },
+      { name: 'Dialog Schließen X Hover', icon: '✨', tooltip: 'Hover-Effekt des X-Schließen-Buttons' },
+      { name: 'Dialog Schließen X Funktion', icon: '⚡', tooltip: 'Dialog schließt sich beim Klick auf X' },
+      { name: 'Dialog ESC-Taste', icon: '⌨️', tooltip: 'Dialog schließen mit ESC-Taste' },
+      { name: 'Dialog Click-Outside', icon: '🖱️', tooltip: 'Dialog schließen durch Klick außerhalb' }
     ],
     'Import/Export Funktionen': [
       { name: 'HTML-Import', icon: '📄', tooltip: 'Browser-Favoriten HTML Import' },
