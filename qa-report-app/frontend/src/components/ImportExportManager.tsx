@@ -385,7 +385,7 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
                 <div className="card p-4 mb-4">
                   <input
                     type="file"
-                    accept=".json,.csv"
+                    accept=".json,.csv,.xlsx,.xls"
                     onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
                     className="w-full p-3 border-2 border-dashed border-qa-gray-300 rounded-lg text-center cursor-pointer hover:border-qa-primary-400"
                   />
