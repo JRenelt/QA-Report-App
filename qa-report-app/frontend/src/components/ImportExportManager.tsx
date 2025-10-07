@@ -474,7 +474,7 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
                       <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
                         <div className="text-center p-2 bg-green-50 rounded">
                           <div className="font-semibold text-green-800">
-                            {Object.values(importResult.result.created).reduce((a: any, b: any) => a + b, 0)}
+                            {Object.values(importResult.result.created).reduce((a: number, b: number) => a + b, 0)}
                           </div>
                           <div className="text-green-600">{t.created}</div>
                         </div>
