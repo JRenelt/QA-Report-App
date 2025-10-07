@@ -79,10 +79,12 @@ async def import_data(
             data = json.loads(content.decode('utf-8'))
         elif file.filename.endswith('.csv'):
             data = await _parse_csv_import(content.decode('utf-8'))
+        elif file.filename.endswith('.xlsx') or file.filename.endswith('.xls'):
+            data = await _parse_excel_import(content)
         else:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Unsupported file format. Use JSON or CSV."
+                detail="Unsupported file format. Use JSON, CSV, or Excel (.xlsx/.xls)."
             )
     except Exception as e:
         raise HTTPException(
