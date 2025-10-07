@@ -129,34 +129,25 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
       { name: 'Suchfeld Auto-Vervollständigung', icon: '💡', tooltip: 'Auto-Vervollständigung/Suggestion-Funktion' },
       { name: 'Suchfeld Lösch-Button', icon: '❌', tooltip: 'Clear/Reset-Button im Suchfeld' }
     ],
-    'Allgemeines Design': [
-      { name: '80% UI-Kompaktheit', icon: '📱', tooltip: '80% kompakte UI-Darstellung prüfen' },
-      { name: 'Dark Theme', icon: '🌙', tooltip: 'Dark Theme Konsistenz testen' },
-      { name: 'Responsiveness', icon: '📐', tooltip: 'Responsive Layout auf verschiedenen Größen' },
-      { name: 'Typographie', icon: '🔤', tooltip: 'Typographie und Schriftarten prüfen' },
-      { name: 'Farbschema Konsistenz', icon: '🎨', tooltip: 'Einheitliches Farbschema in gesamter App' },
-      { name: 'Loading-States', icon: '⏳', tooltip: 'Loading-Indikatoren bei Datenladung' },
-      { name: 'Error-Boundaries', icon: '🚫', tooltip: 'Fehlerbehandlung und Error-States' }
+    'Sidebar Bereich': [
+      { name: 'Sidebar Sichtbarkeit', icon: '📋', tooltip: 'Sidebar ist korrekt sichtbar und positioniert' },
+      { name: 'Sidebar Breite', icon: '📐', tooltip: 'Sidebar hat korrekte Breite und Proportionen' },
+      { name: 'Sidebar Resize-Funktion', icon: '↔️', tooltip: 'Sidebar kann in der Breite verändert werden' },
+      { name: 'Sidebar Kategorie-Liste', icon: '📂', tooltip: 'Kategorie-Liste wird korrekt angezeigt' },
+      { name: 'Sidebar Kategorie-Counter', icon: '🔢', tooltip: 'Counter zeigen korrekte Anzahl je Kategorie' },
+      { name: 'Sidebar Kategorie-Hover', icon: '✨', tooltip: 'Hover-Effekte bei Kategorie-Elementen' },
+      { name: 'Sidebar Kategorie-Klick', icon: '🖱️', tooltip: 'Klick auf Kategorie filtert Hauptinhalt' },
+      { name: 'Sidebar Neue Kategorie Button', icon: '➕', tooltip: 'Button zum Erstellen neuer Kategorien' }
     ],
-    'Header-Bereich': [
-      { name: 'Logo & Titel Platzierung', icon: '🏷️', tooltip: 'Logo und Titel korrekt positioniert' },
-      { name: 'Navigation Icons', icon: '🧭', tooltip: 'Alle Navigation-Icons funktional' },
-      { name: 'Bookmark-Anzahl [X]', icon: '🔢', tooltip: 'Bookmark-Counter korrekt angezeigt' },
-      { name: 'Header-Buttons Layout', icon: '🔘', tooltip: 'Button-Layout im Header prüfen' },
-      { name: 'Suchfeld Funktionalität', icon: '🔍', tooltip: 'Suchfeld responsive und funktional' },
-      { name: 'Status-Filter Dropdown', icon: '📊', tooltip: 'Alle Status-Optionen verfügbar' },
-      { name: 'Theme-Umschalter', icon: '🌓', tooltip: 'Light/Dark Theme Toggle funktional' }
-    ],
-    'Sidebar-Bereich': [
-      { name: 'Kategorie-Liste', icon: '📂', tooltip: 'Kategorien korrekt aufgelistet' },
-      { name: 'Drag & Drop Kategorien', icon: '🎯', tooltip: 'Kategorie D&D funktional' },
-      { name: 'Resizing Funktionalität', icon: '↔️', tooltip: 'Sidebar-Größenänderung' },
-      { name: 'Kategorie-Tooltips', icon: '💬', tooltip: 'Tooltip-Positionierung testen' },
-      { name: 'Unterkategorie-Hierarchie', icon: '🌳', tooltip: 'Hierarchische Darstellung prüfen' },
-      { name: 'Plus-Symbol für neue Kategorie', icon: '➕', tooltip: 'Kategorie-Erstellung über Plus-Symbol' },
-      { name: 'Kategorie-Zähler', icon: '🔢', tooltip: 'Bookmark-Anzahl pro Kategorie' },
-      { name: 'Aktive Kategorie-Markierung', icon: '🎯', tooltip: 'Visuelle Hervorhebung aktiver Kategorie' },
-      { name: 'Kategorie-Manager Dialog', icon: '⚙️', tooltip: 'Live-Kategorien-Verwaltung Dialog' }
+    'Hauptinhalt Bereich': [
+      { name: 'Hauptinhalt Layout', icon: '📄', tooltip: 'Gesamtlayout des Hauptinhalt-Bereichs' },
+      { name: 'Hauptinhalt Favoriten-Liste', icon: '📋', tooltip: 'Liste der Favoriten wird korrekt dargestellt' },
+      { name: 'Hauptinhalt Favoriten-Karten', icon: '🎴', tooltip: 'Einzelne Favoriten-Karten Design und Layout' },
+      { name: 'Hauptinhalt Favoriten-Karten Hover', icon: '✨', tooltip: 'Hover-Effekte auf Favoriten-Karten' },
+      { name: 'Hauptinhalt Favoriten Action-Buttons', icon: '🔘', tooltip: 'Action-Buttons (Edit, Delete, Link) auf Karten' },
+      { name: 'Hauptinhalt Action-Buttons Hover', icon: '✨', tooltip: 'Hover-Effekte der Action-Buttons' },
+      { name: 'Hauptinhalt Action-Buttons Funktion', icon: '⚡', tooltip: 'Edit öffnet Dialog, Delete löscht, Link öffnet URL' },
+      { name: 'Hauptinhalt Drag & Drop', icon: '🔄', tooltip: 'Drag & Drop Funktionalität zwischen Kategorien' }
     ],
     'Main-Content': [
       { name: 'Bookmark-Darstellung', icon: '🎴', tooltip: 'Bookmark-Karten Layout' },
