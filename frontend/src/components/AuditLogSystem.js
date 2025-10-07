@@ -95,21 +95,25 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     localStorage.setItem('favorg-audit-archivedReports', JSON.stringify(archivedReports));
   }, [archivedReports]);
   
-  // Test-Daten - Erweiterte FavOrg Test-Suite (70+ Testpunkte)
+  // Test-Daten - GUI-orientierte FavOrg Test-Suite
   const predefinedTests = {
-    'AuditLog-System': [
-      { name: 'Titel-Anzeige korrekt', icon: '📋', tooltip: 'Test-Bereiche Titel mit Counter wird korrekt angezeigt' },
-      { name: 'Neuanlegen Funktion', icon: '➕', tooltip: 'Neue Testpunkte können hinzugefügt werden' },
-      { name: 'Löschfunktion', icon: '🗑️', tooltip: 'Testpunkte können entfernt werden' },
-      { name: 'Sidebar Counter-Logik', icon: '🔢', tooltip: 'Counter zeigen korrekte Anzahl offener Tests' },
-      { name: 'Kategorie-Klick Navigation', icon: '👆', tooltip: 'Klick auf Kategorie zeigt alle Tests des Bereichs' },
-      { name: 'Status-Button Funktionalität', icon: '🔘', tooltip: 'Alle 4 Status-Buttons (Success, Error, Warning, Info) funktional' },
-      { name: 'Edit-Button Funktionalität', icon: '✏️', tooltip: 'Edit-Button öffnet Bearbeitungsdialog' },
-      { name: 'Notiz-Button Funktionalität', icon: '📝', tooltip: 'Notiz-Button ermöglicht Kommentare zu Tests' },
-      { name: 'Filter-System Footer', icon: '🔍', tooltip: 'Footer-Filter (Alle, Success, Error, Warning, Info) funktional' },
-      { name: 'Counter-Update dynamisch', icon: '🔄', tooltip: 'Counter aktualisieren sich bei Status-Änderungen' },
-      { name: 'Sidebar-Layout korrekt', icon: '📐', tooltip: 'Sidebar 10px Abstand, 100% Breite, korrekte Positionierung' },
-      { name: 'Tooltips bei Buttons', icon: '💬', tooltip: 'Alle Buttons zeigen korrekte Tooltips bei Hover' }
+    'Testpunkt Kopfzeile': [
+      { name: 'Logo Ort: Links', icon: '🏷️', tooltip: 'Logo ist korrekt links in der Kopfzeile positioniert' },
+      { name: 'Logo Hover-Effekt', icon: '🎯', tooltip: 'Logo reagiert bei Maus-Hover korrekt' },
+      { name: 'Logo Click-Funktion', icon: '🖱️', tooltip: 'Logo-Klick führt zur korrekten Aktion' },
+      { name: 'Button Ort: Mittig', icon: '🎯', tooltip: 'Haupt-Navigation-Buttons sind mittig platziert' },
+      { name: 'Neu Button - Neue Favorit', icon: '➕', tooltip: 'Button "Neue Favorit" ist vorhanden und funktional' },
+      { name: 'Neu Button Design', icon: '🎨', tooltip: 'Design und Styling des "Neue Favorit" Buttons' },
+      { name: 'Neu Button Hover-Effekt', icon: '✨', tooltip: 'Hover-Effekt des "Neue Favorit" Buttons' },
+      { name: 'Neu Button Click-Funktion', icon: '🔗', tooltip: 'Click-Funktionalität des "Neue Favorit" Buttons' },
+      { name: 'Datei Wählen - Favoriten Import', icon: '📤', tooltip: 'Import-Button für Favoriten-Dateien (Sammel APP)' },
+      { name: 'Datei Wählen Button Design', icon: '🎨', tooltip: 'Design des Import-Buttons' },
+      { name: 'Datei Wählen Button Hover', icon: '✨', tooltip: 'Hover-Effekt des Import-Buttons' },
+      { name: 'Datei Wählen Button Funktion', icon: '📂', tooltip: 'Funktionalität des Import-Buttons' },
+      { name: 'Fav Export Button', icon: '📥', tooltip: 'Export-Button für Favoriten' },
+      { name: 'Fav Export Button Design', icon: '🎨', tooltip: 'Design des Export-Buttons' },
+      { name: 'Fav Export Button Hover', icon: '✨', tooltip: 'Hover-Effekt des Export-Buttons' },
+      { name: 'Fav Export Button Funktion', icon: '💾', tooltip: 'Funktionalität des Export-Buttons' }
     ],
     'AuditLog PDF-Export': [
       { name: 'QA-Bericht Button', icon: '📄', tooltip: 'Button heißt "QA-Bericht" mit korrektem Tooltip' },
