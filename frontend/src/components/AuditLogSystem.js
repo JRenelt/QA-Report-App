@@ -233,18 +233,17 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
     };
 
     const categoryMap = {
-      'Allgemeines Design': 'AD',           // Allgemeines Design
-      'Header-Bereich': 'HB',               // Header-Bereich 
-      'Sidebar-Bereich': 'SB',              // Sidebar-Bereich
-      'Main-Content': 'MC',                 // Main-Content (Bindestrich ignoriert)
-      'Footer-Bereich': 'FB',               // Footer-Bereich
-      'Import/Export': 'IE',                // Import/Export (/ trennt Wörter)
-      'Link-Validierung': 'LV',             // Link-Validierung (Bindestrich ignoriert)
-      'Duplikat-Erkennung': 'DE',           // Duplikat-Erkennung (Bindestrich ignoriert)
-      'Performance': 'PE',                  // Performance (ein Wort)
-      'Benutzerfreundlichkeit': 'BF',       // Benutzerfreundlichkeit (ein Wort)
-      'Easter Eggs': 'EE',                  // Easter Eggs
-      'AuditLog Meta-Tests': 'AMT'          // AuditLog Meta-Tests (Bindestrich ignoriert)
+      'Testpunkt Kopfzeile': 'TK',          // Testpunkt Kopfzeile
+      'Navigation Bereich': 'NB',           // Navigation Bereich 
+      'Suchfeld Bereich': 'SB',             // Suchfeld Bereich
+      'Sidebar Bereich': 'SBB',             // Sidebar Bereich (um Konflikte mit Suchfeld zu vermeiden)
+      'Hauptinhalt Bereich': 'HB',          // Hauptinhalt Bereich
+      'Footer Bereich': 'FB',               // Footer Bereich
+      'Dialoge und Modals': 'DM',           // Dialoge und Modals
+      'Formular Eingaben': 'FE',            // Formular Eingaben
+      'Loading und Feedback': 'LF',         // Loading und Feedback
+      'Responsive Design': 'RD',            // Responsive Design
+      'Tastatur und Accessibility': 'TA'    // Tastatur und Accessibility
     };
     
     const categoryId = categoryMap[categoryName] || generateCategoryId(categoryName);
