@@ -142,10 +142,14 @@ async def export_current_data(
         filename = f"qa-export-{datetime.now().strftime('%Y%m%d-%H%M')}.csv"
         content = await _convert_to_csv(export_data)
         media_type = "text/csv"
+    elif format_type == "excel":
+        filename = f"qa-export-{datetime.now().strftime('%Y%m%d-%H%M')}.xlsx"
+        content = await _convert_to_excel(export_data)
+        media_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid format. Use: json, csv"
+            detail="Invalid format. Use: json, csv, excel"
         )
     
     return StreamingResponse(
