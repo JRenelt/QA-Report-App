@@ -1193,6 +1193,7 @@ const AuditLogSystem = ({ isOpen, onClose }) => {
   // Kategorie-Icon Mapping
   const getCategoryIcon = (category) => {
     const icons = {
+      'Allgemeines Design': '🎨',
       'Testpunkt Kopfzeile': '🔝',
       'Navigation Bereich': '🧭',
       'Suchfeld Bereich': '🔍',
