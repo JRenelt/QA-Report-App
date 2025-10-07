@@ -22,46 +22,32 @@
   ],
   "test_suites": [
     {
-      "name": "Allgemeines Design",
+      "name": "Responsive Design & Layout",
       "project_name": "FavOrg Web-App QA",
       "icon": "🎨",
-      "description": "Tests für UI/UX Design und Layout",
+      "description": "Tests für responsive Darstellung und allgemeines Layout",
       "sort_order": 1
     },
     {
-      "name": "Header-Bereich", 
+      "name": "Kopfzeile (Header)", 
       "project_name": "FavOrg Web-App QA",
-      "icon": "📋",
-      "description": "Tests für Navigation und Header-Funktionalität",
+      "icon": "🔝",
+      "description": "Logo, Navigation, Buttons und Header-Funktionalität",
       "sort_order": 2
     },
     {
-      "name": "Sidebar-Bereich",
+      "name": "Sidebar & Kategorien",
       "project_name": "FavOrg Web-App QA",
       "icon": "📂",
-      "description": "Tests für Seitenleiste und Kategorien",
+      "description": "Seitenleiste, Kategorie-Liste und Navigation",
       "sort_order": 3
     },
     {
-      "name": "Main-Content",
+      "name": "Hauptinhalt & Favoriten",
       "project_name": "FavOrg Web-App QA", 
       "icon": "📄",
-      "description": "Tests für Hauptinhalt und Funktionen",
+      "description": "Favoriten-Karten, Actions und Drag&Drop",
       "sort_order": 4
-    },
-    {
-      "name": "Bookmark-Verwaltung",
-      "project_name": "FavOrg Web-App QA",
-      "icon": "⭐",
-      "description": "Tests für Bookmark-Funktionalitäten",
-      "sort_order": 5
-    },
-    {
-      "name": "Meta-Testing",
-      "project_name": "FavOrg Web-App QA",
-      "icon": "🔧", 
-      "description": "Tests für QA-System selbst",
-      "sort_order": 6
     }
   ],
   "test_cases": [
