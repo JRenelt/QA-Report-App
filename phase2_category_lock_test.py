@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv('/app/frontend/.env')
-BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://qa-testing-hub.preview.emergentagent.com')
+BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://qualityportal.preview.emergentagent.com')
 API_BASE = f"{BACKEND_URL}/api"
 
 class Phase2CategoryLockTester:

@@ -1,77 +1,63 @@
 <analysis>
-The AI engineer's work pivoted from refining the existing FavOrg Audit Log System to building a new, standalone QA-Report-App. Initial efforts involved enhancing FavOrg's UI/UX, fixing bugs like the double-X button, and implementing  persistence and detailed PDF exports. The core of the trajectory details the successful completion of the QA-Report-App's foundation (FastAPI backend, PostgreSQL/SQLite, JWT auth, React frontend). Key challenges included resolving Tailwind CSS v4 vs v3 configuration issues, fixing complex SQLAlchemy  errors, and iterating on password hashing for authentication. The project progressed to core functionalities like login, dashboard, project hierarchy, test suite management, and culminated in implementing a robust import/export system, generating comprehensive documentation, and providing all project files to the user.
+The AI engineer's trajectory shows a clear transition from refining an existing FavOrg Audit Log System to developing a new, standalone QA-Report-App. Initially, the focus was on enhancing FavOrg's UI/UX, implementing  persistence, and detailed PDF exports. The core recent work involved establishing the QA-Report-App's foundation (FastAPI backend, SQLAlchemy/SQLite, JWT auth, React frontend). Challenges included resolving Tailwind CSS v4 vs v3 configuration, fixing SQLAlchemy  errors, and iterating on password hashing. The project progressed to core functionalities like login, dashboard, project/test suite management, import/export, and generating documentation. The most recent task involved updating test points based on user-requested GUI orientation, fixing frontend compilation errors in , and re-integrating a missing Allgemeines Design category into the FavOrg AuditLog sidebar. Database re-initialization and port conflicts during frontend startup were also resolved.
 </analysis>
 
 <product_requirements>
-The FavOrg application initially required enhancements to its hidden QA Audit Log System and core bookmark features. Key requests included:
-- **Audit Log UI/UX**: Compact design, sidebar with category counters, status buttons (green, red, orange, blue) with Lucide icons and tooltips, meta-testing category.
-- **Functionality**: Add/delete/edit tests, notes, search, archive reports, and critical  persistence for , , and .
-- **Reporting (PDF)**: Structured QA reports displaying *all* or *only tested* items, specific header layout, QA-Bericht title, version/tester/date layout.
-- **FavOrg Core**: Modern loading indicator, tooltip toggle in settings, pagination with tape-recorder Lucide icons, and a redesigned footer with specific left/center/right alignment (copyright, pagination, Impressum).
-- **Persistent Bug Fixes**: Multiple iterations to fix a double-X symbol on delete buttons, precise spacing adjustments, ensuring tooltip toggles function correctly, and addressing a PDF page 3 blank issue.
-- **New QA-Report-App**: A separate application with a multi-project (Firma → Projekt → Test-Suiten) and multi-user (Admin, QA-Tester, Reviewer) management system, PostgreSQL for data, JWT authentication, DE/ENG language toggle, and import/export functionality (JSON/CSV) with template generation. The old AuditLog in FavOrg is to be removed, replaced by a JSON export for migration.
+The overarching goal was to enhance the existing FavOrg application's QA Audit Log System and then develop a completely new, separate .
+**FavOrg Audit Log Enhancements:**
+*   **UI/UX:** Compact design, sidebar with category counters, status buttons (green, red, orange, blue with Lucide icons), tooltips, and a meta-testing category.
+*   **Functionality:** Add/delete/edit tests and notes, search, archive reports, and critical  persistence for , , and .
+*   **Reporting:** Structured PDF reports (all/tested items), specific header layout (QA-Bericht title, version/tester/date).
+*   **Core:** Modern loading indicator, tooltip toggle, pagination, redesigned footer.
+*   **Bug Fixes:** Resolved double-X button, spacing, tooltip toggle, and blank PDF page 3 issues.
+**New QA-Report-App:**
+*   **Core:** Separate multi-project (Company → Project → Test Suites), multi-user (Admin, QA-Tester, Reviewer) management system.
+*   **Technology:** PostgreSQL (planned, SQLite used for dev), JWT authentication, DE/ENG language toggle.
+*   **Features:** Import/export functionality (JSON/CSV) with template generation.
+*   **Migration:** The old FavOrg AuditLog is to be removed, replaced by a JSON export for migration into the new system.
+The latest user request focused on replacing existing test points with a new GUI-oriented list for the FavOrg AuditLog, adhering to a specific ID structure (e.g., AD0001).
 </product_requirements>
 
 <key_technical_concepts>
-- **Frontend**: React (components, state, hooks, TypeScript), Tailwind CSS (v3), Lucide Icons, .
-- **Backend**: FastAPI (Python), JWT (JSON Web Tokens),  (SHA256), , SQLAlchemy.
-- **Database**: PostgreSQL (planned), SQLite (development), .
-- **Deployment**: Kubernetes container environment, Supervisor.
-- **UI/UX**: Tooltips, Dialogs, Modals, Pagination, Internationalization (DE/ENG).
+- **Frontend**: React (TypeScript, state, hooks), Tailwind CSS (v3), Lucide Icons, .
+- **Backend**: FastAPI (Python), JWT (SHA256), , , SQLAlchemy, .
+- **Database**: PostgreSQL (planned), SQLite (development).
+- **Deployment**: Kubernetes, Supervisor.
+- **UI/UX**: Tooltips, Dialogs, Modals, Pagination.
 </key_technical_concepts>
 
 <code_architecture>
 
-- : Updated to  for  during development. Contains , .
-- : FastAPI entry point. Modified for correct router imports (, , , , ),  integration, and enhanced CORS configuration.
-- : Handles database connection. Now includes SQLAlchemy table definitions for , , , , , .
-- : JWT authentication logic. Updated to use SHA256 hashing.
-- : **NEW SCRIPT.** Initializes the SQLite database, creates tables, and seeds it with demo users and 22 pre-filled FavOrg test points.
-- : Contains various API endpoints. , , , , , ,  were implemented/modified to remove  clauses in SQLAlchemy queries and define CRUD operations.  was newly created.
-- : Central React component. Configured for Tailwind CSS, includes routing for  and , and manages authentication context. Integrates  and  components.
-- : Includes Tailwind CSS base, components, and utilities directives.
-- : Configuration for Tailwind CSS v3, purging content in  directory.
-- : PostCSS configuration for Tailwind CSS and Autoprefixer.
-- :  is set to .
-- : **NEW COMPONENT.** Provides user authentication interface.
-- : **NEW COMPONENT.** Displays backend connection status.
-- : **NEW COMPONENT.** Presents overview of companies, projects, and test suites.
-- : **NEW COMPONENT.** Manages test cases, execution, and results.
-- : **NEW COMPONENT.** Frontend interface for import/export.
-- : **NEW DIRECTORY.** Contains ,  (pre-filled), and .
-- : **NEW DIRECTORY.** Contains  and .
-- : **NEW FILE.** Comprehensive installation guide.
-- : **NEW FILE.** Project structure overview.
-- : **NEW FILE.** Full content of all relevant project files.
+The application consists of two main parts: the existing FavOrg application and the newly developed .
+- : This file defines the React component for the integrated Audit Log view in the FavOrg application. It was extensively modified to update ,  mapping, , and  to reflect the new GUI-oriented test points and ensure Allgemeines Design appeared in the sidebar.
+- : This script initializes the SQLite database for the . It was crucial for loading the new GUI-oriented test points into the database after user requests and modifications.
+- : The FastAPI entry point for the . It manages router imports, database configuration, and CORS. Implicitly updated to handle routing for new test points.
+-  and : These backend route files manage CRUD operations for test suites and cases. They were adapted to work with the new test points and GUI-oriented categories.
+- : Contains environment variables for the QA-Report-App frontend, including . It was temporarily modified to change the frontend port from 3000 to 3001 to avoid conflicts.
+- : A new component for handling import/export functionality in the QA-Report-App. It was modified to fix TypeScript compilation errors related to  functions and  typing.
+- : A new template file used for migrating FavOrg test points into the QA-Report-App. It was updated with the new GUI-oriented test points.
 </code_architecture>
 
 <pending_tasks>
-- **QA-Report-App (Phase 2 - continued):** Finalize multi-language support (DE/ENG) for data content, not just UI.
+- **QA-Report-App (Phase 2 - continued):** Finalize multi-language support (DE/ENG) for data content.
 - **QA-Report-App (Phase 3 - continued):** Implement Excel format for import/export, complete PDF export system, and archive system.
-- **QA-Report-App (Phase 4):** Implement the full migration flow for existing FavOrg AuditLog data (beyond just templates), remove the old AuditLog component from FavOrg.
+- **QA-Report-App (Phase 4):** Implement the full migration flow for existing FavOrg AuditLog data and remove the old AuditLog component from FavOrg.
 </pending_tasks>
 
 <current_work>
-Immediately before this summary, the AI engineer successfully completed the implementation of PHASE 3: Advanced Features for the new  based on explicit user requests.
-
-This phase focused on:
-1.  **CORS Problem Resolution**: The login failure (Anmeldung fehlgeschlagen) due to an  was debugged and the backend's CORS configuration in  was enhanced to ensure successful preflight requests and full login functionality.
-2.  **Login Success & Dashboard Display**: Upon successful login ( / ), the dashboard () correctly displayed user information (QA Administrator), system status (all services Connected), and backend version (QA-Report-App v1.0.0).
-3.  **Dashboard with Real Data**: The dashboard was populated with seeded data, showing 1 Firmen, 1 Projekte, and 4 Test-Suiten. API endpoints for  and  were refined, and the  component was created to render this hierarchical data with tab navigation and action buttons.
-4.  **Test-Suite Management Interface**: A comprehensive  component was developed. Backend routers for  and  were created and integrated into . This enabled:
-    *   Display of 4 test suites with a card-based UI.
-    *   A modal for managing individual test cases with IDs, priorities, and descriptions.
-    *   A Test-Execution-Modus featuring progress tracking, current test details, expected results, result marking buttons, navigation, and a notes field.
-5.  **Documentation and Import/Export System**: In response to the user's request, the AI engineer:
-    *   Created  for detailed setup on XAMPP/Hostsharing.net.
-    *   Developed  and .
-    *   Implemented  for backend import/export logic.
-    *   Created  for the frontend UI.
-    *   Generated template files: ,  (pre-filled with 22 FavOrg test points), and .
-    *   The  script was updated to seed the database with these 22 FavOrg test points as initial demo data.
-6.  **Project Files Provision**: The final action was to provide the user with a structured overview of all project files (, ) and the generated documentation/templates, as a virtual ZIP delivery since actual ZIP file creation is not possible.
+Immediately before this summary, the AI engineer focused on updating the  and ensuring the  runs correctly with new GUI-oriented test points.
+1.  **Test Point Update:** User requested a new GUI-oriented test point list for the FavOrg AuditLog, replacing the old ones with a specific ID structure (e.g., BOM0001: Button Ort: Mittig).
+    *   The  was extensively modified to update ,  mapping, , and  to incorporate these new test points.
+    *   The  backend's  script was re-run to seed the database with these new test points, replacing the older ones (e.g., AD0001: Corporate Identity prüfen was replaced by GUI-focused items like BOM0001: Button Ort: Mittig).
+    *   The  was updated with the new GUI-oriented test cases.
+2.  **QA-Report-App Frontend Fixes:**
+    *   Resolved an issue where the  frontend (React) attempted to use port 3000, which was already occupied by the FavOrg frontend. This was fixed by explicitly starting the QA-Report-App frontend on port 3001.
+    *   Addressed multiple TypeScript compilation errors in , specifically related to the typing of  functions and .
+3.  **FavOrg AuditLog Sidebar Correction:** The user reported that Allgemeines Design was missing from the FavOrg AuditLog sidebar. This was promptly corrected by re-adding it to , , and updating the icon mapping in .
+The current state is that the FavOrg AuditLog system now displays Allgemeines Design as the first category in the sidebar, populated with the new GUI-oriented test points. The QA-Report-App frontend is now runnable on port 3001, and its backend is confirmed to be running and accessible.
 </current_work>
 
 <optional_next_step>
-Await user confirmation regarding the successful receipt and usability of the provided code and documentation, or address any specific questions.
+Verify the functionality and visual appearance of the new GUI-oriented test points within the FavOrg AuditLog system and the QA-Report-App dashboard.
 </optional_next_step>
+

@@ -10,7 +10,7 @@ import tempfile
 import os
 from datetime import datetime
 
-BACKEND_URL = "https://qa-testing-hub.preview.emergentagent.com/api"
+BACKEND_URL = "https://qualityportal.preview.emergentagent.com/api"
 
 def clean_test_data():
     """Entferne vorherige Test-Bookmarks für saubere Tests"""

@@ -44,7 +44,7 @@ def test_frontend_backend_integration():
     try:
         # Simuliere Frontend-Request mit CORS
         headers = {
-            'Origin': 'https://qa-testing-hub.preview.emergentagent.com',
+            'Origin': 'https://qualityportal.preview.emergentagent.com',
             'Access-Control-Request-Method': 'POST',
             'Access-Control-Request-Headers': 'Content-Type'
         }
@@ -73,8 +73,8 @@ def test_frontend_backend_integration():
         # Simuliere Frontend Request
         headers = {
             'Content-Type': 'application/json',
-            'Origin': 'https://qa-testing-hub.preview.emergentagent.com',
-            'Referer': 'https://qa-testing-hub.preview.emergentagent.com/',
+            'Origin': 'https://qualityportal.preview.emergentagent.com',
+            'Referer': 'https://qualityportal.preview.emergentagent.com/',
             'User-Agent': 'Mozilla/5.0 (Frontend Test)'
         }
         
