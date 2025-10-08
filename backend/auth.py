@@ -76,7 +76,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     
     try:
         payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: int = payload.get("sub")
+        user_id: str = payload.get("sub")
         if user_id is None:
             raise credentials_exception
     except JWTError:
@@ -86,7 +86,9 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     if user is None:
         raise credentials_exception
     
-    return User(**user)
+    # Remove MongoDB _id field and hashed_password before creating User object
+    user_data = {k: v for k, v in user.items() if k not in ["_id", "hashed_password"]}
+    return User(**user_data)
 
 def require_role(required_roles: list):
     """Decorator to require specific roles"""
