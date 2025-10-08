@@ -62,7 +62,7 @@ async def authenticate_user(username: str, password: str) -> Optional[dict]:
     user = await get_user_by_username(username)
     if not user:
         return None
-    if not verify_password(password, user["password_hash"]):
+    if not verify_password(password, user.get("hashed_password", "")):
         return None
     return user
 
