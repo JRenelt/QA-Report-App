@@ -334,8 +334,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   {getIconComponent(suite.icon)}
                   <span className="ml-3 text-sm">{suite.name}</span>
                 </div>
-                <span className={`rounded-full px-2.5 py-1 text-xs font-bold flex items-center ${getSuiteBadgeStyle(suite)}`}>
-                  {getSuiteBadgeContent(suite)}
+                <span className={`rounded-full px-2.5 py-1 text-xs font-bold flex items-center ${getSuiteBadgeStyle(suite.id)}`}>
+                  {getSuiteBadgeContent(suite.id)}
                 </span>
               </button>
             ))}
