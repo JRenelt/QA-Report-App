@@ -590,7 +590,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             <div className="mb-4">
               <p className="text-sm text-gray-400 mb-2">Test: {selectedTest.test_id} - {selectedTest.title}</p>
               <textarea
-                defaultValue={selectedTest.note}
+                value={editNote}
+                onChange={(e) => setEditNote(e.target.value)}
                 className="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white text-sm focus:border-cyan-500 focus:outline-none"
                 rows={5}
                 placeholder="Notiz eingeben..."
@@ -600,7 +601,16 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               <button onClick={() => setShowNoteModal(false)} className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm">
                 Abbrechen
               </button>
-              <button className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded text-sm">
+              <button 
+                onClick={() => {
+                  const updated = testCases.map(t => 
+                    t.id === selectedTest.id ? { ...t, note: editNote } : t
+                  );
+                  setTestCases(updated);
+                  setShowNoteModal(false);
+                }}
+                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded text-sm"
+              >
                 Speichern
               </button>
             </div>
