@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Monitor, Tablet, Smartphone, Wrench, Moon, FileText, Palette, Menu, 
   Plus, Check, X, AlertTriangle, RotateCcw, Edit, MessageSquare, 
-  Trash2, Save, FileDown, Archive, HelpCircle, Settings, Crown, UserRound, Flask
+  Trash2, Save, FileDown, Archive, HelpCircle, Settings, Crown, UserRound, FlaskConical
 } from 'lucide-react';
 
 interface QADashboardV2Props {
