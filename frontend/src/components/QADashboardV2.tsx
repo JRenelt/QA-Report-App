@@ -109,6 +109,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     tooltipDelay: 'kurz' as 'fest' | 'kurz' | 'lang', // Fest=0ms, Kurz=500ms, Lang=1500ms
     sidebarWidth: 256
   });
+  const [showUserManagement, setShowUserManagement] = useState(false);
 
   // Tooltip Delay Helper
   const getTooltipDelay = () => {
