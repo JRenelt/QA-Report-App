@@ -45,25 +45,17 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 async def get_user_by_username(username: str) -> Optional[dict]:
     """Get user from database by username"""
-    query = """
-        SELECT id, username, email, hashed_password as password_hash, first_name, last_name, 
-               role, is_active, created_at, updated_at, language_preference
-        FROM users 
-        WHERE username = :username AND is_active = true
-    """
-    result = await database.fetch_one(query, {"username": username})
-    return dict(result) if result else None
+    user = await users_collection.find_one({"username": username, "is_active": True})
+    if user:
+        user["_id"] = str(user["_id"])  # Convert ObjectId to string
+    return user
 
-async def get_user_by_id(user_id: int) -> Optional[dict]:
+async def get_user_by_id(user_id: str) -> Optional[dict]:
     """Get user from database by ID"""
-    query = """
-        SELECT id, username, email, hashed_password as password_hash, first_name, last_name, 
-               role, is_active, created_at, updated_at, language_preference
-        FROM users 
-        WHERE id = :user_id AND is_active = true
-    """
-    result = await database.fetch_one(query, {"user_id": user_id})
-    return dict(result) if result else None
+    user = await users_collection.find_one({"id": user_id, "is_active": True})
+    if user:
+        user["_id"] = str(user["_id"])  # Convert ObjectId to string
+    return user
 
 async def authenticate_user(username: str, password: str) -> Optional[dict]:
     """Authenticate user with username and password"""
