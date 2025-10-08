@@ -135,8 +135,8 @@ async def main():
         
         print("\n✅ Database initialization complete!")
         print("\n📝 Login credentials:")
-        print("   Username: admin")
-        print("   Password: admin123")
+        print("   Admin - Username: admin, Password: admin123")
+        print("   QA Demo - Username: qa_demo, Password: demo123")
         print("\n⚠️  Please change the admin password after first login!\n")
         
     except Exception as e:
