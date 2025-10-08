@@ -17,7 +17,7 @@ const SystemStatus: React.FC<{ authToken: string | null }> = ({ authToken }) => 
   useEffect(() => {
     const checkBackendHealth = async () => {
       try {
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8002';
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
         const response = await fetch(`${backendUrl}/health`);
         const data = await response.json();
         
