@@ -21,9 +21,8 @@ ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify password against hash - using SHA256 for demo"""
-    import hashlib
-    return hashlib.sha256(plain_password.encode()).hexdigest() == hashed_password
+    """Verify password against hash"""
+    return pwd_context.verify(plain_password, hashed_password)
 
 def get_password_hash(password: str) -> str:
     """Hash password"""
