@@ -39,7 +39,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   user, 
   darkMode = true,
   onOpenSettings,
-  onOpenHelp
+  onOpenHelp,
+  onLogout
 }) => {
   const [testSuites, setTestSuites] = useState<TestSuite[]>([
     { id: '1', name: 'Allgemeines Design', icon: 'palette', totalTests: 8, passedTests: 6, failedTests: 0, openTests: 2 },
