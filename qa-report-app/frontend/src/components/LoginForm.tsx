@@ -50,7 +50,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language }) => {
     setError('');
 
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8002';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${backendUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
