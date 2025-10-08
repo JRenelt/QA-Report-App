@@ -5,6 +5,7 @@ import {
   Trash2, Save, FileDown, Archive, HelpCircle, Settings, Crown, UserRound, FlaskConical, LogOut, Users
 } from 'lucide-react';
 import UserManagement from './UserManagement';
+import qaService from '../services/qaService';
 
 interface QADashboardV2Props {
   authToken: string;
