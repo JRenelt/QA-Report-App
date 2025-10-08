@@ -11,6 +11,7 @@ interface QADashboardV2Props {
   darkMode?: boolean;
   onOpenSettings: () => void;
   onOpenHelp: () => void;
+  onLogout?: () => void;
 }
 
 interface TestSuite {
