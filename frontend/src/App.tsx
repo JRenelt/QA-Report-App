@@ -332,6 +332,22 @@ function App() {
           toggleDarkMode={toggleDarkMode} 
           user={user}
           onLogout={handleLogout}
+          onOpenSettings={() => setShowSettings(true)}
+          onOpenHelp={() => setShowHelp(true)}
+        />
+
+        {/* Modals */}
+        <SettingsModal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+          darkMode={darkMode}
+          toggleDarkMode={toggleDarkMode}
+          authToken={authToken || ''}
+        />
+        <HelpModal
+          isOpen={showHelp}
+          onClose={() => setShowHelp(false)}
+          darkMode={darkMode}
         />
 
         {/* Main Content with padding for fixed header and footer */}
