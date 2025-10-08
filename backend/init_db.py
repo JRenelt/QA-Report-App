@@ -127,6 +127,9 @@ async def main():
         # Create admin user
         await create_admin_user()
         
+        # Create QA demo user
+        await create_qa_demo_user()
+        
         # Create sample data
         await create_sample_data()
         
