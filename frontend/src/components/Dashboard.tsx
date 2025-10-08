@@ -36,11 +36,15 @@ interface TestSuite {
 
 interface DashboardProps {
   authToken: string;
-  currentUser: any;
-  language: 'de' | 'en';
+  user?: any;
+  currentUser?: any;
+  language?: 'de' | 'en';
+  darkMode?: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ authToken, currentUser, language }) => {
+const Dashboard: React.FC<DashboardProps> = ({ authToken, user, currentUser, language = 'de', darkMode = false }) => {
+  // Support both 'user' and 'currentUser' props for compatibility
+  const activeUser = user || currentUser;
   const [companies, setCompanies] = useState<Company[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [testSuites, setTestSuites] = useState<TestSuite[]>([]);
