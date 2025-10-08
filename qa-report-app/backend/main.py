@@ -39,12 +39,16 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS Middleware
+# CORS Middleware - Support both development and production
 allowed_origins = [
     "http://localhost:3000",
     "http://localhost:3001", 
     "http://127.0.0.1:3001",
-    "https://localhost:3001"
+    "https://localhost:3001",
+    os.getenv("FRONTEND_URL", "https://qa-report-app.emergent.host"),
+    "https://qa-report-app.emergent.host",
+    "https://*.emergent.host",
+    "https://*.emergent.app"
 ]
 app.add_middleware(
     CORSMiddleware,
