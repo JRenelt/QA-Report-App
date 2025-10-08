@@ -1,8 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronDown, User, Building2, FolderOpen, TestTube, CheckCircle, XCircle, Clock, LogOut } from 'lucide-react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
+import { ChevronDown, User, Building2, FolderOpen, TestTube, CheckCircle, XCircle, Clock, LogOut, Sun, Moon } from 'lucide-react';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';
 import './App.css';
+
+// Dark Mode Context
+const DarkModeContext = createContext<{
+  darkMode: boolean;
+  toggleDarkMode: () => void;
+}>({
+  darkMode: false,
+  toggleDarkMode: () => {},
+});
+
+export const useDarkMode = () => useContext(DarkModeContext);
 
 interface HealthStatus {
   status: 'healthy' | 'error' | 'loading';
