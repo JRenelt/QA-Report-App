@@ -450,15 +450,16 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             </div>
           </div>
 
-          {/* Footer */}
-          <footer className="bg-[#1a1d26] border-t border-gray-700 px-4 py-2 text-sm text-gray-400">
-            <div className="flex justify-between items-center">
-              <div>© 2025 QA-Report-App. Alle Rechte vorbehalten.</div>
-              <a href="#impressum" className="hover:text-white transition-colors">Impressum</a>
-            </div>
-          </footer>
         </div>
       </div>
+
+      {/* Footer - über gesamte Bildschirmbreite */}
+      <footer className="bg-[#1a1d26] border-t border-gray-700 px-4 py-2 text-sm text-gray-400 flex-shrink-0">
+        <div className="flex justify-between items-center">
+          <div>© 2025 QA-Report-App. Alle Rechte vorbehalten.</div>
+          <a href="#impressum" className="hover:text-white transition-colors">Impressum</a>
+        </div>
+      </footer>
 
       {/* Modals */}
       {showEditModal && selectedTest && (
