@@ -404,6 +404,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       <button 
                         onClick={() => {
                           setSelectedTest(test);
+                          setEditTitle(test.title || '');
                           setEditDescription(test.description || '');
                           setShowEditModal(true);
                         }}
