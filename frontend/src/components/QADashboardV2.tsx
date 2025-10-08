@@ -502,22 +502,23 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                           </button>
                         </CustomTooltip>
                         
-                        <button
-                          onClick={() => {
-                            const updated = testCases.map(t => 
-                              t.id === test.id ? { ...t, status: 'error' as const } : t
-                            );
-                            setTestCases(updated);
-                          }}
-                          className={`px-3 py-1 rounded text-sm font-medium transition-all ${
-                            test.status === 'error' 
-                              ? 'bg-red-600 text-white shadow-md' 
-                              : 'bg-red-200 text-red-800 hover:bg-red-300'
-                          }`}
-                          title="Test fehlgeschlagen"
-                        >
-                          ✗ Fehlgeschlagen
-                        </button>
+                        <CustomTooltip text="Test als fehlgeschlagen markieren">
+                          <button
+                            onClick={() => {
+                              const updated = testCases.map(t => 
+                                t.id === test.id ? { ...t, status: 'error' as const } : t
+                              );
+                              setTestCases(updated);
+                            }}
+                            className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                              test.status === 'error' 
+                                ? 'bg-red-600 text-white shadow-md' 
+                                : 'bg-red-200 text-red-800 hover:bg-red-300'
+                            }`}
+                          >
+                            ✗ Fehlgeschlagen
+                          </button>
+                        </CustomTooltip>
                         
                         <button
                           onClick={() => {
