@@ -500,7 +500,15 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     filterStatus === 'pending' ? 'bg-gray-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                   }`}
                 >
-                  ↻ ({statusCounts.pending})
+                  ⬜ Unbearbeitet ({statusCounts.pending})
+                </button>
+                <button
+                  onClick={() => setFilterStatus('skipped')}
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                    filterStatus === 'skipped' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  ↻ Übersprungen ({statusCounts.skipped})
                 </button>
               </div>
 
