@@ -369,7 +369,7 @@ function App() {
             <Footer darkMode={darkMode} />
           </>
         ) : (
-          /* Fullscreen Dashboard mit eigenem Header */}
+          /* Fullscreen Dashboard mit eigenem Header */
           <QADashboardV2 
             authToken={authToken} 
             user={user} 
