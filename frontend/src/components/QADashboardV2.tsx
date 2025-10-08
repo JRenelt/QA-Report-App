@@ -211,17 +211,23 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const handleCreateTest = () => {
     if (!newTestName.trim()) return;
     
+    // Bessere ID-Generierung für aktuelle Suite
+    const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
+    const nextNumber = suiteTests.length + 1;
+    const suitePrefix = testSuites.find(s => s.id === activeSuite)?.name.substring(0, 2).toUpperCase() || 'AD';
+    
     const newTest: TestCase = {
-      id: Date.now().toString(),
-      test_id: `AD${String(testCases.length + 1).padStart(4, '0')}`,
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      test_id: `${suitePrefix}${String(nextNumber).padStart(4, '0')}`,
       suite_id: activeSuite,
-      title: newTestName,
+      title: newTestName.trim(),
       description: '',
       status: 'pending'
     };
     
-    setTestCases([...testCases, newTest]);
+    setTestCases(prev => [...prev, newTest]);
     setNewTestName('');
+    console.log('Test erstellt:', newTest); // Debug-Output
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
