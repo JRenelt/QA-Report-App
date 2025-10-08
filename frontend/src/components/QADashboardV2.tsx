@@ -323,6 +323,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               </button>
             ))}
           </div>
+          
+          {/* Resize Handle */}
+          <div
+            className="absolute right-0 top-0 bottom-0 w-1 bg-gray-600 hover:bg-cyan-500 cursor-col-resize transition-colors"
+            onMouseDown={handleMouseDown}
+            title="Seitenleiste vergrößern/verkleinern"
+          />
         </div>
 
         {/* Main Content */}
