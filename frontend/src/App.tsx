@@ -376,6 +376,7 @@ function App() {
             darkMode={darkMode}
             onOpenSettings={() => setShowSettings(true)}
             onOpenHelp={() => setShowHelp(true)}
+            onLogout={handleLogout}
           />
         )}
       </div>
