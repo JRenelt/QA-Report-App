@@ -354,22 +354,26 @@ function App() {
           darkMode={darkMode}
         />
 
-        {/* Main Content with padding for fixed header and footer */}
-        <main className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            {!authToken ? (
-              <div className="max-w-md mx-auto">
-                <LoginForm onLogin={handleLogin} darkMode={darkMode} />
-                <SystemStatus darkMode={darkMode} />
+        {!authToken ? (
+          <>
+            {/* Main Content with padding for fixed header and footer */}
+            <main className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
+              <div className="max-w-7xl mx-auto">
+                <div className="max-w-md mx-auto">
+                  <LoginForm onLogin={handleLogin} darkMode={darkMode} />
+                  <SystemStatus darkMode={darkMode} />
+                </div>
               </div>
-            ) : (
-              <QADashboard authToken={authToken} user={user} darkMode={darkMode} />
-            )}
-          </div>
-        </main>
-
-        {/* Fixed Footer */}
-        <Footer darkMode={darkMode} />
+            </main>
+            {/* Fixed Footer */}
+            <Footer darkMode={darkMode} />
+          </>
+        ) : (
+          /* Fullscreen Dashboard (ohne extra padding/footer) */
+          <main className="pt-16 h-screen">
+            <QADashboard authToken={authToken} user={user} darkMode={darkMode} />
+          </main>
+        )}
       </div>
     </DarkModeContext.Provider>
   );
