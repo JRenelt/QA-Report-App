@@ -106,6 +106,16 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     sidebarWidth: 256
   });
 
+  // Tooltip Delay Helper
+  const getTooltipDelay = () => {
+    switch(userSettings.tooltipDelay) {
+      case 'fest': return 0;
+      case 'kurz': return 500;
+      case 'lang': return 1500;
+      default: return 500;
+    }
+  };
+
   // Resize handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsResizing(true);
