@@ -112,6 +112,30 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     e.preventDefault();
   };
 
+  // Einstellungen laden beim Component Mount
+  React.useEffect(() => {
+    const loadUserSettings = () => {
+      const savedSettings = localStorage.getItem(`qa_app_settings_${user?.username || 'default'}`);
+      if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        setUserSettings(prev => ({ ...prev, ...settings }));
+        setSidebarWidth(settings.sidebarWidth || 256);
+      }
+    };
+    loadUserSettings();
+  }, [user?.username]);
+
+  // Einstellungen speichern bei Änderungen
+  React.useEffect(() => {
+    if (user?.username) {
+      const settingsToSave = {
+        ...userSettings,
+        sidebarWidth
+      };
+      localStorage.setItem(`qa_app_settings_${user.username}`, JSON.stringify(settingsToSave));
+    }
+  }, [userSettings, sidebarWidth, user?.username]);
+
   React.useEffect(() => {
     const handleMouseMoveEvent = (e: MouseEvent) => {
       if (!isResizing) return;
