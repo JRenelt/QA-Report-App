@@ -189,8 +189,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-[#1a1d26] via-[#1e222b] to-[#252933] text-white">
-      {/* Header */}
-      <header className="bg-[#282C34] border-b border-gray-700 px-2.5 py-3 flex items-center justify-between shadow-lg">
+      {/* Header - Feste Position */}
+      <header className="bg-[#282C34] border-b border-gray-700 px-2.5 py-3 flex items-center justify-between shadow-lg flex-shrink-0">
         {/* Links - Logo + Titel */}
         <div className="flex items-center space-x-3">
           <FlaskConical className="h-6 w-6 text-cyan-400" />
