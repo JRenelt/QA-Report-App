@@ -95,7 +95,7 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
   const handleTemplateGeneration = async (templateType: string, format: string) => {
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8002';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${backendUrl}/api/import-export/template/generate?template_type=${templateType}&format_type=${format}`, {
         method: 'POST',
         headers: {
@@ -127,7 +127,7 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
   const handleDataExport = async (format: string, includeResults: boolean = false) => {
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8002';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${backendUrl}/api/import-export/export/current?format_type=${format}&include_results=${includeResults}`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -167,7 +167,7 @@ const ImportExportManager: React.FC<ImportExportManagerProps> = ({ authToken, la
       formData.append('overwrite_existing', overwriteExisting.toString());
       formData.append('validate_only', validateOnly.toString());
 
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8002';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${backendUrl}/api/import-export/import`, {
         method: 'POST',
         headers: {
