@@ -228,16 +228,38 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
-  // Einstellungen speichern bei Änderungen
+  // Einstellungen speichern bei Änderungen (Backend + LocalStorage)
   React.useEffect(() => {
-    if (user?.username) {
-      const settingsToSave = {
-        ...userSettings,
-        sidebarWidth
+    if (user?.id && authToken) {
+      const saveSettings = async () => {
+        try {
+          const settingsToSave = {
+            tooltip_delay: userSettings.tooltipDelay,
+            sidebar_width: sidebarWidth,
+            entries_per_page: 10,
+            general_tooltips: true
+          };
+          
+          await qaService.updateUserSettings(user.id, settingsToSave);
+          
+          // Auch in LocalStorage als Fallback speichern
+          localStorage.setItem(`qa_app_settings_${user.username}`, JSON.stringify({
+            ...userSettings,
+            sidebarWidth
+          }));
+        } catch (error) {
+          console.error('Fehler beim Speichern der Einstellungen:', error);
+          // Fallback zu LocalStorage
+          localStorage.setItem(`qa_app_settings_${user.username}`, JSON.stringify({
+            ...userSettings,
+            sidebarWidth
+          }));
+        }
       };
-      localStorage.setItem(`qa_app_settings_${user.username}`, JSON.stringify(settingsToSave));
+      
+      saveSettings();
     }
-  }, [userSettings, sidebarWidth, user?.username]);
+  }, [userSettings, sidebarWidth, user?.id, user?.username, authToken]);
 
   // Auto-Sizing für Sidebar basierend auf längstem Eintrag
   const calculateOptimalSidebarWidth = () => {
