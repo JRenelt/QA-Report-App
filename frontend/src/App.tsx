@@ -1,7 +1,9 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Sun, Moon, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Sun, Moon, CheckCircle, XCircle, Clock, Settings, HelpCircle } from 'lucide-react';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';
+import SettingsModal from './components/SettingsModal';
+import HelpModal from './components/HelpModal';
 import './App.css';
 
 // Dark Mode Context
