@@ -191,7 +191,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       <header className="bg-[#282C34] border-b border-gray-700 px-2.5 py-3 flex items-center justify-between shadow-lg">
         {/* Links - Logo + Titel */}
         <div className="flex items-center space-x-3">
-          <Flask className="h-6 w-6 text-cyan-400" />
+          <FlaskConical className="h-6 w-6 text-cyan-400" />
           <h1 className="text-xl font-bold text-white">QA-Report-App</h1>
         </div>
 
