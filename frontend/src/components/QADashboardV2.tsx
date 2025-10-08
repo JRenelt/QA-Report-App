@@ -538,22 +538,23 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                           </button>
                         </CustomTooltip>
                         
-                        <button
-                          onClick={() => {
-                            const updated = testCases.map(t => 
-                              t.id === test.id ? { ...t, status: 'skipped' as const } : t
-                            );
-                            setTestCases(updated);
-                          }}
-                          className={`px-3 py-1 rounded text-sm font-medium transition-all ${
-                            test.status === 'skipped' 
-                              ? 'bg-blue-600 text-white shadow-md' 
-                              : 'bg-blue-200 text-blue-800 hover:bg-blue-300'
-                          }`}
-                          title="Test übersprungen"
-                        >
-                          ↻ Übersprungen
-                        </button>
+                        <CustomTooltip text="Test überspringen">
+                          <button
+                            onClick={() => {
+                              const updated = testCases.map(t => 
+                                t.id === test.id ? { ...t, status: 'skipped' as const } : t
+                              );
+                              setTestCases(updated);
+                            }}
+                            className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                              test.status === 'skipped' 
+                                ? 'bg-blue-600 text-white shadow-md' 
+                                : 'bg-blue-200 text-blue-800 hover:bg-blue-300'
+                            }`}
+                          >
+                            ↻ Übersprungen
+                          </button>
+                        </CustomTooltip>
                       </div>
 
                       {test.note && (
