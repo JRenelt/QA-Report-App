@@ -1,5 +1,5 @@
 """
-JWT Authentication System
+JWT Authentication System - MongoDB Version
 """
 
 import os
@@ -9,9 +9,8 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from sqlalchemy import text
-from database import database
-from models import User
+from database import users_collection
+from models import User, UserInDB
 
 # Security setup
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
