@@ -49,18 +49,6 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     e.preventDefault();
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isResizing) return;
-    const newWidth = e.clientX;
-    if (newWidth >= 200 && newWidth <= 500) { // Min 200px, Max 500px
-      setSidebarWidth(newWidth);
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsResizing(false);
-  };
-
   React.useEffect(() => {
     const handleMouseMoveEvent = (e: MouseEvent) => {
       if (!isResizing) return;
