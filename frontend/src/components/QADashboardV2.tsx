@@ -116,6 +116,42 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
+  // Custom Tooltip Component
+  const CustomTooltip: React.FC<{ text: string; children: React.ReactElement }> = ({ text, children }) => {
+    const [showTooltip, setShowTooltip] = useState(false);
+    const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
+
+    const handleMouseEnter = () => {
+      const delay = getTooltipDelay();
+      const timeout = setTimeout(() => {
+        setShowTooltip(true);
+      }, delay);
+      setTooltipTimeout(timeout);
+    };
+
+    const handleMouseLeave = () => {
+      if (tooltipTimeout) {
+        clearTimeout(tooltipTimeout);
+      }
+      setShowTooltip(false);
+    };
+
+    return (
+      <div className="relative inline-block">
+        {React.cloneElement(children, {
+          onMouseEnter: handleMouseEnter,
+          onMouseLeave: handleMouseLeave,
+        })}
+        {showTooltip && (
+          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap z-50">
+            {text}
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   // Resize handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsResizing(true);
