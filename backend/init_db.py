@@ -32,7 +32,7 @@ async def create_admin_user():
         admin_user = {
             "id": str(uuid.uuid4()),
             "username": "admin",
-            "email": "admin@qa-report.local",
+            "email": "admin@example.com",
             "first_name": "System",
             "last_name": "Administrator",
             "hashed_password": get_password_hash("admin123"),
