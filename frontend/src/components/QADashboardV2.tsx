@@ -62,15 +62,18 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   };
 
   React.useEffect(() => {
+    const handleMouseMoveWrapper = (e: MouseEvent) => handleMouseMove(e);
+    const handleMouseUpWrapper = () => handleMouseUp();
+    
     if (isResizing) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handleMouseMoveWrapper);
+      document.addEventListener('mouseup', handleMouseUpWrapper);
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('mousemove', handleMouseMoveWrapper);
+        document.removeEventListener('mouseup', handleMouseUpWrapper);
       };
     }
-  }, [isResizing]);
+  }, [isResizing, handleMouseMove, handleMouseUp]);
   const [testSuites, setTestSuites] = useState<TestSuite[]>([
     { id: '1', name: 'Allgemeines Design', icon: 'palette', totalTests: 8, passedTests: 6, failedTests: 0, openTests: 2 },
     { id: '2', name: 'Testpunkt Kopfzeile', icon: 'menu', totalTests: 16, passedTests: 14, failedTests: 2, openTests: 0 },
