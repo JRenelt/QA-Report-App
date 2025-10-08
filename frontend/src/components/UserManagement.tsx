@@ -104,7 +104,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
     if (!selectedUser) return;
 
     try {
-      const updateData = { ...formData };
+      const updateData: any = { ...formData };
       if (!updateData.password) {
         delete updateData.password; // Passwort nur ändern wenn angegeben
       }
