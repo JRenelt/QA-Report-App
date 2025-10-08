@@ -20,10 +20,13 @@ interface TestSuite {
   id: string;
   name: string;
   icon: string;
-  totalTests: number;
-  passedTests: number;
-  failedTests: number;
-  openTests: number;
+  description?: string;
+  created_by?: string;
+  created_at?: string;
+  totalTests?: number;
+  passedTests?: number;
+  failedTests?: number;
+  openTests?: number;
 }
 
 interface TestCase {
