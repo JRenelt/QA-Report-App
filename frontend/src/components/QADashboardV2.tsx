@@ -130,7 +130,22 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [sidebarWidth, setSidebarWidth] = useState(256); // 256px = w-64
   const [isResizing, setIsResizing] = useState(false);
 
-  const totalOpenTests = testSuites.reduce((sum, suite) => sum + suite.openTests + suite.failedTests, 0);
+  // Dynamisch berechnete Test Suite Stats
+  const calculateSuiteStats = (suiteId: string) => {
+    const suiteTests = testCases.filter(t => t.suite_id === suiteId);
+    return {
+      totalTests: suiteTests.length,
+      passedTests: suiteTests.filter(t => t.status === 'success').length,
+      failedTests: suiteTests.filter(t => t.status === 'error').length,
+      openTests: suiteTests.filter(t => t.status === 'pending' || t.status === 'warning').length,
+      skippedTests: suiteTests.filter(t => t.status === 'skipped').length,
+    };
+  };
+
+  const totalOpenTests = testSuites.reduce((sum, suite) => {
+    const stats = calculateSuiteStats(suite.id);
+    return sum + stats.openTests + stats.failedTests;
+  }, 0);
 
   const getIconComponent = (iconName: string) => {
     const icons: { [key: string]: any } = {
