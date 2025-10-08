@@ -20,7 +20,10 @@ async def login(form_data: LoginForm):
         )
     
     access_token = create_access_token(data={"sub": str(user["id"])})
-    user_obj = User(**user)
+    
+    # Remove MongoDB _id and hashed_password before creating User object
+    user_data = {k: v for k, v in user.items() if k not in ["_id", "hashed_password"]}
+    user_obj = User(**user_data)
     
     return Token(
         access_token=access_token,
