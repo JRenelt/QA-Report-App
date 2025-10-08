@@ -330,16 +330,6 @@ function App() {
   return (
     <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
       <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-200`}>
-        {/* Fixed Header */}
-        <Header 
-          darkMode={darkMode} 
-          toggleDarkMode={toggleDarkMode} 
-          user={user}
-          onLogout={handleLogout}
-          onOpenSettings={() => setShowSettings(true)}
-          onOpenHelp={() => setShowHelp(true)}
-        />
-
         {/* Modals */}
         <SettingsModal
           isOpen={showSettings}
@@ -356,6 +346,16 @@ function App() {
 
         {!authToken ? (
           <>
+            {/* Fixed Header nur für Login-Seite */}
+            <Header 
+              darkMode={darkMode} 
+              toggleDarkMode={toggleDarkMode} 
+              user={user}
+              onLogout={handleLogout}
+              onOpenSettings={() => setShowSettings(true)}
+              onOpenHelp={() => setShowHelp(true)}
+            />
+            
             {/* Main Content with padding for fixed header and footer */}
             <main className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
               <div className="max-w-7xl mx-auto">
@@ -369,16 +369,14 @@ function App() {
             <Footer darkMode={darkMode} />
           </>
         ) : (
-          /* Fullscreen Dashboard (ohne extra padding/footer) */
-          <main className="pt-16 h-screen overflow-hidden">
-            <QADashboardV2 
-              authToken={authToken} 
-              user={user} 
-              darkMode={darkMode}
-              onOpenSettings={() => setShowSettings(true)}
-              onOpenHelp={() => setShowHelp(true)}
-            />
-          </main>
+          /* Fullscreen Dashboard mit eigenem Header */}
+          <QADashboardV2 
+            authToken={authToken} 
+            user={user} 
+            darkMode={darkMode}
+            onOpenSettings={() => setShowSettings(true)}
+            onOpenHelp={() => setShowHelp(true)}
+          />
         )}
       </div>
     </DarkModeContext.Provider>
