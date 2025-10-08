@@ -1,10 +1,8 @@
 """
-Authentication Routes
+Authentication Routes - MongoDB Version
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import text
-from database import database
 from models import LoginForm, Token, User
 from auth import authenticate_user, create_access_token
 
