@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { Sun, Moon, CheckCircle, XCircle, Clock, Settings, HelpCircle } from 'lucide-react';
 import LoginForm from './components/LoginForm';
-import QADashboard from './components/QADashboard';
+import QADashboardV2 from './components/QADashboardV2';
 import SettingsModal from './components/SettingsModal';
 import HelpModal from './components/HelpModal';
 import './App.css';
