@@ -1,0 +1,57 @@
+{
+  "total_tests": 7,
+  "passed": 5,
+  "failed": 2,
+  "success_rate": 71.42857142857143,
+  "results": [
+    {
+      "test": "Health Check",
+      "success": false,
+      "message": "HTTP 404: <!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /health</pre>\n</body>\n</html>\n",
+      "timestamp": "2025-10-08T10:36:56.211735",
+      "response_data": null
+    },
+    {
+      "test": "Admin Login",
+      "success": true,
+      "message": "Admin login successful - User: admin, Role: admin",
+      "timestamp": "2025-10-08T10:36:56.443660",
+      "response_data": null
+    },
+    {
+      "test": "QA Demo Login",
+      "success": false,
+      "message": "HTTP 401: {\"detail\":\"Incorrect username or password\"}",
+      "timestamp": "2025-10-08T10:36:56.483360",
+      "response_data": null
+    },
+    {
+      "test": "Invalid Credentials",
+      "success": true,
+      "message": "Correctly rejected invalid credentials with 401 Unauthorized",
+      "timestamp": "2025-10-08T10:36:56.495902",
+      "response_data": null
+    },
+    {
+      "test": "Missing Fields",
+      "success": true,
+      "message": "Correctly rejected incomplete credentials with 422 Validation Error",
+      "timestamp": "2025-10-08T10:36:56.512829",
+      "response_data": null
+    },
+    {
+      "test": "JWT Token Validation",
+      "success": true,
+      "message": "Correctly rejected invalid JWT token with 401 Unauthorized",
+      "timestamp": "2025-10-08T10:36:56.549834",
+      "response_data": null
+    },
+    {
+      "test": "Authenticated Endpoint",
+      "success": true,
+      "message": "Profile endpoint successful - User: admin",
+      "timestamp": "2025-10-08T10:36:56.562982",
+      "response_data": null
+    }
+  ]
+}
