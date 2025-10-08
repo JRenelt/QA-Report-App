@@ -1,0 +1,71 @@
+<analysis>
+The previous AI engineer meticulously built the QA-Report-App from scratch by migrating an existing project from a GitHub repository, initially mistakenly cloning the wrong one, then correcting to the specified  directory. The core task involved converting the backend from SQLAlchemy (SQLite/PostgreSQL) to MongoDB, implementing a React TypeScript frontend, and incorporating a comprehensive set of features including JWT authentication, multi-user roles, PDF report generation, Excel import/export, and German localization.
+
+The work progressed iteratively, with the AI first focusing on backend migration (database, models, authentication, and all 10 routes), then frontend integration. Numerous compilation and runtime issues were methodically debugged, including  API changes, Tailwind CSS configuration, and TypeScript prop mismatches. Design enhancements like dark mode, fixed header/footer, and detailed settings/help modals were added based on specific user feedback and image-based design analysis. The current work involves a significant design overhaul of the dashboard, implementing complex layout and interaction elements, and is currently addressing a missing icon issue.
+</analysis>
+
+<product_requirements>
+The user requested a QA-Report-App full-stack application with the following features:
+- **Backend**: FastAPI Python backend, MongoDB database (migrated from existing SQLite/PostgreSQL), JWT Authentication.
+- **Frontend**: React TypeScript frontend, German localization.
+- **Core Features**: PDF Report Generation, Excel Import/Export, Archive Management.
+- **User Management**: Multi-User System (Admin, QA-Tester).
+- **Design & UI**:
+    - Preserve existing design and color palette initially, later refined with specific HEX codes.
+    - Fixed header and footer (with copyright, Impressum, Datenschutz links).
+    - Dark mode functionality with a toggle, later moved into settings.
+    - Settings menu (accessible post-login via gear icon) with sections for:
+        - *Display*: Dark/Light mode, entries per page, general tooltips toggle.
+        - *Import/Export*: PDF/CSV export buttons, generate temporary test data (15 companies, 100 tests each) with warnings.
+        - *Advanced*: Message delay slider, manual tooltip close toggle, danger zone with Reset Settings and Empty Database (with warnings).
+    - Help menu (accessible post-login via question mark icon) with tabs for User Manual, Technical Documentation, and Installation.
+    - Detailed dashboard redesign based on provided images, including a left sidebar for Test-Bereiche with counts and status, a fixed toolzeile (action bar) with buttons like Test speichern, Archiv, QA-Bericht, and individual test cards with actions.
+</product_requirements>
+
+<key_technical_concepts>
+- **Backend**: FastAPI, MongoDB (via ), JWT Authentication (, ), , .
+- **Frontend**: React.js, TypeScript, Tailwind CSS, ,  for icons, , .
+- **Deployment/Environment**: Supervisor, Kubernetes Ingress rules, environment variables (, ).
+</key_technical_concepts>
+
+<code_architecture>
+The application follows a standard full-stack architecture:
+
+
+
+- ****: The FastAPI application entry point, including CORS setup, event handlers for DB connection, and router inclusion. This file was initially rewritten to integrate MongoDB and new routes.
+- ****: Manages the connection to MongoDB and provides utility functions for database operations. Crucial for abstracting database access.
+- ****: Defines Pydantic models for data validation and serialization/deserialization with MongoDB documents. Utilizes UUIDs for IDs.
+- ****: Contains JWT token creation, verification, and password hashing (using bcrypt) logic. Updated to align hashing methods.
+- ****: Each file defines a set of API endpoints for specific resources (e.g., users, companies, projects, reports). All these were migrated from SQLAlchemy to MongoDB operations.
+- ****: The main React component. It manages global state (auth, dark mode), handles routing, and renders major UI elements like header, footer, and conditionally renders  or . Significantly refactored for dark mode, fixed layout, and modal integration.
+- ****: Central configuration for Tailwind CSS, including custom color palettes (, ) and dark mode setup. Repeatedly updated with precise HEX codes.
+- ****: Implements the multi-tab settings modal, handling display, import/export, and advanced options.
+- ****: Implements the multi-tab help modal for documentation.
+- ****: Initial component for the new dashboard design, introducing the sidebar layout.
+- ****: The current iteration of the dashboard component, being developed to incorporate all detailed design refinements from the latest user request.
+</code_architecture>
+
+<pending_tasks>
+- Complete the implementation of  to match the detailed design specifications from the latest user request.
+- Resolve the  icon import error in .
+- Implement the exact layout for the header (logo with abstract symbol, 10px padding, central input field, right-aligned help/settings icons, user info with crown/user-round icons).
+- Implement the sidebar logic for Test-Bereiche including dynamic counts, green background/checkmark for completed tests, red for failed tests, and blue circle for open tests.
+- Implement the toolzeile (fixed action bar) with Test speichern, Archiv, QA-Bericht (all tests), QA-Bericht geprüft (tested only), and Reset buttons.
+- Implement the detailed layout for individual test cards in the main content area (Test ID, title, description, EDIT, Notiz, Reset, Löschen buttons).
+</pending_tasks>
+
+<current_work>
+Immediately before this summary request, the AI engineer was actively working on a major design overhaul of the QA-Report-App's dashboard. This involved creating a new component, , to implement highly specific and detailed design requirements provided by the user in Chat Message 391, which included:
+
+- A new header structure with a specific logo, spacing, a central input field for creating tests, and redesigned right-aligned icons for help, settings, and user profile (with  for admin and  for regular users). The dark mode toggle was to be moved *inside* the settings modal.
+- A refined sidebar () with dynamic counters for open, failed, and total tests, including visual indicators (green for complete, red for failed, blue circle for open).
+- A new toolzeile (fixed action bar) above the footer, containing Test speichern, Archiv, QA-Bericht (for all tests), QA-Bericht geprüft (for tested items), and Reset buttons.
+- The main content area was to display test points as cards, each with a Test ID, title, description, and action buttons (EDIT, Notiz, Reset, Löschen).
+
+The AI had already created  and updated  to integrate it. The last observed action was addressing a compilation error where  could not resolve the  icon, indicating the  component likely attempted to import or use this icon.
+</current_work>
+
+<optional_next_step>
+Resolve the  icon import error in  by replacing it with a suitable alternative icon from , such as  or .
+</optional_next_step>
