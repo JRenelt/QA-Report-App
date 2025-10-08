@@ -108,7 +108,7 @@ const Dashboard: React.FC<DashboardProps> = ({ authToken, currentUser, language 
   const loadData = async () => {
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8002';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const headers = {
         'Authorization': `Bearer ${authToken}`,
         'Content-Type': 'application/json'
