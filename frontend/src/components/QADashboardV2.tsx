@@ -136,6 +136,27 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   }, [userSettings, sidebarWidth, user?.username]);
 
+  // Auto-Sizing für Sidebar basierend auf längstem Eintrag
+  const calculateOptimalSidebarWidth = () => {
+    let maxLength = 0;
+    testSuites.forEach(suite => {
+      const stats = calculateSuiteStats(suite.id);
+      const displayText = `${suite.name} (${stats.totalTests})`;
+      maxLength = Math.max(maxLength, displayText.length);
+    });
+    // Basis: 12px pro Zeichen + Icons + Padding + Counter-Bereich
+    const calculatedWidth = Math.max(200, Math.min(500, maxLength * 12 + 120));
+    return calculatedWidth;
+  };
+
+  // Auto-resize bei Suite-Änderungen
+  React.useEffect(() => {
+    if (!isResizing) {
+      const optimalWidth = calculateOptimalSidebarWidth();
+      setSidebarWidth(optimalWidth);
+    }
+  }, [testSuites, testCases, isResizing]);
+
   React.useEffect(() => {
     const handleMouseMoveEvent = (e: MouseEvent) => {
       if (!isResizing) return;
