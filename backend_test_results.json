@@ -1,56 +1,56 @@
 {
   "total_tests": 7,
-  "passed": 6,
-  "failed": 1,
-  "success_rate": 85.71428571428571,
+  "passed": 7,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "Health Check",
       "success": true,
       "message": "Health check successful (internal) - Status: healthy, DB: MongoDB",
-      "timestamp": "2025-10-08T10:38:30.633488",
+      "timestamp": "2025-10-08T10:39:12.148028",
       "response_data": null
     },
     {
       "test": "Admin Login",
       "success": true,
       "message": "Admin login successful - User: admin, Role: admin",
-      "timestamp": "2025-10-08T10:38:30.907079",
+      "timestamp": "2025-10-08T10:39:12.407713",
       "response_data": null
     },
     {
       "test": "QA Demo Login",
-      "success": false,
-      "message": "HTTP 500: Internal Server Error",
-      "timestamp": "2025-10-08T10:38:31.172086",
+      "success": true,
+      "message": "QA demo login successful - User: qa_demo, Role: qa_tester",
+      "timestamp": "2025-10-08T10:39:12.666587",
       "response_data": null
     },
     {
       "test": "Invalid Credentials",
       "success": true,
       "message": "Correctly rejected invalid credentials with 401 Unauthorized",
-      "timestamp": "2025-10-08T10:38:31.201027",
+      "timestamp": "2025-10-08T10:39:12.676184",
       "response_data": null
     },
     {
       "test": "Missing Fields",
       "success": true,
       "message": "Correctly rejected incomplete credentials with 422 Validation Error",
-      "timestamp": "2025-10-08T10:38:31.249754",
+      "timestamp": "2025-10-08T10:39:12.684096",
       "response_data": null
     },
     {
       "test": "JWT Token Validation",
       "success": true,
       "message": "Correctly rejected invalid JWT token with 401 Unauthorized",
-      "timestamp": "2025-10-08T10:38:31.286990",
+      "timestamp": "2025-10-08T10:39:12.716444",
       "response_data": null
     },
     {
       "test": "Authenticated Endpoint",
       "success": true,
       "message": "Profile endpoint successful - User: admin",
-      "timestamp": "2025-10-08T10:38:31.297239",
+      "timestamp": "2025-10-08T10:39:12.726222",
       "response_data": null
     }
   ]
