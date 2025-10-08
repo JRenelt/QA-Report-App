@@ -204,37 +204,39 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return <UserRound className="h-5 w-5 text-blue-400" />;
   };
 
-  const getSuiteBadgeStyle = (suite: TestSuite) => {
-    if (suite.failedTests > 0) {
+  const getSuiteBadgeStyle = (suiteId: string) => {
+    const stats = calculateSuiteStats(suiteId);
+    if (stats.failedTests > 0) {
       return 'bg-red-600 text-white';
     }
-    if (suite.openTests === 0 && suite.totalTests === suite.passedTests) {
+    if (stats.openTests === 0 && stats.totalTests === stats.passedTests && stats.totalTests > 0) {
       return 'bg-green-600 text-white';
     }
     return 'bg-cyan-600 text-white';
   };
 
-  const getSuiteBadgeContent = (suite: TestSuite) => {
-    if (suite.failedTests > 0) {
+  const getSuiteBadgeContent = (suiteId: string) => {
+    const stats = calculateSuiteStats(suiteId);
+    if (stats.failedTests > 0) {
       return (
         <div className="flex items-center space-x-1">
           <X className="h-3 w-3" />
-          <span>{suite.failedTests}</span>
-          {suite.openTests > 0 && (
+          <span>{stats.failedTests}</span>
+          {stats.openTests > 0 && (
             <>
               <span className="mx-1">•</span>
               <div className="flex items-center space-x-1 bg-blue-500 rounded-full px-1.5 py-0.5">
-                <span className="text-xs">{suite.openTests}</span>
+                <span className="text-xs">{stats.openTests}</span>
               </div>
             </>
           )}
         </div>
       );
     }
-    if (suite.openTests === 0 && suite.totalTests === suite.passedTests) {
+    if (stats.openTests === 0 && stats.totalTests === stats.passedTests && stats.totalTests > 0) {
       return <Check className="h-4 w-4" />;
     }
-    return suite.totalTests;
+    return stats.totalTests;
   };
 
   return (
