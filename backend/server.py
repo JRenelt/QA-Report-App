@@ -84,6 +84,7 @@ try:
     from routes import import_export
     from routes import pdf_reports
     from routes import archive
+    from routes import admin
     
     # Include API Routes with /api prefix via router
     api_router.include_router(auth_routes.router, prefix="/auth", tags=["Authentication"])
@@ -96,6 +97,7 @@ try:
     api_router.include_router(import_export.router, prefix="/import-export", tags=["Import/Export"])
     api_router.include_router(pdf_reports.router, prefix="/pdf-reports", tags=["PDF Reports"])
     api_router.include_router(archive.router, prefix="/archive", tags=["Archive Management"])
+    api_router.include_router(admin.router, prefix="/admin", tags=["Admin Operations"])
 except ImportError as e:
     print(f"⚠️  Warning: Could not import route: {e}")
     print("Routes will be loaded after dependencies are installed")
