@@ -148,6 +148,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     error: testCases.filter(t => t.suite_id === activeSuite && t.status === 'error').length,
     warning: testCases.filter(t => t.suite_id === activeSuite && t.status === 'warning').length,
     pending: testCases.filter(t => t.suite_id === activeSuite && t.status === 'pending').length,
+    skipped: testCases.filter(t => t.suite_id === activeSuite && t.status === 'skipped').length,
   };
 
   const getUserIcon = () => {
