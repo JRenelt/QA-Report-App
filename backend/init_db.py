@@ -59,7 +59,7 @@ async def create_qa_demo_user():
     qa_demo_user = {
         "id": str(uuid.uuid4()),
         "username": "qa_demo",
-        "email": "qa_demo@qa-report.local",
+        "email": "qa_demo@example.com",
         "first_name": "QA",
         "last_name": "Demo",
         "hashed_password": get_password_hash("demo123"),
