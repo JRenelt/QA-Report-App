@@ -182,7 +182,7 @@ const TestSuiteManager: React.FC<TestSuiteManagerProps> = ({ testSuite, authToke
     if (!currentTest) return;
 
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8002';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${backendUrl}/api/test-results/`, {
         method: 'POST',
         headers: {
