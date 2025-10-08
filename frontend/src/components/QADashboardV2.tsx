@@ -520,22 +520,23 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                           </button>
                         </CustomTooltip>
                         
-                        <button
-                          onClick={() => {
-                            const updated = testCases.map(t => 
-                              t.id === test.id ? { ...t, status: 'warning' as const } : t
-                            );
-                            setTestCases(updated);
-                          }}
-                          className={`px-3 py-1 rounded text-sm font-medium transition-all ${
-                            test.status === 'warning' 
-                              ? 'bg-orange-600 text-white shadow-md' 
-                              : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
-                          }`}
-                          title="In Arbeit"
-                        >
-                          ⚠ In Arbeit
-                        </button>
+                        <CustomTooltip text="Test als in Bearbeitung markieren">
+                          <button
+                            onClick={() => {
+                              const updated = testCases.map(t => 
+                                t.id === test.id ? { ...t, status: 'warning' as const } : t
+                              );
+                              setTestCases(updated);
+                            }}
+                            className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                              test.status === 'warning' 
+                                ? 'bg-orange-600 text-white shadow-md' 
+                                : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
+                            }`}
+                          >
+                            ⚠ In Arbeit
+                          </button>
+                        </CustomTooltip>
                         
                         <button
                           onClick={() => {
