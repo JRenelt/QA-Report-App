@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { 
   Monitor, Tablet, Smartphone, Wrench, Moon, FileText, Palette, Menu, 
   Plus, Check, X, AlertTriangle, RotateCcw, Edit, MessageSquare, 
-  Trash2, Save, FileDown, Archive, HelpCircle, Settings, Crown, UserRound, FlaskConical, LogOut
+  Trash2, Save, FileDown, Archive, HelpCircle, Settings, Crown, UserRound, FlaskConical, LogOut, Users
 } from 'lucide-react';
+import UserManagement from './UserManagement';
 
 interface QADashboardV2Props {
   authToken: string;
