@@ -98,6 +98,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [editDescription, setEditDescription] = useState('');
   const [editNote, setEditNote] = useState('');
   const [editTitle, setEditTitle] = useState('');
+  const [sidebarWidth, setSidebarWidth] = useState(256); // 256px = w-64
+  const [isResizing, setIsResizing] = useState(false);
 
   const totalOpenTests = testSuites.reduce((sum, suite) => sum + suite.openTests + suite.failedTests, 0);
 
