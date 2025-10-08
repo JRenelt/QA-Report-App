@@ -325,7 +325,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 className={`w-full px-4 py-3 flex items-center justify-between hover:bg-gray-700 transition-colors border-l-4 ${
                   activeSuite === suite.id 
                     ? 'bg-cyan-600 bg-opacity-20 border-cyan-400' 
-                    : suite.failedTests > 0 
+                    : calculateSuiteStats(suite.id).failedTests > 0 
                     ? 'border-red-500'
                     : 'border-transparent'
                 }`}
