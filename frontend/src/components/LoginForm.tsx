@@ -88,10 +88,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-qa-primary-100">
             <User className="h-6 w-6 text-qa-primary-600" />
           </div>
-          <h2 className="mt-4 text-2xl font-bold text-qa-gray-900">
+          <h2 className={`mt-4 text-2xl font-bold ${darkMode ? 'text-white' : 'text-qa-gray-900'}`}>
             {t.login}
           </h2>
-          <p className="mt-2 text-sm text-qa-gray-600">
+          <p className={`mt-2 text-sm ${darkMode ? 'text-gray-400' : 'text-qa-gray-600'}`}>
             QA-Report-App
           </p>
         </div>
