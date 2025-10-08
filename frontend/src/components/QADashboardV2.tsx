@@ -403,6 +403,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       <button 
                         onClick={() => {
                           setSelectedTest(test);
+                          setEditDescription(test.description || '');
                           setShowEditModal(true);
                         }}
                         className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors" 
