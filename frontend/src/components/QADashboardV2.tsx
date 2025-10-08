@@ -62,18 +62,27 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   };
 
   React.useEffect(() => {
-    const handleMouseMoveWrapper = (e: MouseEvent) => handleMouseMove(e);
-    const handleMouseUpWrapper = () => handleMouseUp();
+    const handleMouseMoveEvent = (e: MouseEvent) => {
+      if (!isResizing) return;
+      const newWidth = e.clientX;
+      if (newWidth >= 200 && newWidth <= 500) {
+        setSidebarWidth(newWidth);
+      }
+    };
+
+    const handleMouseUpEvent = () => {
+      setIsResizing(false);
+    };
     
     if (isResizing) {
-      document.addEventListener('mousemove', handleMouseMoveWrapper);
-      document.addEventListener('mouseup', handleMouseUpWrapper);
+      document.addEventListener('mousemove', handleMouseMoveEvent);
+      document.addEventListener('mouseup', handleMouseUpEvent);
       return () => {
-        document.removeEventListener('mousemove', handleMouseMoveWrapper);
-        document.removeEventListener('mouseup', handleMouseUpWrapper);
+        document.removeEventListener('mousemove', handleMouseMoveEvent);
+        document.removeEventListener('mouseup', handleMouseUpEvent);
       };
     }
-  }, [isResizing, handleMouseMove, handleMouseUp]);
+  }, [isResizing]);
   const [testSuites, setTestSuites] = useState<TestSuite[]>([
     { id: '1', name: 'Allgemeines Design', icon: 'palette', totalTests: 8, passedTests: 6, failedTests: 0, openTests: 2 },
     { id: '2', name: 'Testpunkt Kopfzeile', icon: 'menu', totalTests: 16, passedTests: 14, failedTests: 2, openTests: 0 },
