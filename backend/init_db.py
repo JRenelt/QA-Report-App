@@ -27,25 +27,51 @@ async def create_admin_user():
     existing_admin = await users_collection.find_one({"username": "admin"})
     if existing_admin:
         print("✅ Admin user already exists")
+    else:
+        # Create admin user
+        admin_user = {
+            "id": str(uuid.uuid4()),
+            "username": "admin",
+            "email": "admin@qa-report.local",
+            "first_name": "System",
+            "last_name": "Administrator",
+            "hashed_password": get_password_hash("admin123"),
+            "role": UserRole.admin.value,
+            "language_preference": Language.DE.value,
+            "is_active": True,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        
+        await users_collection.insert_one(admin_user)
+        print(f"✅ Admin user created: username=admin, password=admin123")
+
+async def create_qa_demo_user():
+    """Create QA demo user"""
+    
+    # Check if QA demo user already exists
+    existing_qa_demo = await users_collection.find_one({"username": "qa_demo"})
+    if existing_qa_demo:
+        print("✅ QA demo user already exists")
         return
     
-    # Create admin user
-    admin_user = {
+    # Create QA demo user
+    qa_demo_user = {
         "id": str(uuid.uuid4()),
-        "username": "admin",
-        "email": "admin@qa-report.local",
-        "first_name": "System",
-        "last_name": "Administrator",
-        "hashed_password": get_password_hash("admin123"),
-        "role": UserRole.admin.value,
+        "username": "qa_demo",
+        "email": "qa_demo@qa-report.local",
+        "first_name": "QA",
+        "last_name": "Demo",
+        "hashed_password": get_password_hash("demo123"),
+        "role": UserRole.qa_tester.value,
         "language_preference": Language.DE.value,
         "is_active": True,
         "created_at": datetime.utcnow(),
         "updated_at": datetime.utcnow()
     }
     
-    await users_collection.insert_one(admin_user)
-    print(f"✅ Admin user created: username=admin, password=admin123")
+    await users_collection.insert_one(qa_demo_user)
+    print(f"✅ QA demo user created: username=qa_demo, password=demo123")
 
 async def create_sample_data():
     """Create sample company and project"""
