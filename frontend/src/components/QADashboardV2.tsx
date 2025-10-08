@@ -567,18 +567,19 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
                     {/* Action Buttons */}
                     <div className="flex space-x-2 ml-4">
-                      <button 
-                        onClick={() => {
-                          setSelectedTest(test);
-                          setEditTitle(test.title || '');
-                          setEditDescription(test.description || '');
-                          setShowEditModal(true);
-                        }}
-                        className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors" 
-                        title="Bearbeiten"
-                      >
-                        <Edit className="h-4 w-4 text-white" />
-                      </button>
+                      <CustomTooltip text="Test bearbeiten (Titel und Beschreibung)">
+                        <button 
+                          onClick={() => {
+                            setSelectedTest(test);
+                            setEditTitle(test.title || '');
+                            setEditDescription(test.description || '');
+                            setShowEditModal(true);
+                          }}
+                          className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
+                        >
+                          <Edit className="h-4 w-4 text-white" />
+                        </button>
+                      </CustomTooltip>
                       <button 
                         onClick={() => {
                           setSelectedTest(test);
