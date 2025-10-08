@@ -363,7 +363,7 @@ function App() {
                 <SystemStatus darkMode={darkMode} />
               </div>
             ) : (
-              <Dashboard authToken={authToken} user={user} darkMode={darkMode} />
+              <QADashboard authToken={authToken} user={user} darkMode={darkMode} />
             )}
           </div>
         </main>
