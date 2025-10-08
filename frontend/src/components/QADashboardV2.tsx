@@ -95,6 +95,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | 'success' | 'error' | 'warning' | 'pending'>('all');
+  const [editDescription, setEditDescription] = useState('');
+  const [editNote, setEditNote] = useState('');
 
   const totalOpenTests = testSuites.reduce((sum, suite) => sum + suite.openTests + suite.failedTests, 0);
 
