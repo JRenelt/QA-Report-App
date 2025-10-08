@@ -370,8 +370,14 @@ function App() {
           </>
         ) : (
           /* Fullscreen Dashboard (ohne extra padding/footer) */
-          <main className="pt-16 h-screen">
-            <QADashboard authToken={authToken} user={user} darkMode={darkMode} />
+          <main className="pt-16 h-screen overflow-hidden">
+            <QADashboardV2 
+              authToken={authToken} 
+              user={user} 
+              darkMode={darkMode}
+              onOpenSettings={() => setShowSettings(true)}
+              onOpenHelp={() => setShowHelp(true)}
+            />
           </main>
         )}
       </div>
