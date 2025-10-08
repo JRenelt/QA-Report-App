@@ -246,10 +246,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main Content Area - zwischen Header und Footer */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <div className="w-64 bg-[#282C34] border-r border-gray-700 flex flex-col overflow-hidden">
+        <div className="w-64 bg-[#282C34] border-r border-gray-700 flex flex-col">
           {/* Sidebar Header */}
           <div className="p-4 border-b border-gray-700">
             <h2 className="text-cyan-400 font-bold text-lg flex items-center mb-3">
