@@ -584,7 +584,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 <button 
                   onClick={() => {
                     const updated = testCases.map(t => 
-                      t.id === selectedTest.id ? { ...t, description: editDescription } : t
+                      t.id === selectedTest.id ? { 
+                        ...t, 
+                        title: editTitle,
+                        description: editDescription 
+                      } : t
                     );
                     setTestCases(updated);
                     setShowEditModal(false);
