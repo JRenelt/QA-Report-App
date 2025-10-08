@@ -85,6 +85,7 @@ try:
     from routes import pdf_reports
     from routes import archive
     from routes import admin
+    from routes import qa_management
     
     # Include API Routes with /api prefix via router
     api_router.include_router(auth_routes.router, prefix="/auth", tags=["Authentication"])
