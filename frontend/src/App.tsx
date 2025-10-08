@@ -52,20 +52,22 @@ const Header: React.FC<{
           </div>
           
           <div className="flex items-center space-x-3">
-            {/* Help Button */}
-            <button
-              onClick={onOpenHelp}
-              className={`p-2 rounded-lg transition-colors ${
-                darkMode 
-                  ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' 
-                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-              }`}
-              title="Hilfe & Dokumentation"
-            >
-              <HelpCircle className="h-5 w-5" />
-            </button>
+            {/* Help Button - Only when logged in */}
+            {user && (
+              <button
+                onClick={onOpenHelp}
+                className={`p-2 rounded-lg transition-colors ${
+                  darkMode 
+                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`}
+                title="Hilfe & Dokumentation"
+              >
+                <HelpCircle className="h-5 w-5" />
+              </button>
+            )}
 
-            {/* Settings Button */}
+            {/* Settings Button - Only when logged in */}
             {user && (
               <button
                 onClick={onOpenSettings}
@@ -80,18 +82,20 @@ const Header: React.FC<{
               </button>
             )}
 
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className={`p-2 rounded-lg transition-colors ${
-                darkMode 
-                  ? 'bg-gray-700 hover:bg-gray-600 text-yellow-400' 
-                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-              }`}
-              title={darkMode ? 'Helles Design' : 'Dunkles Design'}
-            >
-              {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </button>
+            {/* Dark Mode Toggle - Only when logged in */}
+            {user && (
+              <button
+                onClick={toggleDarkMode}
+                className={`p-2 rounded-lg transition-colors ${
+                  darkMode 
+                    ? 'bg-gray-700 hover:bg-gray-600 text-yellow-400' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`}
+                title={darkMode ? 'Helles Design' : 'Dunkles Design'}
+              >
+                {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
+            )}
 
             {/* User Info */}
             {user && (
