@@ -101,6 +101,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [editTitle, setEditTitle] = useState('');
   const [sidebarWidth, setSidebarWidth] = useState(256); // 256px = w-64
   const [isResizing, setIsResizing] = useState(false);
+  const [userSettings, setUserSettings] = useState({
+    tooltipDelay: 'kurz' as 'fest' | 'kurz' | 'lang', // Fest=0ms, Kurz=500ms, Lang=1500ms
+    sidebarWidth: 256
+  });
 
   // Resize handlers
   const handleMouseDown = (e: React.MouseEvent) => {
