@@ -3,7 +3,8 @@ import { User, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 interface LoginFormProps {
   onLogin: (token: string, user: any) => void;
-  language: 'de' | 'en';
+  language?: 'de' | 'en';
+  darkMode?: boolean;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language }) => {
