@@ -309,6 +309,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     test.status === 'success' ? 'border-green-500' :
                     test.status === 'error' ? 'border-red-500' :
                     test.status === 'warning' ? 'border-yellow-500' :
+                    test.status === 'skipped' ? 'border-blue-500' :
                     'border-gray-500'
                   }`}
                 >
