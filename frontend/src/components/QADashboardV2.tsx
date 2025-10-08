@@ -234,6 +234,15 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           >
             <Settings className="h-5 w-5 text-gray-300" />
           </button>
+
+          {/* Logout */}
+          <button
+            onClick={onLogout}
+            className="p-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+            title="Abmelden"
+          >
+            <LogOut className="h-5 w-5 text-white" />
+          </button>
         </div>
       </header>
 
