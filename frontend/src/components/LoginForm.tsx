@@ -82,8 +82,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-qa-primary-50 to-qa-gray-100 px-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+    <div className={`min-h-screen flex items-center justify-center px-4 ${darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-qa-primary-50 to-qa-gray-100'}`}>
+      <div className={`max-w-md w-full rounded-lg shadow-lg p-8 ${darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white'}`}>
         <div className="text-center mb-8">
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-qa-primary-100">
             <User className="h-6 w-6 text-qa-primary-600" />
