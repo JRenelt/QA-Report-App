@@ -551,12 +551,30 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             </div>
             <div className="space-y-4">
               <div>
+                <label className="block text-sm font-medium mb-2">Test-ID (nicht änderbar)</label>
+                <input
+                  value={selectedTest.test_id}
+                  disabled
+                  className="w-full bg-gray-900 border border-gray-600 rounded p-3 text-gray-400 text-sm cursor-not-allowed"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Titel</label>
+                <input
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  className="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white text-sm focus:border-cyan-500 focus:outline-none"
+                  placeholder="Test-Titel eingeben..."
+                />
+              </div>
+              <div>
                 <label className="block text-sm font-medium mb-2">Beschreibung</label>
                 <textarea
                   value={editDescription}
                   onChange={(e) => setEditDescription(e.target.value)}
                   className="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white text-sm focus:border-cyan-500 focus:outline-none"
                   rows={4}
+                  placeholder="Test-Beschreibung eingeben..."
                 />
               </div>
               <div className="flex justify-end space-x-2">
