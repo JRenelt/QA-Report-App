@@ -484,22 +484,23 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       
                       {/* Status-Buttons */}
                       <div className="flex space-x-2 mb-3">
-                        <button
-                          onClick={() => {
-                            const updated = testCases.map(t => 
-                              t.id === test.id ? { ...t, status: 'success' as const } : t
-                            );
-                            setTestCases(updated);
-                          }}
-                          className={`px-3 py-1 rounded text-sm font-medium transition-all ${
-                            test.status === 'success' 
-                              ? 'bg-green-600 text-white shadow-md' 
-                              : 'bg-green-200 text-green-800 hover:bg-green-300'
-                          }`}
-                          title="Test bestanden"
-                        >
-                          ✓ Bestanden
-                        </button>
+                        <CustomTooltip text="Test als erfolgreich markieren">
+                          <button
+                            onClick={() => {
+                              const updated = testCases.map(t => 
+                                t.id === test.id ? { ...t, status: 'success' as const } : t
+                              );
+                              setTestCases(updated);
+                            }}
+                            className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                              test.status === 'success' 
+                                ? 'bg-green-600 text-white shadow-md' 
+                                : 'bg-green-200 text-green-800 hover:bg-green-300'
+                            }`}
+                          >
+                            ✓ Bestanden
+                          </button>
+                        </CustomTooltip>
                         
                         <button
                           onClick={() => {
