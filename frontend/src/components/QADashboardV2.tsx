@@ -30,7 +30,7 @@ interface TestCase {
   suite_id: string;
   title: string;
   description: string;
-  status: 'success' | 'error' | 'warning' | 'pending';
+  status: 'success' | 'error' | 'warning' | 'pending' | 'skipped';
   note?: string;
 }
 
