@@ -26,11 +26,20 @@ interface HealthStatus {
 }
 
 // Fixed Header Component
-const Header: React.FC<{ darkMode: boolean; toggleDarkMode: () => void; user: any; onLogout: () => void }> = ({ 
+const Header: React.FC<{ 
+  darkMode: boolean; 
+  toggleDarkMode: () => void; 
+  user: any; 
+  onLogout: () => void;
+  onOpenSettings: () => void;
+  onOpenHelp: () => void;
+}> = ({ 
   darkMode, 
   toggleDarkMode, 
   user, 
-  onLogout 
+  onLogout,
+  onOpenSettings,
+  onOpenHelp
 }) => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b shadow-sm`}>
@@ -42,7 +51,35 @@ const Header: React.FC<{ darkMode: boolean; toggleDarkMode: () => void; user: an
             </h1>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
+            {/* Help Button */}
+            <button
+              onClick={onOpenHelp}
+              className={`p-2 rounded-lg transition-colors ${
+                darkMode 
+                  ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' 
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              }`}
+              title="Hilfe & Dokumentation"
+            >
+              <HelpCircle className="h-5 w-5" />
+            </button>
+
+            {/* Settings Button */}
+            {user && (
+              <button
+                onClick={onOpenSettings}
+                className={`p-2 rounded-lg transition-colors ${
+                  darkMode 
+                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`}
+                title="Systemeinstellungen"
+              >
+                <Settings className="h-5 w-5" />
+              </button>
+            )}
+
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
