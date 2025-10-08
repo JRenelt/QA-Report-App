@@ -835,6 +835,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           </div>
         </div>
       )}
+
+      {/* User Management Modal */}
+      <UserManagement
+        authToken={authToken}
+        currentUser={user}
+        isOpen={showUserManagement}
+        onClose={() => setShowUserManagement(false)}
+      />
     </div>
   );
 };
