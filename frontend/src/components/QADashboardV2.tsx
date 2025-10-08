@@ -315,7 +315,79 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                         <span className="text-cyan-400 font-mono text-sm font-bold">{test.test_id}</span>
                         <span className="text-white font-semibold text-lg">{test.title}</span>
                       </div>
-                      <p className="text-gray-400 text-sm mb-2">{test.description || 'Keine Beschreibung'}</p>
+                      <p className="text-gray-400 text-sm mb-3">{test.description || 'Keine Beschreibung'}</p>
+                      
+                      {/* Status-Buttons */}
+                      <div className="flex space-x-2 mb-3">
+                        <button
+                          onClick={() => {
+                            const updated = testCases.map(t => 
+                              t.id === test.id ? { ...t, status: 'success' as const } : t
+                            );
+                            setTestCases(updated);
+                          }}
+                          className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                            test.status === 'success' 
+                              ? 'bg-green-600 text-white shadow-md' 
+                              : 'bg-green-200 text-green-800 hover:bg-green-300'
+                          }`}
+                          title="Test bestanden"
+                        >
+                          ✓ Bestanden
+                        </button>
+                        
+                        <button
+                          onClick={() => {
+                            const updated = testCases.map(t => 
+                              t.id === test.id ? { ...t, status: 'error' as const } : t
+                            );
+                            setTestCases(updated);
+                          }}
+                          className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                            test.status === 'error' 
+                              ? 'bg-red-600 text-white shadow-md' 
+                              : 'bg-red-200 text-red-800 hover:bg-red-300'
+                          }`}
+                          title="Test fehlgeschlagen"
+                        >
+                          ✗ Fehlgeschlagen
+                        </button>
+                        
+                        <button
+                          onClick={() => {
+                            const updated = testCases.map(t => 
+                              t.id === test.id ? { ...t, status: 'warning' as const } : t
+                            );
+                            setTestCases(updated);
+                          }}
+                          className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                            test.status === 'warning' 
+                              ? 'bg-orange-600 text-white shadow-md' 
+                              : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
+                          }`}
+                          title="In Arbeit"
+                        >
+                          ⚠ In Arbeit
+                        </button>
+                        
+                        <button
+                          onClick={() => {
+                            const updated = testCases.map(t => 
+                              t.id === test.id ? { ...t, status: 'pending' as const } : t
+                            );
+                            setTestCases(updated);
+                          }}
+                          className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                            test.status === 'pending' 
+                              ? 'bg-blue-600 text-white shadow-md' 
+                              : 'bg-blue-200 text-blue-800 hover:bg-blue-300'
+                          }`}
+                          title="Test übersprungen"
+                        >
+                          ↻ Übersprungen
+                        </button>
+                      </div>
+
                       {test.note && (
                         <div className="bg-blue-900 bg-opacity-30 border border-blue-700 rounded p-2 text-sm text-blue-200 mb-2">
                           <MessageSquare className="inline h-3 w-3 mr-1" />
