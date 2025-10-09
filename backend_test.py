@@ -577,8 +577,9 @@ class BackendTester:
         print("🧪 Starting QA-Report-App Backend Tests")
         print("=" * 60)
         
-        # Critical tests as specified in the review request
+        # Critical tests as specified in the German review request
         tests = [
+            # Basic authentication and health
             ("Health Check", self.test_health_check),
             ("Admin Login", self.test_login_admin),
             ("QA Demo Login", self.test_login_qa_demo),
@@ -586,6 +587,17 @@ class BackendTester:
             ("Missing Fields", self.test_missing_fields),
             ("JWT Token Validation", self.test_jwt_token_validation),
             ("Authenticated Endpoint", self.test_authenticated_endpoint),
+            
+            # German review request specific tests
+            ("Generate Test Data", self.test_generate_test_data),
+            ("Companies API", self.test_companies_api),
+            ("Projects API", self.test_projects_api),
+            ("Test Suites API", self.test_test_suites_api),
+            ("Test Cases API", self.test_test_cases_api),
+            ("PDF Reports API", self.test_pdf_reports_api),
+            ("CSV Export API", self.test_csv_export_api),
+            ("Users List API", self.test_users_list_api),
+            ("Users Create API", self.test_users_create_api),
         ]
         
         passed = 0
