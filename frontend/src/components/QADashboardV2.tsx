@@ -767,56 +767,56 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           {/* Toolbar (über Footer) */}
           <div className="bg-[#282C34] border-t border-gray-700 p-3">
             <div className="flex items-center justify-between">
-              {/* Filter Links */}
+              {/* Filter Buttons - Nur Farben mit Tooltips */}
               <div className="flex space-x-2">
-                <button
-                  onClick={() => setFilterStatus('all')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    filterStatus === 'all' ? 'bg-cyan-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  Alle ({statusCounts.all})
-                </button>
-                <button
-                  onClick={() => setFilterStatus('success')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    filterStatus === 'success' ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  ✓ ({statusCounts.success})
-                </button>
-                <button
-                  onClick={() => setFilterStatus('error')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    filterStatus === 'error' ? 'bg-red-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  ✗ ({statusCounts.error})
-                </button>
-                <button
-                  onClick={() => setFilterStatus('warning')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    filterStatus === 'warning' ? 'bg-yellow-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  ⚠ ({statusCounts.warning})
-                </button>
-                <button
-                  onClick={() => setFilterStatus('pending')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    filterStatus === 'pending' ? 'bg-gray-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  ⬜ Unbearbeitet ({statusCounts.pending})
-                </button>
-                <button
-                  onClick={() => setFilterStatus('skipped')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    filterStatus === 'skipped' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  ↻ Übersprungen ({statusCounts.skipped})
-                </button>
+                <CustomTooltip text={`Alle Tests anzeigen (${statusCounts.all})`}>
+                  <button
+                    onClick={() => setFilterStatus('all')}
+                    className={`w-8 h-8 rounded-full transition-colors ${
+                      filterStatus === 'all' ? 'bg-cyan-600' : 'bg-cyan-300 hover:bg-cyan-400'
+                    }`}
+                  />
+                </CustomTooltip>
+                <CustomTooltip text={`Bestandene Tests anzeigen (${statusCounts.success})`}>
+                  <button
+                    onClick={() => setFilterStatus('success')}
+                    className={`w-8 h-8 rounded-full transition-colors ${
+                      filterStatus === 'success' ? 'bg-green-600' : 'bg-green-300 hover:bg-green-400'
+                    }`}
+                  />
+                </CustomTooltip>
+                <CustomTooltip text={`Fehlgeschlagene Tests anzeigen (${statusCounts.error})`}>
+                  <button
+                    onClick={() => setFilterStatus('error')}
+                    className={`w-8 h-8 rounded-full transition-colors ${
+                      filterStatus === 'error' ? 'bg-red-600' : 'bg-red-300 hover:bg-red-400'
+                    }`}
+                  />
+                </CustomTooltip>
+                <CustomTooltip text={`Tests in Bearbeitung anzeigen (${statusCounts.warning})`}>
+                  <button
+                    onClick={() => setFilterStatus('warning')}
+                    className={`w-8 h-8 rounded-full transition-colors ${
+                      filterStatus === 'warning' ? 'bg-orange-600' : 'bg-orange-300 hover:bg-orange-400'
+                    }`}
+                  />
+                </CustomTooltip>
+                <CustomTooltip text={`Unbearbeitete Tests anzeigen (${statusCounts.pending})`}>
+                  <button
+                    onClick={() => setFilterStatus('pending')}
+                    className={`w-8 h-8 rounded-full transition-colors ${
+                      filterStatus === 'pending' ? 'bg-gray-600' : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                </CustomTooltip>
+                <CustomTooltip text={`Übersprungene Tests anzeigen (${statusCounts.skipped})`}>
+                  <button
+                    onClick={() => setFilterStatus('skipped')}
+                    className={`w-8 h-8 rounded-full transition-colors ${
+                      filterStatus === 'skipped' ? 'bg-blue-600' : 'bg-blue-300 hover:bg-blue-400'
+                    }`}
+                  />
+                </CustomTooltip>
               </div>
 
               {/* Action Buttons Rechts */}
