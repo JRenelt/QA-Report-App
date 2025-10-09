@@ -519,9 +519,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         {/* Rechts - User, Hilfe, Settings */}
         <div className="flex items-center space-x-3">
           {/* User */}
-          <div className="flex items-center space-x-2 px-3 py-2 bg-[#1E222B] rounded-lg">
+          <div className={`flex items-center space-x-2 px-3 py-2 rounded-lg ${
+            darkMode ? 'bg-[#1E222B]' : 'bg-gray-100'
+          }`}>
             {getUserIcon()}
-            <span className="text-sm font-medium">{user?.username || 'User'}</span>
+            <span className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              {user?.username || 'User'}
+            </span>
           </div>
 
           {/* Hilfe */}
