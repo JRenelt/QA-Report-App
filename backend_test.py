@@ -408,20 +408,35 @@ class BackendTester:
             return False
         
         try:
-            response = self.session.get(f"{API_BASE}/test-suites/", timeout=10)
+            # First get a project ID to use for the test suites query
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
-            if response.status_code == 200:
-                data = response.json()
-                self.log_test("Test Suites API", True, 
-                            f"Test suites endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} test suites")
-                return True
-            elif response.status_code == 404:
-                self.log_test("Test Suites API", False, 
-                            "Test suites endpoint not found (404)")
-                return False
+            if projects_response.status_code == 200:
+                projects = projects_response.json()
+                if projects and len(projects) > 0:
+                    project_id = projects[0]["id"]
+                    response = self.session.get(f"{API_BASE}/test-suites/?project_id={project_id}", timeout=10)
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        self.log_test("Test Suites API", True, 
+                                    f"Test suites endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} test suites")
+                        return True
+                    elif response.status_code == 404:
+                        self.log_test("Test Suites API", False, 
+                                    "Test suites endpoint not found (404)")
+                        return False
+                    else:
+                        self.log_test("Test Suites API", False, 
+                                    f"HTTP {response.status_code}: {response.text}")
+                        return False
+                else:
+                    self.log_test("Test Suites API", False, 
+                                "No projects available to test test suites")
+                    return False
             else:
                 self.log_test("Test Suites API", False, 
-                            f"HTTP {response.status_code}: {response.text}")
+                            f"Cannot access projects to test test suites: HTTP {projects_response.status_code}")
                 return False
                 
         except requests.exceptions.RequestException as e:
