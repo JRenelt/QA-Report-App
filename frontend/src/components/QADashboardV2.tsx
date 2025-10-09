@@ -283,31 +283,49 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   };
 
   const handleCreateTest = () => {
-    if (!newTestName.trim()) return;
+    const testName = newTestName.trim();
+    console.log('=== TEST ERSTELLUNG START ===');
+    console.log('Input-Name:', testName);
+    console.log('Aktive Suite:', activeSuite);
+    console.log('Anzahl existierende Tests:', testCases.length);
     
-    console.log('Test wird erstellt:', newTestName);
+    if (!testName) {
+      console.log('ABBRUCH: Leerer Testname');
+      return;
+    }
     
     try {
-      // VEREINFACHT: Nur lokale Erstellung ohne Backend
+      // Sichere ID-Generierung
       const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
       const nextNumber = suiteTests.length + 1;
-      const suitePrefix = testSuites.find(s => s.id === activeSuite)?.name.substring(0, 2).toUpperCase() || 'AD';
+      const activeSuiteData = testSuites.find(s => s.id === activeSuite);
+      const suitePrefix = activeSuiteData ? activeSuiteData.name.substring(0, 2).toUpperCase() : 'AD';
       
       const newTest: TestCase = {
-        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: `test-${Date.now()}`,
         test_id: `${suitePrefix}${String(nextNumber).padStart(4, '0')}`,
         suite_id: activeSuite,
-        title: newTestName.trim(),
-        description: '',
+        title: testName,
+        description: `Automatisch erstellter Test: ${testName}`,
         status: 'pending'
       };
       
-      console.log('Neuer Test erstellt:', newTest);
-      setTestCases(prev => [...prev, newTest]);
+      console.log('Neuer Test wird hinzugefügt:', newTest);
+      
+      // Test hinzufügen
+      setTestCases(prevTests => {
+        const updatedTests = [...prevTests, newTest];
+        console.log('Tests nach Hinzufügung:', updatedTests.length);
+        return updatedTests;
+      });
+      
+      // Input-Feld leeren
       setNewTestName('');
+      console.log('=== TEST ERSTELLUNG ERFOLGREICH ===');
       
     } catch (error) {
-      console.error('Fehler beim Erstellen des Tests:', error);
+      console.error('=== FEHLER BEI TEST-ERSTELLUNG ===', error);
+      alert(`Fehler beim Erstellen des Tests: ${error}`);
     }
   };
 
