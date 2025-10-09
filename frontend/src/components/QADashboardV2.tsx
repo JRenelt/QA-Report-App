@@ -819,28 +819,58 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 </CustomTooltip>
               </div>
 
-              {/* Action Buttons Rechts */}
+              {/* Action Buttons Rechts - Outline Design */}
               <div className="flex space-x-2">
-                <button className="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-sm rounded transition-colors flex items-center">
-                  <Save className="h-4 w-4 mr-1" />
-                  Test speichern
-                </button>
-                <button className="px-3 py-1.5 bg-purple-700 hover:bg-purple-600 text-sm rounded transition-colors flex items-center">
-                  <Archive className="h-4 w-4 mr-1" />
-                  Archiv
-                </button>
-                <button className="px-3 py-1.5 bg-green-700 hover:bg-green-600 text-sm rounded transition-colors flex items-center">
-                  <FileDown className="h-4 w-4 mr-1" />
-                  QA-Bericht
-                </button>
-                <button className="px-3 py-1.5 bg-green-600 hover:bg-green-500 text-sm rounded transition-colors flex items-center">
-                  <FileDown className="h-4 w-4 mr-1" />
-                  QA-Bericht (Geprüft)
-                </button>
-                <button className="px-3 py-1.5 bg-orange-600 hover:bg-orange-500 text-sm rounded transition-colors flex items-center">
-                  <RotateCcw className="h-4 w-4 mr-1" />
-                  Reset
-                </button>
+                <CustomTooltip text="Alle Änderungen speichern">
+                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                    darkMode 
+                      ? 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:bg-opacity-20' 
+                      : 'border-blue-500 text-blue-500 hover:bg-blue-500 hover:bg-opacity-10'
+                  }`}>
+                    <Save className="h-4 w-4 mr-1" />
+                    Test speichern
+                  </button>
+                </CustomTooltip>
+                <CustomTooltip text="Archivierte Tests anzeigen">
+                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                    darkMode 
+                      ? 'border-purple-400 text-purple-400 hover:bg-purple-400 hover:bg-opacity-20' 
+                      : 'border-purple-500 text-purple-500 hover:bg-purple-500 hover:bg-opacity-10'
+                  }`}>
+                    <Archive className="h-4 w-4 mr-1" />
+                    Archiv
+                  </button>
+                </CustomTooltip>
+                <CustomTooltip text="QA-Bericht für alle Tests erstellen">
+                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                    darkMode 
+                      ? 'border-green-400 text-green-400 hover:bg-green-400 hover:bg-opacity-20' 
+                      : 'border-green-500 text-green-500 hover:bg-green-500 hover:bg-opacity-10'
+                  }`}>
+                    <FileDown className="h-4 w-4 mr-1" />
+                    QA-Bericht
+                  </button>
+                </CustomTooltip>
+                <CustomTooltip text="QA-Bericht nur für getestete Tests erstellen">
+                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                    darkMode 
+                      ? 'border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:bg-opacity-20' 
+                      : 'border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:bg-opacity-10'
+                  }`}>
+                    <FileText className="h-4 w-4 mr-1" />
+                    QA-Bericht (Getestet)
+                  </button>
+                </CustomTooltip>
+                <CustomTooltip text="Alle Tests zurücksetzen">
+                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                    darkMode 
+                      ? 'border-red-400 text-red-400 hover:bg-red-400 hover:bg-opacity-20' 
+                      : 'border-red-500 text-red-500 hover:bg-red-500 hover:bg-opacity-10'
+                  }`}>
+                    <RotateCcw className="h-4 w-4 mr-1" />
+                    Reset
+                  </button>
+                </CustomTooltip>
               </div>
             </div>
           </div>
