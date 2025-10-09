@@ -419,6 +419,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentTests = filteredTests.slice(startIndex, endIndex);
+  
+  // DEBUG: Log pagination info
+  console.log(`Pagination: ${currentTests.length} von ${filteredTests.length} Tests (${itemsPerPage} pro Seite, Seite ${currentPage}/${totalPages})`);
 
   // Reset page when filter changes
   React.useEffect(() => {
