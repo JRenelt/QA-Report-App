@@ -841,22 +841,26 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     Archiv
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="QA-Bericht für alle Tests erstellen">
-                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
-                    darkMode 
-                      ? 'border-green-400 text-green-400 hover:bg-green-400 hover:bg-opacity-20' 
-                      : 'border-green-500 text-green-500 hover:bg-green-500 hover:bg-opacity-10'
-                  }`}>
+                <CustomTooltip text="QA-Bericht für alle Tests als PDF exportieren">
+                  <button 
+                    onClick={() => handlePDFExport('all')}
+                    className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                      darkMode 
+                        ? 'border-green-400 text-green-400 hover:bg-green-400 hover:bg-opacity-20' 
+                        : 'border-green-500 text-green-500 hover:bg-green-500 hover:bg-opacity-10'
+                    }`}>
                     <FileDown className="h-4 w-4 mr-1" />
                     QA-Bericht
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="QA-Bericht nur für getestete Tests erstellen">
-                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
-                    darkMode 
-                      ? 'border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:bg-opacity-20' 
-                      : 'border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:bg-opacity-10'
-                  }`}>
+                <CustomTooltip text="QA-Bericht nur für getestete Tests als PDF exportieren">
+                  <button 
+                    onClick={() => handlePDFExport('tested')}
+                    className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                      darkMode 
+                        ? 'border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:bg-opacity-20' 
+                        : 'border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:bg-opacity-10'
+                    }`}>
                     <FileText className="h-4 w-4 mr-1" />
                     QA-Bericht (Getestet)
                   </button>
