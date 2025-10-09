@@ -141,6 +141,9 @@ class BackendTester:
                     'Authorization': f'Bearer {self.auth_token}'
                 })
                 
+                # Debug: Print token info
+                print(f"   🔑 Token stored: {self.auth_token[:20]}..." if self.auth_token else "   ❌ No token received")
+                
                 self.log_test("Admin Login", True, 
                             f"Admin login successful - User: {user.get('username')}, Role: {user.get('role')}")
                 return True
