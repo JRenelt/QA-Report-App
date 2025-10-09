@@ -487,7 +487,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         {/* Links - Logo + Titel */}
         <div className="flex items-center space-x-3">
           <FlaskConical className="h-6 w-6 text-cyan-400" />
-          <h1 className="text-xl font-bold text-white">QA-Report-App</h1>
+          <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>QA-Report-App</h1>
         </div>
 
         {/* Mitte - Inputfeld */}
