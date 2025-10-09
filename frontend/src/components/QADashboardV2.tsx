@@ -572,7 +572,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <div 
-          className="bg-[#282C34] border-r border-gray-700 flex flex-col relative"
+          className={`${
+            darkMode ? 'bg-[#282C34] border-r border-gray-700' : 'bg-gray-50 border-r border-gray-300'
+          } flex flex-col relative`}
           style={{ width: `${sidebarWidth}px` }}
         >
           {/* Sidebar Header */}
