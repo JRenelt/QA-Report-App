@@ -483,7 +483,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       {/* Header - Feste Position */}
       <header className={`${
         darkMode ? 'bg-[#282C34] border-b border-gray-700' : 'bg-white border-b border-gray-300'
-      } px-2.5 py-3 flex items-center justify-between shadow-lg flex-shrink-0`}
+      } px-2.5 py-3 flex items-center justify-between shadow-lg flex-shrink-0`}>
         {/* Links - Logo + Titel */}
         <div className="flex items-center space-x-3">
           <FlaskConical className="h-6 w-6 text-cyan-400" />
