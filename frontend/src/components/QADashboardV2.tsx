@@ -147,12 +147,21 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
-  // Custom Tooltip Component
-  const CustomTooltip: React.FC<{ text: string; children: React.ReactElement }> = ({ text, children }) => {
+  // Custom Tooltip Component mit Settings-Integration
+  const CustomTooltip: React.FC<{ text: string; children: React.ReactElement; enabled?: boolean }> = ({ 
+    text, 
+    children, 
+    enabled = true 
+  }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
 
+    // Tooltips nur anzeigen wenn aktiviert
+    const tooltipsEnabled = localStorage.getItem('showTooltips') !== 'false' && enabled;
+
     const handleMouseEnter = () => {
+      if (!tooltipsEnabled) return;
+      
       const delay = getTooltipDelay();
       const timeout = setTimeout(() => {
         setShowTooltip(true);
@@ -167,6 +176,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       setShowTooltip(false);
     };
 
+    const handleCloseTooltip = () => {
+      setShowTooltip(false);
+      if (tooltipTimeout) {
+        clearTimeout(tooltipTimeout);
+      }
+    };
+
     return (
       <div 
         className="relative inline-block"
@@ -174,10 +190,25 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         onMouseLeave={handleMouseLeave}
       >
         {children}
-        {showTooltip && (
-          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap z-50">
-            {text}
-            <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+        {showTooltip && tooltipsEnabled && (
+          <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 rounded shadow-lg z-50 max-w-xs ${
+            darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900 border border-gray-300'
+          }`}>
+            <div className="flex items-start justify-between">
+              <span className="text-xs whitespace-pre-wrap pr-2">{text}</span>
+              <button
+                onClick={handleCloseTooltip}
+                className={`ml-1 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center text-xs ${
+                  darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                }`}
+                title="Tooltip schließen"
+              >
+                ×
+              </button>
+            </div>
+            <div className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent ${
+              darkMode ? 'border-t-gray-900' : 'border-t-white'
+            }`}></div>
           </div>
         )}
       </div>
