@@ -109,7 +109,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [editNote, setEditNote] = useState('');
   const [editTitle, setEditTitle] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(parseInt(localStorage.getItem('itemsPerPage') || '10'));
+  const [itemsPerPage, setItemsPerPage] = useState(() => {
+    const saved = localStorage.getItem('itemsPerPage');
+    return saved ? parseInt(saved) : 10;
+  });
 
   // Listen to localStorage changes for itemsPerPage
   React.useEffect(() => {
