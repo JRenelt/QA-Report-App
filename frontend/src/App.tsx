@@ -370,17 +370,15 @@ function App() {
             <Footer darkMode={darkMode} />
           </>
         ) : (
-          /* Main Dashboard */
-          <>
-            <main className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
-              <div className="max-w-7xl mx-auto">
-                <Dashboard authToken={authToken} user={user} darkMode={darkMode} />
-              </div>
-            </main>
-            
-            {/* Fixed Footer */}
-            <Footer darkMode={darkMode} />
-          </>
+          /* Fullscreen Dashboard mit eigenem Header */
+          <QADashboardV2 
+            authToken={authToken} 
+            user={user} 
+            darkMode={darkMode}
+            onOpenSettings={() => setShowSettings(true)}
+            onOpenHelp={() => setShowHelp(true)}
+            onLogout={handleLogout}
+          />
         )}
       </div>
     </DarkModeContext.Provider>
