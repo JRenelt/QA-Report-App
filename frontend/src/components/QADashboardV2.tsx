@@ -861,6 +861,48 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       <footer className="bg-[#1a1d26] border-t border-gray-700 px-4 py-2 text-sm text-gray-400 flex-shrink-0">
         <div className="flex justify-between items-center">
           <div>© 2025 QA-Report-App. Alle Rechte vorbehalten.</div>
+          
+          {/* Seitennavigation */}
+          {totalPages > 1 && (
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+                className="px-2 py-1 text-xs rounded hover:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed"
+                title="Zum Anfang"
+              >
+                &lt;&lt;
+              </button>
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className="px-2 py-1 text-xs rounded hover:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed"
+                title="Eine Seite zurück"
+              >
+                &lt;
+              </button>
+              <span className="px-2 py-1 text-xs bg-gray-700 rounded">
+                {currentPage} von {totalPages}
+              </span>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className="px-2 py-1 text-xs rounded hover:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed"
+                title="Eine Seite weiter"
+              >
+                &gt;
+              </button>
+              <button
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={currentPage === totalPages}
+                className="px-2 py-1 text-xs rounded hover:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed"
+                title="Zum Ende"
+              >
+                &gt;&gt;
+              </button>
+            </div>
+          )}
+          
           <a href="#impressum" className="hover:text-white transition-colors">Impressum</a>
         </div>
       </footer>
