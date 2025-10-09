@@ -99,7 +99,6 @@ try:
     api_router.include_router(pdf_reports.router, prefix="/pdf-reports", tags=["PDF Reports"])
     api_router.include_router(archive.router, prefix="/archive", tags=["Archive Management"])
     api_router.include_router(admin.router, prefix="/admin", tags=["Admin Operations"])
-    api_router.include_router(qa_management.router, prefix="/qa-management", tags=["QA Management"])
 except ImportError as e:
     print(f"⚠️  Warning: Could not import route: {e}")
     print("Routes will be loaded after dependencies are installed")
