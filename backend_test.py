@@ -606,7 +606,7 @@ class BackendTester:
                 "language_preference": "de"
             }
             
-            response = self.session.post(f"{API_BASE}/users", json=test_user, timeout=10)
+            response = self.session.post(f"{API_BASE}/users/", json=test_user, timeout=10)
             
             if response.status_code in [200, 201]:
                 data = response.json()
