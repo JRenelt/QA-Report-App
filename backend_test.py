@@ -649,7 +649,7 @@ class BackendTester:
                 "email": f"testuser_{datetime.now().strftime('%Y%m%d_%H%M%S')}@example.com",
                 "password": "testpass123",
                 "role": "qa_tester",
-                "language_preference": "de"
+                "language_preference": "DE"
             }
             
             response = self.session.post(f"{API_BASE}/users/", json=test_user, timeout=10)
