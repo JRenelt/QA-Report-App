@@ -357,38 +357,18 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return <IconComponent className="h-4 w-4" />;
   };
 
-  const handleCreateTest = async () => {
+  const handleCreateTest = () => {
     if (!newTestName.trim()) return;
     
+    console.log('Test wird erstellt:', newTestName);
+    
     try {
-      // Bessere ID-Generierung für aktuelle Suite
+      // VEREINFACHT: Nur lokale Erstellung ohne Backend
       const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
       const nextNumber = suiteTests.length + 1;
       const suitePrefix = testSuites.find(s => s.id === activeSuite)?.name.substring(0, 2).toUpperCase() || 'AD';
       
-      const newTestData = {
-        test_id: `${suitePrefix}${String(nextNumber).padStart(4, '0')}`,
-        suite_id: activeSuite,
-        title: newTestName.trim(),
-        description: '',
-        status: 'pending' as const,
-        note: '',
-        created_by: user?.id || 'unknown'
-      };
-      
-      const createdTest = await qaService.createTestCase(newTestData);
-      setTestCases(prev => [...prev, createdTest]);
-      setNewTestName('');
-      console.log('Test erfolgreich erstellt:', createdTest);
-    } catch (error) {
-      console.error('Fehler beim Erstellen des Tests:', error);
-      
-      // Fallback: Lokale Erstellung
-      const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
-      const nextNumber = suiteTests.length + 1;
-      const suitePrefix = testSuites.find(s => s.id === activeSuite)?.name.substring(0, 2).toUpperCase() || 'AD';
-      
-      const localTest: TestCase = {
+      const newTest: TestCase = {
         id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         test_id: `${suitePrefix}${String(nextNumber).padStart(4, '0')}`,
         suite_id: activeSuite,
@@ -397,8 +377,12 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         status: 'pending'
       };
       
-      setTestCases(prev => [...prev, localTest]);
+      console.log('Neuer Test erstellt:', newTest);
+      setTestCases(prev => [...prev, newTest]);
       setNewTestName('');
+      
+    } catch (error) {
+      console.error('Fehler beim Erstellen des Tests:', error);
     }
   };
 
