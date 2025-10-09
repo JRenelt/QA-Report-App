@@ -190,67 +190,15 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     e.preventDefault();
   };
 
-  // Einstellungen und Daten laden beim Component Mount
+  // Einstellungen laden beim Component Mount (NUR LocalStorage)
   React.useEffect(() => {
-    if (authToken && user?.id) {
-      qaService.setAuthToken(authToken);
-      loadUserSettings();
-      loadTestCases();
-      loadTestSuites();
+    const savedSettings = localStorage.getItem(`qa_app_settings_${user?.username || 'default'}`);
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      setUserSettings(prev => ({ ...prev, ...settings }));
+      setSidebarWidth(settings.sidebarWidth || 256);
     }
-  }, [authToken, user?.id]);
-
-  const loadUserSettings = async () => {
-    try {
-      if (user?.id) {
-        const settings = await qaService.getUserSettings(user.id);
-        if (settings) {
-          setUserSettings({
-            tooltipDelay: settings.tooltip_delay as 'fest' | 'kurz' | 'lang',
-            sidebarWidth: settings.sidebar_width
-          });
-          setSidebarWidth(settings.sidebar_width);
-        } else {
-          // Fallback zu LocalStorage wenn Backend-Settings nicht existieren
-          const savedSettings = localStorage.getItem(`qa_app_settings_${user.username || 'default'}`);
-          if (savedSettings) {
-            const settings = JSON.parse(savedSettings);
-            setUserSettings(prev => ({ ...prev, ...settings }));
-            setSidebarWidth(settings.sidebarWidth || 256);
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Fehler beim Laden der Benutzereinstellungen:', error);
-      // Fallback zu LocalStorage
-      const savedSettings = localStorage.getItem(`qa_app_settings_${user?.username || 'default'}`);
-      if (savedSettings) {
-        const settings = JSON.parse(savedSettings);
-        setUserSettings(prev => ({ ...prev, ...settings }));
-        setSidebarWidth(settings.sidebarWidth || 256);
-      }
-    }
-  };
-
-  const loadTestCases = async () => {
-    try {
-      const cases = await qaService.getTestCases();
-      setTestCases(cases);
-    } catch (error) {
-      console.error('Fehler beim Laden der Test Cases:', error);
-    }
-  };
-
-  const loadTestSuites = async () => {
-    try {
-      const suites = await qaService.getTestSuites();
-      if (suites.length > 0) {
-        setTestSuites(suites);
-      }
-    } catch (error) {
-      console.error('Fehler beim Laden der Test Suites:', error);
-    }
-  };
+  }, [user?.username]);
 
   // Einstellungen speichern bei Änderungen (Backend + LocalStorage)
   React.useEffect(() => {
