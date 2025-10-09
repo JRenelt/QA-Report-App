@@ -395,6 +395,17 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return test.status === filterStatus;
   });
 
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredTests.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentTests = filteredTests.slice(startIndex, endIndex);
+
+  // Reset page when filter changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filterStatus, activeSuite]);
+
   const currentSuite = testSuites.find(s => s.id === activeSuite);
 
   const statusCounts = React.useMemo(() => {
