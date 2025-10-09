@@ -261,18 +261,30 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                         Zwischen hellem und dunklem Design wechseln
                       </div>
                     </div>
-                    <button
-                      onClick={toggleDarkMode}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        darkMode ? 'bg-qa-primary-600' : 'bg-gray-300'
-                      }`}
-                    >
-                      <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          darkMode ? 'translate-x-6' : 'translate-x-1'
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={!darkMode ? undefined : toggleDarkMode}
+                        className={`p-2 rounded-lg transition-colors ${
+                          !darkMode 
+                            ? 'bg-yellow-100 text-yellow-600 border border-yellow-300' 
+                            : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
                         }`}
-                      />
-                    </button>
+                        title="Heller Modus"
+                      >
+                        <Sun className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={darkMode ? undefined : toggleDarkMode}
+                        className={`p-2 rounded-lg transition-colors ${
+                          darkMode 
+                            ? 'bg-blue-600 text-white border border-blue-400' 
+                            : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                        }`}
+                        title="Dunkler Modus"
+                      >
+                        <Moon className="h-5 w-5" />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Items per Page */}
