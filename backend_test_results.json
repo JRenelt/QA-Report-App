@@ -1,119 +1,119 @@
 {
   "total_tests": 16,
-  "passed": 13,
-  "failed": 3,
-  "success_rate": 81.25,
+  "passed": 16,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "Health Check",
       "success": true,
       "message": "Health check successful (internal) - Status: healthy, DB: MongoDB",
-      "timestamp": "2025-10-09T05:52:01.115105",
+      "timestamp": "2025-10-09T05:52:54.938676",
       "response_data": null
     },
     {
       "test": "Admin Login",
       "success": true,
       "message": "Admin login successful - User: admin, Role: admin",
-      "timestamp": "2025-10-09T05:52:01.345271",
+      "timestamp": "2025-10-09T05:52:55.185026",
       "response_data": null
     },
     {
       "test": "QA Demo Login",
       "success": true,
       "message": "QA demo login successful - User: qa_demo, Role: qa_tester",
-      "timestamp": "2025-10-09T05:52:01.608710",
+      "timestamp": "2025-10-09T05:52:55.446557",
       "response_data": null
     },
     {
       "test": "Invalid Credentials",
       "success": true,
       "message": "Correctly rejected invalid credentials with 401 Unauthorized",
-      "timestamp": "2025-10-09T05:52:01.615795",
+      "timestamp": "2025-10-09T05:52:55.460618",
       "response_data": null
     },
     {
       "test": "Missing Fields",
       "success": true,
       "message": "Correctly rejected incomplete credentials with 422 Validation Error",
-      "timestamp": "2025-10-09T05:52:01.623294",
+      "timestamp": "2025-10-09T05:52:55.472954",
       "response_data": null
     },
     {
       "test": "JWT Token Validation",
       "success": true,
       "message": "Correctly rejected invalid JWT token with 401 Unauthorized",
-      "timestamp": "2025-10-09T05:52:01.662301",
+      "timestamp": "2025-10-09T05:52:55.545601",
       "response_data": null
     },
     {
       "test": "Authenticated Endpoint",
       "success": true,
       "message": "Profile endpoint successful - User: admin",
-      "timestamp": "2025-10-09T05:52:01.669756",
+      "timestamp": "2025-10-09T05:52:55.555440",
       "response_data": null
     },
     {
       "test": "Generate Test Data",
       "success": true,
       "message": "Test data generation successful: Testdaten erfolgreich generiert - 3 companies, 27 test cases",
-      "timestamp": "2025-10-09T05:52:01.688630",
+      "timestamp": "2025-10-09T05:52:55.578113",
       "response_data": null
     },
     {
       "test": "Companies API",
       "success": true,
       "message": "Companies endpoint accessible - Found 3 companies",
-      "timestamp": "2025-10-09T05:52:01.736184",
+      "timestamp": "2025-10-09T05:52:55.588321",
       "response_data": null
     },
     {
       "test": "Projects API",
       "success": true,
       "message": "Projects endpoint accessible - Found 3 projects",
-      "timestamp": "2025-10-09T05:52:01.743010",
+      "timestamp": "2025-10-09T05:52:55.599326",
       "response_data": null
     },
     {
       "test": "Test Suites API",
-      "success": false,
-      "message": "HTTP 422: {\"detail\":[{\"type\":\"missing\",\"loc\":[\"query\",\"project_id\"],\"msg\":\"Field required\",\"input\":null,\"url\":\"https://errors.pydantic.dev/2.11/v/missing\"}]}",
-      "timestamp": "2025-10-09T05:52:01.749169",
+      "success": true,
+      "message": "Test suites endpoint accessible - Found 3 test suites",
+      "timestamp": "2025-10-09T05:52:55.659328",
       "response_data": null
     },
     {
       "test": "Test Cases API",
-      "success": false,
-      "message": "HTTP 422: {\"detail\":[{\"type\":\"missing\",\"loc\":[\"query\",\"test_suite_id\"],\"msg\":\"Field required\",\"input\":null,\"url\":\"https://errors.pydantic.dev/2.11/v/missing\"}]}",
-      "timestamp": "2025-10-09T05:52:01.796382",
+      "success": true,
+      "message": "Test cases endpoint accessible - Found 3 test cases",
+      "timestamp": "2025-10-09T05:52:55.688415",
       "response_data": null
     },
     {
       "test": "PDF Reports API",
       "success": true,
       "message": "PDF generation successful - Content-Type: application/pdf",
-      "timestamp": "2025-10-09T05:52:01.824539",
+      "timestamp": "2025-10-09T05:52:55.716027",
       "response_data": null
     },
     {
       "test": "CSV Export API",
       "success": true,
       "message": "Excel export successful - Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "timestamp": "2025-10-09T05:52:02.073502",
+      "timestamp": "2025-10-09T05:52:55.784353",
       "response_data": null
     },
     {
       "test": "Users List API",
       "success": true,
       "message": "Users list endpoint accessible - Found 2 users",
-      "timestamp": "2025-10-09T05:52:02.121041",
+      "timestamp": "2025-10-09T05:52:55.794291",
       "response_data": null
     },
     {
       "test": "Users Create API",
-      "success": false,
-      "message": "HTTP 422: {\"detail\":[{\"type\":\"enum\",\"loc\":[\"body\",\"language_preference\"],\"msg\":\"Input should be 'DE' or 'ENG'\",\"input\":\"de\",\"ctx\":{\"expected\":\"'DE' or 'ENG'\"},\"url\":\"https://errors.pydantic.dev/2.11/v/enum\"}]}",
-      "timestamp": "2025-10-09T05:52:02.127216",
+      "success": true,
+      "message": "User creation successful - Created user: testuser_20251009_055255",
+      "timestamp": "2025-10-09T05:52:56.071623",
       "response_data": null
     }
   ]
