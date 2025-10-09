@@ -409,20 +409,38 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>QA-Report-App</h1>
         </div>
 
-        {/* Mitte - Inputfeld */}
-        <div className="flex-1 max-w-md mx-8">
+        {/* Mitte - Inputfeld + Button */}
+        <div className="flex-1 max-w-md mx-8 flex items-center space-x-2">
           <input
             type="text"
             value={newTestName}
             onChange={(e) => setNewTestName(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Neuer Testname... (Enter zum Erstellen)"
-            className={`w-full px-4 py-2 border rounded-lg focus:border-cyan-500 focus:outline-none transition-colors ${
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleCreateTest();
+              }
+            }}
+            placeholder="Neuer Testname..."
+            className={`flex-1 px-4 py-2 border rounded-lg focus:border-cyan-500 focus:outline-none transition-colors ${
               darkMode 
                 ? 'bg-[#1E222B] border-gray-600 text-white placeholder-gray-400' 
                 : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
             }`}
           />
+          <button
+            onClick={handleCreateTest}
+            disabled={!newTestName.trim()}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              !newTestName.trim()
+                ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                : darkMode 
+                ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                : 'bg-cyan-500 hover:bg-cyan-600 text-white'
+            }`}
+          >
+            +
+          </button>
         </div>
 
         {/* Rechts - User, Hilfe, Settings */}
