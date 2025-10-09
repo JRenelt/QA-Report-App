@@ -8,49 +8,49 @@
       "test": "Health Check",
       "success": true,
       "message": "Health check successful (internal) - Status: healthy, DB: MongoDB",
-      "timestamp": "2025-10-08T10:39:12.148028",
+      "timestamp": "2025-10-09T05:48:39.748722",
       "response_data": null
     },
     {
       "test": "Admin Login",
       "success": true,
       "message": "Admin login successful - User: admin, Role: admin",
-      "timestamp": "2025-10-08T10:39:12.407713",
+      "timestamp": "2025-10-09T05:48:40.025963",
       "response_data": null
     },
     {
       "test": "QA Demo Login",
       "success": true,
       "message": "QA demo login successful - User: qa_demo, Role: qa_tester",
-      "timestamp": "2025-10-08T10:39:12.666587",
+      "timestamp": "2025-10-09T05:48:40.321098",
       "response_data": null
     },
     {
       "test": "Invalid Credentials",
       "success": true,
       "message": "Correctly rejected invalid credentials with 401 Unauthorized",
-      "timestamp": "2025-10-08T10:39:12.676184",
+      "timestamp": "2025-10-09T05:48:40.331630",
       "response_data": null
     },
     {
       "test": "Missing Fields",
       "success": true,
       "message": "Correctly rejected incomplete credentials with 422 Validation Error",
-      "timestamp": "2025-10-08T10:39:12.684096",
+      "timestamp": "2025-10-09T05:48:40.383914",
       "response_data": null
     },
     {
       "test": "JWT Token Validation",
       "success": true,
       "message": "Correctly rejected invalid JWT token with 401 Unauthorized",
-      "timestamp": "2025-10-08T10:39:12.716444",
+      "timestamp": "2025-10-09T05:48:40.423713",
       "response_data": null
     },
     {
       "test": "Authenticated Endpoint",
       "success": true,
       "message": "Profile endpoint successful - User: admin",
-      "timestamp": "2025-10-08T10:39:12.726222",
+      "timestamp": "2025-10-09T05:48:40.475688",
       "response_data": null
     }
   ]
