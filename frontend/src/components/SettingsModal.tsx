@@ -40,9 +40,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     showMessage('success', 'Tooltip-Einstellungen aktualisiert');
   };
 
-  const handleMessageDelayChange = (value: number) => {
-    setMessageDelay(value);
-    localStorage.setItem('messageDelay', value.toString());
+  const handleMessageDelayChange = (value: string) => {
+    const numValue = parseInt(value);
+    setMessageDelay(numValue);
+    localStorage.setItem('messageDelay', value);
   };
 
   const handleManualTooltipToggle = () => {
