@@ -450,20 +450,51 @@ class BackendTester:
             return False
         
         try:
-            response = self.session.get(f"{API_BASE}/test-cases/", timeout=10)
+            # First get a project ID and then a test suite ID
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
-            if response.status_code == 200:
-                data = response.json()
-                self.log_test("Test Cases API", True, 
-                            f"Test cases endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} test cases")
-                return True
-            elif response.status_code == 404:
-                self.log_test("Test Cases API", False, 
-                            "Test cases endpoint not found (404)")
-                return False
+            if projects_response.status_code == 200:
+                projects = projects_response.json()
+                if projects and len(projects) > 0:
+                    project_id = projects[0]["id"]
+                    
+                    # Get test suites for this project
+                    suites_response = self.session.get(f"{API_BASE}/test-suites/?project_id={project_id}", timeout=10)
+                    
+                    if suites_response.status_code == 200:
+                        suites = suites_response.json()
+                        if suites and len(suites) > 0:
+                            test_suite_id = suites[0]["id"]
+                            response = self.session.get(f"{API_BASE}/test-cases/?test_suite_id={test_suite_id}", timeout=10)
+                            
+                            if response.status_code == 200:
+                                data = response.json()
+                                self.log_test("Test Cases API", True, 
+                                            f"Test cases endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} test cases")
+                                return True
+                            elif response.status_code == 404:
+                                self.log_test("Test Cases API", False, 
+                                            "Test cases endpoint not found (404)")
+                                return False
+                            else:
+                                self.log_test("Test Cases API", False, 
+                                            f"HTTP {response.status_code}: {response.text}")
+                                return False
+                        else:
+                            self.log_test("Test Cases API", False, 
+                                        "No test suites available to test test cases")
+                            return False
+                    else:
+                        self.log_test("Test Cases API", False, 
+                                    f"Cannot access test suites: HTTP {suites_response.status_code}")
+                        return False
+                else:
+                    self.log_test("Test Cases API", False, 
+                                "No projects available to test test cases")
+                    return False
             else:
                 self.log_test("Test Cases API", False, 
-                            f"HTTP {response.status_code}: {response.text}")
+                            f"Cannot access projects to test test cases: HTTP {projects_response.status_code}")
                 return False
                 
         except requests.exceptions.RequestException as e:
