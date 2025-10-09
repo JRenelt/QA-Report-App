@@ -1,56 +1,119 @@
 {
-  "total_tests": 7,
+  "total_tests": 16,
   "passed": 7,
-  "failed": 0,
-  "success_rate": 100.0,
+  "failed": 9,
+  "success_rate": 43.75,
   "results": [
     {
       "test": "Health Check",
       "success": true,
       "message": "Health check successful (internal) - Status: healthy, DB: MongoDB",
-      "timestamp": "2025-10-09T05:48:39.748722",
+      "timestamp": "2025-10-09T05:49:31.085272",
       "response_data": null
     },
     {
       "test": "Admin Login",
       "success": true,
       "message": "Admin login successful - User: admin, Role: admin",
-      "timestamp": "2025-10-09T05:48:40.025963",
+      "timestamp": "2025-10-09T05:49:31.320696",
       "response_data": null
     },
     {
       "test": "QA Demo Login",
       "success": true,
       "message": "QA demo login successful - User: qa_demo, Role: qa_tester",
-      "timestamp": "2025-10-09T05:48:40.321098",
+      "timestamp": "2025-10-09T05:49:31.576633",
       "response_data": null
     },
     {
       "test": "Invalid Credentials",
       "success": true,
       "message": "Correctly rejected invalid credentials with 401 Unauthorized",
-      "timestamp": "2025-10-09T05:48:40.331630",
+      "timestamp": "2025-10-09T05:49:31.624865",
       "response_data": null
     },
     {
       "test": "Missing Fields",
       "success": true,
       "message": "Correctly rejected incomplete credentials with 422 Validation Error",
-      "timestamp": "2025-10-09T05:48:40.383914",
+      "timestamp": "2025-10-09T05:49:31.636636",
       "response_data": null
     },
     {
       "test": "JWT Token Validation",
       "success": true,
       "message": "Correctly rejected invalid JWT token with 401 Unauthorized",
-      "timestamp": "2025-10-09T05:48:40.423713",
+      "timestamp": "2025-10-09T05:49:31.671787",
       "response_data": null
     },
     {
       "test": "Authenticated Endpoint",
       "success": true,
       "message": "Profile endpoint successful - User: admin",
-      "timestamp": "2025-10-09T05:48:40.475688",
+      "timestamp": "2025-10-09T05:49:31.725685",
+      "response_data": null
+    },
+    {
+      "test": "Generate Test Data",
+      "success": false,
+      "message": "HTTP 422: {\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\"],\"msg\":\"Field required\",\"input\":null,\"url\":\"https://errors.pydantic.dev/2.11/v/missing\"}]}",
+      "timestamp": "2025-10-09T05:49:31.741095",
+      "response_data": null
+    },
+    {
+      "test": "Companies API",
+      "success": false,
+      "message": "HTTP 403: {\"detail\":\"Not authenticated\"}",
+      "timestamp": "2025-10-09T05:49:31.764958",
+      "response_data": null
+    },
+    {
+      "test": "Projects API",
+      "success": false,
+      "message": "HTTP 403: {\"detail\":\"Not authenticated\"}",
+      "timestamp": "2025-10-09T05:49:31.823470",
+      "response_data": null
+    },
+    {
+      "test": "Test Suites API",
+      "success": false,
+      "message": "HTTP 403: {\"detail\":\"Not authenticated\"}",
+      "timestamp": "2025-10-09T05:49:31.846988",
+      "response_data": null
+    },
+    {
+      "test": "Test Cases API",
+      "success": false,
+      "message": "HTTP 403: {\"detail\":\"Not authenticated\"}",
+      "timestamp": "2025-10-09T05:49:31.911154",
+      "response_data": null
+    },
+    {
+      "test": "PDF Reports API",
+      "success": false,
+      "message": "PDF reports endpoint not found (404)",
+      "timestamp": "2025-10-09T05:49:31.923680",
+      "response_data": null
+    },
+    {
+      "test": "CSV Export API",
+      "success": false,
+      "message": "CSV export endpoint not found (404)",
+      "timestamp": "2025-10-09T05:49:31.928394",
+      "response_data": null
+    },
+    {
+      "test": "Users List API",
+      "success": false,
+      "message": "HTTP 403: {\"detail\":\"Not authenticated\"}",
+      "timestamp": "2025-10-09T05:49:31.941423",
+      "response_data": null
+    },
+    {
+      "test": "Users Create API",
+      "success": false,
+      "message": "HTTP 403: {\"detail\":\"Not authenticated\"}",
+      "timestamp": "2025-10-09T05:49:31.957415",
       "response_data": null
     }
   ]
