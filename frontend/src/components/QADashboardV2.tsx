@@ -479,7 +479,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       darkMode 
         ? 'bg-gradient-to-br from-[#1a1d26] via-[#1e222b] to-[#252933] text-white' 
         : 'bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 text-gray-900'
-    }`}
+    }`}>
       {/* Header - Feste Position */}
       <header className={`${
         darkMode ? 'bg-[#282C34] border-b border-gray-700' : 'bg-white border-b border-gray-300'
