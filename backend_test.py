@@ -304,6 +304,274 @@ class BackendTester:
             self.log_test("JWT Token Validation", False, f"Request failed: {str(e)}")
             return False
     
+    def test_generate_test_data(self):
+        """Test admin test data generation"""
+        if not self.auth_token:
+            self.log_test("Generate Test Data", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.post(f"{API_BASE}/admin/generate-test-data", timeout=30)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Generate Test Data", True, 
+                            f"Test data generation successful: {data.get('message', 'Data generated')}")
+                return True
+            elif response.status_code == 404:
+                self.log_test("Generate Test Data", False, 
+                            "Admin test data generation endpoint not found (404)")
+                return False
+            else:
+                self.log_test("Generate Test Data", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Generate Test Data", False, f"Request failed: {str(e)}")
+            return False
+    
+    def test_companies_api(self):
+        """Test companies API endpoint"""
+        if not self.auth_token:
+            self.log_test("Companies API", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.get(f"{API_BASE}/companies", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Companies API", True, 
+                            f"Companies endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} companies")
+                return True
+            elif response.status_code == 404:
+                self.log_test("Companies API", False, 
+                            "Companies endpoint not found (404)")
+                return False
+            else:
+                self.log_test("Companies API", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Companies API", False, f"Request failed: {str(e)}")
+            return False
+    
+    def test_projects_api(self):
+        """Test projects API endpoint"""
+        if not self.auth_token:
+            self.log_test("Projects API", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.get(f"{API_BASE}/projects", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Projects API", True, 
+                            f"Projects endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} projects")
+                return True
+            elif response.status_code == 404:
+                self.log_test("Projects API", False, 
+                            "Projects endpoint not found (404)")
+                return False
+            else:
+                self.log_test("Projects API", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Projects API", False, f"Request failed: {str(e)}")
+            return False
+    
+    def test_test_suites_api(self):
+        """Test test-suites API endpoint"""
+        if not self.auth_token:
+            self.log_test("Test Suites API", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.get(f"{API_BASE}/test-suites", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Test Suites API", True, 
+                            f"Test suites endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} test suites")
+                return True
+            elif response.status_code == 404:
+                self.log_test("Test Suites API", False, 
+                            "Test suites endpoint not found (404)")
+                return False
+            else:
+                self.log_test("Test Suites API", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Test Suites API", False, f"Request failed: {str(e)}")
+            return False
+    
+    def test_test_cases_api(self):
+        """Test test-cases API endpoint"""
+        if not self.auth_token:
+            self.log_test("Test Cases API", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.get(f"{API_BASE}/test-cases", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Test Cases API", True, 
+                            f"Test cases endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} test cases")
+                return True
+            elif response.status_code == 404:
+                self.log_test("Test Cases API", False, 
+                            "Test cases endpoint not found (404)")
+                return False
+            else:
+                self.log_test("Test Cases API", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Test Cases API", False, f"Request failed: {str(e)}")
+            return False
+    
+    def test_pdf_reports_api(self):
+        """Test PDF reports API endpoint"""
+        if not self.auth_token:
+            self.log_test("PDF Reports API", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.get(f"{API_BASE}/pdf-reports/tests", timeout=15)
+            
+            if response.status_code == 200:
+                # Check if response is PDF content
+                content_type = response.headers.get('content-type', '')
+                if 'pdf' in content_type.lower():
+                    self.log_test("PDF Reports API", True, 
+                                f"PDF export successful - Content-Type: {content_type}")
+                else:
+                    # Might be JSON response with PDF data or URL
+                    self.log_test("PDF Reports API", True, 
+                                f"PDF reports endpoint accessible - Content-Type: {content_type}")
+                return True
+            elif response.status_code == 404:
+                self.log_test("PDF Reports API", False, 
+                            "PDF reports endpoint not found (404)")
+                return False
+            else:
+                self.log_test("PDF Reports API", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("PDF Reports API", False, f"Request failed: {str(e)}")
+            return False
+    
+    def test_csv_export_api(self):
+        """Test CSV export API endpoint"""
+        if not self.auth_token:
+            self.log_test("CSV Export API", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.get(f"{API_BASE}/import-export/csv", timeout=15)
+            
+            if response.status_code == 200:
+                # Check if response is CSV content
+                content_type = response.headers.get('content-type', '')
+                if 'csv' in content_type.lower() or 'text' in content_type.lower():
+                    self.log_test("CSV Export API", True, 
+                                f"CSV export successful - Content-Type: {content_type}")
+                else:
+                    # Might be JSON response with CSV data or URL
+                    self.log_test("CSV Export API", True, 
+                                f"CSV export endpoint accessible - Content-Type: {content_type}")
+                return True
+            elif response.status_code == 404:
+                self.log_test("CSV Export API", False, 
+                            "CSV export endpoint not found (404)")
+                return False
+            else:
+                self.log_test("CSV Export API", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("CSV Export API", False, f"Request failed: {str(e)}")
+            return False
+    
+    def test_users_list_api(self):
+        """Test users list API endpoint"""
+        if not self.auth_token:
+            self.log_test("Users List API", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.get(f"{API_BASE}/users", timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Users List API", True, 
+                            f"Users list endpoint accessible - Found {len(data) if isinstance(data, list) else 'data'} users")
+                return True
+            elif response.status_code == 404:
+                self.log_test("Users List API", False, 
+                            "Users list endpoint not found (404)")
+                return False
+            else:
+                self.log_test("Users List API", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Users List API", False, f"Request failed: {str(e)}")
+            return False
+    
+    def test_users_create_api(self):
+        """Test users create API endpoint"""
+        if not self.auth_token:
+            self.log_test("Users Create API", False, "No auth token available")
+            return False
+        
+        try:
+            # Test user data
+            test_user = {
+                "username": f"testuser_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                "email": f"testuser_{datetime.now().strftime('%Y%m%d_%H%M%S')}@example.com",
+                "password": "testpass123",
+                "role": "qa_tester",
+                "language_preference": "de"
+            }
+            
+            response = self.session.post(f"{API_BASE}/users", json=test_user, timeout=10)
+            
+            if response.status_code in [200, 201]:
+                data = response.json()
+                self.log_test("Users Create API", True, 
+                            f"User creation successful - Created user: {test_user['username']}")
+                return True
+            elif response.status_code == 404:
+                self.log_test("Users Create API", False, 
+                            "Users create endpoint not found (404)")
+                return False
+            elif response.status_code == 409:
+                self.log_test("Users Create API", True, 
+                            "User creation endpoint accessible (409 - user already exists)")
+                return True
+            else:
+                self.log_test("Users Create API", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Users Create API", False, f"Request failed: {str(e)}")
+            return False
+    
     def run_all_tests(self):
         """Run all backend tests"""
         print("🧪 Starting QA-Report-App Backend Tests")
