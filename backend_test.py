@@ -351,6 +351,9 @@ class BackendTester:
             return False
         
         try:
+            # Debug: Check headers
+            print(f"   🔍 Request headers: {dict(self.session.headers)}")
+            
             response = self.session.get(f"{API_BASE}/companies", timeout=10)
             
             if response.status_code == 200:
