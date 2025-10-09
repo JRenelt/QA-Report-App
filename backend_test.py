@@ -381,7 +381,7 @@ class BackendTester:
             return False
         
         try:
-            response = self.session.get(f"{API_BASE}/projects", timeout=10)
+            response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
