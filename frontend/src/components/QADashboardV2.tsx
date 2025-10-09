@@ -508,7 +508,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             onChange={(e) => setNewTestName(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Neuer Testname... (Enter zum Erstellen)"
-            className="w-full px-4 py-2 bg-[#1E222B] border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-cyan-500 focus:outline-none transition-colors"
+            className={`w-full px-4 py-2 border rounded-lg focus:border-cyan-500 focus:outline-none transition-colors ${
+              darkMode 
+                ? 'bg-[#1E222B] border-gray-600 text-white placeholder-gray-400' 
+                : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+            }`}
           />
         </div>
 
