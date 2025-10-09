@@ -360,7 +360,125 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
-  // handleKeyPress entfernt - jetzt direkt in onKeyDown
+  // PDF Export Funktionen
+  const handlePDFExport = (type: 'all' | 'tested') => {
+    const testsToExport = type === 'all' 
+      ? testCases.filter(t => t.suite_id === activeSuite)
+      : testCases.filter(t => t.suite_id === activeSuite && t.status !== 'pending');
+    
+    const activeSuiteData = testSuites.find(s => s.id === activeSuite);
+    const suiteName = activeSuiteData?.name || 'Test-Suite';
+    
+    // HTML für PDF generieren
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>QA-Bericht ${type === 'all' ? '(Alle Tests)' : '(Getestete Tests)'}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h1 { color: #1f2937; border-bottom: 2px solid #06b6d4; padding-bottom: 10px; }
+            h2 { color: #374151; margin-top: 30px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #d1d5db; padding: 8px; text-align: left; }
+            th { background-color: #f3f4f6; font-weight: bold; }
+            .status-success { background-color: #dcfce7; color: #166534; }
+            .status-error { background-color: #fef2f2; color: #991b1b; }
+            .status-warning { background-color: #fef3c7; color: #92400e; }
+            .status-pending { background-color: #f3f4f6; color: #374151; }
+            .status-skipped { background-color: #dbeafe; color: #1d4ed8; }
+            .footer { margin-top: 30px; font-size: 12px; color: #6b7280; }
+          </style>
+        </head>
+        <body>
+          <h1>QA-Bericht: ${suiteName}</h1>
+          <p><strong>Erstellt am:</strong> ${new Date().toLocaleDateString('de-DE')}</p>
+          <p><strong>Art:</strong> ${type === 'all' ? 'Alle Tests' : 'Nur getestete Tests'}</p>
+          <p><strong>Anzahl Tests:</strong> ${testsToExport.length}</p>
+          
+          <h2>Test-Übersicht</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Test-ID</th>
+                <th>Titel</th>
+                <th>Beschreibung</th>
+                <th>Status</th>
+                <th>Notiz</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${testsToExport.map(test => `
+                <tr>
+                  <td>${test.test_id}</td>
+                  <td>${test.title}</td>
+                  <td>${test.description || '-'}</td>
+                  <td class="status-${test.status}">
+                    ${test.status === 'success' ? 'Bestanden' : 
+                      test.status === 'error' ? 'Fehlgeschlagen' :
+                      test.status === 'warning' ? 'In Arbeit' :
+                      test.status === 'skipped' ? 'Übersprungen' : 'Unbearbeitet'}
+                  </td>
+                  <td>${test.note || '-'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          
+          <div class="footer">
+            <p>QA-Report-App - Generiert am ${new Date().toLocaleString('de-DE')}</p>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    // Neues Fenster für Print-Vorschau öffnen
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+      
+      // Nach dem Laden direkt drucken
+      printWindow.onload = () => {
+        printWindow.print();
+      };
+    }
+  };
+
+  // CSV Export Funktion
+  const handleCSVExport = () => {
+    const testsToExport = testCases.filter(t => t.suite_id === activeSuite);
+    const activeSuiteData = testSuites.find(s => s.id === activeSuite);
+    const suiteName = activeSuiteData?.name || 'Test-Suite';
+    
+    // CSV Header
+    const headers = ['Test-ID', 'Titel', 'Beschreibung', 'Status', 'Notiz'];
+    const csvContent = [
+      headers.join(';'),
+      ...testsToExport.map(test => [
+        test.test_id,
+        `"${test.title}"`,
+        `"${test.description || ''}"`,
+        test.status === 'success' ? 'Bestanden' : 
+        test.status === 'error' ? 'Fehlgeschlagen' :
+        test.status === 'warning' ? 'In Arbeit' :
+        test.status === 'skipped' ? 'Übersprungen' : 'Unbearbeitet',
+        `"${test.note || ''}"`
+      ].join(';'))
+    ].join('\n');
+    
+    // CSV als Blob erstellen und downloaden
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `QA-Bericht-${suiteName}-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const filteredTests = testCases.filter(test => {
     if (test.suite_id !== activeSuite) return false;
