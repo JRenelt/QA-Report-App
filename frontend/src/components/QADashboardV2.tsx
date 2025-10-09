@@ -874,8 +874,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         <div className="flex justify-between items-center">
           <div>© 2025 QA-Report-App. Alle Rechte vorbehalten.</div>
           
-          {/* Seitennavigation */}
-          {totalPages > 1 && (
+          {/* Seitennavigation - IMMER ANZEIGEN FÜR DEBUG */}
+          {filteredTests.length > 0 && (
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setCurrentPage(1)}
