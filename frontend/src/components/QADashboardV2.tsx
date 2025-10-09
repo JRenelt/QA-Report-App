@@ -595,7 +595,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           {/* Test Cases List */}
           <div className="flex-1 overflow-y-auto p-4">
             <div className="space-y-3">
-              {filteredTests.map((test) => (
+              {currentTests.map((test) => (
                 <div
                   key={test.id}
                   className={`bg-[#2C313A] border-t-4 rounded-lg p-4 hover:shadow-lg transition-all ${
