@@ -583,20 +583,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                         
                         <CustomTooltip text="Test als fehlgeschlagen markieren">
                           <button
-                            onClick={async () => {
-                              try {
-                                await qaService.updateTestCase(test.id, { status: 'error' });
-                                const updated = testCases.map(t => 
-                                  t.id === test.id ? { ...t, status: 'error' as const } : t
-                                );
-                                setTestCases(updated);
-                              } catch (error) {
-                                console.error('Fehler beim Update des Test-Status:', error);
-                                const updated = testCases.map(t => 
-                                  t.id === test.id ? { ...t, status: 'error' as const } : t
-                                );
-                                setTestCases(updated);
-                              }
+                            onClick={() => {
+                              const updated = testCases.map(t => 
+                                t.id === test.id ? { ...t, status: 'error' as const } : t
+                              );
+                              setTestCases(updated);
                             }}
                             className={`px-3 py-1 rounded text-sm font-medium transition-all ${
                               test.status === 'error' 
