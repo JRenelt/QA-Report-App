@@ -4,6 +4,7 @@ import LoginForm from './components/LoginForm';
 import QADashboardV2 from './components/QADashboardV2';
 import SettingsModal from './components/SettingsModal';
 import HelpModal from './components/HelpModal';
+import Dashboard from './components/Dashboard';
 import './App.css';
 
 // Dark Mode Context
