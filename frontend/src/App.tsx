@@ -371,14 +371,16 @@ function App() {
           </>
         ) : (
           /* Main Dashboard */
-          <main className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
-              <Dashboard authToken={authToken} user={user} darkMode={darkMode} />
-            </div>
-          </main>
-          
-          {/* Fixed Footer */}
-          <Footer darkMode={darkMode} />
+          <>
+            <main className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
+              <div className="max-w-7xl mx-auto">
+                <Dashboard authToken={authToken} user={user} darkMode={darkMode} />
+              </div>
+            </main>
+            
+            {/* Fixed Footer */}
+            <Footer darkMode={darkMode} />
+          </>
         )}
       </div>
     </DarkModeContext.Provider>
