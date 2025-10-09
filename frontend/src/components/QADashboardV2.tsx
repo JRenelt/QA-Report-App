@@ -949,14 +949,16 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     Test speichern
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="Archivierte Tests anzeigen">
-                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
-                    darkMode 
-                      ? 'border-purple-400 text-purple-400 hover:bg-purple-400 hover:bg-opacity-20' 
-                      : 'border-purple-500 text-purple-500 hover:bg-purple-500 hover:bg-opacity-10'
-                  }`}>
+                <CustomTooltip text="Tests als CSV exportieren">
+                  <button 
+                    onClick={handleCSVExport}
+                    className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                      darkMode 
+                        ? 'border-purple-400 text-purple-400 hover:bg-purple-400 hover:bg-opacity-20' 
+                        : 'border-purple-500 text-purple-500 hover:bg-purple-500 hover:bg-opacity-10'
+                    }`}>
                     <Archive className="h-4 w-4 mr-1" />
-                    Archiv
+                    CSV Export
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text="QA-Bericht für alle Tests als PDF exportieren">
