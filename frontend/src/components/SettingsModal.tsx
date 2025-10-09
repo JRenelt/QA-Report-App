@@ -413,22 +413,36 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                     Erweiterte Optionen
                   </h3>
 
-                  {/* Message Delay */}
+                  {/* Message Delay - 5 Stufen System */}
                   <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                    <label className={`block font-medium mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                      Meldungen Delay: {messageDelay}ms
+                    <label className={`block font-medium mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      Tooltip-Verzögerung
                     </label>
-                    <input
-                      type="range"
-                      min="1000"
-                      max="10000"
-                      step="500"
-                      value={messageDelay}
-                      onChange={(e) => handleMessageDelayChange(parseInt(e.target.value))}
-                      className="w-full"
-                    />
-                    <div className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                      Wie lange Meldungen angezeigt werden
+                    <div className="grid grid-cols-5 gap-2">
+                      {[
+                        { key: 'sofort', label: 'Sofort', value: '0', desc: '0ms' },
+                        { key: 'schnell', label: 'Schnell', value: '200', desc: '0.2s' },
+                        { key: 'normal', label: 'Normal', value: '500', desc: '0.5s' },
+                        { key: 'langsam', label: 'Langsam', value: '1000', desc: '1s' },
+                        { key: 'sehrlangsam', label: 'Sehr langsam', value: '2000', desc: '2s' }
+                      ].map((option) => (
+                        <button
+                          key={option.key}
+                          onClick={() => handleMessageDelayChange(option.value)}
+                          className={`p-3 rounded-lg text-center transition-all border-2 ${
+                            messageDelay === parseInt(option.value)
+                              ? darkMode 
+                                ? 'bg-cyan-600 border-cyan-400 text-white' 
+                                : 'bg-cyan-500 border-cyan-300 text-white'
+                              : darkMode
+                                ? 'bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700'
+                                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          <div className="text-sm font-medium">{option.label}</div>
+                          <div className="text-xs opacity-75">{option.desc}</div>
+                        </button>
+                      ))}
                     </div>
                   </div>
 
