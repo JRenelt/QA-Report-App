@@ -311,16 +311,26 @@ class BackendTester:
             return False
         
         try:
-            response = self.session.post(f"{API_BASE}/admin/generate-test-data", timeout=30)
+            # The endpoint requires a JSON body with companies and testsPerCompany
+            test_data = {
+                "companies": 3,
+                "testsPerCompany": 10
+            }
+            
+            response = self.session.post(f"{API_BASE}/admin/generate-test-data", json=test_data, timeout=30)
             
             if response.status_code == 200:
                 data = response.json()
                 self.log_test("Generate Test Data", True, 
-                            f"Test data generation successful: {data.get('message', 'Data generated')}")
+                            f"Test data generation successful: {data.get('message', 'Data generated')} - {data.get('companies', 0)} companies, {data.get('testCases', 0)} test cases")
                 return True
             elif response.status_code == 404:
                 self.log_test("Generate Test Data", False, 
                             "Admin test data generation endpoint not found (404)")
+                return False
+            elif response.status_code == 403:
+                self.log_test("Generate Test Data", False, 
+                            "Access denied - admin role required (403)")
                 return False
             else:
                 self.log_test("Generate Test Data", False, 
