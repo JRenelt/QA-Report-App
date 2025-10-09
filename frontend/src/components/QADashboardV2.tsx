@@ -114,39 +114,20 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return saved ? parseInt(saved) : 10;
   });
 
-  // Listen to localStorage changes for itemsPerPage
+  // EINFACHER ANSATZ: Polling für itemsPerPage Änderungen
   React.useEffect(() => {
-    const handleStorageChange = () => {
-      const newItemsPerPage = parseInt(localStorage.getItem('itemsPerPage') || '10');
-      setItemsPerPage(newItemsPerPage);
-      setCurrentPage(1); // Reset to first page when items per page changes
-    };
-
-    // Custom event listener für Settings Modal Änderungen
-    const handleSettingsChange = (event: CustomEvent) => {
-      if (event.detail.type === 'itemsPerPage') {
-        setItemsPerPage(event.detail.value);
-        setCurrentPage(1);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('settingsChanged', handleSettingsChange as EventListener);
-    
-    // Polling als Fallback - prüft alle 1 Sekunde
     const pollInterval = setInterval(() => {
-      const newItemsPerPage = parseInt(localStorage.getItem('itemsPerPage') || '10');
+      const savedValue = localStorage.getItem('itemsPerPage');
+      const newItemsPerPage = savedValue ? parseInt(savedValue) : 10;
+      
       if (newItemsPerPage !== itemsPerPage) {
+        console.log(`Einträge pro Seite geändert: ${itemsPerPage} -> ${newItemsPerPage}`);
         setItemsPerPage(newItemsPerPage);
         setCurrentPage(1);
       }
-    }, 1000);
+    }, 500); // Prüft alle 500ms
 
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('settingsChanged', handleSettingsChange as EventListener);
-      clearInterval(pollInterval);
-    };
+    return () => clearInterval(pollInterval);
   }, [itemsPerPage]);
   const [sidebarWidth, setSidebarWidth] = useState(256); // 256px = w-64
   const [isResizing, setIsResizing] = useState(false);
