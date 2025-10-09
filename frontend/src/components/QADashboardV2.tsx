@@ -108,6 +108,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [editDescription, setEditDescription] = useState('');
   const [editNote, setEditNote] = useState('');
   const [editTitle, setEditTitle] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(parseInt(localStorage.getItem('itemsPerPage') || '10'));
   const [sidebarWidth, setSidebarWidth] = useState(256); // 256px = w-64
   const [isResizing, setIsResizing] = useState(false);
   const [userSettings, setUserSettings] = useState({
