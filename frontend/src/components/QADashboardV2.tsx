@@ -311,11 +311,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleCreateTest();
-    }
-  };
+  // handleKeyPress entfernt - jetzt direkt in onKeyDown
 
   const filteredTests = testCases.filter(test => {
     if (test.suite_id !== activeSuite) return false;
