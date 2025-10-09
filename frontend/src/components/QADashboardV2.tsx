@@ -471,7 +471,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     if (stats.openTests === 0 && stats.totalTests === stats.passedTests && stats.totalTests > 0) {
       return <Check className="h-4 w-4" />;
     }
-    return stats.totalTests;
+    return stats.openTests; // ZEIGE OFFENE TESTS, NICHT GESAMT-TESTS!
   };
 
   return (
