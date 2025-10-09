@@ -565,21 +565,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       <div className="flex space-x-2 mb-3">
                         <CustomTooltip text="Test als erfolgreich markieren">
                           <button
-                            onClick={async () => {
-                              try {
-                                await qaService.updateTestCase(test.id, { status: 'success' });
-                                const updated = testCases.map(t => 
-                                  t.id === test.id ? { ...t, status: 'success' as const } : t
-                                );
-                                setTestCases(updated);
-                              } catch (error) {
-                                console.error('Fehler beim Update des Test-Status:', error);
-                                // Fallback: Lokale Aktualisierung
-                                const updated = testCases.map(t => 
-                                  t.id === test.id ? { ...t, status: 'success' as const } : t
-                                );
-                                setTestCases(updated);
-                              }
+                            onClick={() => {
+                              const updated = testCases.map(t => 
+                                t.id === test.id ? { ...t, status: 'success' as const } : t
+                              );
+                              setTestCases(updated);
                             }}
                             className={`px-3 py-1 rounded text-sm font-medium transition-all ${
                               test.status === 'success' 
