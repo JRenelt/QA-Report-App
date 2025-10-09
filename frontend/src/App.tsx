@@ -344,18 +344,18 @@ function App() {
           darkMode={darkMode}
         />
 
+        {/* Fixed Header */}
+        <Header 
+          darkMode={darkMode} 
+          toggleDarkMode={toggleDarkMode} 
+          user={user}
+          onLogout={handleLogout}
+          onOpenSettings={() => setShowSettings(true)}
+          onOpenHelp={() => setShowHelp(true)}
+        />
+
         {!authToken ? (
           <>
-            {/* Fixed Header nur für Login-Seite */}
-            <Header 
-              darkMode={darkMode} 
-              toggleDarkMode={toggleDarkMode} 
-              user={user}
-              onLogout={handleLogout}
-              onOpenSettings={() => setShowSettings(true)}
-              onOpenHelp={() => setShowHelp(true)}
-            />
-            
             {/* Main Content with padding for fixed header and footer */}
             <main className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
               <div className="max-w-7xl mx-auto">
