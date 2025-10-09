@@ -23,6 +23,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   const handleItemsPerPageChange = (value: string) => {
     setItemsPerPage(value);
     localStorage.setItem('itemsPerPage', value);
+    
+    // Custom Event senden für sofortige Synchronisation
+    const event = new CustomEvent('settingsChanged', {
+      detail: { type: 'itemsPerPage', value: parseInt(value) }
+    });
+    window.dispatchEvent(event);
+    
     showMessage('success', 'Einstellungen gespeichert');
   };
 
