@@ -395,14 +395,17 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
   const currentSuite = testSuites.find(s => s.id === activeSuite);
 
-  const statusCounts = {
-    all: testCases.filter(t => t.suite_id === activeSuite).length,
-    success: testCases.filter(t => t.suite_id === activeSuite && t.status === 'success').length,
-    error: testCases.filter(t => t.suite_id === activeSuite && t.status === 'error').length,
-    warning: testCases.filter(t => t.suite_id === activeSuite && t.status === 'warning').length,
-    pending: testCases.filter(t => t.suite_id === activeSuite && t.status === 'pending').length,
-    skipped: testCases.filter(t => t.suite_id === activeSuite && t.status === 'skipped').length,
-  };
+  const statusCounts = React.useMemo(() => {
+    const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
+    return {
+      all: suiteTests.length,
+      success: suiteTests.filter(t => t.status === 'success').length,
+      error: suiteTests.filter(t => t.status === 'error').length,
+      warning: suiteTests.filter(t => t.status === 'warning').length,
+      pending: suiteTests.filter(t => t.status === 'pending').length,
+      skipped: suiteTests.filter(t => t.status === 'skipped').length,
+    };
+  }, [testCases, activeSuite]);
 
   const getUserIcon = () => {
     if (user?.role === 'admin') {
