@@ -110,6 +110,18 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [editTitle, setEditTitle] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(parseInt(localStorage.getItem('itemsPerPage') || '10'));
+
+  // Listen to localStorage changes for itemsPerPage
+  React.useEffect(() => {
+    const handleStorageChange = () => {
+      const newItemsPerPage = parseInt(localStorage.getItem('itemsPerPage') || '10');
+      setItemsPerPage(newItemsPerPage);
+      setCurrentPage(1); // Reset to first page when items per page changes
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
   const [sidebarWidth, setSidebarWidth] = useState(256); // 256px = w-64
   const [isResizing, setIsResizing] = useState(false);
   const [userSettings, setUserSettings] = useState({
