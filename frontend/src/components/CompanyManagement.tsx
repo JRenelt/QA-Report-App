@@ -133,6 +133,62 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     setShowProjectForm(false);
   };
 
+  // Helper function für Test-ID Generierung aus Titel
+  const generateTestIdFromTitle = (title: string): string => {
+    return title
+      .split(/[\s\/&\-\+\=\(\)\[\]\{\}\<\>\,\.\;\:\!\?\@\#\$\%\^\*\|\\\"\']+/) // Sonderzeichen als Trenner
+      .filter(word => word.length > 0) // Leere Strings entfernen
+      .map(word => word.charAt(0).toUpperCase()) // Erster Buchstabe jedes Wortes
+      .join('') // Zusammenfügen
+      .padEnd(3, '0') // Mindestens 3 Zeichen, mit 0 auffüllen
+      .substring(0, 6); // Maximal 6 Zeichen
+  };
+
+  const handleImportTests = (importedData: any) => {
+    try {
+      let importedTests: any[] = [];
+      
+      if (importedData.testBereiche) {
+        // Format: { testBereiche: [...] }
+        importedData.testBereiche.forEach((bereich: any) => {
+          bereich.tests?.forEach((test: any) => {
+            importedTests.push({
+              ...test,
+              suiteId: bereich.id || `suite-${bereich.name.toLowerCase().replace(/\s+/g, '-')}`,
+              suiteName: bereich.name
+            });
+          });
+        });
+      } else if (Array.isArray(importedData)) {
+        // Format: [{title: '', description: '', suite: ''}, ...]
+        importedTests = importedData;
+      } else if (importedData.tests) {
+        // Format: { tests: [...] }
+        importedTests = importedData.tests;
+      }
+      
+      // Test-IDs generieren falls nicht vorhanden
+      const processedTests = importedTests.map(test => ({
+        id: test.id || `imported-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        test_id: test.id || generateTestIdFromTitle(test.title || test.name || 'Test'),
+        title: test.title || test.name || 'Unbenannter Test',
+        description: test.description || '',
+        suite_id: test.suiteId || test.suite_id || 'default-suite',
+        status: test.status || 'pending',
+        note: `[IMPORTIERT ${new Date().toLocaleDateString()}] ${test.note || ''}`,
+        created_by: currentUser?.username || 'import'
+      }));
+      
+      alert(`Erfolgreich ${processedTests.length} Tests importiert.\n\nTest-IDs wurden automatisch aus den Titeln generiert.\n\nBeispiele:\n${processedTests.slice(0, 3).map(t => `${t.title} → ${t.test_id}`).join('\n')}`);
+      
+      return processedTests;
+    } catch (error) {
+      console.error('Import Fehler:', error);
+      alert(`Fehler beim Importieren: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
+  };
+
   const generateProjectTemplate = () => {
     const template = {
       projectName: "Beispiel Projekt",
