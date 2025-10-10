@@ -1174,15 +1174,33 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
               {/* Action Buttons Rechts - Korrigiert */}
               <div className="flex space-x-2">
-                <CustomTooltip text="Konfiguration öffnen">
+                <CustomTooltip text="Test-Konfiguration bearbeiten">
                   <button 
-                    onClick={onOpenSettings}
+                    onClick={() => {
+                      if (currentTests.length > 0) {
+                        const firstTest = currentTests[0];
+                        setConfigTest(firstTest);
+                        setTestConfig({
+                          title: firstTest.title,
+                          description: firstTest.description || '',
+                          notes: firstTest.note || '',
+                          testId: firstTest.test_id,
+                          company: 'JR', // Erste zwei Buchstaben Firma
+                          userInitials: user?.username?.substring(0, 2).toUpperCase() || 'AD',
+                          softwareVersion: '1.0.0',
+                          tester: user?.username || 'admin'
+                        });
+                        setShowConfigModal(true);
+                      } else {
+                        alert('Keine Tests verfügbar zum Konfigurieren');
+                      }
+                    }}
                     className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
                       darkMode 
                         ? 'border-gray-400 text-gray-400 hover:bg-gray-400 hover:bg-opacity-20' 
                         : 'border-gray-500 text-gray-500 hover:bg-gray-500 hover:bg-opacity-10'
                     }`}>
-                    <Settings className="h-4 w-4 mr-1" />
+                    <Wrench className="h-4 w-4 mr-1" />
                     Config
                   </button>
                 </CustomTooltip>
