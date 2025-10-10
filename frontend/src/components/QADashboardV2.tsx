@@ -1248,14 +1248,59 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     Config
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text={`Alle Änderungen speichern (${statusCounts.all - statusCounts.pending} gespeichert)`}>
-                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
-                    darkMode 
-                      ? 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:bg-opacity-20' 
-                      : 'border-blue-500 text-blue-500 hover:bg-blue-500 hover:bg-opacity-10'
-                  }`}>
+                <CustomTooltip text="Alle Tests im Backend speichern">
+                  <button 
+                    onClick={async () => {
+                      try {
+                        const unsavedTests = testCases.filter(test => test.id.startsWith('test-')); // Lokale Tests
+                        if (unsavedTests.length === 0) {
+                          alert('Alle Tests sind bereits gespeichert.');
+                          return;
+                        }
+                        
+                        const saved = await Promise.all(unsavedTests.map(async (test) => {
+                          try {
+                            const testData = {
+                              test_suite_id: test.suite_id,
+                              test_id: test.test_id,
+                              name: test.title,
+                              description: test.description || '',
+                              priority: 2,
+                              expected_result: '',
+                              sort_order: 1,
+                              created_by: user?.username || 'unknown'
+                            };
+                            return await qaService.createTestCase(testData);
+                          } catch (error) {
+                            console.error('Fehler beim Speichern von Test:', test.test_id, error);
+                            return null;
+                          }
+                        }));
+                        
+                        const successCount = saved.filter(s => s !== null).length;
+                        alert(`${successCount} von ${unsavedTests.length} Tests erfolgreich gespeichert.`);
+                        
+                        // UI aktualisieren - lokale Test IDs durch Backend IDs ersetzen
+                        setTestCases(testCases.map(test => {
+                          if (test.id.startsWith('test-')) {
+                            const savedTest = saved.find((s, i) => unsavedTests[i].id === test.id && s !== null);
+                            return savedTest ? { ...test, id: savedTest.id } : test;
+                          }
+                          return test;
+                        }));
+                        
+                      } catch (error) {
+                        console.error('Fehler beim Speichern:', error);
+                        alert(`Fehler beim Speichern: ${error instanceof Error ? error.message : error}`);
+                      }
+                    }}
+                    className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                      darkMode 
+                        ? 'border-green-400 text-green-400 hover:bg-green-400 hover:bg-opacity-20' 
+                        : 'border-green-500 text-green-500 hover:bg-green-500 hover:bg-opacity-10'
+                    }`}>
                     <Save className="h-4 w-4 mr-1" />
-                    Test speichern [{statusCounts.all - statusCounts.pending}]
+                    Test speichern [{testCases.filter(t => t.id.startsWith('test-')).length}]
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text="Archiv mit persistenten Tests öffnen">
