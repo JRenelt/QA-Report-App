@@ -888,7 +888,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   onClick={() => setShowCompanyManagement(true)}
                   className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
                 >
-                  <FlaskConical className="h-5 w-5 text-gray-300" />
+                  <Factory className="h-5 w-5 text-gray-300" />
                 </button>
               </CustomTooltip>
               <CustomTooltip text="Benutzerverwaltung">
