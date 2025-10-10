@@ -46,6 +46,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   user, 
   darkMode = true,
   onOpenSettings,
+  onOpenExport,
   onOpenHelp,
   onLogout
 }) => {
