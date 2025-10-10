@@ -1468,7 +1468,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-[#2C313A] rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-white">Test-Konfiguration</h2>
+              <h2 className="text-xl font-bold text-white">Projekt-Konfiguration</h2>
               <button
                 onClick={() => setShowConfigModal(false)}
                 className="text-gray-400 hover:text-white"
@@ -1478,75 +1478,54 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             </div>
 
             <div className="space-y-4">
-              {/* Test ID und Metadaten */}
+              {/* Projekt ID Generation */}
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <h3 className="text-sm font-bold text-cyan-400 mb-2">Automatisch generierte Projekt-ID</h3>
+                <div className="text-xs text-gray-300 mb-2">
+                  Format: [2 Firma][2 User][Zeitstempel][Lfd.Nr] = {testConfig.company}{testConfig.userInitials}{Date.now().toString().slice(-6)}01
+                </div>
+                <div className="font-mono text-sm text-white bg-gray-800 p-2 rounded">
+                  {testConfig.company}{testConfig.userInitials}{Date.now().toString().slice(-6)}01
+                </div>
+              </div>
+
+              {/* Firma und User - Read Only */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Test ID
-                    <CustomTooltip text="Automatisch generierte Test-ID">
+                    Firma (aus Registrierung)
+                    <CustomTooltip text="Wird automatisch aus der Benutzer-Registrierung übernommen">
                       <HelpCircle className="h-3 w-3 inline ml-1" />
                     </CustomTooltip>
                   </label>
                   <input
                     type="text"
-                    value={testConfig.testId}
-                    onChange={(e) => setTestConfig({...testConfig, testId: e.target.value})}
-                    className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Firma (2 Zeichen)
-                    <CustomTooltip text="Erste zwei Buchstaben der Firma">
-                      <HelpCircle className="h-3 w-3 inline ml-1" />
-                    </CustomTooltip>
-                  </label>
-                  <input
-                    type="text"
-                    maxLength={2}
                     value={testConfig.company}
-                    onChange={(e) => setTestConfig({...testConfig, company: e.target.value.toUpperCase()})}
-                    className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                    readOnly
+                    className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300 text-sm cursor-not-allowed"
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Tester
-                    <CustomTooltip text="Name des Testers (aus Login)">
+                    User-Initialen
+                    <CustomTooltip text="Vor- und Nachname Initialen des aktuellen Users">
                       <HelpCircle className="h-3 w-3 inline ml-1" />
                     </CustomTooltip>
                   </label>
                   <input
                     type="text"
-                    value={testConfig.tester}
-                    onChange={(e) => setTestConfig({...testConfig, tester: e.target.value})}
-                    className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Software Version
-                    <CustomTooltip text="Version der getesteten Software">
-                      <HelpCircle className="h-3 w-3 inline ml-1" />
-                    </CustomTooltip>
-                  </label>
-                  <input
-                    type="text"
-                    value={testConfig.softwareVersion}
-                    onChange={(e) => setTestConfig({...testConfig, softwareVersion: e.target.value})}
-                    className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                    value={testConfig.userInitials}
+                    readOnly
+                    className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300 text-sm cursor-not-allowed"
                   />
                 </div>
               </div>
 
-              {/* Test Details */}
+              {/* Projekt Details - Editierbar */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">
-                  Test Titel
-                  <CustomTooltip text="Haupttitel des Tests">
+                  Projekt Titel
+                  <CustomTooltip text="Name des Projekts (kann aus Import kommen oder manuell eingegeben werden)">
                     <HelpCircle className="h-3 w-3 inline ml-1" />
                   </CustomTooltip>
                 </label>
@@ -1555,14 +1534,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   value={testConfig.title}
                   onChange={(e) => setTestConfig({...testConfig, title: e.target.value})}
                   className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
-                  placeholder="z.B. Desktop Darstellung"
+                  placeholder="z.B. Website Redesign Projekt"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">
-                  Beschreibung
-                  <CustomTooltip text="Detaillierte Beschreibung des Tests">
+                  Projekt Beschreibung
+                  <CustomTooltip text="Detaillierte Beschreibung des Projekts">
                     <HelpCircle className="h-3 w-3 inline ml-1" />
                   </CustomTooltip>
                 </label>
@@ -1571,14 +1550,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   value={testConfig.description}
                   onChange={(e) => setTestConfig({...testConfig, description: e.target.value})}
                   className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
-                  placeholder="z.B. Korrekte Darstellung auf Desktop-Bildschirmen"
+                  placeholder="z.B. Vollständiges Redesign der Unternehmenswebsite"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">
-                  Notizen
-                  <CustomTooltip text="Zusätzliche Notizen und Anmerkungen">
+                  Projekt Notizen
+                  <CustomTooltip text="Zusätzliche Notizen und Anmerkungen zum Projekt">
                     <HelpCircle className="h-3 w-3 inline ml-1" />
                   </CustomTooltip>
                 </label>
@@ -1587,7 +1566,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   onChange={(e) => setTestConfig({...testConfig, notes: e.target.value})}
                   className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
                   rows={3}
-                  placeholder="Zusätzliche Notizen zum Test..."
+                  placeholder="Zusätzliche Notizen zum Projekt..."
                 />
               </div>
             </div>
