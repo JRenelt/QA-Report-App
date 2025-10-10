@@ -1015,13 +1015,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                               );
                               setTestCases(updated);
                             }}
-                            className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                            className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
                               test.status === 'skipped' 
-                                ? 'bg-blue-600 text-white shadow-md' 
-                                : 'bg-blue-200 text-blue-800 hover:bg-blue-300'
+                                ? 'bg-blue-600 text-white' 
+                                : 'bg-blue-300 hover:bg-blue-400 text-blue-800'
                             }`}
                           >
-                            ↻ Übersprungen
+                            ↻
                           </button>
                         </CustomTooltip>
                       </div>
