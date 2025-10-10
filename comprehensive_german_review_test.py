@@ -251,7 +251,7 @@ class ComprehensiveGermanReviewTester:
                     "test_id": f"GRB{timestamp}01",
                     "name": f"Bulk Test Case 1 - {timestamp}",
                     "description": "First bulk test case created during German review testing",
-                    "priority": "high",
+                    "priority": 1,  # Integer: 1=high, 2=medium, 3=low
                     "expected_result": "Bulk test case 1 should be created successfully",
                     "sort_order": 1
                 },
@@ -260,7 +260,7 @@ class ComprehensiveGermanReviewTester:
                     "test_id": f"GRB{timestamp}02",
                     "name": f"Bulk Test Case 2 - {timestamp}",
                     "description": "Second bulk test case created during German review testing",
-                    "priority": "medium",
+                    "priority": 2,  # Integer: 1=high, 2=medium, 3=low
                     "expected_result": "Bulk test case 2 should be created successfully",
                     "sort_order": 2
                 }
