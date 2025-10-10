@@ -339,6 +339,7 @@ function App() {
           darkMode={darkMode}
           toggleDarkMode={toggleDarkMode}
           authToken={authToken || ''}
+          initialTab={settingsInitialTab}
         />
         <HelpModal
           isOpen={showHelp}
