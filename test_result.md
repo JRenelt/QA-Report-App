@@ -306,6 +306,54 @@ backend:
           agent: "testing"
           comment: "Users management API working correctly. GET /api/users/ lists users, POST /api/users/ creates new users. Authentication and validation working properly. Language preference must be 'DE' or 'ENG'."
 
+  - task: "Test Suite Creation API"
+    implemented: true
+    working: true
+    file: "backend/routes/test_suites.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "GERMAN REVIEW DISCOVERY: Test suite creation API WORKING. POST /api/test-suites/ successfully creates new test suites. Requires project_id, name, description, icon, sort_order. User report 'New test creation OF' partially INCORRECT - test suite creation IS working."
+
+  - task: "Test Case Creation API"
+    implemented: true
+    working: true
+    file: "backend/routes/test_cases.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "GERMAN REVIEW DISCOVERY: Test case creation API WORKING. POST /api/test-cases/ successfully creates individual test cases. Requires test_suite_id, test_id, name, description, priority (integer), expected_result, sort_order. User report 'New test creation OF' partially INCORRECT - test case creation IS working."
+
+  - task: "Bulk Test Case Creation API"
+    implemented: true
+    working: true
+    file: "backend/routes/test_cases.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "GERMAN REVIEW DISCOVERY: Bulk test case creation API WORKING. POST /api/test-cases/bulk successfully creates multiple test cases at once. Accepts array of test case objects. User report 'New test creation OF' partially INCORRECT - bulk test creation IS working."
+
+  - task: "Admin Login with Email"
+    implemented: true
+    working: false
+    file: "backend/routes/auth.py"
+    stuck_count: 1
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: "GERMAN REVIEW SPECIFIC TEST: Login with admin@test.com/admin123 FAILED with 401 Unauthorized. However, login with admin/admin123 (username) works perfectly. Email-based login not supported or user admin@test.com does not exist."
+
 frontend:
   - task: "Login Functionality"
     implemented: true
