@@ -454,8 +454,157 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
+  // Reset Tests mit Sicherheitsabfrage
+  const handleResetTests = () => {
+    if (confirm('Alle Tests wirklich zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+      const resetTests = testCases.map(test => ({
+        ...test,
+        status: 'pending' as const,
+        note: ''
+      }));
+      setTestCases(resetTests);
+      alert('Alle Tests wurden zurückgesetzt.');
+    }
+  };
+
+  // PDF Preview vor Export
+  const handlePDFPreview = (type: 'all' | 'tested') => {
+    const testsToExport = type === 'all' 
+      ? testCases.filter(t => t.suite_id === activeSuite)
+      : testCases.filter(t => t.suite_id === activeSuite && t.status !== 'pending');
+    
+    const activeSuiteData = testSuites.find(s => s.id === activeSuite);
+    const suiteName = activeSuiteData?.name || 'Test-Suite';
+    
+    // Detaillierte Testbericht-Struktur
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Testbericht - ${suiteName}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+            .header { text-align: center; border-bottom: 3px solid #06b6d4; padding-bottom: 20px; margin-bottom: 30px; }
+            .title { font-size: 28px; color: #1f2937; margin-bottom: 10px; }
+            .metadata { background: #f9fafb; padding: 15px; border-radius: 8px; margin: 20px 0; }
+            .section { margin: 25px 0; }
+            .section-title { font-size: 18px; color: #374151; border-bottom: 1px solid #e5e7eb; padding-bottom: 5px; margin-bottom: 15px; }
+            table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+            th, td { border: 1px solid #d1d5db; padding: 10px; text-align: left; }
+            th { background-color: #f3f4f6; font-weight: bold; }
+            .status-success { background-color: #dcfce7; color: #166534; font-weight: bold; }
+            .status-error { background-color: #fef2f2; color: #991b1b; font-weight: bold; }
+            .status-warning { background-color: #fef3c7; color: #92400e; font-weight: bold; }
+            .status-pending { background-color: #f3f4f6; color: #374151; }
+            .status-skipped { background-color: #dbeafe; color: #1d4ed8; }
+            .footer { margin-top: 40px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 20px; }
+            .summary { background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 20px 0; }
+            .print-btn { background: #06b6d4; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 10px; }
+            @media print { .no-print { display: none; } }
+          </style>
+        </head>
+        <body>
+          <div class="no-print">
+            <button onclick="window.print()" class="print-btn">🖨️ Drucken / Als PDF speichern</button>
+            <button onclick="window.close()" class="print-btn" style="background: #6b7280;">✕ Schließen</button>
+          </div>
+          
+          <div class="header">
+            <div class="title">Testbericht</div>
+            <p style="font-size: 16px; color: #6b7280;">Grafisch ansprechend und gut lesbar</p>
+          </div>
+
+          <div class="metadata">
+            <h3>Metadaten</h3>
+            <p><strong>Titel:</strong> Testbericht · ${suiteName}</p>
+            <p><strong>Datum:</strong> ${new Date().toLocaleDateString('de-DE')} (Erstellungsdatum)</p>
+            <p><strong>Tester:</strong> ${user?.username || 'Unbekannt'}</p>
+            <p><strong>Version:</strong> v1.2.3</p>
+            <p><strong>Testumgebung:</strong> ${navigator.userAgent}</p>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Ziel des Tests</div>
+            <p>Überprüfung der ${suiteName} auf korrekte Funktionalität und Fehlermeldungen.</p>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Testobjekt</div>
+            <p>${suiteName} mit definierten Testfällen und Funktionalitäts-Prüfungen.</p>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Testmethodik</div>
+            <p>Manueller Funktionstest mit definierten Testfällen. Eingaben über Web-Oberfläche, Auswertung durch visuelle Kontrolle.</p>
+          </div>
+
+          <div class="summary">
+            <div class="section-title">Testergebnisse</div>
+            <p><strong>${testsToExport.filter(t => t.status === 'success').length} von ${testsToExport.length} Testfällen bestanden.</strong></p>
+            ${testsToExport.filter(t => t.status === 'error').length > 0 ? 
+              `<p style="color: #991b1b;">⚠️ ${testsToExport.filter(t => t.status === 'error').length} kritische Fehler wurden festgestellt.</p>` : 
+              '<p style="color: #166534;">✅ Keine kritischen Fehler festgestellt.</p>'
+            }
+          </div>
+
+          <div class="section">
+            <div class="section-title">Testfälle</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nr.</th>
+                  <th>Test-ID</th>
+                  <th>Beschreibung</th>
+                  <th>Ergebnis</th>
+                  <th>Status</th>
+                  <th>Notizen</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${testsToExport.map((test, index) => `
+                  <tr>
+                    <td>${index + 1}</td>
+                    <td>${test.test_id}</td>
+                    <td>${test.title}</td>
+                    <td>${test.description || 'Keine Beschreibung'}</td>
+                    <td class="status-${test.status}">
+                      ${test.status === 'success' ? '[OK] Bestanden' : 
+                        test.status === 'error' ? '[FEHLER] Fehlgeschlagen' :
+                        test.status === 'warning' ? '[WARNUNG] In Arbeit' :
+                        test.status === 'skipped' ? '[ÜBERSPRUNGEN]' : '[OFFEN] Ungetestet'}
+                    </td>
+                    <td>${test.note || '-'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Fazit und Empfehlungen</div>
+            <p>${testsToExport.filter(t => t.status === 'error').length === 0 ? 
+              'Alle Tests waren erfolgreich. Das System ist bereit für die Freigabe.' :
+              'Es wurden Fehler festgestellt. Vor Freigabe müssen die kritischen Bugs behoben und erneut getestet werden.'
+            }</p>
+          </div>
+
+          <div class="footer">
+            <p>© 2025 ${user?.username || 'QA-Tester'} · QA-Report-App · Alle Rechte vorbehalten.</p>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    // Vorschau-Fenster öffnen
+    const previewWindow = window.open('', '_blank', 'width=800,height=900,scrollbars=yes');
+    if (previewWindow) {
+      previewWindow.document.write(htmlContent);
+      previewWindow.document.close();
+    }
+  };
+
   // CSV Export Funktion
-  const handleCSVExport = () => {
     const testsToExport = testCases.filter(t => t.suite_id === activeSuite);
     const activeSuiteData = testSuites.find(s => s.id === activeSuite);
     const suiteName = activeSuiteData?.name || 'Test-Suite';
