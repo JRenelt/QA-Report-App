@@ -295,50 +295,87 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                     </div>
                   </div>
 
-                  {/* Items per Page */}
-                  <div className={`mt-4 p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                  {/* Entries per page */}
+                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
                     <label className={`block font-medium mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                      Einträge pro Seite
+                      Einträge pro Seite: {itemsPerPage}
                     </label>
                     <select
                       value={itemsPerPage}
                       onChange={(e) => handleItemsPerPageChange(e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-lg ${
-                        darkMode 
-                          ? 'bg-gray-600 border-gray-500 text-white' 
-                          : 'bg-white border-gray-300 text-gray-900'
-                      }`}
+                      className={`w-full p-2 border rounded ${darkMode ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
                     >
                       <option value="5">5</option>
                       <option value="10">10</option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
                       <option value="25">25</option>
                       <option value="50">50</option>
-                      <option value="100">100</option>
                     </select>
                   </div>
 
-                  {/* Tooltips */}
-                  <div className={`mt-4 flex items-center justify-between p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                    <div>
-                      <div className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                        Allgemeine Tooltips
+                  {/* Tooltip-Einstellungen */}
+                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                    <h4 className={`font-medium mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                      Tooltip-Einstellungen
+                    </h4>
+                    
+                    {/* Show tooltips */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <div className={`font-medium text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                          Allgemeine Tooltips
+                        </div>
+                        <div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          Hilfetext beim Überfahren anzeigen
+                        </div>
                       </div>
-                      <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                        Hilfetext beim Überfahren mit der Maus anzeigen
+                      <button
+                        onClick={handleTooltipsToggle}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                          showTooltips ? 'bg-qa-primary-600' : 'bg-gray-300'
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            showTooltips ? 'translate-x-6' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                    </div>
+
+                    {/* Tooltip Delay */}
+                    <div>
+                      <div className={`font-medium text-sm mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                        Tooltip-Verzögerung
+                      </div>
+                      <div className="grid grid-cols-5 gap-1">
+                        {[
+                          { key: 'sofort', label: 'Sofort', value: '0', desc: '0ms' },
+                          { key: 'schnell', label: 'Schnell', value: '200', desc: '0.2s' },
+                          { key: 'normal', label: 'Normal', value: '500', desc: '0.5s' },
+                          { key: 'langsam', label: 'Langsam', value: '1000', desc: '1s' },
+                          { key: 'sehrlangsam', label: 'Sehr langsam', value: '2000', desc: '2s' }
+                        ].map((option) => (
+                          <button
+                            key={option.key}
+                            onClick={() => handleMessageDelayChange(option.value)}
+                            className={`p-2 rounded text-center transition-all border text-xs ${
+                              messageDelay === option.value
+                                ? darkMode 
+                                  ? 'bg-cyan-600 border-cyan-400 text-white' 
+                                  : 'bg-cyan-500 border-cyan-300 text-white'
+                                : darkMode
+                                  ? 'bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700'
+                                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            <div className="font-medium">{option.label}</div>
+                            <div className="opacity-75">{option.desc}</div>
+                          </button>
+                        ))}
                       </div>
                     </div>
-                    <button
-                      onClick={handleTooltipsToggle}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        showTooltips ? 'bg-qa-primary-600' : 'bg-gray-300'
-                      }`}
-                    >
-                      <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          showTooltips ? 'translate-x-6' : 'translate-x-1'
-                        }`}
-                      />
-                    </button>
                   </div>
                 </div>
               </div>
