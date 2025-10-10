@@ -289,6 +289,7 @@ function App() {
     return saved === 'true';
   });
   const [showSettings, setShowSettings] = useState(false);
+  const [settingsInitialTab, setSettingsInitialTab] = useState<'appearance' | 'import-export' | 'advanced'>('appearance');
   const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
