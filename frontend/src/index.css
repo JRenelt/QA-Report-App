@@ -6,6 +6,9 @@
 @layer base {
   html {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    /* Scaling fix - App designed for 67% zoom level */
+    zoom: 1.5; /* 100% / 67% = ~1.5 */
+    transform-origin: 0 0;
   }
   
   body {
