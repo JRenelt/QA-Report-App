@@ -6,9 +6,8 @@
 @layer base {
   html {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-    /* Scaling fix - Optimized for comfortable viewing */
-    zoom: 0.8; /* Smaller than default but still readable */
-    transform-origin: 0 0;
+    /* Responsive scaling for better readability */
+    font-size: 14px; /* Smaller base font */
   }
   
   body {
