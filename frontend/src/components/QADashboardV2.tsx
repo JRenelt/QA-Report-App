@@ -328,20 +328,70 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return <IconComponent className="h-4 w-4" />;
   };
 
-  const handleCreateTest = () => {
+  const handleCreateTest = async () => {
     const testName = newTestName.trim();
-    console.log('=== TEST ERSTELLUNG START ===');
+    console.log('=== TEST ERSTELLUNG START (BACKEND) ===');
     console.log('Input-Name:', testName);
     console.log('Aktive Suite:', activeSuite);
-    console.log('Anzahl existierende Tests:', testCases.length);
+    console.log('Auth Token verfügbar:', !!authToken);
     
     if (!testName) {
       console.log('ABBRUCH: Leerer Testname');
       return;
     }
     
+    if (!authToken) {
+      alert('Fehler: Nicht authentifiziert. Bitte neu anmelden.');
+      return;
+    }
+    
     try {
       // Sichere ID-Generierung
+      const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
+      const nextNumber = suiteTests.length + 1;
+      const activeSuiteData = testSuites.find(s => s.id === activeSuite);
+      const suitePrefix = activeSuiteData ? activeSuiteData.name.substring(0, 2).toUpperCase() : 'AD';
+      
+      // Backend API verwenden
+      const newTestData = {
+        test_suite_id: activeSuite,
+        test_id: `${suitePrefix}${String(nextNumber).padStart(4, '0')}`,
+        name: testName,
+        description: `Automatisch erstellter Test: ${testName}`,
+        priority: 2, // medium priority
+        expected_result: '',
+        sort_order: nextNumber,
+        created_by: user?.username || 'unknown'
+      };
+      
+      console.log('Sende Test-Daten an Backend:', newTestData);
+      
+      const createdTest = await qaService.createTestCase(newTestData as any);
+      
+      // Lokal hinzufügen (für UI-Update)
+      const newTest: TestCase = {
+        id: createdTest.id,
+        test_id: createdTest.test_id,
+        suite_id: activeSuite,
+        title: testName,
+        description: `Automatisch erstellter Test: ${testName}`,
+        status: 'pending'
+      };
+      
+      setTestCases(prevTests => {
+        const updatedTests = [...prevTests, newTest];
+        console.log('Test erfolgreich hinzugefügt. Anzahl Tests:', updatedTests.length);
+        return updatedTests;
+      });
+      
+      // Input-Feld leeren
+      setNewTestName('');
+      console.log('=== TEST ERSTELLUNG ERFOLGREICH (BACKEND) ===');
+      
+    } catch (error) {
+      console.error('=== FEHLER BEI TEST-ERSTELLUNG (BACKEND) ===', error);
+      
+      // Fallback: Lokale Erstellung wenn Backend-Integration fehlschlägt
       const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
       const nextNumber = suiteTests.length + 1;
       const activeSuiteData = testSuites.find(s => s.id === activeSuite);
@@ -356,22 +406,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         status: 'pending'
       };
       
-      console.log('Neuer Test wird hinzugefügt:', newTest);
-      
-      // Test hinzufügen
-      setTestCases(prevTests => {
-        const updatedTests = [...prevTests, newTest];
-        console.log('Tests nach Hinzufügung:', updatedTests.length);
-        return updatedTests;
-      });
-      
-      // Input-Feld leeren
+      setTestCases(prevTests => [...prevTests, newTest]);
       setNewTestName('');
-      console.log('=== TEST ERSTELLUNG ERFOLGREICH ===');
       
-    } catch (error) {
-      console.error('=== FEHLER BEI TEST-ERSTELLUNG ===', error);
-      alert(`Fehler beim Erstellen des Tests: ${error}`);
+      alert(`Warnung: Test wurde lokal erstellt, aber Backend-Speicherung fehlgeschlagen: ${error instanceof Error ? error.message : error}`);
     }
   };
 
