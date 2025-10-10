@@ -88,6 +88,12 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
       return;
     }
 
+    // Schutz vor Überschreibung von ID2
+    if (newCompany.name.includes('ID2') || newCompany.name.includes('Jörg Renelt')) {
+      alert('❌ Fehler: Administrator-Daten (ID2, Jörg Renelt) sind schreibgeschützt und können nicht überschrieben werden.');
+      return;
+    }
+
     const company: Company = {
       id: `comp-${Date.now()}`,
       name: newCompany.name,
