@@ -48,6 +48,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   onOpenHelp,
   onLogout
 }) => {
+  // QA Service Token setzen
+  React.useEffect(() => {
+    if (authToken) {
+      qaService.setAuthToken(authToken);
+    }
+  }, [authToken]);
+
   // Tooltip-Einstellungen Update-Funktion
   const updateTooltipSettings = (delay: 'fest' | 'kurz' | 'lang') => {
     setUserSettings(prev => ({ ...prev, tooltipDelay: delay }));
