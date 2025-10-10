@@ -1196,7 +1196,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 </CustomTooltip>
                 <CustomTooltip text="Export-Funktionen öffnen (Systemsteuerung)">
                   <button 
-                    onClick={onOpenSettings}
+                    onClick={onOpenExport}
                     className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
                       darkMode 
                         ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:bg-opacity-20' 
