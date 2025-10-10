@@ -1433,6 +1433,169 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         </div>
       )}
 
+      {/* Config Modal */}
+      {showConfigModal && configTest && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-[#2C313A] rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-white">Test-Konfiguration</h2>
+              <button
+                onClick={() => setShowConfigModal(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Test ID und Metadaten */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Test ID
+                    <CustomTooltip text="Automatisch generierte Test-ID">
+                      <HelpCircle className="h-3 w-3 inline ml-1" />
+                    </CustomTooltip>
+                  </label>
+                  <input
+                    type="text"
+                    value={testConfig.testId}
+                    onChange={(e) => setTestConfig({...testConfig, testId: e.target.value})}
+                    className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Firma (2 Zeichen)
+                    <CustomTooltip text="Erste zwei Buchstaben der Firma">
+                      <HelpCircle className="h-3 w-3 inline ml-1" />
+                    </CustomTooltip>
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={2}
+                    value={testConfig.company}
+                    onChange={(e) => setTestConfig({...testConfig, company: e.target.value.toUpperCase()})}
+                    className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Tester
+                    <CustomTooltip text="Name des Testers (aus Login)">
+                      <HelpCircle className="h-3 w-3 inline ml-1" />
+                    </CustomTooltip>
+                  </label>
+                  <input
+                    type="text"
+                    value={testConfig.tester}
+                    onChange={(e) => setTestConfig({...testConfig, tester: e.target.value})}
+                    className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Software Version
+                    <CustomTooltip text="Version der getesteten Software">
+                      <HelpCircle className="h-3 w-3 inline ml-1" />
+                    </CustomTooltip>
+                  </label>
+                  <input
+                    type="text"
+                    value={testConfig.softwareVersion}
+                    onChange={(e) => setTestConfig({...testConfig, softwareVersion: e.target.value})}
+                    className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                  />
+                </div>
+              </div>
+
+              {/* Test Details */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Test Titel
+                  <CustomTooltip text="Haupttitel des Tests">
+                    <HelpCircle className="h-3 w-3 inline ml-1" />
+                  </CustomTooltip>
+                </label>
+                <input
+                  type="text"
+                  value={testConfig.title}
+                  onChange={(e) => setTestConfig({...testConfig, title: e.target.value})}
+                  className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                  placeholder="z.B. Desktop Darstellung"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Beschreibung
+                  <CustomTooltip text="Detaillierte Beschreibung des Tests">
+                    <HelpCircle className="h-3 w-3 inline ml-1" />
+                  </CustomTooltip>
+                </label>
+                <input
+                  type="text"
+                  value={testConfig.description}
+                  onChange={(e) => setTestConfig({...testConfig, description: e.target.value})}
+                  className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                  placeholder="z.B. Korrekte Darstellung auf Desktop-Bildschirmen"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Notizen
+                  <CustomTooltip text="Zusätzliche Notizen und Anmerkungen">
+                    <HelpCircle className="h-3 w-3 inline ml-1" />
+                  </CustomTooltip>
+                </label>
+                <textarea
+                  value={testConfig.notes}
+                  onChange={(e) => setTestConfig({...testConfig, notes: e.target.value})}
+                  className="w-full bg-gray-800 border border-gray-600 rounded p-2 text-white text-sm"
+                  rows={3}
+                  placeholder="Zusätzliche Notizen zum Test..."
+                />
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setShowConfigModal(false)}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm text-white"
+              >
+                Abbrechen
+              </button>
+              <button
+                onClick={() => {
+                  // Update test with new config
+                  if (configTest) {
+                    const updated = testCases.map(t => 
+                      t.id === configTest.id ? {
+                        ...t,
+                        title: testConfig.title,
+                        description: testConfig.description,
+                        note: testConfig.notes,
+                        test_id: testConfig.testId
+                      } : t
+                    );
+                    setTestCases(updated);
+                    setShowConfigModal(false);
+                  }
+                }}
+                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded text-sm text-white"
+              >
+                Speichern
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* User Management Modal */}
       <UserManagement
         authToken={authToken}
