@@ -7,6 +7,7 @@ interface SettingsModalProps {
   darkMode: boolean;
   toggleDarkMode: () => void;
   authToken: string;
+  initialTab?: 'appearance' | 'import-export' | 'advanced';
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode, toggleDarkMode, authToken }) => {
