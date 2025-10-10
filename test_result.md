@@ -218,6 +218,9 @@ backend:
         - working: true
           agent: "testing"
           comment: "Admin test data generation endpoint working correctly. Successfully generated 3 companies with 27 test cases. Endpoint requires admin role and JSON body with companies/testsPerCompany parameters."
+        - working: true
+          agent: "testing"
+          comment: "GERMAN REVIEW RE-TEST: Test data generation CONFIRMED WORKING. User report 'Test data generation OF' is INCORRECT. Generated 2 companies with 6 test cases successfully. Endpoint /api/admin/generate-test-data fully functional with admin authentication."
 
   - task: "Companies API Endpoint"
     implemented: true
