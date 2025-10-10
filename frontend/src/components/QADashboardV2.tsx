@@ -121,6 +121,18 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [filterStatus, setFilterStatus] = useState<'all' | 'success' | 'error' | 'warning' | 'pending' | 'skipped'>('all');
   const [editDescription, setEditDescription] = useState('');
   const [editNote, setEditNote] = useState('');
+  const [showConfigModal, setShowConfigModal] = useState(false);
+  const [configTest, setConfigTest] = useState<TestCase | null>(null);
+  const [testConfig, setTestConfig] = useState({
+    title: '',
+    description: '',
+    notes: '',
+    testId: '',
+    company: '',
+    userInitials: '',
+    softwareVersion: '',
+    tester: ''
+  });
   const [editTitle, setEditTitle] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(() => {
