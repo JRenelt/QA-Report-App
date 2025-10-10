@@ -191,24 +191,31 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       >
         {children}
         {showTooltip && tooltipsEnabled && (
-          <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 rounded shadow-lg z-50 max-w-xs ${
-            darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900 border border-gray-300'
-          }`}>
+          <div 
+            className="absolute mb-2 px-3 py-2 rounded shadow-lg max-w-xs z-[9999]"
+            style={{ 
+              backgroundColor: '#f6cda1',
+              color: '#8b4513',
+              left: '50%',
+              bottom: '100%',
+              transform: 'translateX(-50%)',
+              marginLeft: window.innerWidth < 400 ? '-50px' : '0px' // Bildschirmrand-Schutz
+            }}
+          >
             <div className="flex items-start justify-between">
               <span className="text-xs whitespace-pre-wrap pr-2">{text}</span>
               <button
                 onClick={handleCloseTooltip}
-                className={`ml-1 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center text-xs ${
-                  darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
-                }`}
+                className="ml-1 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center hover:bg-orange-200 transition-colors"
                 title="Tooltip schließen"
               >
-                ×
+                <CheckCircle className="h-3 w-3" />
               </button>
             </div>
-            <div className={`absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent ${
-              darkMode ? 'border-t-gray-900' : 'border-t-white'
-            }`}></div>
+            <div 
+              className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent"
+              style={{ borderTopColor: '#f6cda1' }}
+            ></div>
           </div>
         )}
       </div>
