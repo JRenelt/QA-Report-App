@@ -507,11 +507,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "German review request comprehensive testing COMPLETED - all backend functionality working"
-    - "User reports verified: Test data generation and test creation APIs ARE WORKING"
-    - "All 19 backend API tests passed successfully (added 3 new test creation APIs)"
-    - "Minor issue: admin@test.com login not supported (use admin/admin123 instead)"
+    - "German review frontend testing COMPLETED - all 4 priorities tested"
+    - "Login Test (admin/admin123) - WORKING"
+    - "Dashboard Access (QADashboardV2) - WORKING"
+    - "Test Creation - WORKING with fallback (backend integration has mixed content error)"
+    - "Settings Modal - ACCESSIBLE (test data generation button location needs verification)"
   stuck_tasks: 
+    - "Mixed Content Error Fix - CRITICAL: HTTP/HTTPS protocol mismatch blocking backend API calls"
     - "Logout Functionality - accessibility issue"
     - "Admin Login with Email - email-based login not implemented"
   test_all: true
