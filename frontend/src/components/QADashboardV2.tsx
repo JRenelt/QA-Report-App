@@ -1261,13 +1261,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                         const saved = await Promise.all(unsavedTests.map(async (test) => {
                           try {
                             const testData = {
-                              test_suite_id: test.suite_id,
                               test_id: test.test_id,
-                              name: test.title,
+                              suite_id: test.suite_id,
+                              title: test.title,
                               description: test.description || '',
-                              priority: 2,
-                              expected_result: '',
-                              sort_order: 1,
+                              status: 'pending' as const,
                               created_by: user?.username || 'unknown'
                             };
                             return await qaService.createTestCase(testData);
