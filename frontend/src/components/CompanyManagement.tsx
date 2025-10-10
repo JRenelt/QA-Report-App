@@ -348,6 +348,71 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                   Template
                 </button>
                 <button
+                  onClick={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.json,.csv';
+                    input.onchange = (e: any) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                          try {
+                            const content = event.target?.result as string;
+                            let data;
+                            
+                            if (file.name.endsWith('.json')) {
+                              data = JSON.parse(content);
+                            } else if (file.name.endsWith('.csv')) {
+                              // CSV Parser (vereinfacht)
+                              const lines = content.split('\n');
+                              const headers = lines[0].split(',');
+                              data = lines.slice(1).map(line => {
+                                const values = line.split(',');
+                                const obj: any = {};
+                                headers.forEach((header, i) => {
+                                  obj[header.trim()] = values[i]?.trim();
+                                });
+                                return obj;
+                              });
+                            }
+                            
+                            // Import verarbeiten
+                            if (data) {
+                              if (data.companies) {
+                                // Master Data Import
+                                const newCompanies = data.companies.filter((comp: any) => 
+                                  comp.id !== 'ID2' && !comp.isProtected // ID2 und geschützte nicht überschreiben
+                                );
+                                setCompanies([...companies, ...newCompanies]);
+                                
+                                const newProjects = data.projects || [];
+                                setProjects([...projects, ...newProjects]);
+                                
+                                alert(`Import erfolgreich!\n\n${newCompanies.length} Firmen\n${newProjects.length} Projekte\n\nID2 (geschützt) wurde nicht überschrieben.`);
+                              } else if (data.projects || data.testBereiche) {
+                                // Projekt/Test Import
+                                const importedTests = handleImportTests(data);
+                                alert(`${importedTests.length} Tests importiert`);
+                              } else {
+                                alert('Unbekanntes Dateiformat. Bitte JSON mit companies/projects oder testBereiche verwenden.');
+                              }
+                            }
+                          } catch (error) {
+                            alert(`Fehler beim Importieren: ${error instanceof Error ? error.message : error}`);
+                          }
+                        };
+                        reader.readAsText(file);
+                      }
+                    };
+                    input.click();
+                  }}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg flex items-center"
+                >
+                  <FileDown className="h-4 w-4 mr-2" />
+                  Import
+                </button>
+                <button
                   onClick={() => setShowProjectForm(true)}
                   className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center"
                 >
