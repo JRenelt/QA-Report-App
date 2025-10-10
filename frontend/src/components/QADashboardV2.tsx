@@ -13,6 +13,7 @@ interface QADashboardV2Props {
   user?: any;
   darkMode?: boolean;
   onOpenSettings: () => void;
+  onOpenExport: () => void;
   onOpenHelp: () => void;
   onLogout?: () => void;
 }
