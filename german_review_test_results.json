@@ -1,0 +1,48 @@
+{
+  "german_review_focus": true,
+  "total_tests": 5,
+  "passed": 3,
+  "failed": 2,
+  "success_rate": 60.0,
+  "results": [
+    {
+      "test": "Backend Health",
+      "success": false,
+      "message": "Backend health check failed - HTTP 404",
+      "timestamp": "2025-10-10T07:39:08.512937",
+      "response_data": null
+    },
+    {
+      "test": "Admin Login (Email)",
+      "success": false,
+      "message": "Login with admin@test.com failed - HTTP 401: {\"detail\":\"Incorrect username or password\"}",
+      "timestamp": "2025-10-10T07:39:08.525607",
+      "response_data": null
+    },
+    {
+      "test": "Admin Login (Username Fallback)",
+      "success": true,
+      "message": "Admin login successful with username - User: admin, Role: admin",
+      "timestamp": "2025-10-10T07:39:08.811847",
+      "response_data": null
+    },
+    {
+      "test": "Test Data Generation",
+      "success": true,
+      "message": "\u2705 Test data generation WORKING - Testdaten erfolgreich generiert - Companies: 2, Test Cases: 6",
+      "timestamp": "2025-10-10T07:39:08.942254",
+      "response_data": null
+    },
+    {
+      "test": "Test Creation API",
+      "success": true,
+      "message": "Found potential test creation endpoints: /api/test-cases/ (GET: 422), /api/test-cases/ (POST: 422), /api/test-suites/ (GET: 422), /api/test-suites/ (POST: 422)",
+      "timestamp": "2025-10-10T07:39:09.097328",
+      "response_data": null
+    }
+  ],
+  "user_reported_issues": {
+    "new_test_creation_off": true,
+    "test_data_generation_off": true
+  }
+}
