@@ -882,13 +882,24 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
           {/* User Management (nur für Admins) */}
           {user?.role === 'admin' && (
-            <button
-              onClick={() => setShowUserManagement(true)}
-              className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
-              title="Benutzerverwaltung"
-            >
-              <Users className="h-5 w-5 text-gray-300" />
-            </button>
+            <>
+              <CustomTooltip text="Firmen- & Projektverwaltung">
+                <button
+                  onClick={() => setShowCompanyManagement(true)}
+                  className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <FlaskConical className="h-5 w-5 text-gray-300" />
+                </button>
+              </CustomTooltip>
+              <CustomTooltip text="Benutzerverwaltung">
+                <button
+                  onClick={() => setShowUserManagement(true)}
+                  className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <Users className="h-5 w-5 text-gray-300" />
+                </button>
+              </CustomTooltip>
+            </>
           )}
 
           {/* Settings */}
