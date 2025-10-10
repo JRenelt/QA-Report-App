@@ -1645,25 +1645,54 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             © 2025 Jörg Renelt · QA-Report-App
           </div>
           
-          {/* Navigation Links Mitte */}
-          <div className="flex items-center space-x-4">
+          {/* Seitennavigation Mitte */}
+          <div className="flex items-center space-x-2">
             <button 
-              onClick={() => setShowCompanyManagement(true)}
-              className={`hover:underline ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'}`}
+              onClick={() => setCurrentPage(1)}
+              disabled={currentPage === 1}
+              className={`px-2 py-1 rounded hover:bg-opacity-20 ${
+                currentPage === 1 
+                  ? (darkMode ? 'text-gray-600 cursor-not-allowed' : 'text-gray-400 cursor-not-allowed')
+                  : (darkMode ? 'text-gray-300 hover:text-white hover:bg-gray-600' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-300')
+              }`}
             >
-              Projekte
+              &lt;&lt;
             </button>
             <button 
-              onClick={onOpenSettings}
-              className={`hover:underline ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'}`}
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className={`px-2 py-1 rounded hover:bg-opacity-20 ${
+                currentPage === 1 
+                  ? (darkMode ? 'text-gray-600 cursor-not-allowed' : 'text-gray-400 cursor-not-allowed')
+                  : (darkMode ? 'text-gray-300 hover:text-white hover:bg-gray-600' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-300')
+              }`}
             >
-              Einstellungen
+              &lt;
+            </button>
+            <span className={`px-3 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              [{currentPage} von {totalPages}]
+            </span>
+            <button 
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+              className={`px-2 py-1 rounded hover:bg-opacity-20 ${
+                currentPage === totalPages 
+                  ? (darkMode ? 'text-gray-600 cursor-not-allowed' : 'text-gray-400 cursor-not-allowed')
+                  : (darkMode ? 'text-gray-300 hover:text-white hover:bg-gray-600' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-300')
+              }`}
+            >
+              &gt;
             </button>
             <button 
-              onClick={onOpenHelp}
-              className={`hover:underline ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'}`}
+              onClick={() => setCurrentPage(totalPages)}
+              disabled={currentPage === totalPages}
+              className={`px-2 py-1 rounded hover:bg-opacity-20 ${
+                currentPage === totalPages 
+                  ? (darkMode ? 'text-gray-600 cursor-not-allowed' : 'text-gray-400 cursor-not-allowed')
+                  : (darkMode ? 'text-gray-300 hover:text-white hover:bg-gray-600' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-300')
+              }`}
             >
-              Hilfe
+              &gt;&gt;
             </button>
           </div>
           
