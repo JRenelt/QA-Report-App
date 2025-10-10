@@ -1,7 +1,19 @@
-# QA-Report-App - Technische Dokumentation
+# QA-Report-App
+**Technische Dokumentation**
 
-## Übersicht
-Die QA-Report-App ist eine vollständige Full-Stack-Anwendung für Qualitätssicherung und Testmanagement mit FastAPI Backend, React TypeScript Frontend und MongoDB-Datenbank.
+Die **QA-Report-App** ist eine [Full-Stack-Webanwendung](#architektur) für [Qualitätssicherung](README.md#qualitätssicherung) und [Testmanagement](README.md#testmanagement), basierend auf [FastAPI](#backend) Backend, [React TypeScript](#frontend) Frontend und [MongoDB](#datenbank)-Datenbank.
+
+## Inhaltsverzeichnis
+1. [Architektur](#architektur)
+2. [Backend (FastAPI)](#backend-fastapi)
+3. [Frontend (React)](#frontend-react)  
+4. [Datenbank (MongoDB)](#datenbank-mongodb)
+5. [API-Dokumentation](#api-dokumentation)
+6. [Deployment](#deployment)
+7. [Entwicklung](#entwicklung)
+8. [Siehe auch](#siehe-auch)
+
+---
 
 ## Architektur
 
