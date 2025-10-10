@@ -53,6 +53,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     if (authToken) {
       qaService.setAuthToken(authToken);
     }
+    
+    // DEBUG: Backend URL prüfen
+    console.log('REACT_APP_BACKEND_URL:', process.env.REACT_APP_BACKEND_URL);
+    console.log('Current location:', window.location.href);
   }, [authToken]);
 
   // Tooltip-Einstellungen Update-Funktion
