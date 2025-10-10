@@ -930,7 +930,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           </div>
 
           {/* Test Cases List */}
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-4 pb-16">
             <div className="space-y-3">
               {currentTests.map((test) => (
                 <div
