@@ -1410,6 +1410,17 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         isOpen={showUserManagement}
         onClose={() => setShowUserManagement(false)}
       />
+
+      {/* Fixed Footer - Immer am unteren Bildschirmrand */}
+      <footer className={`fixed bottom-0 left-0 right-0 z-10 ${
+        darkMode ? 'bg-[#282C34] border-t border-gray-700' : 'bg-white border-t border-gray-300'
+      } px-4 py-2 text-center text-xs shadow-lg`}>
+        <div className="flex items-center justify-center space-x-2">
+          <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+            © 2025 Jörg Renelt · QA-Report-App · Alle Rechte vorbehalten.
+          </span>
+        </div>
+      </footer>
     </div>
   );
 
