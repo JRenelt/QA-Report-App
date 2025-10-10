@@ -211,7 +211,7 @@ class ComprehensiveGermanReviewTester:
                 "test_id": f"GR{datetime.now().strftime('%H%M%S')}",
                 "name": f"German Review Test Case {datetime.now().strftime('%H%M%S')}",
                 "description": "Test case created during German review testing",
-                "priority": "medium",
+                "priority": 2,  # Integer: 1=high, 2=medium, 3=low
                 "expected_result": "Test case should be created successfully",
                 "sort_order": 1
             }
