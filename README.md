@@ -1,6 +1,21 @@
-# QA-Report-App - Benutzerhandbuch
+# QA-Report-App
+**Professionelle Qualitätssicherung und Testmanagement**
 
-## 🎯 Übersicht
+Die **QA-Report-App** ist eine umfassende Webanwendung für [Qualitätssicherung](#qualitätssicherung), [Testmanagement](#testmanagement) und Team-Kollaboration, entwickelt für moderne Entwicklungsteams.
+
+## Inhaltsverzeichnis
+1. [Schnellstart](#schnellstart)
+2. [Funktionen](#funktionen)  
+3. [Benutzerrollen](#benutzerrollen)
+4. [Test-Management](#test-management)
+5. [Berichte und Export](#berichte-und-export)
+6. [Systemeinstellungen](#systemeinstellungen)
+7. [Troubleshooting](#troubleshooting)
+8. [Siehe auch](#siehe-auch)
+
+---
+
+## Übersicht
 Die QA-Report-App ist eine professionelle Qualitätssicherungs-Anwendung für Testmanagement, Reporting und Team-Collaboration.
 
 ## 🚀 Schnellstart
