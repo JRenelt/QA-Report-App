@@ -1638,11 +1638,47 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       {/* Fixed Footer - Immer am unteren Bildschirmrand */}
       <footer className={`fixed bottom-0 left-0 right-0 z-10 ${
         darkMode ? 'bg-[#282C34] border-t border-gray-700' : 'bg-white border-t border-gray-300'
-      } px-4 py-2 text-center text-xs shadow-lg`}>
-        <div className="flex items-center justify-center space-x-2">
-          <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
-            © 2025 Jörg Renelt · QA-Report-App · Alle Rechte vorbehalten.
-          </span>
+      } px-4 py-2 text-xs shadow-lg`}>
+        <div className="flex items-center justify-between">
+          {/* Copyright Links */}
+          <div className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            © 2025 Jörg Renelt · QA-Report-App
+          </div>
+          
+          {/* Navigation Links Mitte */}
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={() => setShowCompanyManagement(true)}
+              className={`hover:underline ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'}`}
+            >
+              Projekte
+            </button>
+            <button 
+              onClick={onOpenSettings}
+              className={`hover:underline ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'}`}
+            >
+              Einstellungen
+            </button>
+            <button 
+              onClick={onOpenHelp}
+              className={`hover:underline ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'}`}
+            >
+              Hilfe
+            </button>
+          </div>
+          
+          {/* Impressum/Rechtliches Rechts */}
+          <div className="flex items-center space-x-3">
+            <button className={`hover:underline ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'}`}>
+              Impressum
+            </button>
+            <button className={`hover:underline ${darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900'}`}>
+              Datenschutz
+            </button>
+            <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+              Alle Rechte vorbehalten
+            </span>
+          </div>
         </div>
       </footer>
     </div>
