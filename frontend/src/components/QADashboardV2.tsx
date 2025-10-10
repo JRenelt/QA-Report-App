@@ -1304,11 +1304,36 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text="Archiv mit persistenten Tests öffnen">
-                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
-                    darkMode 
-                      ? 'border-purple-400 text-purple-400 hover:bg-purple-400 hover:bg-opacity-20' 
-                      : 'border-purple-500 text-purple-500 hover:bg-purple-500 hover:bg-opacity-10'
-                  }`}>
+                  <button 
+                    onClick={() => {
+                      // Archivierte Tests anzeigen (Status completed/archived)
+                      const archivedTests = testCases.filter(test => 
+                        test.status === 'success' || test.note?.includes('[ARCHIVIERT]')
+                      );
+                      
+                      if (archivedTests.length === 0) {
+                        alert('Keine archivierten Tests gefunden.\n\nTipp: Tests werden automatisch archiviert wenn sie als "Bestanden" markiert werden.');
+                        return;
+                      }
+                      
+                      const archiveInfo = `ARCHIV ÜBERSICHT\n\n` +
+                        `📁 Archivierte Tests: ${archivedTests.length}\n` +
+                        `✅ Bestandene Tests: ${archivedTests.filter(t => t.status === 'success').length}\n` +
+                        `📂 Manuell archivierte: ${archivedTests.filter(t => t.note?.includes('[ARCHIVIERT]')).length}\n\n` +
+                        `Aktuelle Suite: ${testSuites.find(s => s.id === activeSuite)?.name}\n` +
+                        `Tests in dieser Suite: ${testCases.filter(t => t.suite_id === activeSuite).length}\n\n` +
+                        `Möchten Sie alle archivierten Tests als Filter anzeigen?`;
+                      
+                      if (confirm(archiveInfo)) {
+                        // Filter auf erfolgreiche Tests setzen
+                        setFilterStatus('success');
+                      }
+                    }}
+                    className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                      darkMode 
+                        ? 'border-purple-400 text-purple-400 hover:bg-purple-400 hover:bg-opacity-20' 
+                        : 'border-purple-500 text-purple-500 hover:bg-purple-500 hover:bg-purple-opacity-10'
+                    }`}>
                     <Archive className="h-4 w-4 mr-1" />
                     Archiv
                   </button>
