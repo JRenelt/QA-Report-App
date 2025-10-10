@@ -6,6 +6,7 @@ import {
   CheckCircle, User, FunnelX, Coffee, CircleOff, MousePointerClick, CircleCheck
 } from 'lucide-react';
 import UserManagement from './UserManagement';
+import CompanyManagement from './CompanyManagement';
 import qaService from '../services/qaService';
 
 interface QADashboardV2Props {
