@@ -957,45 +957,67 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 </CustomTooltip>
               </div>
 
-              {/* Action Buttons Rechts - Outline Design */}
+              {/* Action Buttons Rechts - Korrigiert */}
               <div className="flex space-x-2">
-                <CustomTooltip text="Alle Änderungen speichern">
+                <CustomTooltip text="Konfiguration öffnen">
+                  <button 
+                    onClick={onOpenSettings}
+                    className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                      darkMode 
+                        ? 'border-gray-400 text-gray-400 hover:bg-gray-400 hover:bg-opacity-20' 
+                        : 'border-gray-500 text-gray-500 hover:bg-gray-500 hover:bg-opacity-10'
+                    }`}>
+                    <Settings className="h-4 w-4 mr-1" />
+                    Config
+                  </button>
+                </CustomTooltip>
+                <CustomTooltip text={`Alle Änderungen speichern (${statusCounts.all - statusCounts.pending} gespeichert)`}>
                   <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
                     darkMode 
                       ? 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:bg-opacity-20' 
                       : 'border-blue-500 text-blue-500 hover:bg-blue-500 hover:bg-opacity-10'
                   }`}>
                     <Save className="h-4 w-4 mr-1" />
-                    Test speichern
+                    Test speichern [{statusCounts.all - statusCounts.pending}]
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="Tests als CSV exportieren">
+                <CustomTooltip text="Archiv mit persistenten Tests öffnen">
+                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                    darkMode 
+                      ? 'border-purple-400 text-purple-400 hover:bg-purple-400 hover:bg-opacity-20' 
+                      : 'border-purple-500 text-purple-500 hover:bg-purple-500 hover:bg-opacity-10'
+                  }`}>
+                    <Archive className="h-4 w-4 mr-1" />
+                    Archiv
+                  </button>
+                </CustomTooltip>
+                <CustomTooltip text="Export-Funktionen öffnen (Systemsteuerung)">
                   <button 
-                    onClick={handleCSVExport}
+                    onClick={onOpenSettings}
                     className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
                       darkMode 
-                        ? 'border-purple-400 text-purple-400 hover:bg-purple-400 hover:bg-opacity-20' 
-                        : 'border-purple-500 text-purple-500 hover:bg-purple-500 hover:bg-opacity-10'
+                        ? 'border-orange-400 text-orange-400 hover:bg-orange-400 hover:bg-opacity-20' 
+                        : 'border-orange-500 text-orange-500 hover:bg-orange-500 hover:bg-opacity-10'
                     }`}>
-                    <Archive className="h-4 w-4 mr-1" />
-                    CSV Export
+                    <FileDown className="h-4 w-4 mr-1" />
+                    Export
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="QA-Bericht für alle Tests als PDF exportieren">
+                <CustomTooltip text="QA-Bericht für alle Tests mit Vorschau">
                   <button 
-                    onClick={() => handlePDFExport('all')}
+                    onClick={() => handlePDFPreview('all')}
                     className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
                       darkMode 
                         ? 'border-green-400 text-green-400 hover:bg-green-400 hover:bg-opacity-20' 
                         : 'border-green-500 text-green-500 hover:bg-green-500 hover:bg-opacity-10'
                     }`}>
-                    <FileDown className="h-4 w-4 mr-1" />
+                    <FileText className="h-4 w-4 mr-1" />
                     QA-Bericht
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="QA-Bericht nur für getestete Tests als PDF exportieren">
+                <CustomTooltip text="QA-Bericht nur für getestete Tests mit Vorschau">
                   <button 
-                    onClick={() => handlePDFExport('tested')}
+                    onClick={() => handlePDFPreview('tested')}
                     className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
                       darkMode 
                         ? 'border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:bg-opacity-20' 
@@ -1006,11 +1028,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text="Alle Tests zurücksetzen">
-                  <button className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
-                    darkMode 
-                      ? 'border-red-400 text-red-400 hover:bg-red-400 hover:bg-opacity-20' 
-                      : 'border-red-500 text-red-500 hover:bg-red-500 hover:bg-opacity-10'
-                  }`}>
+                  <button 
+                    onClick={handleResetTests}
+                    className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
+                      darkMode 
+                        ? 'border-red-400 text-red-400 hover:bg-red-400 hover:bg-opacity-20' 
+                        : 'border-red-500 text-red-500 hover:bg-red-500 hover:bg-opacity-10'
+                    }`}>
                     <RotateCcw className="h-4 w-4 mr-1" />
                     Reset
                   </button>
