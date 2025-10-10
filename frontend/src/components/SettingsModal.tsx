@@ -83,6 +83,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     setLoading(true);
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-hub.preview.emergentagent.com';
+      console.log('🔍 DEBUG: Backend URL:', backendUrl);
+      console.log('🔍 DEBUG: Making request to:', `${backendUrl}/api/admin/generate-test-data`);
+      console.log('🔍 DEBUG: Auth Token available:', !!authToken);
+      
       const response = await fetch(`${backendUrl}/api/admin/generate-test-data`, {
         method: 'POST',
         headers: {
