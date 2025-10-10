@@ -1,0 +1,55 @@
+{
+  "german_review_comprehensive": true,
+  "total_tests": 6,
+  "passed": 4,
+  "failed": 2,
+  "success_rate": 66.66666666666666,
+  "results": [
+    {
+      "test": "Backend Health (Internal)",
+      "success": true,
+      "message": "\u2705 Backend healthy internally - Status: healthy, DB: MongoDB",
+      "timestamp": "2025-10-10T07:40:33.280546",
+      "response_data": null
+    },
+    {
+      "test": "Admin Login",
+      "success": true,
+      "message": "\u26a0\ufe0f  Admin login successful with USERNAME (admin) - Email login failed but username works - User: admin, Role: admin",
+      "timestamp": "2025-10-10T07:40:33.583927",
+      "response_data": null
+    },
+    {
+      "test": "Test Data Generation",
+      "success": true,
+      "message": "\u2705 Test data generation WORKING - Testdaten erfolgreich generiert - Companies: 2, Test Cases: 6",
+      "timestamp": "2025-10-10T07:40:33.600243",
+      "response_data": null
+    },
+    {
+      "test": "Test Suite Creation",
+      "success": true,
+      "message": "\u2705 Test suite creation WORKING - Created suite: German Review Test Suite 074033 (ID: 3b8f5fee-df8e-4443-82ce-c933ff614788)",
+      "timestamp": "2025-10-10T07:40:33.624283",
+      "response_data": null
+    },
+    {
+      "test": "Test Case Creation",
+      "success": false,
+      "message": "\u274c Test case creation FAILED - HTTP 422: {\"detail\":[{\"type\":\"int_parsing\",\"loc\":[\"body\",\"priority\"],\"msg\":\"Input should be a valid integer, unable to parse string as an integer\",\"input\":\"medium\",\"url\":\"https://errors.pydantic.dev/2.11/v/int_parsing\"}]}",
+      "timestamp": "2025-10-10T07:40:33.637674",
+      "response_data": null
+    },
+    {
+      "test": "Bulk Test Case Creation",
+      "success": false,
+      "message": "\u274c Bulk test case creation FAILED - HTTP 422: {\"detail\":[{\"type\":\"int_parsing\",\"loc\":[\"body\",0,\"priority\"],\"msg\":\"Input should be a valid integer, unable to parse string as an integer\",\"input\":\"high\",\"url\":\"https://errors.pydantic.dev/2.11/v/int_parsing\"},{\"type\":\"int_parsing\",\"loc\":[\"body\",1,\"priority\"],\"msg\":\"Input should be a valid integer, unable to parse string as an integer\",\"input\":\"medium\",\"url\":\"https://errors.pydantic.dev/2.11/v/int_parsing\"}]}",
+      "timestamp": "2025-10-10T07:40:33.650292",
+      "response_data": null
+    }
+  ],
+  "user_reported_issues_verification": {
+    "test_data_generation_off": false,
+    "new_test_creation_off": false
+  }
+}
