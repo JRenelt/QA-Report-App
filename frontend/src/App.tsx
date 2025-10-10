@@ -377,7 +377,14 @@ function App() {
             authToken={authToken} 
             user={user} 
             darkMode={darkMode}
-            onOpenSettings={() => setShowSettings(true)}
+            onOpenSettings={() => {
+              setSettingsInitialTab('appearance');
+              setShowSettings(true);
+            }}
+            onOpenExport={() => {
+              setSettingsInitialTab('import-export');
+              setShowSettings(true);
+            }}
             onOpenHelp={() => setShowHelp(true)}
             onLogout={handleLogout}
           />
