@@ -675,7 +675,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     if (user?.role === 'admin') {
       return <Crown className="h-5 w-5 text-yellow-400" />;
     }
-    return <UserRound className="h-5 w-5 text-blue-400" />;
+    return <User className="h-5 w-5 text-blue-400" />;
   };
 
   const getSuiteBadgeStyle = (suiteId: string) => {
