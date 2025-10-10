@@ -1618,6 +1618,15 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         </div>
       )}
 
+      {/* Company Management Modal */}
+      <CompanyManagement
+        isOpen={showCompanyManagement}
+        onClose={() => setShowCompanyManagement(false)}
+        darkMode={darkMode}
+        authToken={authToken}
+        currentUser={user}
+      />
+
       {/* User Management Modal */}
       <UserManagement
         authToken={authToken}
