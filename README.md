@@ -18,18 +18,20 @@ Die **QA-Report-App** ist eine umfassende Webanwendung für [Qualitätssicherung
 ## Übersicht
 Die QA-Report-App ist eine professionelle Qualitätssicherungs-Anwendung für Testmanagement, Reporting und Team-Collaboration.
 
-## 🚀 Schnellstart
+## Schnellstart
 
-### Login
-- **URL**: https://qa-report-hub.preview.emergentagent.com/
-- **Admin**: `admin` / `admin123`
-- **QA-Tester**: Erstellt über Benutzer-Management
+### Login und Zugang
+**Hauptartikel:** [Authentifizierung](#authentifizierung)
+
+- **URL**: [https://qa-report-hub.preview.emergentagt.com/](https://qa-report-hub.preview.emergentagent.com/)
+- **[Administrator](#administrator)**: `admin` / `admin123`  
+- **[QA-Tester](#qa-tester)**: Accounts werden über das [Benutzermanagement](#benutzermanagement) erstellt
 
 ### Erste Schritte
-1. Mit Admin-Account anmelden
-2. **Testdaten generieren**: Settings → Erweitert → "Testdaten generieren"
-3. Test-Bereiche in der Sidebar erkunden
-4. Tests erstellen und Status setzen
+1. **[Anmeldung](#anmeldung)**: Mit Administrator-Account anmelden
+2. **[Testdaten-Generierung](#testdaten-generierung)**: [Einstellungen](#systemeinstellungen) → [Erweitert](#erweiterte-einstellungen) → "Testdaten generieren"
+3. **Navigation**: [Test-Bereiche](#test-bereiche) in der Sidebar erkunden
+4. **[Test-Erstellung](#test-erstellung)**: Tests erstellen und [Status](#test-status) setzen
 
 ## 📋 Hauptfunktionen
 
