@@ -1147,11 +1147,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 <CustomTooltip text={`Übersprungene Tests anzeigen (${statusCounts.skipped})`}>
                   <button
                     onClick={() => setFilterStatus('skipped')}
-                    className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
-                      filterStatus === 'skipped' ? 'bg-blue-600 text-white' : 'bg-blue-300 hover:bg-blue-400 text-blue-800'
+                    className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                      filterStatus === 'skipped' 
+                        ? 'bg-blue-600 text-white shadow-md' 
+                        : 'bg-blue-300 hover:bg-blue-400 text-blue-800'
                     }`}
                   >
-                    <MousePointerClick className="h-4 w-4" />
+                    ↻
                   </button>
                 </CustomTooltip>
               </div>
