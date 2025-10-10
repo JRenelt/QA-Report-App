@@ -20,27 +20,32 @@
 
 /* Custom component styles */
 @layer components {
-  .btn-primary {
-    @apply bg-qa-primary-600 hover:bg-qa-primary-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+  .qa-card {
+    @apply bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow; /* Reduziert von p-6 auf p-4 */
   }
   
-  .btn-secondary {
-    @apply bg-qa-gray-200 hover:bg-qa-gray-300 text-qa-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors duration-200;
+  .qa-button-primary {
+    @apply bg-qa-primary-600 hover:bg-qa-primary-700 text-white font-medium py-1.5 px-3 rounded-md transition-colors text-sm; /* Kompakter */
   }
   
-  .card {
-    @apply bg-white rounded-lg shadow-md border border-qa-gray-200;
+  .qa-button-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-1.5 px-3 rounded-md transition-colors text-sm; /* Kompakter */
   }
   
-  .input-field {
-    @apply border border-qa-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-qa-primary-500 focus:border-transparent;
+  .qa-input {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-qa-primary-500 focus:ring-qa-primary-500 text-sm py-1.5; /* Kompakter */
   }
   
-  .nav-link {
-    @apply text-qa-gray-600 hover:text-qa-primary-600 font-medium transition-colors duration-200;
+  .qa-nav-link {
+    @apply block px-2 py-1.5 rounded-md text-sm font-medium hover:text-qa-primary-700 hover:bg-gray-50 transition-colors; /* Kompakter */
   }
   
-  .nav-link-active {
+  .qa-nav-link-active {
     @apply text-qa-primary-600 font-semibold;
+  }
+  
+  /* Kompakte Darstellung für bessere Skalierung */
+  .qa-compact {
+    @apply text-sm leading-tight;
   }
 }
