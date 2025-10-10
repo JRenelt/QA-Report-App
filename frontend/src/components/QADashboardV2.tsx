@@ -210,7 +210,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 className="ml-1 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center hover:bg-orange-200 transition-colors"
                 title="Tooltip schließen"
               >
-                <CheckCircle className="h-3 w-3" />
+                <CircleCheck className="h-3 w-3" />
               </button>
             </div>
             <div 
