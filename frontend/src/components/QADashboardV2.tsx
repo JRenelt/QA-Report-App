@@ -225,7 +225,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               backgroundColor: '#f6cda1',
               color: '#8b4513',
               left: '50%',
-              bottom: '100%',
+              bottom: window.scrollY < 100 ? 'auto' : '100%', // Unten positionieren wenn oben wenig Platz
+              top: window.scrollY < 100 ? '100%' : 'auto', // Oben positionieren wenn unten wenig Platz
               transform: 'translateX(-50%)',
               marginLeft: window.innerWidth < 400 ? '-50px' : '0px' // Bildschirmrand-Schutz
             }}
