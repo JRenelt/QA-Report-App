@@ -949,7 +949,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       </div>
                       <p className="text-gray-400 text-sm mb-3">{test.description || 'Keine Beschreibung'}</p>
                       
-                      {/* Status-Buttons */}
+                      {/* Status-Buttons - Mit Icons wie Filter-Buttons */}
                       <div className="flex space-x-2 mb-3">
                         <CustomTooltip text="Test als erfolgreich markieren">
                           <button
@@ -959,13 +959,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                               );
                               setTestCases(updated);
                             }}
-                            className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                            className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
                               test.status === 'success' 
-                                ? 'bg-green-600 text-white shadow-md' 
-                                : 'bg-green-200 text-green-800 hover:bg-green-300'
+                                ? 'bg-green-600 text-white' 
+                                : 'bg-green-300 hover:bg-green-400 text-green-800'
                             }`}
                           >
-                            ✓ Bestanden
+                            <Check className="h-4 w-4" />
                           </button>
                         </CustomTooltip>
                         
@@ -977,13 +977,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                               );
                               setTestCases(updated);
                             }}
-                            className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                            className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
                               test.status === 'error' 
-                                ? 'bg-red-600 text-white shadow-md' 
-                                : 'bg-red-200 text-red-800 hover:bg-red-300'
+                                ? 'bg-red-600 text-white' 
+                                : 'bg-red-300 hover:bg-red-400 text-red-800'
                             }`}
                           >
-                            ✗ Fehlgeschlagen
+                            <X className="h-4 w-4" />
                           </button>
                         </CustomTooltip>
                         
@@ -995,13 +995,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                               );
                               setTestCases(updated);
                             }}
-                            className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                            className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
                               test.status === 'warning' 
-                                ? 'bg-orange-600 text-white shadow-md' 
-                                : 'bg-orange-200 text-orange-800 hover:bg-orange-300'
+                                ? 'bg-orange-600 text-white' 
+                                : 'bg-orange-300 hover:bg-orange-400 text-orange-800'
                             }`}
                           >
-                            ⚠ In Arbeit
+                            <Coffee className="h-4 w-4" />
                           </button>
                         </CustomTooltip>
                         
