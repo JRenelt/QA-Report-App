@@ -1359,4 +1359,6 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     </div>
   );
 
+};
+
 export default QADashboardV2;
