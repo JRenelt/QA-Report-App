@@ -3,7 +3,7 @@ import {
   Monitor, Tablet, Smartphone, Wrench, Moon, FileText, Palette, Menu, 
   Plus, Check, X, AlertTriangle, RotateCcw, Edit, MessageSquare, 
   Trash2, Save, FileDown, Archive, HelpCircle, Settings, Crown, UserRound, FlaskConical, LogOut, Users,
-  CheckCircle, User, FunnelX, Coffee, CircleOff, MousePointerClick
+  CheckCircle, User, FunnelX, Coffee, CircleOff, MousePointerClick, CircleCheck
 } from 'lucide-react';
 import UserManagement from './UserManagement';
 import qaService from '../services/qaService';
