@@ -1,0 +1,542 @@
+{
+  "companies": [
+    {
+      "id": "ID2",
+      "name": "ID2 GmbH",
+      "address": "Brockhausweg 66b",
+      "city": "Hamburg",
+      "postalCode": "22117",
+      "country": "Deutschland",
+      "isProtected": true,
+      "users": [
+        {
+          "id": "admin-id2",
+          "username": "admin",
+          "email": "admin@id2.de",
+          "role": "admin",
+          "firstName": "Jörg",
+          "lastName": "Renelt",
+          "isProtected": true
+        },
+        {
+          "id": "qa-id2",
+          "username": "qa.tester",
+          "email": "qa@id2.de",
+          "role": "qa_tester",
+          "firstName": "QA",
+          "lastName": "Tester"
+        }
+      ]
+    },
+    {
+      "id": "TG01",
+      "name": "TechGlobal Solutions AG",
+      "address": "Maximilianstraße 35",
+      "city": "München",
+      "postalCode": "80539",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-tg01",
+          "username": "m.weber",
+          "email": "m.weber@techglobal.de",
+          "role": "qa_tester",
+          "firstName": "Michael",
+          "lastName": "Weber"
+        }
+      ]
+    },
+    {
+      "id": "DE02",
+      "name": "Digital Excellence GmbH",
+      "address": "Friedrichstraße 158",
+      "city": "Berlin",
+      "postalCode": "10117",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-de02",
+          "username": "s.mueller",
+          "email": "s.mueller@digitalexcellence.de",
+          "role": "qa_tester",
+          "firstName": "Sarah",
+          "lastName": "Mueller"
+        }
+      ]
+    },
+    {
+      "id": "IN03",
+      "name": "Innovate Systems Ltd.",
+      "address": "Königsallee 92",
+      "city": "Düsseldorf",
+      "postalCode": "40212",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-in03",
+          "username": "t.schmidt",
+          "email": "t.schmidt@innovate-sys.de",
+          "role": "qa_tester",
+          "firstName": "Thomas",
+          "lastName": "Schmidt"
+        }
+      ]
+    },
+    {
+      "id": "CP04",
+      "name": "CloudPro Networks",
+      "address": "Bahnhofstraße 45",
+      "city": "Frankfurt am Main",
+      "postalCode": "60329",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-cp04",
+          "username": "l.hoffmann",
+          "email": "l.hoffmann@cloudpro.de",
+          "role": "qa_tester",
+          "firstName": "Lisa",
+          "lastName": "Hoffmann"
+        }
+      ]
+    },
+    {
+      "id": "SW05",
+      "name": "Software Wizards GmbH",
+      "address": "Reeperbahn 154",
+      "city": "Hamburg",
+      "postalCode": "20359",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-sw05",
+          "username": "r.wagner",
+          "email": "r.wagner@swwizards.de",
+          "role": "qa_tester",
+          "firstName": "Robert",
+          "lastName": "Wagner"
+        }
+      ]
+    },
+    {
+      "id": "AI06",
+      "name": "AI Innovations Corp.",
+      "address": "Potsdamer Platz 10",
+      "city": "Berlin",
+      "postalCode": "10785",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-ai06",
+          "username": "a.fischer",
+          "email": "a.fischer@ai-innovations.de",
+          "role": "qa_tester",
+          "firstName": "Anna",
+          "lastName": "Fischer"
+        }
+      ]
+    },
+    {
+      "id": "QS07",
+      "name": "Quality Systems Rhein-Main",
+      "address": "Zeil 125",
+      "city": "Frankfurt am Main", 
+      "postalCode": "60313",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-qs07",
+          "username": "d.becker",
+          "email": "d.becker@qualitysystems.de",
+          "role": "qa_tester",
+          "firstName": "Daniel",
+          "lastName": "Becker"
+        }
+      ]
+    },
+    {
+      "id": "MT08",
+      "name": "MegaTech Solutions",
+      "address": "Leopoldstraße 244",
+      "city": "München",
+      "postalCode": "80807",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-mt08",
+          "username": "j.koch",
+          "email": "j.koch@megatech.de",
+          "role": "qa_tester",
+          "firstName": "Julia",
+          "lastName": "Koch"
+        }
+      ]
+    },
+    {
+      "id": "FT09",
+      "name": "Future Technologies Hamburg",
+      "address": "Mönckebergstraße 17",
+      "city": "Hamburg",
+      "postalCode": "20095",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-ft09",
+          "username": "p.richter",
+          "email": "p.richter@futuretech-hh.de",
+          "role": "qa_tester",
+          "firstName": "Patrick",
+          "lastName": "Richter"
+        }
+      ]
+    },
+    {
+      "id": "ST10",
+      "name": "Smart Testing GmbH & Co. KG",
+      "address": "Kurfürstendamm 195",
+      "city": "Berlin",
+      "postalCode": "10707",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-st10",
+          "username": "c.klein",
+          "email": "c.klein@smarttesting.de",
+          "role": "qa_tester",
+          "firstName": "Christina",
+          "lastName": "Klein"
+        }
+      ]
+    },
+    {
+      "id": "PR11",
+      "name": "ProActive Quality Solutions",
+      "address": "Theresienstraße 29",
+      "city": "München",
+      "postalCode": "80333",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-pr11",
+          "username": "m.wolf",
+          "email": "m.wolf@proactive-qa.de",
+          "role": "qa_tester",
+          "firstName": "Marcus",
+          "lastName": "Wolf"
+        }
+      ]
+    },
+    {
+      "id": "AG12",
+      "name": "Agile Development Works",
+      "address": "Unter den Linden 77",
+      "city": "Berlin",
+      "postalCode": "10117",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-ag12",
+          "username": "s.neumann",
+          "email": "s.neumann@agile-dev.de",
+          "role": "qa_tester",
+          "firstName": "Stefan",
+          "lastName": "Neumann"
+        }
+      ]
+    },
+    {
+      "id": "QA13",
+      "name": "QualityFirst Testing Services",
+      "address": "Steinstraße 13",
+      "city": "Düsseldorf",
+      "postalCode": "40210",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-qa13",
+          "username": "n.braun",
+          "email": "n.braun@qualityfirst.de",
+          "role": "qa_tester",
+          "firstName": "Nina",
+          "lastName": "Braun"
+        }
+      ]
+    },
+    {
+      "id": "TE14",
+      "name": "TestExpert Solutions International",
+      "address": "Jungfernstieg 38",
+      "city": "Hamburg",
+      "postalCode": "20354",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-te14",
+          "username": "k.zimmermann",
+          "email": "k.zimmermann@testexpert.de",
+          "role": "qa_tester",
+          "firstName": "Katharina",
+          "lastName": "Zimmermann"
+        }
+      ]
+    },
+    {
+      "id": "RT15",
+      "name": "Reliable Testing Partners GmbH",
+      "address": "Hackesche Höfe, Rosenthaler Straße 40/41",
+      "city": "Berlin",
+      "postalCode": "10178",
+      "country": "Deutschland",
+      "users": [
+        {
+          "id": "qa-rt15",
+          "username": "f.krause",
+          "email": "f.krause@reliable-testing.de",
+          "role": "qa_tester",
+          "firstName": "Felix",
+          "lastName": "Krause"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "PROJ001",
+      "companyId": "ID2",
+      "name": "E-Commerce Plattform Redesign",
+      "description": "Komplette Überarbeitung der Online-Shop Benutzeroberfläche",
+      "notes": "Fokus auf mobile Optimierung und Accessibility",
+      "createdBy": "admin",
+      "status": "active",
+      "testBereiche": [
+        {
+          "id": "kopfzeile",
+          "name": "Kopfzeile",
+          "description": "Tests für Header-Bereich und Navigation",
+          "tests": [
+            {"title": "Logo Darstellung Desktop", "description": "Logo wird korrekt in Desktop-Auflösung angezeigt"},
+            {"title": "Logo Darstellung Mobile", "description": "Logo wird korrekt auf mobilen Geräten angezeigt"},
+            {"title": "Hauptnavigation Funktionalität", "description": "Alle Hauptnavigationspunkte sind klickbar und funktional"},
+            {"title": "Hauptnavigation Responsive Verhalten", "description": "Navigation passt sich verschiedenen Bildschirmgrößen an"},
+            {"title": "Suchfeld Eingabe Validierung", "description": "Suchfeld akzeptiert gültige Eingaben und zeigt Ergebnisse"},
+            {"title": "Suchfeld Autocomplete Funktion", "description": "Autocomplete-Vorschläge erscheinen während der Eingabe"},
+            {"title": "Benutzer Login Button Sichtbarkeit", "description": "Login-Button ist in allen Ansichten sichtbar"},
+            {"title": "Benutzer Login Button Funktionalität", "description": "Login-Button öffnet korrektes Login-Modal"},
+            {"title": "Warenkorb Icon Anzeige", "description": "Warenkorb-Icon zeigt korrekte Artikel-Anzahl"},
+            {"title": "Warenkorb Icon Klick Verhalten", "description": "Klick auf Warenkorb öffnet Warenkorb-Übersicht"},
+            {"title": "Sprachauswahl Dropdown", "description": "Sprachauswahl-Dropdown funktioniert korrekt"},
+            {"title": "Währungsauswahl Funktion", "description": "Währungsumstellung funktioniert und wird gespeichert"},
+            {"title": "Breadcrumb Navigation Anzeige", "description": "Breadcrumb-Navigation zeigt korrekte Seitenhierarchie"},
+            {"title": "Breadcrumb Navigation Klicks", "description": "Breadcrumb-Links führen zu korrekten Seiten"},
+            {"title": "Header Scroll Verhalten", "description": "Header verhält sich korrekt beim Scrollen"},
+            {"title": "Header Mobile Menu Toggle", "description": "Mobile Hamburger-Menü öffnet und schließt korrekt"},
+            {"title": "Header Sticky Position", "description": "Header bleibt in sticky Position beim Scrollen"},
+            {"title": "Header Links Hover Effekte", "description": "Hover-Effekte funktionieren für alle Header-Links"},
+            {"title": "Header Kontakt Information", "description": "Kontaktinformationen sind korrekt angezeigt"},
+            {"title": "Header Social Media Links", "description": "Social Media Links öffnen korrekte Profile"}
+          ]
+        },
+        {
+          "id": "sidebar",
+          "name": "Sidebar Navigation",
+          "description": "Tests für Seitenleiste und Kategorien",
+          "tests": [
+            {"title": "Kategorie Menü Struktur", "description": "Kategorien werden in korrekter Hierarchie angezeigt"},
+            {"title": "Kategorie Menü Klick Navigation", "description": "Klicks auf Kategorien führen zu korrekten Seiten"},
+            {"title": "Filter Optionen Anzeige", "description": "Alle Filteroptionen werden korrekt angezeigt"},
+            {"title": "Filter Optionen Funktionalität", "description": "Filter können aktiviert und deaktiviert werden"},
+            {"title": "Preis Range Slider", "description": "Preisbereich-Slider funktioniert korrekt"},
+            {"title": "Preis Range Input Felder", "description": "Manuelle Preiseingabe funktioniert"},
+            {"title": "Marken Filter Checkboxes", "description": "Marken-Filter können ausgewählt werden"},
+            {"title": "Marken Filter Suche", "description": "Suche in Marken-Filter funktioniert"},
+            {"title": "Größen Filter Optionen", "description": "Größenfilter zeigt alle verfügbaren Größen"},
+            {"title": "Farb Filter Visual", "description": "Farbfilter zeigt Farben visuell korrekt an"},
+            {"title": "Verfügbarkeit Filter", "description": "Verfügbarkeitsfilter funktioniert korrekt"},
+            {"title": "Bewertung Filter Sterne", "description": "Bewertungsfilter mit Sterne-System funktioniert"},
+            {"title": "Filter Reset Button", "description": "Filter-Reset-Button setzt alle Filter zurück"},
+            {"title": "Filter Kombination Logic", "description": "Mehrere Filter können kombiniert werden"},
+            {"title": "Sidebar Collapse Desktop", "description": "Sidebar kann auf Desktop eingeklappt werden"},
+            {"title": "Sidebar Mobile Overlay", "description": "Sidebar öffnet als Overlay auf mobilen Geräten"},
+            {"title": "Filter Ergebnis Counter", "description": "Anzahl der Filterergebnisse wird korrekt angezeigt"},
+            {"title": "Filter URL Parameter", "description": "Filter-Auswahl wird in URL-Parametern gespeichert"},
+            {"title": "Filter Loading States", "description": "Loading-Zustände werden während Filter-Updates angezeigt"},
+            {"title": "Recent Searches Display", "description": "Letzte Suchbegriffe werden in Sidebar angezeigt"}
+          ]
+        },
+        {
+          "id": "hauptinhalt",
+          "name": "Hauptinhalt",
+          "description": "Tests für Main-Content-Bereich",
+          "tests": [
+            {"title": "Produkt Grid Layout", "description": "Produktraster wird korrekt in verschiedenen Auflösungen angezeigt"},
+            {"title": "Produkt Karten Design", "description": "Produktkarten haben einheitliches Design und Spacing"},
+            {"title": "Produkt Bilder Lazy Loading", "description": "Produktbilder werden mittels Lazy Loading geladen"},
+            {"title": "Produkt Bilder Hover Effekt", "description": "Hover-Effekte auf Produktbildern funktionieren"},
+            {"title": "Produkt Titel Truncation", "description": "Lange Produkttitel werden korrekt gekürzt"},
+            {"title": "Produkt Preis Anzeige", "description": "Preise werden in korrekter Formatierung angezeigt"},
+            {"title": "Produkt Bewertung Sterne", "description": "Produktbewertungen als Sterne werden korrekt dargestellt"},
+            {"title": "Produkt Verfügbarkeit Status", "description": "Verfügbarkeitsstatus wird deutlich angezeigt"},
+            {"title": "Produkt Quick View Modal", "description": "Quick View Modal öffnet mit korrekten Produktdaten"},
+            {"title": "Produkt Wishlist Button", "description": "Wishlist-Button funktioniert und zeigt Status korrekt"},
+            {"title": "Produkt Add To Cart", "description": "Zum Warenkorb hinzufügen funktioniert"},
+            {"title": "Produkt Varianten Auswahl", "description": "Produktvarianten können ausgewählt werden"},
+            {"title": "Sortierung Dropdown", "description": "Produktsortierung funktioniert korrekt"},
+            {"title": "Pagination Navigation", "description": "Seitennavigation für Produktlisten funktioniert"},
+            {"title": "Load More Button", "description": "\"Mehr laden\" Button lädt weitere Produkte"},
+            {"title": "Grid View Toggle", "description": "Umschaltung zwischen Grid- und Listenansicht"},
+            {"title": "Product Compare Function", "description": "Produktvergleich kann aktiviert werden"},
+            {"title": "Recent Viewed Products", "description": "Zuletzt angesehene Produkte werden angezeigt"},
+            {"title": "Search Results Highlighting", "description": "Suchbegriffe in Ergebnissen werden hervorgehoben"},
+            {"title": "No Results Found Message", "description": "\"Keine Ergebnisse\" Nachricht wird korrekt angezeigt"}
+          ]
+        },
+        {
+          "id": "fusszeile",
+          "name": "Fußzeile",
+          "description": "Tests für Footer-Bereich",
+          "tests": [
+            {"title": "Footer Links Kategorien", "description": "Footer-Links sind in sinnvolle Kategorien unterteilt"},
+            {"title": "Footer Links Funktionalität", "description": "Alle Footer-Links führen zu korrekten Seiten"},
+            {"title": "Newsletter Signup Form", "description": "Newsletter-Anmeldung funktioniert korrekt"},
+            {"title": "Newsletter Validation", "description": "E-Mail-Validierung für Newsletter funktioniert"},
+            {"title": "Social Media Icons", "description": "Social Media Icons verlinken zu korrekten Profilen"},
+            {"title": "Social Media Icons Hover", "description": "Hover-Effekte auf Social Media Icons funktionieren"},
+            {"title": "Payment Methods Display", "description": "Akzeptierte Zahlungsmethoden werden angezeigt"},
+            {"title": "Security Certificates", "description": "Sicherheitszertifikate und Siegel werden angezeigt"},
+            {"title": "Copyright Information", "description": "Copyright-Informationen sind korrekt und aktuell"},
+            {"title": "Legal Links Impressum", "description": "Impressum-Link führt zu korrekter Seite"},
+            {"title": "Legal Links Datenschutz", "description": "Datenschutz-Link führt zu korrekter Seite"},
+            {"title": "Legal Links AGB", "description": "AGB-Link führt zu korrekter Seite"},
+            {"title": "Contact Information Display", "description": "Kontaktinformationen sind vollständig angezeigt"},
+            {"title": "Store Locator Link", "description": "Filialfinder-Link funktioniert korrekt"},
+            {"title": "Customer Service Hours", "description": "Kundenservice-Zeiten werden angezeigt"},
+            {"title": "Return Policy Link", "description": "Rückgaberichtlinien-Link funktioniert"},
+            {"title": "FAQ Link", "description": "FAQ-Link führt zu Hilfeseite"},
+            {"title": "Mobile Footer Collapse", "description": "Footer-Bereiche können auf Mobile eingeklappt werden"},
+            {"title": "Footer Responsive Layout", "description": "Footer passt sich verschiedenen Bildschirmgrößen an"},
+            {"title": "Footer Background Styling", "description": "Footer-Hintergrund und Styling sind konsistent"}
+          ]
+        },
+        {
+          "id": "checkout",
+          "name": "Checkout Prozess",
+          "description": "Tests für Bestellabwicklung",
+          "tests": [
+            {"title": "Shopping Cart View", "description": "Warenkorb-Ansicht zeigt alle Artikel korrekt"},
+            {"title": "Cart Item Quantity Update", "description": "Mengenänderung im Warenkorb funktioniert"},
+            {"title": "Cart Item Removal", "description": "Artikel können aus Warenkorb entfernt werden"},
+            {"title": "Shipping Calculator", "description": "Versandkostenberechnung funktioniert korrekt"},
+            {"title": "Promo Code Input", "description": "Gutscheincode-Eingabe funktioniert"},
+            {"title": "Guest Checkout Option", "description": "Gast-Checkout ohne Registrierung möglich"},
+            {"title": "Billing Address Form", "description": "Rechnungsadresse-Formular validiert Eingaben"},
+            {"title": "Shipping Address Form", "description": "Lieferadresse-Formular funktioniert korrekt"},
+            {"title": "Payment Method Selection", "description": "Zahlungsmethoden-Auswahl funktioniert"},
+            {"title": "Credit Card Validation", "description": "Kreditkarten-Validierung funktioniert korrekt"},
+            {"title": "Order Summary Display", "description": "Bestellübersicht zeigt alle Details korrekt"},
+            {"title": "Terms Conditions Checkbox", "description": "AGB-Checkbox muss aktiviert werden"},
+            {"title": "Order Confirmation Page", "description": "Bestellbestätigung zeigt korrekte Informationen"},
+            {"title": "Order Confirmation Email", "description": "Bestätigungs-E-Mail wird versendet"},
+            {"title": "Payment Processing Loading", "description": "Loading-Animation während Zahlungsabwicklung"},
+            {"title": "Error Handling Payment", "description": "Fehlermeldungen bei Zahlungsproblemen"},
+            {"title": "Checkout Security SSL", "description": "SSL-Verschlüsselung im Checkout aktiv"},
+            {"title": "Express Checkout PayPal", "description": "PayPal Express Checkout funktioniert"},
+            {"title": "Apple Pay Integration", "description": "Apple Pay Integration funktioniert korrekt"},
+            {"title": "Order Tracking Link", "description": "Sendungsverfolgung-Link wird bereitgestellt"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PROJ002",
+      "companyId": "TG01",
+      "name": "Mobile Banking App Security Audit",
+      "description": "Umfassende Sicherheitsprüfung der mobilen Banking-Anwendung",
+      "notes": "Compliance mit PCI DSS und DSGVO erforderlich",
+      "createdBy": "m.weber",
+      "status": "active",
+      "testBereiche": [
+        {
+          "id": "login",
+          "name": "Kopfzeile",
+          "description": "Authentifizierung und Login-Sicherheit",
+          "tests": [
+            {"title": "Two Factor Authentication", "description": "2FA funktioniert mit verschiedenen Methoden"},
+            {"title": "Biometric Login iPhone", "description": "Face ID und Touch ID Authentifizierung"},
+            {"title": "PIN Code Security", "description": "PIN-Code Eingabe und Verschlüsselung"},
+            {"title": "Session Timeout Management", "description": "Automatische Abmeldung nach Inaktivität"},
+            {"title": "Failed Login Attempts", "description": "Sperrmechanismus nach fehlgeschlagenen Logins"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PROJ003", 
+      "companyId": "DE02",
+      "name": "CRM Dashboard Performance Optimization",
+      "description": "Leistungsoptimierung des Kundenverwaltungs-Dashboards",
+      "notes": "Ziel: Ladezeiten unter 2 Sekunden",
+      "createdBy": "s.mueller",
+      "status": "active",
+      "testBereiche": [
+        {
+          "id": "performance",
+          "name": "Sidebar Navigation", 
+          "description": "Performance und Ladezeiten-Tests",
+          "tests": [
+            {"title": "Dashboard Load Time", "description": "Initial Dashboard Ladezeit unter 2 Sekunden"},
+            {"title": "Large Dataset Rendering", "description": "Rendering großer Datenmengen optimiert"},
+            {"title": "Search Performance Query", "description": "Suchfunktion reagiert schnell auf Eingaben"},
+            {"title": "Filter Application Speed", "description": "Filter werden schnell angewendet"},
+            {"title": "Export Function Performance", "description": "Datenexport erfolgt performant"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PROJ004",
+      "companyId": "IN03", 
+      "name": "IoT Device Management Portal",
+      "description": "Webportal zur Verwaltung von IoT-Geräten",
+      "notes": "Integration mit verschiedenen IoT-Protokollen",
+      "createdBy": "t.schmidt",
+      "status": "active",
+      "testBereiche": [
+        {
+          "id": "devices",
+          "name": "Hauptinhalt",
+          "description": "Geräteverwaltung und Monitoring",
+          "tests": [
+            {"title": "Device Discovery Scan", "description": "Automatische Geräteerkennung im Netzwerk"},
+            {"title": "Real Time Status", "description": "Echtzeitstatus der Geräte wird angezeigt"},
+            {"title": "Remote Configuration Update", "description": "Fernkonfiguration von Geräten möglich"},
+            {"title": "Alert Notification System", "description": "Benachrichtigungen bei Geräteproblemen"},
+            {"title": "Device Grouping Management", "description": "Geräte können in Gruppen verwaltet werden"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PROJ005",
+      "companyId": "CP04",
+      "name": "Multi-Cloud Infrastructure Dashboard", 
+      "description": "Einheitliches Dashboard für Multi-Cloud-Umgebungen",
+      "notes": "AWS, Azure und Google Cloud Integration",
+      "createdBy": "l.hoffmann",
+      "status": "active",
+      "testBereiche": [
+        {
+          "id": "monitoring",
+          "name": "Fußzeile",
+          "description": "Cloud-Monitoring und Ressourcenverwaltung",
+          "tests": [
+            {"title": "AWS Resources Display", "description": "AWS-Ressourcen werden korrekt angezeigt"},
+            {"title": "Azure Integration Status", "description": "Azure-Services sind korrekt integriert"},
+            {"title": "Google Cloud Metrics", "description": "Google Cloud Metriken werden abgerufen"},
+            {"title": "Cost Tracking Multi", "description": "Kostenübersicht über alle Clouds hinweg"},
+            {"title": "Resource Scaling Automation", "description": "Automatische Ressourcenskalierung funktioniert"}
+          ]
+        }
+      ]
+    }
+  ]
+}
