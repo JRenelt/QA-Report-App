@@ -1,50 +1,50 @@
 {
   "german_review_comprehensive": true,
   "total_tests": 6,
-  "passed": 4,
-  "failed": 2,
-  "success_rate": 66.66666666666666,
+  "passed": 6,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "Backend Health (Internal)",
       "success": true,
       "message": "\u2705 Backend healthy internally - Status: healthy, DB: MongoDB",
-      "timestamp": "2025-10-10T07:40:33.280546",
+      "timestamp": "2025-10-10T07:41:07.375165",
       "response_data": null
     },
     {
       "test": "Admin Login",
       "success": true,
       "message": "\u26a0\ufe0f  Admin login successful with USERNAME (admin) - Email login failed but username works - User: admin, Role: admin",
-      "timestamp": "2025-10-10T07:40:33.583927",
+      "timestamp": "2025-10-10T07:41:07.667957",
       "response_data": null
     },
     {
       "test": "Test Data Generation",
       "success": true,
       "message": "\u2705 Test data generation WORKING - Testdaten erfolgreich generiert - Companies: 2, Test Cases: 6",
-      "timestamp": "2025-10-10T07:40:33.600243",
+      "timestamp": "2025-10-10T07:41:07.682585",
       "response_data": null
     },
     {
       "test": "Test Suite Creation",
       "success": true,
-      "message": "\u2705 Test suite creation WORKING - Created suite: German Review Test Suite 074033 (ID: 3b8f5fee-df8e-4443-82ce-c933ff614788)",
-      "timestamp": "2025-10-10T07:40:33.624283",
+      "message": "\u2705 Test suite creation WORKING - Created suite: German Review Test Suite 074107 (ID: 44dc9ad7-6345-4233-a2ed-d2b3ea45751e)",
+      "timestamp": "2025-10-10T07:41:07.746636",
       "response_data": null
     },
     {
       "test": "Test Case Creation",
-      "success": false,
-      "message": "\u274c Test case creation FAILED - HTTP 422: {\"detail\":[{\"type\":\"int_parsing\",\"loc\":[\"body\",\"priority\"],\"msg\":\"Input should be a valid integer, unable to parse string as an integer\",\"input\":\"medium\",\"url\":\"https://errors.pydantic.dev/2.11/v/int_parsing\"}]}",
-      "timestamp": "2025-10-10T07:40:33.637674",
+      "success": true,
+      "message": "\u2705 Test case creation WORKING - Created case: German Review Test Case 074107 (ID: GR074107)",
+      "timestamp": "2025-10-10T07:41:07.796287",
       "response_data": null
     },
     {
       "test": "Bulk Test Case Creation",
-      "success": false,
-      "message": "\u274c Bulk test case creation FAILED - HTTP 422: {\"detail\":[{\"type\":\"int_parsing\",\"loc\":[\"body\",0,\"priority\"],\"msg\":\"Input should be a valid integer, unable to parse string as an integer\",\"input\":\"high\",\"url\":\"https://errors.pydantic.dev/2.11/v/int_parsing\"},{\"type\":\"int_parsing\",\"loc\":[\"body\",1,\"priority\"],\"msg\":\"Input should be a valid integer, unable to parse string as an integer\",\"input\":\"medium\",\"url\":\"https://errors.pydantic.dev/2.11/v/int_parsing\"}]}",
-      "timestamp": "2025-10-10T07:40:33.650292",
+      "success": true,
+      "message": "\u2705 Bulk test case creation WORKING - Created 2 test cases",
+      "timestamp": "2025-10-10T07:41:07.808938",
       "response_data": null
     }
   ],
