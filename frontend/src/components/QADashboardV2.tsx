@@ -407,7 +407,30 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       console.log('=== TEST ERSTELLUNG ERFOLGREICH (BACKEND) ===');
       
     } catch (error) {
-      console.error('=== FEHLER BEI TEST-ERSTELLUNG (BACKEND) ===', error);
+      console.error('=== BACKEND-SPEICHERUNG FEHLGESCHLAGEN ===');
+      console.error('Fehler Details:', error);
+      console.error('Fehler Typ:', typeof error);
+      console.error('Fehler Name:', error instanceof Error ? error.name : 'Unknown');
+      console.error('Fehler Message:', error instanceof Error ? error.message : error);
+      console.error('Auth Token:', authToken ? 'Vorhanden' : 'Fehlt');
+      
+      // Detailierte Fehleranalyse
+      let errorMessage = 'Unbekannter Fehler';
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Netzwerk-Verbindungsfehler - Backend nicht erreichbar';
+        } else if (error.message.includes('401')) {
+          errorMessage = 'Authentifizierung fehlgeschlagen - Token ungültig';
+        } else if (error.message.includes('403')) {
+          errorMessage = 'Berechtigung fehlt - Admin-Zugriff erforderlich';
+        } else if (error.message.includes('404')) {
+          errorMessage = 'API-Endpoint nicht gefunden';
+        } else if (error.message.includes('500')) {
+          errorMessage = 'Server-Fehler - Backend-Problem';
+        } else {
+          errorMessage = error.message;
+        }
+      }
       
       // Fallback: Lokale Erstellung wenn Backend-Integration fehlschlägt
       const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
@@ -427,7 +450,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       setTestCases(prevTests => [...prevTests, newTest]);
       setNewTestName('');
       
-      alert(`Warnung: Test wurde lokal erstellt, aber Backend-Speicherung fehlgeschlagen: ${error instanceof Error ? error.message : error}`);
+      // Verbesserte Fehlermeldung
+      const fullErrorMessage = `⚠️ WARNUNG: Test wurde lokal erstellt, aber Backend-Speicherung fehlgeschlagen\n\n` +
+        `🔍 Diagnose: ${errorMessage}\n\n` +
+        `Backend URL: ${process.env.REACT_APP_BACKEND_URL || 'Nicht konfiguriert'}\n` +
+        `Authentifizierung: ${authToken ? 'Token vorhanden' : 'Kein Token'}\n\n` +
+        `Der Test wurde vorläufig lokal gespeichert.`;
+      
+      alert(fullErrorMessage);
     }
   };
 
