@@ -82,10 +82,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         const data = await response.json();
         showMessage('success', `✅ Testdaten erstellt: ${data.companies} Firmen, ${data.testCases} Testfälle`);
       } else {
-        throw new Error('Fehler beim Erstellen der Testdaten');
+        const errorText = await response.text();
+        console.error('Backend-Fehler:', response.status, errorText);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
     } catch (error) {
-      showMessage('error', '❌ Fehler beim Erstellen der Testdaten');
+      console.error('Testdaten-Generierung Fehler:', error);
+      showMessage('error', `❌ Fehler beim Erstellen der Testdaten: ${error instanceof Error ? error.message : error}`);
     } finally {
       setLoading(false);
     }
