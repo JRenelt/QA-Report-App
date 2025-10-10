@@ -162,6 +162,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     sidebarWidth: 256
   });
   const [showUserManagement, setShowUserManagement] = useState(false);
+  const [showCompanyManagement, setShowCompanyManagement] = useState(false);
 
   // Tooltip Delay Helper
   const getTooltipDelay = () => {
