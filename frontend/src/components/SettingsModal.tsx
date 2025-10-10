@@ -361,7 +361,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                             key={option.key}
                             onClick={() => handleMessageDelayChange(option.value)}
                             className={`p-2 rounded text-center transition-all border text-xs ${
-                              messageDelay === option.value
+                              messageDelay === parseInt(option.value)
                                 ? darkMode 
                                   ? 'bg-cyan-600 border-cyan-400 text-white' 
                                   : 'bg-cyan-500 border-cyan-300 text-white'
