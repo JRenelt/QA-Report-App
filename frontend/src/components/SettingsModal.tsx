@@ -67,7 +67,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   };
 
   const handleGenerateTestData = async () => {
-    if (!confirm('⚠️ WARNUNG: Diese Aktion löscht ALLE vorhandenen Daten und erstellt neue Testdaten.\n\n15 Firmen mit je 100 Testpunkten werden generiert.\n\nMöchten Sie fortfahren?')) {
+    // Admin-Überprüfung
+    if (!authToken) {
+      showMessage('error', '❌ Nicht authentifiziert. Bitte neu anmelden.');
+      return;
+    }
+    
+    // TODO: User-Role aus JWT Token extrahieren oder zusätzlichen Parameter übergeben
+    // Für jetzt: Warnung, dass nur Admin diese Funktion verwenden kann
+    
+    if (!confirm('⚠️ WARNUNG: Diese Funktion ist nur für Administratoren verfügbar.\n\nDiese Aktion löscht ALLE vorhandenen Daten und erstellt neue Testdaten.\n\n15 Firmen mit je 100 Testpunkten werden generiert.\n\nMöchten Sie als Administrator fortfahren?')) {
       return;
     }
 
