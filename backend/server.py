@@ -51,8 +51,8 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"],
 )
 
-# Health Check (no /api prefix)
-@app.get("/health")
+# Health Check (with /api prefix for consistency)
+@app.get("/api/health")
 async def health_check():
     return {
         "status": "healthy",
