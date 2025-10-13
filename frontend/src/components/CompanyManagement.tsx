@@ -157,13 +157,13 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     status: 'active' as const
   });
 
+  // Admin: Firma zur Bearbeitung auswählen (MUSS vor return stehen!)
+  const [selectedCompanyForEdit, setSelectedCompanyForEdit] = useState<string>('');
+
   if (!isOpen) return null;
 
   const isAdmin = currentUser?.role === 'admin';
   const userCompanyId = currentUser?.companyId || 'comp-1';
-
-  // Admin: Firma zur Bearbeitung auswählen
-  const [selectedCompanyForEdit, setSelectedCompanyForEdit] = useState<string>('');
 
   // Filter companies and projects based on user role
   const visibleCompanies = isAdmin ? companies : companies.filter(c => c.id === userCompanyId);
