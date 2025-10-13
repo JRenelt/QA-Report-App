@@ -1050,8 +1050,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 })()}
               </select>
               
-              {/* Orange Counter für noch zu testende Testpunkte (5-stellig) */}
-              <CustomTooltip text="Anzahl der noch zu testenden Testpunkte">
+              {/* Orange Counter für noch zu testende Testfälle (5-stellig) */}
+              <CustomTooltip text="Anzahl der noch zu testenden Testfälle">
                 <div className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded text-base font-bold min-w-[80px] text-center">
                   {(() => {
                     // Berechne Anzahl offener Tests für aktuelles Projekt
