@@ -161,6 +161,13 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
   const [selectedCompanyForEdit, setSelectedCompanyForEdit] = useState<string>('');
   // Aktive Firma (für visuelle Hervorhebung)
   const [activeCompanyId, setActiveCompanyId] = useState<string>('');
+  
+  // Wenn aktive Firma gesetzt ist und zum Projekt-Tab gewechselt wird, selectedCompanyForEdit synchronisieren
+  React.useEffect(() => {
+    if (activeTab === 'projects' && activeCompanyId && !selectedCompanyForEdit) {
+      setSelectedCompanyForEdit(activeCompanyId);
+    }
+  }, [activeTab, activeCompanyId, selectedCompanyForEdit]);
 
   if (!isOpen) return null;
 
