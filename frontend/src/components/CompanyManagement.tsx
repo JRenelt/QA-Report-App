@@ -42,15 +42,48 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
   const [activeTab, setActiveTab] = useState<'companies' | 'projects'>('companies');
   const [companies, setCompanies] = useState<Company[]>([
     {
-      id: 'comp-1',
+      id: 'ID2',
       name: 'ID2 GmbH',
       address: 'Brockhausweg 66b',
       city: 'Hamburg',
       postalCode: '22117',
       country: 'Deutschland',
       createdAt: new Date().toISOString(),
+      usersCount: 2,
+      projectsCount: 2
+    },
+    {
+      id: 'TG01',
+      name: 'TechGlobal Solutions AG',
+      address: 'Maximilianstraße 35',
+      city: 'München',
+      postalCode: '80539',
+      country: 'Deutschland',
+      createdAt: new Date().toISOString(),
       usersCount: 1,
-      projectsCount: 0
+      projectsCount: 1
+    },
+    {
+      id: 'DE02',
+      name: 'Digital Excellence GmbH',
+      address: 'Friedrichstraße 158',
+      city: 'Berlin',
+      postalCode: '10117',
+      country: 'Deutschland',
+      createdAt: new Date().toISOString(),
+      usersCount: 1,
+      projectsCount: 1
+    },
+    {
+      id: 'IN03',
+      name: 'Innovate Systems Ltd.',
+      address: 'Königsallee 92',
+      city: 'Düsseldorf',
+      postalCode: '40212',
+      country: 'Deutschland',
+      createdAt: new Date().toISOString(),
+      usersCount: 1,
+      projectsCount: 1
     }
   ]);
   const [projects, setProjects] = useState<Project[]>([]);
