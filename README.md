@@ -178,6 +178,6 @@ A: Export-Button → CSV Export für vollständigen Datenexport
 
 ---
 
-**Version**: 2.0 (Phase 1)  
+**Version**: v2.1.0-stable  
 **Letztes Update**: 10. Januar 2025  
 **Support**: Über Admin-Panel oder technische Dokumentation
