@@ -497,7 +497,7 @@ frontend:
     status_history:
         - working: false
           agent: "testing"
-          comment: "CRITICAL: Mixed Content Error detected - frontend making HTTP requests to HTTPS backend. Error: 'Mixed Content: The page at 'https://qa-report-hub.preview.emergentagent.com/' was loaded over HTTPS, but requested an insecure resource 'http://qa-report-hub.preview.emergentagent.com/api/test-cases/'. Backend integration fails due to protocol mismatch. Test creation falls back to local storage."
+          comment: "CRITICAL: Mixed Content Error detected - frontend making HTTP requests to HTTPS backend. Error: 'Mixed Content: The page at 'https://qamonitor-suite.preview.emergentagent.com/' was loaded over HTTPS, but requested an insecure resource 'http://qa-report-hub.preview.emergentagent.com/api/test-cases/'. Backend integration fails due to protocol mismatch. Test creation falls back to local storage."
 
 metadata:
   created_by: "testing_agent"

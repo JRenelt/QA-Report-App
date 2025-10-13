@@ -82,7 +82,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-hub.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
       console.log('🔍 DEBUG: Backend URL:', backendUrl);
       console.log('🔍 DEBUG: Making request to:', `${backendUrl}/api/admin/generate-test-data`);
       console.log('🔍 DEBUG: Auth Token available:', !!authToken);
@@ -129,7 +129,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-hub.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
       const response = await fetch(`${backendUrl}/api/admin/clear-database`, {
         method: 'DELETE',
         headers: {
@@ -173,7 +173,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   const handleExportPDF = async () => {
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-hub.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
       // This would need a project ID - for now, show a message
       showMessage('success', 'PDF-Export wird vorbereitet...');
     } catch (error) {
@@ -186,7 +186,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   const handleExportCSV = async () => {
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-hub.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
       showMessage('success', 'CSV-Export wird vorbereitet...');
     } catch (error) {
       showMessage('error', '❌ Fehler beim CSV-Export');

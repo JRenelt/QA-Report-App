@@ -90,7 +90,7 @@ Die **QA-Report-App** ist eine [Full-Stack-Webanwendung](#architektur) für [Qua
 ### Umgebungsvariablen
 **Frontend (.env):**
 ```
-REACT_APP_BACKEND_URL=https://qa-report-hub.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://qamonitor-suite.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 ```
 
