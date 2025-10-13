@@ -1016,64 +1016,63 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         >
           {/* Sidebar Header */}
           <div className="p-4 border-b border-gray-700">
-            {/* Zeige Projekt-Dropdown wenn User mehrere Projekte hat */}
-            {(() => {
-              const userProjects = user?.role === 'admin' 
-                ? projects.filter(p => p.companyId === selectedCompanyId)
-                : projects.filter(p => p.companyId === currentUserCompany?.id);
+            {/* Projekt-Auswahl Header - wie in Soll-Bild */}
+            <div className="flex items-center space-x-2 mb-3">
+              <FolderOpen className="h-4 w-4 text-cyan-400" />
+              <h2 className={`text-sm font-semibold ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
+                Projekt-Auswahl
+              </h2>
+            </div>
+            
+            {/* Projekt-Dropdown + Orange Button */}
+            <div className="flex items-center space-x-2 mb-3">
+              <select
+                value={selectedProjectId}
+                onChange={(e) => {
+                  setSelectedProjectId(e.target.value);
+                }}
+                className={`flex-1 text-xs rounded border px-2 py-1.5 ${
+                  darkMode 
+                    ? 'bg-gray-700 border-gray-600 text-gray-300' 
+                    : 'bg-white border-gray-300 text-gray-700'
+                }`}
+              >
+                {(() => {
+                  const userProjects = user?.role === 'admin' 
+                    ? projects.filter(p => p.companyId === selectedCompanyId)
+                    : projects.filter(p => p.companyId === currentUserCompany?.id);
+                  
+                  return userProjects.map(project => (
+                    <option key={project.id} value={project.id}>
+                      {project.name}
+                    </option>
+                  ));
+                })()}
+              </select>
               
-              if (userProjects.length > 1) {
-                return (
-                  <div>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <FolderOpen className="h-5 w-5 text-cyan-400" />
-                      <h2 className="text-cyan-400 font-bold text-lg">
-                        Projekt-Auswahl
-                      </h2>
-                    </div>
-                    <select
-                      value={selectedProjectId}
-                      onChange={(e) => {
-                        setSelectedProjectId(e.target.value);
-                        // Hier müsste auf die erste Test-Suite des gewählten Projekts gesetzt werden
-                      }}
-                      className={`w-full text-sm rounded border px-3 py-2 mb-3 ${
-                        darkMode 
-                          ? 'bg-gray-700 border-gray-600 text-gray-300' 
-                          : 'bg-white border-gray-300 text-gray-700'
-                      }`}
-                    >
-                      {userProjects.map(project => (
-                        <option key={project.id} value={project.id}>
-                          {project.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                );
-              } else {
-                // Standard Test-Bereiche Header wenn nur ein Projekt
-                return (
-                  <div className="mb-3">
-                    <div className="flex items-center space-x-2">
-                      <FlaskConical className="h-5 w-5 text-cyan-400" />
-                      <div>
-                        <h2 className="text-cyan-400 font-bold text-lg">
-                          Test-Bereiche
-                        </h2>
-                        {userProjects.length === 1 && (
-                          <div className="text-xs mt-1 text-gray-400">
-                            {userProjects[0].name}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-            })()}
-            <div className="px-3 py-2 bg-orange-600 rounded text-center font-bold">
-              {totalOpenTests} Offen
+              {/* Orange Button wie im Soll-Bild */}
+              <CustomTooltip text="Projekt-ID: Eindeutige Identifikation">
+                <button className="bg-orange-500 hover:bg-orange-600 text-white px-2 py-1.5 rounded text-xs font-bold">
+                  {selectedProjectId?.slice(-3) || '001'}
+                </button>
+              </CustomTooltip>
+            </div>
+            
+            {/* Allgemeines Design Kategorie mit Badge */}
+            <div className="mb-3">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  <Palette className="h-4 w-4 text-cyan-400" />
+                  <h3 className={`text-sm font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    Allgemeines Design
+                  </h3>
+                </div>
+                <CustomTooltip text="Anzahl Test-Bereiche in dieser Kategorie">
+                  <span className="bg-orange-500 text-white px-2 py-0.5 rounded text-xs font-bold">
+                    × 1. 2
+                  </span>
+                </CustomTooltip>
+              </div>
             </div>
           </div>
 
