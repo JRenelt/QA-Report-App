@@ -1710,8 +1710,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       } px-4 py-2 text-xs shadow-lg`}>
         <div className="flex items-center justify-between">
           {/* Copyright Links */}
-          <div className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            © 2025 Jörg Renelt · QA-Report-App
+          <div className={`${darkMode ? 'text-gray-400' : 'text-gray-600'} flex items-center space-x-2`}>
+            <span>© 2025 Jörg Renelt · QA-Report-App</span>
+            <span className={`text-xs px-2 py-1 rounded ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'}`}>
+              v2.1.0-stable
+            </span>
           </div>
           
           {/* Seitennavigation Mitte */}
