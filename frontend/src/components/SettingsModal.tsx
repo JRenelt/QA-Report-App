@@ -447,7 +447,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                           Testdaten erstellen
                         </h4>
                         <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Erstellt 15 Firmen mit je 100 Testpunkten
+                          Erstellt 15 Firmen mit je 100 Testfällen
                         </p>
                       </div>
                     </div>
