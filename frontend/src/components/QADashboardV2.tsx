@@ -1015,23 +1015,23 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           style={{ width: `${sidebarWidth}px` }}
         >
           {/* Sidebar Header */}
-          <div className="p-4 border-b border-gray-700">
-            {/* Projekt-Auswahl Header - wie in Soll-Bild */}
-            <div className="flex items-center space-x-2 mb-3">
-              <FolderOpen className="h-4 w-4 text-cyan-400" />
-              <h2 className={`text-sm font-semibold ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
+          <div className="p-6 border-b border-gray-700">
+            {/* Projekt-Auswahl Header - wie in Soll-Bild (100% größer) */}
+            <div className="flex items-center space-x-3 mb-4">
+              <FolderOpen className="h-6 w-6 text-cyan-400" />
+              <h2 className={`text-lg font-semibold ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
                 Projekt-Auswahl
               </h2>
             </div>
             
-            {/* Projekt-Dropdown + Orange Button */}
-            <div className="flex items-center space-x-2 mb-3">
+            {/* Projekt-Dropdown + Orange Counter für offene Tests (5-stellig) */}
+            <div className="flex items-center space-x-3 mb-6">
               <select
                 value={selectedProjectId}
                 onChange={(e) => {
                   setSelectedProjectId(e.target.value);
                 }}
-                className={`flex-1 text-xs rounded border px-2 py-1.5 ${
+                className={`flex-1 text-base rounded border px-3 py-2.5 ${
                   darkMode 
                     ? 'bg-gray-700 border-gray-600 text-gray-300' 
                     : 'bg-white border-gray-300 text-gray-700'
@@ -1050,26 +1050,36 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 })()}
               </select>
               
-              {/* Orange Button wie im Soll-Bild */}
-              <CustomTooltip text="Projekt-ID: Eindeutige Identifikation">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-2 py-1.5 rounded text-xs font-bold">
-                  {selectedProjectId?.slice(-3) || '001'}
-                </button>
+              {/* Orange Counter für noch zu testende Testpunkte (5-stellig) */}
+              <CustomTooltip text="Anzahl der noch zu testenden Testpunkte">
+                <div className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded text-base font-bold min-w-[80px] text-center">
+                  {(() => {
+                    // Berechne Anzahl offener Tests für aktuelles Projekt
+                    const openTestsCount = testCases.filter(t => 
+                      t.status === 'pending' || t.status === 'warning'
+                    ).length;
+                    // 5-stellig formatieren
+                    return String(openTestsCount).padStart(5, '0');
+                  })()}
+                </div>
               </CustomTooltip>
             </div>
             
-            {/* Allgemeines Design Kategorie mit Badge */}
-            <div className="mb-3">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <Palette className="h-4 w-4 text-cyan-400" />
-                  <h3 className={`text-sm font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+            {/* Allgemeines Design Kategorie mit Badge (100% größer) */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-3">
+                  <Palette className="h-6 w-6 text-cyan-400" />
+                  <h3 className={`text-base font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                     Allgemeines Design
                   </h3>
                 </div>
-                <CustomTooltip text="Anzahl Test-Bereiche in dieser Kategorie">
-                  <span className="bg-orange-500 text-white px-2 py-0.5 rounded text-xs font-bold">
-                    × 1. 2
+                <CustomTooltip text="Anzahl offener Tests in diesem Bereich">
+                  <span className="bg-cyan-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-base font-bold">
+                    {(() => {
+                      const stats = calculateSuiteStats('1');
+                      return stats.openTests;
+                    })()}
                   </span>
                 </CustomTooltip>
               </div>
