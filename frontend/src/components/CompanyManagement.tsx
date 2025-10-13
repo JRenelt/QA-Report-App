@@ -86,7 +86,58 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
       projectsCount: 1
     }
   ]);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([
+    {
+      id: 'PROJ001',
+      companyId: 'ID2',
+      name: 'E-Commerce Plattform Redesign',
+      description: 'Komplette Überarbeitung der Online-Shop Benutzeroberfläche',
+      notes: 'Fokus auf mobile Optimierung und Accessibility',
+      createdBy: 'admin',
+      createdAt: new Date().toISOString(),
+      status: 'active'
+    },
+    {
+      id: 'PROJ005',
+      companyId: 'ID2',
+      name: 'Multi-Cloud Infrastructure Dashboard',
+      description: 'Einheitliches Dashboard für Multi-Cloud-Umgebungen',
+      notes: 'AWS, Azure und Google Cloud Integration',
+      createdBy: 'admin',
+      createdAt: new Date().toISOString(),
+      status: 'active'
+    },
+    {
+      id: 'PROJ002',
+      companyId: 'TG01',
+      name: 'Mobile Banking App Security Audit',
+      description: 'Umfassende Sicherheitsprüfung der mobilen Banking-Anwendung',
+      notes: 'Compliance mit PCI DSS und DSGVO erforderlich',
+      createdBy: 'm.weber',
+      createdAt: new Date().toISOString(),
+      status: 'active'
+    },
+    {
+      id: 'PROJ003',
+      companyId: 'DE02',
+      name: 'CRM Dashboard Performance Optimization',
+      description: 'Leistungsoptimierung des Kundenverwaltungs-Dashboards',
+      notes: 'Ziel: Ladezeiten unter 2 Sekunden',
+      createdBy: 's.mueller',
+      createdAt: new Date().toISOString(),
+      status: 'active'
+    },
+    {
+      id: 'PROJ004',
+      companyId: 'IN03',
+      name: 'IoT Device Management Portal',
+      description: 'Webportal zur Verwaltung von IoT-Geräten',
+      notes: 'Integration mit verschiedenen IoT-Protokollen',
+      createdBy: 't.schmidt',
+      createdAt: new Date().toISOString(),
+      status: 'active'
+    }
+  ]);
   const [showCompanyForm, setShowCompanyForm] = useState(false);
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
