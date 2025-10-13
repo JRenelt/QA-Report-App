@@ -31,7 +31,7 @@ interface TestCase {
 const QADashboard: React.FC<QADashboardProps> = ({ authToken, user, darkMode = true }) => {
   const [testSuites, setTestSuites] = useState<TestSuite[]>([
     { id: '1', name: 'Allgemeines Design', icon: 'palette', count: 8 },
-    { id: '2', name: 'Testpunkt Kopfzeile', icon: 'menu', count: 16 },
+    { id: '2', name: 'Testfall Kopfzeile', icon: 'menu', count: 16 },
     { id: '3', name: 'Navigation Bereich', icon: 'navigation', count: 4 },
     { id: '4', name: 'Suchfeld Bereich', icon: 'search', count: 6 },
     { id: '5', name: 'Sidebar Bereich', icon: 'sidebar', count: 8 },
