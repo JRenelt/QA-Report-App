@@ -1,4 +1,4 @@
-# QA-Report-App
+# QA-Report-App v2.1.0-stable
 **Technische Dokumentation**
 
 Die **QA-Report-App** ist eine [Full-Stack-Webanwendung](#architektur) für [Qualitätssicherung](README.md#qualitätssicherung) und [Testmanagement](README.md#testmanagement), basierend auf [FastAPI](#backend) Backend, [React TypeScript](#frontend) Frontend und [MongoDB](#datenbank)-Datenbank.
