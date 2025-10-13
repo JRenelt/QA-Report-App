@@ -212,6 +212,12 @@ Content-Type: application/json
 
 ## Versions-Historie
 
+### v2.1.1-stable (10. Januar 2025)
+- **Patch-Fixes**: TypeScript-Kompilierungs-Fehler behoben
+- **Fixes**: FileDown Import in CompanyManagement.tsx hinzugefügt
+- **Fixes**: QAService Interface-Probleme (test_suite_id → suite_id, name → title)
+- **Verbesserung**: Saubere Kompilierung ohne Errors ("No issues found")
+
 ### v2.1.0-stable (10. Januar 2025)
 - **Neue Features**: Company & Project Management, Master Data Import
 - **Verbesserungen**: Factory Icon, Seitennavigation in Footer, Test speichern/Archiv
