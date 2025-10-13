@@ -1086,9 +1086,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             </div>
           </div>
 
-          {/* Test Suites List - Kompaktes Design */}
+          {/* Test Suites List - Vergrößertes Design (100% größer) */}
           <div className="flex-1 overflow-y-auto">
-            <div className="px-3 pb-4">
+            <div className="px-5 pb-6">
               {testSuites.map((suite) => {
                 const stats = calculateSuiteStats(suite.id);
                 const isActive = suite.id === activeSuite;
@@ -1097,17 +1097,17 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   <button
                     key={suite.id}
                     onClick={() => setActiveSuite(suite.id)}
-                    className={`w-full flex items-center space-x-2 px-2 py-1 rounded text-left transition-all hover:bg-gray-700 ${
+                    className={`w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded text-left transition-all hover:bg-gray-700 ${
                       isActive ? 'bg-gray-700' : ''
                     }`}
                   >
-                    <FileText className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
-                    <div className="flex-1 min-w-0 text-xs text-gray-300 truncate">
+                    <FileText className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                    <div className="flex-1 min-w-0 text-base text-gray-300 truncate">
                       {suite.name}
                     </div>
                     <div className="flex items-center">
-                      <CustomTooltip text={`${stats.openTests} noch zu testende Aufgaben`}>
-                        <span className="bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold">
+                      <CustomTooltip text={`${stats.openTests} noch zu testende Aufgaben in diesem Bereich`}>
+                        <span className="bg-cyan-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-base font-bold">
                           {stats.openTests}
                         </span>
                       </CustomTooltip>
