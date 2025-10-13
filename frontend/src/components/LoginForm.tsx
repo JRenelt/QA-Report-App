@@ -144,16 +144,24 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-qa-gray-700 mb-2">
+            <label className={`block text-sm font-medium mb-2 ${
+              darkMode ? 'text-gray-200' : 'text-qa-gray-700'
+            }`}>
               {t.username}
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-qa-gray-400" />
+              <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
+                darkMode ? 'text-gray-400' : 'text-qa-gray-400'
+              }`} />
               <input
                 type="text"
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                className="input-field w-full pl-10"
+                className={`w-full pl-10 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-opacity-50 ${
+                  darkMode 
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-cyan-500 focus:border-cyan-500' 
+                    : 'input-field'
+                }`}
                 placeholder={t.username}
                 required
               />
@@ -161,23 +169,35 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-qa-gray-700 mb-2">
+            <label className={`block text-sm font-medium mb-2 ${
+              darkMode ? 'text-gray-200' : 'text-qa-gray-700'
+            }`}>
               {t.password}
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-qa-gray-400" />
+              <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
+                darkMode ? 'text-gray-400' : 'text-qa-gray-400'
+              }`} />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="input-field w-full pl-10 pr-10"
+                className={`w-full pl-10 pr-10 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-opacity-50 ${
+                  darkMode 
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-cyan-500 focus:border-cyan-500' 
+                    : 'input-field'
+                }`}
                 placeholder={t.password}
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-qa-gray-400 hover:text-qa-gray-600"
+                className={`absolute right-3 top-1/2 transform -translate-y-1/2 ${
+                  darkMode 
+                    ? 'text-gray-400 hover:text-gray-200' 
+                    : 'text-qa-gray-400 hover:text-qa-gray-600'
+                }`}
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
