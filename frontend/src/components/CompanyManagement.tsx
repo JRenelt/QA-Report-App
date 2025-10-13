@@ -162,9 +162,16 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
   const isAdmin = currentUser?.role === 'admin';
   const userCompanyId = currentUser?.companyId || 'comp-1';
 
+  // Admin: Firma zur Bearbeitung auswählen
+  const [selectedCompanyForEdit, setSelectedCompanyForEdit] = useState<string>('');
+
   // Filter companies and projects based on user role
   const visibleCompanies = isAdmin ? companies : companies.filter(c => c.id === userCompanyId);
-  const visibleProjects = isAdmin ? projects : projects.filter(p => p.companyId === userCompanyId);
+  
+  // Admin kann Firma auswählen, deren Projekte bearbeitet werden sollen
+  const visibleProjects = isAdmin 
+    ? (selectedCompanyForEdit ? projects.filter(p => p.companyId === selectedCompanyForEdit) : projects)
+    : projects.filter(p => p.companyId === userCompanyId);
 
   const handleCreateCompany = () => {
     if (!isAdmin) {
