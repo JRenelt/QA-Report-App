@@ -401,9 +401,18 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
             {/* Companies List */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {visibleCompanies.map((company) => (
-                <div key={company.id} className={`p-4 rounded-lg border ${
-                  darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'
-                }`}>
+                <div 
+                  key={company.id} 
+                  onClick={() => {
+                    setActiveCompanyId(company.id);
+                    setSelectedCompanyForEdit(company.id);
+                  }}
+                  className={`p-4 rounded-lg border cursor-pointer transition-all ${
+                    activeCompanyId === company.id
+                      ? (darkMode ? 'bg-cyan-900 border-cyan-500 ring-2 ring-cyan-500' : 'bg-cyan-50 border-cyan-500 ring-2 ring-cyan-400')
+                      : (darkMode ? 'bg-gray-700 border-gray-600 hover:border-cyan-500' : 'bg-gray-50 border-gray-200 hover:border-cyan-400')
+                  }`}
+                >
                   <div className="flex justify-between items-start mb-2">
                     <h4 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                       {company.name}
