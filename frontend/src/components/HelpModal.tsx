@@ -243,8 +243,8 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode, curren
               </div>
             )}
 
-            {/* INSTALLATION */}
-            {activeTab === 'installation' && (
+            {/* INSTALLATION - Nur für Admins */}
+            {activeTab === 'installation' && isAdmin && (
               <div className={`space-y-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 <section>
                   <h3 className={`text-xl font-bold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
