@@ -377,13 +377,15 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return sum + stats.openTests + stats.failedTests;
   }, 0);
 
+  // Icon mapping for test suites
+  const icons: { [key: string]: any } = {
+    palette: Palette,
+    menu: Menu,
+    file: FileText,
+    form: FileText,
+  };
+
   const getIconComponent = (iconName: string) => {
-    const icons: { [key: string]: any } = {
-      palette: Palette,
-      menu: Menu,
-      file: FileText,
-      form: FileText,
-    };
     const IconComponent = icons[iconName] || FileText;
     return <IconComponent className="h-4 w-4" />;
   };
