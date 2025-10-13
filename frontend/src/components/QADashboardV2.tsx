@@ -302,7 +302,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     if (savedSettings) {
       const settings = JSON.parse(savedSettings);
       setUserSettings(prev => ({ ...prev, ...settings }));
-      setSidebarWidth(settings.sidebarWidth || 256);
+      setSidebarWidth(settings.sidebarWidth || 350);
     }
   }, [user?.username]);
 
