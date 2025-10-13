@@ -69,7 +69,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   // State declarations
   const [testSuites, setTestSuites] = useState<TestSuite[]>([
     { id: '1', name: 'Allgemeines Design', icon: 'palette', totalTests: 8, passedTests: 6, failedTests: 0, openTests: 2 },
-    { id: '2', name: 'Testpunkt Kopfzeile', icon: 'menu', totalTests: 16, passedTests: 14, failedTests: 2, openTests: 0 },
+    { id: '2', name: 'Testfall Kopfzeile', icon: 'menu', totalTests: 16, passedTests: 14, failedTests: 2, openTests: 0 },
     { id: '3', name: 'Navigation Bereich', icon: 'navigation', totalTests: 4, passedTests: 4, failedTests: 0, openTests: 0 },
     { id: '4', name: 'Suchfeld Bereich', icon: 'search', totalTests: 6, passedTests: 4, failedTests: 0, openTests: 2 },
     { id: '5', name: 'Sidebar Bereich', icon: 'sidebar', totalTests: 8, passedTests: 6, failedTests: 1, openTests: 1 },
