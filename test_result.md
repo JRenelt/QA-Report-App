@@ -355,6 +355,56 @@ backend:
           comment: "GERMAN REVIEW SPECIFIC TEST: Login with admin@test.com/admin123 FAILED with 401 Unauthorized. However, login with admin/admin123 (username) works perfectly. Email-based login not supported or user admin@test.com does not exist."
 
 frontend:
+  - task: "Login Dark Mode Kontrast"
+    implemented: true
+    working: true
+    file: "frontend/src/components/LoginForm.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Login Dark Mode verbessert: Demo-Credentials Box, Labels, Input-Felder und Icons jetzt mit hellem Text (gray-200, gray-300) auf dunklem Hintergrund. Bessere Lesbarkeit durch erhöhten Kontrast."
+  
+  - task: "Terminologie Testpunkte → Testfälle"
+    implemented: true
+    working: true
+    file: "frontend/src/components/*.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Alle Vorkommen von 'Testpunkt' in 'Testfall' umbenannt: QADashboardV2, QADashboard, SettingsModal, ImportExportManager. Konsistente Terminologie in der gesamten Anwendung."
+
+  - task: "Rollenbasierte Einschränkungen"
+    implemented: true
+    working: true
+    file: "frontend/src/components/HelpModal.tsx, SettingsModal.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Rollenbasierte Einschränkungen implementiert: (1) HelpModal: Technische Dokumentation & Installation nur für Admins (2) SettingsModal: Gefahrenbereich (DB leeren, Reset) nur für Admins (3) Testdaten-Generierung: Admin=15 Firmen/100 Testfälle, QA-Tester=1 Projekt/10 Bereiche/10 Testfälle"
+  
+  - task: "CompanyManagement React Hooks Error"
+    implemented: true
+    working: true
+    file: "frontend/src/components/CompanyManagement.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "user"
+          comment: "ERROR beim Öffnen: 'Rendered more hooks than during the previous render.' - React Hooks Regel verletzt"
+        - working: true
+          agent: "main"
+          comment: "React Hooks Error behoben: useState Hook für selectedCompanyForEdit VOR das 'if (!isOpen) return null' Statement verschoben. Hooks müssen immer vor bedingten Returns aufgerufen werden."
   - task: "Login Functionality"
     implemented: true
     working: true
