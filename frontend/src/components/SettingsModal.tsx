@@ -8,9 +8,10 @@ interface SettingsModalProps {
   toggleDarkMode: () => void;
   authToken: string;
   initialTab?: 'appearance' | 'import-export' | 'advanced';
+  currentUser?: any;
 }
 
-const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode, toggleDarkMode, authToken, initialTab }) => {
+const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode, toggleDarkMode, authToken, initialTab, currentUser }) => {
   const [activeTab, setActiveTab] = useState<'appearance' | 'import-export' | 'advanced'>(initialTab || 'appearance');
   const [itemsPerPage, setItemsPerPage] = useState(localStorage.getItem('itemsPerPage') || '10');
   const [showTooltips, setShowTooltips] = useState(localStorage.getItem('showTooltips') !== 'false');
@@ -27,6 +28,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   }, [isOpen, initialTab]);
 
   if (!isOpen) return null;
+
+  const isAdmin = currentUser?.role === 'admin';
 
   const handleItemsPerPageChange = (value: string) => {
     setItemsPerPage(value);
