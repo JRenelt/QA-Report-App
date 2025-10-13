@@ -1078,35 +1078,31 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
           {/* Test Suites List - Kompaktes Design */}
           <div className="flex-1 overflow-y-auto">
-            <div className="space-y-0.5 px-3 pb-4">
+            <div className="px-3 pb-4">
               {testSuites.map((suite) => {
                 const stats = calculateSuiteStats(suite.id);
                 const isActive = suite.id === activeSuite;
-                const IconComponent = icons[suite.icon] || FileText;
 
                 return (
-                  <CustomTooltip key={suite.id} text={`${suite.description || suite.name} - ${stats.openTests} noch zu testende Aufgaben`}>
-                    <button
-                      onClick={() => setActiveSuite(suite.id)}
-                      className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded text-left transition-all text-sm ${
-                        isActive
-                          ? (darkMode 
-                              ? 'bg-cyan-600 text-white shadow-md' 
-                              : 'bg-blue-600 text-white shadow-md')
-                          : (darkMode 
-                              ? 'hover:bg-gray-700 text-gray-300' 
-                              : 'hover:bg-gray-200 text-gray-700')
-                      }`}
-                    >
-                      <IconComponent className="h-3.5 w-3.5 flex-shrink-0" />
-                      <div className="flex-1 min-w-0 text-xs font-medium truncate">
-                        {suite.name}
-                      </div>
-                      <div className="flex items-center">
-                        {getSuiteBadgeContent(suite.id)}
-                      </div>
-                    </button>
-                  </CustomTooltip>
+                  <button
+                    key={suite.id}
+                    onClick={() => setActiveSuite(suite.id)}
+                    className={`w-full flex items-center space-x-2 px-2 py-1 rounded text-left transition-all hover:bg-gray-700 ${
+                      isActive ? 'bg-gray-700' : ''
+                    }`}
+                  >
+                    <FileText className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
+                    <div className="flex-1 min-w-0 text-xs text-gray-300 truncate">
+                      {suite.name}
+                    </div>
+                    <div className="flex items-center">
+                      <CustomTooltip text={`${stats.openTests} noch zu testende Aufgaben`}>
+                        <span className="bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold">
+                          {stats.openTests}
+                        </span>
+                      </CustomTooltip>
+                    </div>
+                  </button>
                 );
               })}
             </div>
