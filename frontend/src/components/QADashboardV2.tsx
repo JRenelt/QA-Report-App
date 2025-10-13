@@ -1025,7 +1025,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             </div>
             
             {/* Projekt-Dropdown + Orange Counter für offene Tests (5-stellig) */}
-            <div className="flex items-center space-x-3 mb-6">
+            <div className="flex items-center space-x-3">
               <select
                 value={selectedProjectId}
                 onChange={(e) => {
@@ -1063,26 +1063,6 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   })()}
                 </div>
               </CustomTooltip>
-            </div>
-            
-            {/* Allgemeines Design Kategorie mit Badge (100% größer) */}
-            <div className="mb-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-3">
-                  <Palette className="h-6 w-6 text-cyan-400" />
-                  <h3 className={`text-base font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                    Allgemeines Design
-                  </h3>
-                </div>
-                <CustomTooltip text="Anzahl offener Tests in diesem Bereich">
-                  <span className="bg-cyan-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-base font-bold">
-                    {(() => {
-                      const stats = calculateSuiteStats('1');
-                      return stats.openTests;
-                    })()}
-                  </span>
-                </CustomTooltip>
-              </div>
             </div>
           </div>
 
