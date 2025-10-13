@@ -831,24 +831,27 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     const stats = calculateSuiteStats(suiteId);
     if (stats.failedTests > 0) {
       return (
-        <div className="flex items-center space-x-1">
-          <X className="h-3 w-3" />
-          <span>{stats.failedTests}</span>
-          {stats.openTests > 0 && (
-            <>
-              <span className="mx-1">•</span>
-              <div className="flex items-center space-x-1 bg-blue-500 rounded-full px-1.5 py-0.5">
-                <span className="text-xs">{stats.openTests}</span>
-              </div>
-            </>
-          )}
-        </div>
+        <CustomTooltip text={`${stats.failedTests} fehlgeschlagene Tests`}>
+          <X className="h-3 w-3 text-red-500" />
+        </CustomTooltip>
       );
     }
-    if (stats.openTests === 0 && stats.totalTests === stats.passedTests && stats.totalTests > 0) {
-      return <Check className="h-4 w-4" />;
+    if (stats.openTests === 0 && stats.totalTests === stats.passedTests) {
+      return (
+        <CustomTooltip text="Alle Tests bestanden">
+          <Check className="h-3 w-3 text-green-500" />
+        </CustomTooltip>
+      );
     }
-    return stats.openTests; // ZEIGE OFFENE TESTS, NICHT GESAMT-TESTS!
+    return (
+      <CustomTooltip text={`${stats.openTests} noch zu testende Aufgaben`}>
+        <span className={`rounded-full px-1.5 py-0.5 text-xs font-bold ${
+          darkMode ? 'bg-orange-600 text-white' : 'bg-orange-200 text-orange-800'
+        }`}>
+          {stats.openTests}
+        </span>
+      </CustomTooltip>
+    );
   };
 
   return (
