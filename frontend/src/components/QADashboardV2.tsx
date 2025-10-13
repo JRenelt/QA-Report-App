@@ -169,6 +169,43 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
   const [availableCompanies] = useState([
+    { id: 'ID2', name: 'ID2 GmbH' },
+    { id: 'TG01', name: 'TechGlobal Solutions AG' },
+    { id: 'DE02', name: 'Digital Excellence GmbH' },
+    { id: 'IN03', name: 'Innovate Systems Ltd.' }
+  ]);
+  const [projects] = useState([
+    { id: 'PROJ001', name: 'E-Commerce Plattform Redesign', companyId: 'ID2' },
+    { id: 'PROJ002', name: 'Mobile Banking App Security Audit', companyId: 'TG01' },
+    { id: 'PROJ003', name: 'CRM Dashboard Performance Optimization', companyId: 'DE02' },
+    { id: 'PROJ004', name: 'IoT Device Management Portal', companyId: 'IN03' },
+    { id: 'PROJ005', name: 'Multi-Cloud Infrastructure Dashboard', companyId: 'ID2' }
+  ]);
+  
+  // Current user's company (for normal users)
+  const currentUserCompany = availableCompanies.find(c => c.id === (user?.companyId || 'ID2')) || availableCompanies[0];
+
+  // Initialize company selection
+  React.useEffect(() => {
+    if (user?.role === 'admin' && !selectedCompanyId && availableCompanies.length > 0) {
+      setSelectedCompanyId(availableCompanies[0].id);
+      const companyProjects = projects.filter(p => p.companyId === availableCompanies[0].id);
+      if (companyProjects.length > 0) {
+        setSelectedProjectId(companyProjects[0].id);
+      }
+    } else if (user?.role !== 'admin' && currentUserCompany) {
+      setSelectedCompanyId(currentUserCompany.id);
+      const userProjects = projects.filter(p => p.companyId === currentUserCompany.id);
+      if (userProjects.length > 0) {
+        setSelectedProjectId(userProjects[0].id);
+      }
+    }
+  }, [user, availableCompanies, projects, currentUserCompany, selectedCompanyId]);
+
+  // Company and Project Management State
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
+  const [selectedProjectId, setSelectedProjectId] = useState<string>('');
+  const [availableCompanies] = useState([
     { id: 'company1', name: 'Firma A' },
     { id: 'company2', name: 'Firma B' },
     { id: 'company3', name: 'Firma C' }
