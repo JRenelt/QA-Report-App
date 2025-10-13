@@ -537,39 +537,41 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                   </div>
                 </div>
 
-                {/* DANGER ZONE */}
-                <div className="mt-8 p-4 rounded-lg border-2 border-red-500 bg-red-50 bg-opacity-10">
-                  <div className="flex items-start mb-4">
-                    <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
-                    <div>
-                      <h4 className="font-bold text-red-500 text-lg">
-                        Gefahrenbereich
-                      </h4>
-                      <p className="text-sm text-red-600 mt-1">
-                        Diese Aktionen können nicht rückgängig gemacht werden!
-                      </p>
+                {/* DANGER ZONE - Nur für Admins */}
+                {isAdmin && (
+                  <div className="mt-8 p-4 rounded-lg border-2 border-red-500 bg-red-50 bg-opacity-10">
+                    <div className="flex items-start mb-4">
+                      <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
+                      <div>
+                        <h4 className="font-bold text-red-500 text-lg">
+                          Gefahrenbereich
+                        </h4>
+                        <p className="text-sm text-red-600 mt-1">
+                          Diese Aktionen können nicht rückgängig gemacht werden!
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <button
+                        onClick={handleResetSettings}
+                        className="w-full px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                      >
+                        <RotateCcw className="h-4 w-4 mr-2" />
+                        Einstellungen zurücksetzen
+                      </button>
+
+                      <button
+                        onClick={handleClearDatabase}
+                        disabled={loading}
+                        className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Datenbank leeren
+                      </button>
                     </div>
                   </div>
-
-                  <div className="space-y-3">
-                    <button
-                      onClick={handleResetSettings}
-                      className="w-full px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors flex items-center justify-center"
-                    >
-                      <RotateCcw className="h-4 w-4 mr-2" />
-                      Einstellungen zurücksetzen
-                    </button>
-
-                    <button
-                      onClick={handleClearDatabase}
-                      disabled={loading}
-                      className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Datenbank leeren
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
             )}
           </div>
