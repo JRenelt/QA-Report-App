@@ -76,10 +76,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
       return;
     }
     
-    // TODO: User-Role aus JWT Token extrahieren oder zusätzlichen Parameter übergeben
-    // Für jetzt: Warnung, dass nur Admin diese Funktion verwenden kann
+    // Rollenbasierte Limits
+    const limits = isAdmin 
+      ? { companies: 15, testsPerProject: 100, message: '15 Firmen mit je 100 Testfällen' }
+      : { companies: 1, testsPerProject: 10, message: '1 Projekt mit 10 Testbereichen à 10 Testfällen' };
     
-    if (!confirm('⚠️ WARNUNG: Diese Funktion ist nur für Administratoren verfügbar.\n\nDiese Aktion löscht ALLE vorhandenen Daten und erstellt neue Testdaten.\n\n15 Firmen mit je 100 Testfällen werden generiert.\n\nMöchten Sie als Administrator fortfahren?')) {
+    if (!confirm(`⚠️ WARNUNG: Diese Aktion löscht ALLE vorhandenen Daten und erstellt neue Testdaten.\n\n${limits.message} werden generiert.\n\nMöchten Sie fortfahren?`)) {
       return;
     }
 
@@ -97,8 +99,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          companies: 15,
-          testsPerCompany: 100
+          companies: limits.companies,
+          testsPerCompany: limits.testsPerProject
         })
       });
 
