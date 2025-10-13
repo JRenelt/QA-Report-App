@@ -1072,29 +1072,40 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             </div>
           </div>
 
-          {/* Test Suites List */}
+          {/* Test Suites List - Kompaktes Design */}
           <div className="flex-1 overflow-y-auto">
-            {testSuites.map((suite) => (
-              <button
-                key={suite.id}
-                onClick={() => setActiveSuite(suite.id)}
-                className={`w-full px-4 py-3 flex items-center justify-between hover:bg-gray-700 transition-colors border-l-4 ${
-                  activeSuite === suite.id 
-                    ? 'bg-cyan-600 bg-opacity-20 border-cyan-400' 
-                    : calculateSuiteStats(suite.id).failedTests > 0 
-                    ? 'border-red-500'
-                    : 'border-transparent'
-                }`}
-              >
-                <div className="flex items-center flex-1">
-                  {getIconComponent(suite.icon)}
-                  <span className="ml-3 text-sm">{suite.name}</span>
-                </div>
-                <span className={`rounded-full px-2.5 py-1 text-xs font-bold flex items-center ${getSuiteBadgeStyle(suite.id)}`}>
-                  {getSuiteBadgeContent(suite.id)}
-                </span>
-              </button>
-            ))}
+            <div className="space-y-0.5 px-3 pb-4">
+              {testSuites.map((suite) => {
+                const stats = calculateSuiteStats(suite.id);
+                const isActive = suite.id === activeSuite;
+                const IconComponent = icons[suite.icon] || FileText;
+
+                return (
+                  <CustomTooltip key={suite.id} text={`${suite.description || suite.name} - ${stats.openTests} noch zu testende Aufgaben`}>
+                    <button
+                      onClick={() => setActiveSuite(suite.id)}
+                      className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded text-left transition-all text-sm ${
+                        isActive
+                          ? (darkMode 
+                              ? 'bg-cyan-600 text-white shadow-md' 
+                              : 'bg-blue-600 text-white shadow-md')
+                          : (darkMode 
+                              ? 'hover:bg-gray-700 text-gray-300' 
+                              : 'hover:bg-gray-200 text-gray-700')
+                      }`}
+                    >
+                      <IconComponent className="h-3.5 w-3.5 flex-shrink-0" />
+                      <div className="flex-1 min-w-0 text-xs font-medium truncate">
+                        {suite.name}
+                      </div>
+                      <div className="flex items-center">
+                        {getSuiteBadgeContent(suite.id)}
+                      </div>
+                    </button>
+                  </CustomTooltip>
+                );
+              })}
+            </div>
           </div>
           
           {/* Resize Handle */}
