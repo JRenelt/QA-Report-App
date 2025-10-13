@@ -361,11 +361,14 @@ frontend:
     file: "frontend/src/components/LoginForm.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: true
           agent: "main"
           comment: "Login Dark Mode verbessert: Demo-Credentials Box, Labels, Input-Felder und Icons jetzt mit hellem Text (gray-200, gray-300) auf dunklem Hintergrund. Bessere Lesbarkeit durch erhöhten Kontrast."
+        - working: true
+          agent: "testing"
+          comment: "✅ GERMAN REVIEW TEST PASSED: Login Dark Mode Kontrast erfolgreich getestet. Demo-Credentials Box gut lesbar mit hellem Text auf dunklem Hintergrund. Username/Password Labels sichtbar. Input-Felder korrekt dargestellt. Alle Kontrast-Anforderungen erfüllt."
   
   - task: "Terminologie Testpunkte → Testfälle"
     implemented: true
@@ -373,11 +376,14 @@ frontend:
     file: "frontend/src/components/*.tsx"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: true
           agent: "main"
           comment: "Alle Vorkommen von 'Testpunkt' in 'Testfall' umbenannt: QADashboardV2, QADashboard, SettingsModal, ImportExportManager. Konsistente Terminologie in der gesamten Anwendung."
+        - working: true
+          agent: "testing"
+          comment: "✅ GERMAN REVIEW TEST PASSED: Terminologie erfolgreich umgestellt. Sidebar zeigt 'Testfall Kopfzeile' statt 'Testpunkt Kopfzeile'. Keine 'Testpunkt' Begriffe mehr gefunden. Konsistente 'Testfall' Terminologie in der gesamten UI implementiert."
 
   - task: "Rollenbasierte Einschränkungen"
     implemented: true
@@ -385,19 +391,22 @@ frontend:
     file: "frontend/src/components/HelpModal.tsx, SettingsModal.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: true
           agent: "main"
           comment: "Rollenbasierte Einschränkungen implementiert: (1) HelpModal: Technische Dokumentation & Installation nur für Admins (2) SettingsModal: Gefahrenbereich (DB leeren, Reset) nur für Admins (3) Testdaten-Generierung: Admin=15 Firmen/100 Testfälle, QA-Tester=1 Projekt/10 Bereiche/10 Testfälle"
+        - working: true
+          agent: "testing"
+          comment: "✅ GERMAN REVIEW TEST PASSED: Rollenbasierte Einschränkungen funktionieren korrekt. HelpModal zeigt alle 3 Tabs für Admin (Benutzerhandbuch, Technische Dokumentation, Installation). SettingsModal Erweitert-Tab zeigt Gefahrenbereich mit 'Datenbank leeren' Button. Testdaten-Beschreibung zeigt '15 Firmen mit je 100 Testfällen' für Admin."
   
   - task: "CompanyManagement React Hooks Error"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/components/CompanyManagement.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: false
           agent: "user"
@@ -405,6 +414,9 @@ frontend:
         - working: true
           agent: "main"
           comment: "React Hooks Error behoben: useState Hook für selectedCompanyForEdit VOR das 'if (!isOpen) return null' Statement verschoben. Hooks müssen immer vor bedingten Returns aufgerufen werden."
+        - working: false
+          agent: "testing"
+          comment: "❌ GERMAN REVIEW TEST FAILED: CompanyManagement Modal öffnet sich NICHT. Factory-Button gefunden aber Modal erscheint nicht nach Klick. Keine React Hooks Errors in Console, aber Modal-Funktionalität defekt. Projekte Tab und Firma-Dropdown können nicht getestet werden da Modal nicht öffnet."
   - task: "Login Functionality"
     implemented: true
     working: true
