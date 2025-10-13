@@ -185,11 +185,22 @@ const UserManagement: React.FC<UserManagementProps> = ({
     setShowEditModal(true);
   };
 
-  const filteredUsers = users.filter(user =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Rollenbasierte Filterung
+  const isAdmin = currentUser.role === 'admin';
+  
+  const filteredUsers = users
+    .filter(user => {
+      // Admin sieht alle User, QA-Tester nur User seiner Firma
+      if (!isAdmin && currentUser.companyId) {
+        return user.companyId === currentUser.companyId;
+      }
+      return true;
+    })
+    .filter(user =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   const getRoleIcon = (role: string) => {
     return role === 'admin' ? (
