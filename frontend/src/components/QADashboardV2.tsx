@@ -964,7 +964,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           </button>
 
           {/* User Management (nur für Admins) */}
-          {console.log('DEBUG: User role check:', user?.role, user?.role === 'admin') || user?.role === 'admin' && (
+          {user?.role === 'admin' && (
             <>
               <CustomTooltip text="Firmen- & Projektverwaltung">
                 <button
