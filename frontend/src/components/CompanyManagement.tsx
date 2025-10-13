@@ -625,7 +625,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                               name: project.name,
                               description: project.description,
                               notes: project.notes,
-                              status: project.status as 'active' | 'completed' | 'archived'
+                              status: project.status
                             });
                             setShowProjectForm(true);
                           }}
