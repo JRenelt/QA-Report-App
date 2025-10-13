@@ -154,7 +154,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     name: '',
     description: '',
     notes: '',
-    status: 'active' as const
+    status: 'active' as 'active' | 'completed' | 'archived'
   });
 
   // Admin: Firma zur Bearbeitung/Ansicht auswählen (MUSS vor return stehen!)
