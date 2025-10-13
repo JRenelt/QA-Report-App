@@ -227,6 +227,6 @@ Content-Type: application/json
 
 ---
 
-**Aktuelle Version**: v2.1.0-stable  
+**Aktuelle Version**: v2.1.1-stable  
 **Letztes Update**: 10. Januar 2025  
 **Status**: ✅ Produktionsbereit - Vollständige MVP-Funktionalität
