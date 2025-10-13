@@ -610,10 +610,38 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                         </div>
                       </div>
                       <div className="flex space-x-2 ml-4">
-                        <button className="text-blue-500 hover:text-blue-700">
+                        <button 
+                          onClick={() => {
+                            setEditingProject(project);
+                            setNewProject({
+                              companyId: project.companyId,
+                              name: project.name,
+                              description: project.description,
+                              notes: project.notes,
+                              status: project.status
+                            });
+                            setShowProjectForm(true);
+                          }}
+                          className="text-blue-500 hover:text-blue-700"
+                          title="Bearbeiten"
+                        >
                           <Edit className="h-4 w-4" />
                         </button>
-                        <button className="text-red-500 hover:text-red-700">
+                        <button 
+                          onClick={() => {
+                            if (confirm(`Projekt "${project.name}" wirklich löschen?`)) {
+                              setProjects(projects.filter(p => p.id !== project.id));
+                              // Update company project count
+                              setCompanies(companies.map(c => 
+                                c.id === project.companyId 
+                                  ? { ...c, projectsCount: Math.max(0, c.projectsCount - 1) }
+                                  : c
+                              ));
+                            }
+                          }}
+                          className="text-red-500 hover:text-red-700"
+                          title="Löschen"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
