@@ -1078,7 +1078,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               {testSuites.map((suite) => {
                 const stats = calculateSuiteStats(suite.id);
                 const isActive = suite.id === activeSuite;
-                const IconComponent = icons[suite.icon] || FileText;
+                const IconComponent = getIconComponent(suite.icon);
 
                 return (
                   <CustomTooltip key={suite.id} text={`${suite.description || suite.name} - ${stats.openTests} noch zu testende Aufgaben`}>
