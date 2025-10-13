@@ -1006,10 +1006,62 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         >
           {/* Sidebar Header */}
           <div className="p-4 border-b border-gray-700">
-            <h2 className="text-cyan-400 font-bold text-lg flex items-center mb-3">
-              <FileText className="h-5 w-5 mr-2" />
-              Test-Bereiche
-            </h2>
+            {/* Zeige Projekt-Dropdown wenn User mehrere Projekte hat */}
+            {(() => {
+              const userProjects = user?.role === 'admin' 
+                ? projects.filter(p => p.companyId === selectedCompanyId)
+                : projects.filter(p => p.companyId === currentUserCompany?.id);
+              
+              if (userProjects.length > 1) {
+                return (
+                  <div>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <FolderOpen className="h-5 w-5 text-cyan-400" />
+                      <h2 className="text-cyan-400 font-bold text-lg">
+                        Projekt-Auswahl
+                      </h2>
+                    </div>
+                    <select
+                      value={selectedProjectId}
+                      onChange={(e) => {
+                        setSelectedProjectId(e.target.value);
+                        // Hier müsste auf die erste Test-Suite des gewählten Projekts gesetzt werden
+                      }}
+                      className={`w-full text-sm rounded border px-3 py-2 mb-3 ${
+                        darkMode 
+                          ? 'bg-gray-700 border-gray-600 text-gray-300' 
+                          : 'bg-white border-gray-300 text-gray-700'
+                      }`}
+                    >
+                      {userProjects.map(project => (
+                        <option key={project.id} value={project.id}>
+                          {project.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                );
+              } else {
+                // Standard Test-Bereiche Header wenn nur ein Projekt
+                return (
+                  <div className="mb-3">
+                    <div className="flex items-center space-x-2">
+                      <FlaskConical className="h-5 w-5 text-cyan-400" />
+                      <div>
+                        <h2 className="text-cyan-400 font-bold text-lg">
+                          Test-Bereiche
+                        </h2>
+                        {userProjects.length === 1 && (
+                          <div className="text-xs mt-1 text-gray-400">
+                            {userProjects[0].name}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+            })()}
             <div className="px-3 py-2 bg-orange-600 rounded text-center font-bold">
               {totalOpenTests} Offen
             </div>
