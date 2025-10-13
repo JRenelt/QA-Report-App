@@ -248,13 +248,16 @@ const UserManagement: React.FC<UserManagementProps> = ({
               />
             </div>
           </div>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="flex items-center space-x-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white text-sm font-medium transition-colors"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Benutzer hinzufügen</span>
-          </button>
+          {/* Create Button - Nur für Admin */}
+          {isAdmin && (
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="flex items-center space-x-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white text-sm font-medium transition-colors"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Benutzer hinzufügen</span>
+            </button>
+          )}
         </div>
 
         {/* User List */}
