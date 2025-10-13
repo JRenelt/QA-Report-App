@@ -857,7 +857,45 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         {/* Links - Logo + Titel */}
         <div className="flex items-center space-x-3">
           <FlaskConical className="h-6 w-6 text-cyan-400" />
-          <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>QA-Report-App</h1>
+          <div>
+            <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>QA-Report-App</h1>
+            
+            {/* Firmenanzeige/Auswahl */}
+            <div className="flex items-center mt-1">
+              <Factory className="h-4 w-4 mr-2 text-gray-500" />
+              {user?.role === 'admin' ? (
+                /* Admin: Firmenauswahl-Dropdown */
+                <select
+                  value={selectedCompanyId}
+                  onChange={(e) => {
+                    setSelectedCompanyId(e.target.value);
+                    // Reset auf erste Test-Suite der neuen Firma
+                    const companyProjects = projects.filter(p => p.companyId === e.target.value);
+                    if (companyProjects.length > 0) {
+                      setSelectedProjectId(companyProjects[0].id);
+                      // Hier müsste die erste Test-Suite des ersten Projekts gesetzt werden
+                    }
+                  }}
+                  className={`text-sm rounded border px-2 py-1 ${
+                    darkMode 
+                      ? 'bg-gray-700 border-gray-600 text-gray-300' 
+                      : 'bg-white border-gray-300 text-gray-700'
+                  }`}
+                >
+                  {availableCompanies.map(company => (
+                    <option key={company.id} value={company.id}>
+                      {company.name}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                /* Normal User: Firma anzeigen */
+                <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {currentUserCompany?.name || 'Keine Firma zugewiesen'}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Mitte - Inputfeld + Button */}
