@@ -14,6 +14,7 @@ interface User {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  companyId?: string; // Firma-Zuordnung
 }
 
 interface UserManagementProps {
