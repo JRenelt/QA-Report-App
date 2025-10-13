@@ -160,7 +160,7 @@ const SystemStatus: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     const checkBackendHealth = async () => {
       try {
         const backendUrl = process.env.REACT_APP_BACKEND_URL;
-        const response = await fetch(`${backendUrl}/health`);
+        const response = await fetch(`${backendUrl}/api/health`);
         
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
