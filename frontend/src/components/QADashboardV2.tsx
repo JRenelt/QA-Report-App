@@ -165,6 +165,40 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showCompanyManagement, setShowCompanyManagement] = useState(false);
 
+  // Company and Project Management State
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
+  const [selectedProjectId, setSelectedProjectId] = useState<string>('');
+  const [availableCompanies] = useState([
+    { id: 'company1', name: 'Firma A' },
+    { id: 'company2', name: 'Firma B' },
+    { id: 'company3', name: 'Firma C' }
+  ]);
+  const [projects] = useState([
+    { id: 'proj1', name: 'Projekt Alpha', companyId: 'company1' },
+    { id: 'proj2', name: 'Projekt Beta', companyId: 'company1' },
+    { id: 'proj3', name: 'Projekt Gamma', companyId: 'company2' }
+  ]);
+  
+  // Current user's company (for normal users)
+  const currentUserCompany = availableCompanies.find(c => c.id === user?.companyId) || availableCompanies[0];
+
+  // Initialize company selection for admin
+  React.useEffect(() => {
+    if (user?.role === 'admin' && !selectedCompanyId && availableCompanies.length > 0) {
+      setSelectedCompanyId(availableCompanies[0].id);
+      const companyProjects = projects.filter(p => p.companyId === availableCompanies[0].id);
+      if (companyProjects.length > 0) {
+        setSelectedProjectId(companyProjects[0].id);
+      }
+    } else if (user?.role !== 'admin' && currentUserCompany) {
+      setSelectedCompanyId(currentUserCompany.id);
+      const userProjects = projects.filter(p => p.companyId === currentUserCompany.id);
+      if (userProjects.length > 0) {
+        setSelectedProjectId(userProjects[0].id);
+      }
+    }
+  }, [user, availableCompanies, projects, currentUserCompany]);
+
   // Tooltip Delay Helper
   const getTooltipDelay = () => {
     switch(userSettings.tooltipDelay) {
