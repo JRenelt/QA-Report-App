@@ -53,28 +53,33 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode, curren
                 <Book className="inline h-4 w-4 mr-2" />
                 Benutzerhandbuch
               </button>
-              <button
-                onClick={() => setActiveTab('technical')}
-                className={`py-4 px-6 border-b-2 font-medium text-sm ${
-                  activeTab === 'technical'
-                    ? 'border-qa-primary-500 text-qa-primary-600'
-                    : `border-transparent ${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'}`
-                }`}
-              >
-                <Code className="inline h-4 w-4 mr-2" />
-                Technische Dokumentation
-              </button>
-              <button
-                onClick={() => setActiveTab('installation')}
-                className={`py-4 px-6 border-b-2 font-medium text-sm ${
-                  activeTab === 'installation'
-                    ? 'border-qa-primary-500 text-qa-primary-600'
-                    : `border-transparent ${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'}`
-                }`}
-              >
-                <Download className="inline h-4 w-4 mr-2" />
-                Installation
-              </button>
+              {/* Technische Dokumentation & Installation nur für Admins */}
+              {isAdmin && (
+                <>
+                  <button
+                    onClick={() => setActiveTab('technical')}
+                    className={`py-4 px-6 border-b-2 font-medium text-sm ${
+                      activeTab === 'technical'
+                        ? 'border-qa-primary-500 text-qa-primary-600'
+                        : `border-transparent ${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'}`
+                    }`}
+                  >
+                    <Code className="inline h-4 w-4 mr-2" />
+                    Technische Dokumentation
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('installation')}
+                    className={`py-4 px-6 border-b-2 font-medium text-sm ${
+                      activeTab === 'installation'
+                        ? 'border-qa-primary-500 text-qa-primary-600'
+                        : `border-transparent ${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'}`
+                    }`}
+                  >
+                    <Download className="inline h-4 w-4 mr-2" />
+                    Installation
+                  </button>
+                </>
+              )}
             </nav>
           </div>
 
