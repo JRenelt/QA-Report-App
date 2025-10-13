@@ -295,6 +295,26 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     }
   };
 
+  // Funktion zum Generieren der Test-ID aus dem Titel
+  // Regel: Erste Buchstaben jedes Wortes (ohne Sonderzeichen) + laufende Nummer
+  const generateTestId = (title: string, index: number): string => {
+    // Sonderzeichen entfernen und in Wörter aufteilen
+    const words = title
+      .replace(/[!&%/\-_.,;:]/g, ' ') // Sonderzeichen durch Leerzeichen ersetzen
+      .split(/\s+/) // An Leerzeichen aufteilen
+      .filter(word => word.length > 0); // Leere Einträge entfernen
+    
+    // Erste Buchstaben sammeln
+    const initials = words
+      .map(word => word.charAt(0).toUpperCase())
+      .join('');
+    
+    // 4-stellige laufende Nummer
+    const number = String(index + 1).padStart(4, '0');
+    
+    return `${initials}${number}`;
+  };
+
   const generateProjectTemplate = () => {
     const template = {
       projectName: "Beispiel Projekt",
