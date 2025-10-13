@@ -157,8 +157,10 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     status: 'active' as const
   });
 
-  // Admin: Firma zur Bearbeitung auswählen (MUSS vor return stehen!)
+  // Admin: Firma zur Bearbeitung/Ansicht auswählen (MUSS vor return stehen!)
   const [selectedCompanyForEdit, setSelectedCompanyForEdit] = useState<string>('');
+  // Aktive Firma (für visuelle Hervorhebung)
+  const [activeCompanyId, setActiveCompanyId] = useState<string>('');
 
   if (!isOpen) return null;
 
