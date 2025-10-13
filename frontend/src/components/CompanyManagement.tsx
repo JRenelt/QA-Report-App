@@ -324,32 +324,32 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
           name: "Kopfzeile",
           description: "Tests für Header-Bereich",
           tests: [
-            { id: "KF001", title: "Logo Darstellung", description: "Logo wird korrekt angezeigt" },
-            { id: "KF002", title: "Navigation", description: "Hauptnavigation funktional" }
+            { id: generateTestId("Logo Darstellung", 0), title: "Logo Darstellung", description: "Logo wird korrekt angezeigt" },
+            { id: generateTestId("Navigation", 1), title: "Navigation", description: "Hauptnavigation funktional" }
           ]
         },
         {
           name: "Sidebar Navigation",
           description: "Tests für Seitennavigation", 
           tests: [
-            { id: "SN001", title: "Menü Struktur", description: "Menüstruktur korrekt dargestellt" },
-            { id: "SN002", title: "Responsive Verhalten", description: "Sidebar auf mobilen Geräten" }
+            { id: generateTestId("Menü Struktur", 0), title: "Menü Struktur", description: "Menüstruktur korrekt dargestellt" },
+            { id: generateTestId("Responsive Verhalten", 1), title: "Responsive Verhalten", description: "Sidebar auf mobilen Geräten" }
           ]
         },
         {
           name: "Hauptinhalt",
           description: "Tests für Main-Content-Bereich",
           tests: [
-            { id: "MC001", title: "Content Layout", description: "Inhaltsdarstellung optimiert" },
-            { id: "MC002", title: "Formulare", description: "Eingabefelder funktional" }
+            { id: generateTestId("Content Layout", 0), title: "Content Layout", description: "Inhaltsdarstellung optimiert" },
+            { id: generateTestId("Formulare", 1), title: "Formulare", description: "Eingabefelder funktional" }
           ]
         },
         {
           name: "Fußzeile",
           description: "Tests für Footer-Bereich",
           tests: [
-            { id: "FZ001", title: "Links", description: "Footer-Links funktional" },
-            { id: "FZ002", title: "Copyright", description: "Copyright-Informationen korrekt" }
+            { id: generateTestId("Links", 0), title: "Links", description: "Footer-Links funktional" },
+            { id: generateTestId("Copyright", 1), title: "Copyright", description: "Copyright-Informationen korrekt" }
           ]
         }
       ]
