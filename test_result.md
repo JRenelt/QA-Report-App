@@ -563,6 +563,45 @@ frontend:
         - working: false
           agent: "testing"
           comment: "CRITICAL: Mixed Content Error detected - frontend making HTTP requests to HTTPS backend. Error: 'Mixed Content: The page at 'https://qamonitor-suite.preview.emergentagent.com/' was loaded over HTTPS, but requested an insecure resource 'http://qa-report-hub.preview.emergentagent.com/api/test-cases/'. Backend integration fails due to protocol mismatch. Test creation falls back to local storage."
+        - working: false
+          agent: "testing"
+          comment: "CONFIRMED CRITICAL ISSUE: Mixed Content Error persists. Frontend making HTTP requests to HTTPS backend: 'http://qamonitor-suite.preview.emergentagent.com/api/users/' blocked. This affects User Management, Company Management, and all backend API calls. Frontend must use HTTPS for all backend requests to match the HTTPS frontend domain."
+
+  - task: "Benutzerverwaltung Rollenbasiert (Admin)"
+    implemented: true
+    working: true
+    file: "frontend/src/components/UserManagement.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ ADMIN USER MANAGEMENT TESTED: Login as admin/admin123 successful. Users button found (lucide-users icon) and User Management modal opens correctly. 'Benutzer hinzufügen' button IS VISIBLE for admin (correct). Found 5 Delete buttons indicating admin permissions working. UI functionality working despite Mixed Content Error affecting data loading."
+
+  - task: "Benutzerverwaltung Rollenbasiert (QA-Tester)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/UserManagement.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "❌ QA-TESTER TESTING INCOMPLETE: Could not complete QA-Tester (qa_demo/demo123) login testing due to modal interaction timeout issues. Need to test: 'Benutzer hinzufügen' button should NOT be visible, only users from own company visible, Edit button only for own profile, NO Delete buttons."
+
+  - task: "Template Test-ID Format"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/CompanyManagement.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "❌ TEMPLATE TESTING INCOMPLETE: Factory button found (lucide-factory icon) and Company Management modal accessible, but could not complete template download testing due to modal interaction issues. Need to verify Test-IDs: Logo Darstellung→LD0001, Navigation→N0002, Menü Struktur→MS0001, Responsive Verhalten→RV0002, Content Layout→CL0001, Formulare→F0002, Links→L0001, Copyright→C0002."
 
 metadata:
   created_by: "testing_agent"
