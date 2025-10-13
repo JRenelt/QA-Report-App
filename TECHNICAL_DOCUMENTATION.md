@@ -210,6 +210,23 @@ Content-Type: application/json
 
 ---
 
+## Versions-Historie
+
+### v2.1.0-stable (10. Januar 2025)
+- **Neue Features**: Company & Project Management, Master Data Import
+- **Verbesserungen**: Factory Icon, Seitennavigation in Footer, Test speichern/Archiv
+- **Fixes**: TypeScript-Errors, Tooltip-Positionierung, Administrator-Schutz
+
+### v2.0.0 (Dezember 2024) 
+- **Major Redesign**: QADashboardV2 Implementation
+- **Neue Features**: Dark Mode, Responsive Design, JWT Auth
+- **Backend**: FastAPI + MongoDB Integration
+
+### v1.x.x (Legacy)
+- Ursprüngliche QA-Report-App Implementation
+
+---
+
+**Aktuelle Version**: v2.1.0-stable  
 **Letztes Update**: 10. Januar 2025  
-**Version**: v2.1.0-stable  
 **Status**: ✅ Produktionsbereit - Vollständige MVP-Funktionalität
