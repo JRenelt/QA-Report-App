@@ -97,22 +97,38 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
         </div>
 
         {/* Demo Credentials Info */}
-        <div className="mb-6 p-4 bg-qa-gray-50 rounded-lg border border-qa-gray-200">
-          <h3 className="text-sm font-semibold text-qa-gray-700 mb-2">
+        <div className={`mb-6 p-4 rounded-lg border ${
+          darkMode 
+            ? 'bg-gray-700 border-gray-600' 
+            : 'bg-qa-gray-50 border-qa-gray-200'
+        }`}>
+          <h3 className={`text-sm font-semibold mb-2 ${
+            darkMode ? 'text-gray-200' : 'text-qa-gray-700'
+          }`}>
             {t.demoCredentials}
           </h3>
-          <div className="space-y-1 text-xs text-qa-gray-600">
+          <div className={`space-y-1 text-xs ${
+            darkMode ? 'text-gray-300' : 'text-qa-gray-600'
+          }`}>
             <button 
               type="button"
               onClick={() => handleDemoLogin('admin', 'admin123')}
-              className="block w-full text-left hover:text-qa-primary-600 transition-colors"
+              className={`block w-full text-left transition-colors ${
+                darkMode 
+                  ? 'hover:text-cyan-400' 
+                  : 'hover:text-qa-primary-600'
+              }`}
             >
               • {t.adminUser}
             </button>
             <button
               type="button" 
               onClick={() => handleDemoLogin('qa_demo', 'demo123')}
-              className="block w-full text-left hover:text-qa-primary-600 transition-colors"
+              className={`block w-full text-left transition-colors ${
+                darkMode 
+                  ? 'hover:text-cyan-400' 
+                  : 'hover:text-qa-primary-600'
+              }`}
             >
               • {t.qaUser}
             </button>
