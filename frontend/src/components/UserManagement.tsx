@@ -286,14 +286,18 @@ const UserManagement: React.FC<UserManagementProps> = ({
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => openEditModal(user)}
-                      className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-                      title="Bearbeiten"
-                    >
-                      <Edit className="h-4 w-4 text-white" />
-                    </button>
-                    {user.id !== currentUser.id && (
+                    {/* Edit: Admin kann alle bearbeiten, QA-Tester nur sich selbst */}
+                    {(isAdmin || user.id === currentUser.id) && (
+                      <button
+                        onClick={() => openEditModal(user)}
+                        className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
+                        title="Bearbeiten"
+                      >
+                        <Edit className="h-4 w-4 text-white" />
+                      </button>
+                    )}
+                    {/* Delete: Nur Admin, nicht sich selbst */}
+                    {isAdmin && user.id !== currentUser.id && (
                       <button
                         onClick={() => handleDeleteUser(user.id)}
                         className="p-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
