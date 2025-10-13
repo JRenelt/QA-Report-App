@@ -436,6 +436,27 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
               <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                 {isAdmin ? 'Alle Projekte' : 'Meine Projekte'}
               </h3>
+            
+            {/* Company Selection for Admin */}
+            {isAdmin && (
+              <div className="mb-4">
+                <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  Firma auswählen (optional - leer lassen für alle Projekte):
+                </label>
+                <select
+                  value={selectedCompanyForEdit}
+                  onChange={(e) => setSelectedCompanyForEdit(e.target.value)}
+                  className={`w-full max-w-xs p-2 border rounded ${
+                    darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                  }`}
+                >
+                  <option value="">Alle Firmen anzeigen</option>
+                  {companies.map(company => (
+                    <option key={company.id} value={company.id}>{company.name}</option>
+                  ))}
+                </select>
+              </div>
+            )}
               <div className="flex space-x-2">
                 <button
                   onClick={generateProjectTemplate}
