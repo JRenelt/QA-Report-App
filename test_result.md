@@ -569,12 +569,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "German review frontend testing COMPLETED - all 4 priorities tested"
-    - "Login Test (admin/admin123) - WORKING"
-    - "Dashboard Access (QADashboardV2) - WORKING"
-    - "Test Creation - WORKING with fallback (backend integration has mixed content error)"
-    - "Settings Modal - ACCESSIBLE (test data generation button location needs verification)"
+    - "German review frontend testing COMPLETED - 3 of 4 priorities tested successfully"
+    - "Login Dark Mode Kontrast - ✅ WORKING (good contrast, readable text)"
+    - "Terminologie Testfälle - ✅ WORKING (consistent terminology throughout UI)"
+    - "Rollenbasierte Einschränkungen - ✅ WORKING (admin sees all tabs and danger zone)"
+    - "CompanyManagement Modal - ❌ FAILING (modal does not open despite button click)"
   stuck_tasks: 
+    - "CompanyManagement React Hooks Error - CRITICAL: Modal does not open when Factory button clicked"
     - "Mixed Content Error Fix - CRITICAL: HTTP/HTTPS protocol mismatch blocking backend API calls"
     - "Logout Functionality - accessibility issue"
     - "Admin Login with Email - email-based login not implemented"
@@ -602,3 +603,5 @@ agent_communication:
       message: "GERMAN REVIEW FRONTEND TESTING FINAL RESULTS: ✅ Login Test (admin/admin123) SUCCESSFUL ✅ Dashboard Access (QADashboardV2) WORKING - all components loaded correctly ✅ Test Creation WORKING - backend integration functional with fallback to local storage ✅ Settings Modal accessible with Advanced tab. CRITICAL ISSUE FOUND: Mixed Content Error - frontend making HTTP requests to HTTPS backend causing test creation API failures. Test data generation button NOT FOUND in Advanced tab (may be in Import/Export tab). Overall: Frontend functionality working with minor HTTPS/HTTP mixed content issue affecting backend integration."
     - agent: "main"
       message: "SIDEBAR RESTRUCTURING COMPLETED: ✅ (1) Projekt-Auswahl als Haupttitel mit Ordner-Icon (cyan) ✅ (2) Projekt-Dropdown positioniert ✅ (3) Orangener 5-stelliger Counter für offene Tests (00002 Format) mit Tooltip 'Anzahl der noch zu testenden Testpunkte' ✅ (4) 'Allgemeines Design' als normaler Test-Bereich in der Liste (kein separates Symbol) ✅ (5) Alle Test-Bereiche mit FileText-Icon, Namen und cyan-farbigen Badges ✅ (6) Content um 100% vergrößert (Schriftgröße, Icons, Abstände, Sidebar-Breite von 256px auf 350px) ✅ (7) CompanyManagement erweitert: Admin kann Firma auswählen, um deren Projekte zu bearbeiten ✅ Sidebar-Struktur entspricht jetzt dem Soll-Bild."
+    - agent: "testing"
+      message: "GERMAN REVIEW FRONTEND TESTING RESULTS: ✅ Login Dark Mode Kontrast - PASSED (demo credentials readable, labels visible, input fields clear) ✅ Terminologie Testfälle - PASSED (consistent terminology, no 'Testpunkt' found) ✅ Rollenbasierte Einschränkungen - PASSED (admin sees all 3 help tabs, danger zone with DB clear button, correct test data description) ❌ CompanyManagement Modal - FAILED (factory button found but modal does not open when clicked, cannot test projects tab or company dropdown). CRITICAL ISSUE: CompanyManagement modal functionality broken despite React hooks fix."
