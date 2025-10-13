@@ -207,7 +207,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
           <button
             type="submit"
             disabled={loading}
-            className={`w-full btn-primary ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
+              loading 
+                ? 'opacity-50 cursor-not-allowed' 
+                : ''
+            } ${
+              darkMode
+                ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                : 'bg-qa-primary-600 hover:bg-qa-primary-700 text-white'
+            }`}
           >
             {loading ? (
               <div className="flex items-center justify-center">
