@@ -340,11 +340,13 @@ function App() {
           toggleDarkMode={toggleDarkMode}
           authToken={authToken || ''}
           initialTab={settingsInitialTab}
+          currentUser={user}
         />
         <HelpModal
           isOpen={showHelp}
           onClose={() => setShowHelp(false)}
           darkMode={darkMode}
+          currentUser={user}
         />
 
         {!authToken ? (
