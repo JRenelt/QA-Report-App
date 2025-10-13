@@ -611,17 +611,18 @@ metadata:
 
 test_plan:
   current_focus:
-    - "German review frontend testing COMPLETED - ALL 5 TESTS PASSED SUCCESSFULLY"
-    - "Login Dark Mode Kontrast - ✅ WORKING (good contrast, readable text)"
-    - "Backend Health Check Fix - ✅ WORKING (shows 'Backend: Verbunden' with green indicator)"
-    - "Terminologie Testfälle - ✅ WORKING (consistent terminology throughout UI)"
-    - "Rollenbasierte Einschränkungen - ✅ WORKING (admin sees all tabs and danger zone)"
-    - "CompanyManagement Modal - ✅ WORKING (modal opens, company selection, edit/delete buttons, projects tab all functional)"
+    - "Benutzerverwaltung & Template Test-IDs testing PARTIALLY COMPLETED"
+    - "Benutzerverwaltung Rollenbasiert (Admin) - ✅ WORKING (admin permissions correct)"
+    - "Benutzerverwaltung Rollenbasiert (QA-Tester) - ❌ INCOMPLETE (modal timeout issues)"
+    - "Template Test-ID Format - ❌ INCOMPLETE (modal interaction issues)"
+    - "Mixed Content Error Fix - ❌ CRITICAL ISSUE (HTTP/HTTPS protocol mismatch)"
   stuck_tasks: 
     - "Mixed Content Error Fix - CRITICAL: HTTP/HTTPS protocol mismatch blocking backend API calls"
+    - "Benutzerverwaltung Rollenbasiert (QA-Tester) - modal interaction timeout"
+    - "Template Test-ID Format - modal interaction timeout"
     - "Logout Functionality - accessibility issue"
     - "Admin Login with Email - email-based login not implemented"
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
