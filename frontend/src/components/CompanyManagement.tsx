@@ -432,31 +432,33 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
         {/* Projects Tab */}
         {activeTab === 'projects' && (
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                {isAdmin ? 'Alle Projekte' : 'Meine Projekte'}
-              </h3>
-            
-            {/* Company Selection for Admin */}
+            {/* Admin: Company Selection */}
             {isAdmin && (
               <div className="mb-4">
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Firma auswählen (optional - leer lassen für alle Projekte):
+                  Firma auswählen (zum Bearbeiten der Projekte):
                 </label>
                 <select
                   value={selectedCompanyForEdit}
                   onChange={(e) => setSelectedCompanyForEdit(e.target.value)}
-                  className={`w-full max-w-xs p-2 border rounded ${
+                  className={`w-full max-w-md p-2 border rounded ${
                     darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
                   }`}
                 >
-                  <option value="">Alle Firmen anzeigen</option>
+                  <option value="">Alle Projekte anzeigen</option>
                   {companies.map(company => (
-                    <option key={company.id} value={company.id}>{company.name}</option>
+                    <option key={company.id} value={company.id}>
+                      {company.name} ({company.projectsCount} Projekte)
+                    </option>
                   ))}
                 </select>
               </div>
             )}
+            
+            <div className="flex justify-between items-center">
+              <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                {isAdmin ? (selectedCompanyForEdit ? `Projekte von ${companies.find(c => c.id === selectedCompanyForEdit)?.name}` : 'Alle Projekte') : 'Meine Projekte'}
+              </h3>
               <div className="flex space-x-2">
                 <button
                   onClick={generateProjectTemplate}
