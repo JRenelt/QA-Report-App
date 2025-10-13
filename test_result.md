@@ -572,13 +572,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "German review frontend testing COMPLETED - 3 of 4 priorities tested successfully"
+    - "German review frontend testing COMPLETED - ALL 5 TESTS PASSED SUCCESSFULLY"
     - "Login Dark Mode Kontrast - ✅ WORKING (good contrast, readable text)"
+    - "Backend Health Check Fix - ✅ WORKING (shows 'Backend: Verbunden' with green indicator)"
     - "Terminologie Testfälle - ✅ WORKING (consistent terminology throughout UI)"
     - "Rollenbasierte Einschränkungen - ✅ WORKING (admin sees all tabs and danger zone)"
-    - "CompanyManagement Modal - ❌ FAILING (modal does not open despite button click)"
+    - "CompanyManagement Modal - ✅ WORKING (modal opens, company selection, edit/delete buttons, projects tab all functional)"
   stuck_tasks: 
-    - "CompanyManagement React Hooks Error - CRITICAL: Modal does not open when Factory button clicked"
     - "Mixed Content Error Fix - CRITICAL: HTTP/HTTPS protocol mismatch blocking backend API calls"
     - "Logout Functionality - accessibility issue"
     - "Admin Login with Email - email-based login not implemented"
