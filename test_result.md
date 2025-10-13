@@ -402,7 +402,7 @@ frontend:
   
   - task: "CompanyManagement React Hooks Error"
     implemented: true
-    working: false
+    working: true
     file: "frontend/src/components/CompanyManagement.tsx"
     stuck_count: 1
     priority: "high"
@@ -417,6 +417,9 @@ frontend:
         - working: false
           agent: "testing"
           comment: "❌ GERMAN REVIEW TEST FAILED: CompanyManagement Modal öffnet sich NICHT. Factory-Button gefunden aber Modal erscheint nicht nach Klick. Keine React Hooks Errors in Console, aber Modal-Funktionalität defekt. Projekte Tab und Firma-Dropdown können nicht getestet werden da Modal nicht öffnet."
+        - working: true
+          agent: "testing"
+          comment: "✅ FIXED: TypeScript compilation error in CompanyManagement.tsx resolved (status type issue). Factory button now working correctly. Company Management modal opens successfully. All functionality tested: ✅ Company selection with cyan border/Aktiv badge ✅ Edit/Delete buttons present ✅ Projects tab with company dropdown working ✅ Company filter synchronization between tabs working."
   - task: "Login Functionality"
     implemented: true
     working: true
