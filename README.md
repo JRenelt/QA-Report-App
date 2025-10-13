@@ -1,4 +1,4 @@
-# QA-Report-App v2.1.0-stable
+# QA-Report-App v2.1.1-stable
 **Professionelle Qualitätssicherung und Testmanagement**
 
 Die **QA-Report-App** ist eine umfassende Webanwendung für [Qualitätssicherung](#qualitätssicherung), [Testmanagement](#testmanagement) und Team-Kollaboration, entwickelt für moderne Entwicklungsteams.
