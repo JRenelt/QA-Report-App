@@ -156,7 +156,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
     return () => clearInterval(pollInterval);
   }, [itemsPerPage]);
-  const [sidebarWidth, setSidebarWidth] = useState(256); // 256px = w-64
+  const [sidebarWidth, setSidebarWidth] = useState(350); // Vergrößert von 256px auf 350px für 100% größeren Content
   const [isResizing, setIsResizing] = useState(false);
   const [userSettings, setUserSettings] = useState({
     tooltipDelay: 'kurz' as 'fest' | 'kurz' | 'lang', // Fest=0ms, Kurz=500ms, Lang=1500ms
