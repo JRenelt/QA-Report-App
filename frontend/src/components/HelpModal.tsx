@@ -5,12 +5,15 @@ interface HelpModalProps {
   isOpen: boolean;
   onClose: () => void;
   darkMode: boolean;
+  currentUser?: any;
 }
 
-const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode }) => {
+const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode, currentUser }) => {
   const [activeTab, setActiveTab] = useState<'manual' | 'technical' | 'installation'>('manual');
 
   if (!isOpen) return null;
+
+  const isAdmin = currentUser?.role === 'admin';
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
