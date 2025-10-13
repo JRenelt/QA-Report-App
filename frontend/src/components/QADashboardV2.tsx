@@ -160,7 +160,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [isResizing, setIsResizing] = useState(false);
   const [userSettings, setUserSettings] = useState({
     tooltipDelay: 'kurz' as 'fest' | 'kurz' | 'lang', // Fest=0ms, Kurz=500ms, Lang=1500ms
-    sidebarWidth: 256
+    sidebarWidth: 350
   });
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showCompanyManagement, setShowCompanyManagement] = useState(false);
