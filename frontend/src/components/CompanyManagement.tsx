@@ -414,14 +414,47 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <h4 className={`font-semibold ${
+                      darkMode ? 'text-white' : 'text-gray-900'
+                    } ${activeCompanyId === company.id ? 'text-cyan-400' : ''}`}>
                       {company.name}
+                      {activeCompanyId === company.id && (
+                        <span className="ml-2 text-xs bg-cyan-500 text-white px-2 py-0.5 rounded">
+                          Aktiv
+                        </span>
+                      )}
                     </h4>
-                    <div className="flex space-x-2">
-                      <button className="text-blue-500 hover:text-blue-700">
+                    <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
+                      <button 
+                        onClick={() => {
+                          setEditingCompany(company);
+                          setNewCompany({
+                            name: company.name,
+                            address: company.address,
+                            city: company.city,
+                            postalCode: company.postalCode,
+                            country: company.country
+                          });
+                          setShowCompanyForm(true);
+                        }}
+                        className="text-blue-500 hover:text-blue-700"
+                        title="Bearbeiten"
+                      >
                         <Edit className="h-4 w-4" />
                       </button>
-                      <button className="text-red-500 hover:text-red-700">
+                      <button 
+                        onClick={() => {
+                          if (confirm(`Firma "${company.name}" wirklich löschen?`)) {
+                            setCompanies(companies.filter(c => c.id !== company.id));
+                            if (activeCompanyId === company.id) {
+                              setActiveCompanyId('');
+                              setSelectedCompanyForEdit('');
+                            }
+                          }
+                        }}
+                        className="text-red-500 hover:text-red-700"
+                        title="Löschen"
+                      >
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
