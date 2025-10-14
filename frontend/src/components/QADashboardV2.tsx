@@ -2284,11 +2284,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         currentUser={user}
       />
 
-      <GlossaryModal
-        isOpen={showGlossary}
-        onClose={() => setShowGlossary(false)}
-        darkMode={darkMode || false}
-      />
+      {/* Glossar nur für Admins */}
+      {user?.role === 'admin' && (
+        <GlossaryModal
+          isOpen={showGlossary}
+          onClose={() => setShowGlossary(false)}
+          darkMode={darkMode || false}
+        />
+      )}
     </div>
   );
 
