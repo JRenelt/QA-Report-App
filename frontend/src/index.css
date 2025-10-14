@@ -49,3 +49,51 @@
     @apply text-sm leading-tight;
   }
 }
+
+/* Custom Scrollbar Styles - Dark Mode optimiert */
+@layer utilities {
+  /* Webkit Browsers (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1a1d26; /* Dunkelgrau für Dark Mode */
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #06b6d4; /* Cyan - passend zum Dark Mode Theme */
+    border-radius: 5px;
+    border: 2px solid #1a1d26;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0891b2; /* Dunkleres Cyan beim Hover */
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #06b6d4 #1a1d26; /* Thumb / Track */
+  }
+
+  /* Light Mode Scrollbar - falls gewünscht */
+  .light-mode ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  .light-mode ::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border: 2px solid #f3f4f6;
+  }
+
+  .light-mode ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+
+  .light-mode * {
+    scrollbar-color: #9ca3af #f3f4f6;
+  }
+}
