@@ -1259,14 +1259,16 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             <HelpCircle className="h-5 w-5 text-gray-300" />
           </button>
 
-          {/* Glossar/Wiki */}
-          <button
-            onClick={() => setShowGlossary(true)}
-            className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
-            title="Projekt-Glossar & Wiki"
-          >
-            <BookOpen className="h-5 w-5 text-gray-300" />
-          </button>
+          {/* Glossar/Wiki - nur für Admins */}
+          {user?.role === 'admin' && (
+            <button
+              onClick={() => setShowGlossary(true)}
+              className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
+              title="Projekt-Glossar & Wiki (Admin)"
+            >
+              <BookOpen className="h-5 w-5 text-gray-300" />
+            </button>
+          )}
 
           {/* User Management (nur für Admins) */}
           {user?.role === 'admin' && (
