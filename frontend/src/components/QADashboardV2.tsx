@@ -190,13 +190,30 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     { id: 'DE02', name: 'Digital Excellence GmbH' },
     { id: 'IN03', name: 'Innovate Systems Ltd.' }
   ]);
-  const [projects] = useState([
-    { id: 'PROJ001', name: 'E-Commerce Plattform Redesign', companyId: 'ID2' },
-    { id: 'PROJ002', name: 'Mobile Banking App Security Audit', companyId: 'TG01' },
-    { id: 'PROJ003', name: 'CRM Dashboard Performance Optimization', companyId: 'DE02' },
-    { id: 'PROJ004', name: 'IoT Device Management Portal', companyId: 'IN03' },
-    { id: 'PROJ005', name: 'Multi-Cloud Infrastructure Dashboard', companyId: 'ID2' }
-  ]);
+  // Projekte dynamisch aus localStorage laden
+  const [projects, setProjects] = useState(() => {
+    const saved = localStorage.getItem('qa_projects');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Fehler beim Laden der Projekte:', e);
+      }
+    }
+    // Fallback zu Standard-Projekten
+    return [
+      { id: 'PROJ001', name: 'E-Commerce Plattform Redesign', companyId: 'ID2' },
+      { id: 'PROJ002', name: 'Mobile Banking App Security Audit', companyId: 'TG01' },
+      { id: 'PROJ003', name: 'CRM Dashboard Performance Optimization', companyId: 'DE02' },
+      { id: 'PROJ004', name: 'IoT Device Management Portal', companyId: 'IN03' },
+      { id: 'PROJ005', name: 'Multi-Cloud Infrastructure Dashboard', companyId: 'ID2' }
+    ];
+  });
+  
+  // Projekte in localStorage synchronisieren
+  useEffect(() => {
+    localStorage.setItem('qa_projects', JSON.stringify(projects));
+  }, [projects]);
   
   // Current user's company (for normal users)
   const currentUserCompany = availableCompanies.find(c => c.id === (user?.companyId || 'ID2')) || availableCompanies[0];
