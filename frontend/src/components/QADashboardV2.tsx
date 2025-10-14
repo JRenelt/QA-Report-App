@@ -561,13 +561,30 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   // Auto-Sizing für Sidebar basierend auf längstem Eintrag
   const calculateOptimalSidebarWidth = () => {
     let maxLength = 0;
+    
+    // Berücksichtige die Länge der Testbereiche
     testSuites.forEach(suite => {
       const stats = calculateSuiteStats(suite.id);
       const displayText = `${suite.name} (${stats.totalTests})`;
       maxLength = Math.max(maxLength, displayText.length);
     });
+    
+    // Wenn kein Projekt ausgewählt, berücksichtige die Projektliste
+    if (!selectedProjectId && projects.length > 0) {
+      const userProjects = user?.role === 'admin' 
+        ? projects.filter((p: any) => p.companyId === selectedCompanyId)
+        : projects.filter((p: any) => p.companyId === currentUserCompany?.id);
+      
+      userProjects.forEach((project: any) => {
+        maxLength = Math.max(maxLength, project.name.length);
+      });
+      
+      // Mindestbreite für "Projekt-Auswahl" Header + längster Projektname
+      maxLength = Math.max(maxLength, 35);  // "Projekt-Auswahl" + Padding
+    }
+    
     // Basis: 12px pro Zeichen + Icons + Padding + Counter-Bereich
-    const calculatedWidth = Math.max(200, Math.min(500, maxLength * 12 + 120));
+    const calculatedWidth = Math.max(280, Math.min(500, maxLength * 12 + 120));
     return calculatedWidth;
   };
 
