@@ -634,8 +634,28 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                       {company.id !== 'ID2' && (
                         <button 
                           onClick={() => {
-                            if (confirm(`Firma "${company.name}" wirklich löschen?`)) {
+                            if (confirm(`Firma "${company.name}" wirklich löschen?\n\nAlle ${company.projectsCount} Projekte dieser Firma werden ebenfalls gelöscht!`)) {
+                              // 1. Firma aus Liste entfernen
                               setCompanies(companies.filter(c => c.id !== company.id));
+                              
+                              // 2. Alle Projekte dieser Firma finden und löschen
+                              const companyProjects = projects.filter(p => p.companyId === company.id);
+                              
+                              // 3. Für jedes Projekt: Test-Suites und Test-Cases aus localStorage löschen
+                              companyProjects.forEach(project => {
+                                localStorage.removeItem(`qa_suites_${project.id}`);
+                                localStorage.removeItem(`qa_cases_${project.id}`);
+                                console.log(`Projekt ${project.id} und zugehörige Testdaten gelöscht`);
+                              });
+                              
+                              // 4. Projekte aus State und localStorage entfernen
+                              const remainingProjects = projects.filter(p => p.companyId !== company.id);
+                              setProjects(remainingProjects);
+                              localStorage.setItem('qa_projects', JSON.stringify(remainingProjects));
+                              
+                              console.log(`Firma ${company.id} gelöscht: ${companyProjects.length} Projekte entfernt`);
+                              
+                              // 5. Active States zurücksetzen wenn nötig
                               if (activeCompanyId === company.id) {
                                 setActiveCompanyId('');
                                 setSelectedCompanyForEdit('');
