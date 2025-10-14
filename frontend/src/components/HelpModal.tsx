@@ -9,7 +9,7 @@ interface HelpModalProps {
   onOpenGlossary?: () => void;
 }
 
-const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode, currentUser }) => {
+const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode, currentUser, onOpenGlossary }) => {
   const [activeTab, setActiveTab] = useState<'manual' | 'technical' | 'installation'>('manual');
 
   if (!isOpen) return null;
