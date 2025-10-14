@@ -614,15 +614,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Benutzerverwaltung & Template Test-IDs testing PARTIALLY COMPLETED"
-    - "Benutzerverwaltung Rollenbasiert (Admin) - ✅ WORKING (admin permissions correct)"
-    - "Benutzerverwaltung Rollenbasiert (QA-Tester) - ❌ INCOMPLETE (modal timeout issues)"
-    - "Template Test-ID Format - ❌ INCOMPLETE (modal interaction issues)"
-    - "Mixed Content Error Fix - ❌ CRITICAL ISSUE (HTTP/HTTPS protocol mismatch)"
+    - "VOLLSTÄNDIGER FRONTEND-TEST NACH KOMPILIERUNGS-FIX ABGESCHLOSSEN"
+    - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch)"
+    - "Company Management Modal - ❌ FAILED (Factory icon not accessible in header)"
+    - "Template Test-ID Format - ❌ INCOMPLETE (depends on Company Management modal)"
   stuck_tasks: 
-    - "Mixed Content Error Fix - CRITICAL: HTTP/HTTPS protocol mismatch blocking backend API calls"
-    - "Benutzerverwaltung Rollenbasiert (QA-Tester) - modal interaction timeout"
-    - "Template Test-ID Format - modal interaction timeout"
+    - "Mixed Content Error Fix - CRITICAL: HTTP/HTTPS protocol mismatch blocking ALL backend API calls (User Management, Company Management, data loading)"
+    - "Company Management Modal - Factory icon not found in header, modal does not open"
+    - "Template Test-ID Format - Cannot test due to Company Management modal issues"
     - "Logout Functionality - accessibility issue"
     - "Admin Login with Email - email-based login not implemented"
   test_all: false
