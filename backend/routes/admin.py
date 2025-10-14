@@ -160,12 +160,14 @@ async def generate_test_data(
 @router.delete("/clear-database")
 async def clear_database(current_user: User = Depends(require_admin)):
     """
-    DANGER: Clear entire database except admin user
+    DANGER: Clear all projects and test data, but keep ID2 GmbH company
+    ID2 GmbH is required for system operation (protected company)
     """
     
-    # Delete all collections except users
-    await companies_collection.delete_many({})
-    await projects_collection.delete_many({})
+    # Delete ALL projects (including ID2 projects)
+    deleted_projects = await projects_collection.delete_many({})
+    
+    # Delete all test data
     await test_suites_collection.delete_many({})
     await test_cases_collection.delete_many({})
     await test_results_collection.delete_many({})
@@ -173,10 +175,17 @@ async def clear_database(current_user: User = Depends(require_admin)):
     await project_users_collection.delete_many({})
     await reports_collection.delete_many({})
     
-    # Keep admin user, delete others
+    # Delete all companies EXCEPT ID2 GmbH (system requirement)
+    deleted_companies = await companies_collection.delete_many({
+        "id": {"$ne": "ID2"}  # Keep ID2 GmbH
+    })
+    
+    # Keep admin users, delete others
     await users_collection.delete_many({"role": {"$ne": "admin"}})
     
     return {
         "message": "Datenbank erfolgreich geleert",
-        "preserved": "Admin-Benutzer beibehalten"
+        "deleted_projects": deleted_projects.deleted_count,
+        "deleted_companies": deleted_companies.deleted_count,
+        "preserved": "ID2 GmbH Firma und Admin-Benutzer beibehalten"
     }
