@@ -1565,7 +1565,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Toolbar (über Footer) */}
