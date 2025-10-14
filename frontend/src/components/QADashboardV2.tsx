@@ -238,89 +238,88 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
-    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0, placement: 'top' });
-    const tooltipRef = useRef<HTMLDivElement>(null);
+    const [tooltipStyle, setTooltipStyle] = useState<React.CSSProperties>({});
     const triggerRef = useRef<HTMLDivElement>(null);
 
     // Tooltips nur anzeigen wenn aktiviert
     const tooltipsEnabled = localStorage.getItem('showTooltips') !== 'false' && enabled;
 
-    // Intelligente Positionierung basierend auf Viewport
-    const calculateTooltipPosition = () => {
-      if (!triggerRef.current || !tooltipRef.current) return;
+    // Dynamische Tooltip-Positionierung basierend auf Element-Position
+    const calculateDynamicPosition = () => {
+      if (!triggerRef.current) return {};
 
-      const triggerRect = triggerRef.current.getBoundingClientRect();
-      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      const rect = triggerRef.current.getBoundingClientRect();
       const viewport = {
         width: window.innerWidth,
         height: window.innerHeight
       };
 
-      const spacing = 8; // Abstand zwischen Element und Tooltip
-      let x = 0;
-      let y = 0;
-      let placement = 'top';
+      const spacing = 12; // Abstand zum Element
+      const tooltipWidth = 200; // Geschätzte Tooltip-Breite
+      const tooltipHeight = 60; // Geschätzte Tooltip-Höhe
 
-      // Horizontale Position prüfen
-      const centerX = triggerRect.left + triggerRect.width / 2;
-      const isLeftEdge = centerX < tooltipRect.width / 2 + 20;
-      const isRightEdge = centerX > viewport.width - tooltipRect.width / 2 - 20;
+      // Element-Position im Viewport bestimmen
+      const isLeft = rect.left < viewport.width / 3;
+      const isRight = rect.right > (viewport.width * 2) / 3;
+      const isTop = rect.top < viewport.height / 3;
+      const isBottom = rect.bottom > (viewport.height * 2) / 3;
 
-      // Vertikale Position prüfen
-      const centerY = triggerRect.top + triggerRect.height / 2;
-      const isTopEdge = triggerRect.top < tooltipRect.height + spacing + 20;
-      const isBottomEdge = triggerRect.bottom > viewport.height - tooltipRect.height - spacing - 20;
+      let style: React.CSSProperties = {
+        position: 'fixed',
+        backgroundColor: '#f6cda1',
+        color: '#8b4513',
+        zIndex: 9999,
+        maxWidth: '200px',
+        whiteSpace: 'pre-wrap'
+      };
 
-      // Intelligente Platzierung
-      if (isTopEdge && !isBottomEdge) {
-        // Oben wenig Platz → Unten anzeigen
-        y = triggerRect.bottom + spacing;
-        placement = 'bottom';
-      } else if (isBottomEdge && !isTopEdge) {
-        // Unten wenig Platz → Oben anzeigen
-        y = triggerRect.top - tooltipRect.height - spacing;
-        placement = 'top';
-      } else {
-        // Standard: Oben
-        y = triggerRect.top - tooltipRect.height - spacing;
-        placement = 'top';
+      // Fall 4: Element links unten → Tooltip oben-rechts
+      if (isLeft && isBottom) {
+        style.left = rect.right + spacing;
+        style.bottom = viewport.height - rect.top + spacing;
+      }
+      // Fall 4 Variante: Element rechts unten → Tooltip oben-links
+      else if (isRight && isBottom) {
+        style.right = viewport.width - rect.left + spacing;
+        style.bottom = viewport.height - rect.top + spacing;
+      }
+      // Fall 4 Variante: Element links oben → Tooltip unten-rechts
+      else if (isLeft && isTop) {
+        style.left = rect.right + spacing;
+        style.top = rect.bottom + spacing;
+      }
+      // Fall 4 Variante: Element rechts oben → Tooltip unten-links
+      else if (isRight && isTop) {
+        style.right = viewport.width - rect.left + spacing;
+        style.top = rect.bottom + spacing;
+      }
+      // Fall 1: Element links → Tooltip rechts
+      else if (isLeft) {
+        style.left = rect.right + spacing;
+        style.top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+      }
+      // Fall 2: Element rechts → Tooltip links
+      else if (isRight) {
+        style.right = viewport.width - rect.left + spacing;
+        style.top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+      }
+      // Fall 3: Element unten → Tooltip oben
+      else if (isBottom) {
+        style.left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+        style.bottom = viewport.height - rect.top + spacing;
+      }
+      // Fall 3 Variante: Element oben → Tooltip unten
+      else if (isTop) {
+        style.left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+        style.top = rect.bottom + spacing;
+      }
+      // Standard: Zentriert, oben
+      else {
+        style.left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+        style.top = rect.top - tooltipHeight - spacing;
       }
 
-      // Horizontale Zentrierung mit Rand-Schutz
-      if (isLeftEdge) {
-        // Am linken Rand → Rechts ausrichten
-        x = triggerRect.left;
-      } else if (isRightEdge) {
-        // Am rechten Rand → Links ausrichten
-        x = triggerRect.right - tooltipRect.width;
-      } else {
-        // Zentriert
-        x = centerX - tooltipRect.width / 2;
-      }
-
-      // Diagonal bei Ecken
-      if ((isTopEdge || isBottomEdge) && (isLeftEdge || isRightEdge)) {
-        // Ecke erkannt → Diagonal zur Mitte
-        if (isLeftEdge && isTopEdge) {
-          x = triggerRect.right + spacing;
-          y = triggerRect.bottom;
-          placement = 'diagonal-bottom-right';
-        } else if (isRightEdge && isTopEdge) {
-          x = triggerRect.left - tooltipRect.width - spacing;
-          y = triggerRect.bottom;
-          placement = 'diagonal-bottom-left';
-        } else if (isLeftEdge && isBottomEdge) {
-          x = triggerRect.right + spacing;
-          y = triggerRect.top - tooltipRect.height;
-          placement = 'diagonal-top-right';
-        } else if (isRightEdge && isBottomEdge) {
-          x = triggerRect.left - tooltipRect.width - spacing;
-          y = triggerRect.top - tooltipRect.height;
-          placement = 'diagonal-top-left';
-        }
-      }
-
-      setTooltipPosition({ x, y, placement });
+      return style;
     };
 
     const handleMouseEnter = () => {
@@ -328,9 +327,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       
       const delay = getTooltipDelay();
       const timeout = setTimeout(() => {
+        setTooltipStyle(calculateDynamicPosition());
         setShowTooltip(true);
-        // Position nach Render berechnen
-        setTimeout(calculateTooltipPosition, 0);
       }, delay);
       setTooltipTimeout(timeout);
     };
@@ -359,14 +357,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         {children}
         {showTooltip && tooltipsEnabled && (
           <div 
-            ref={tooltipRef}
-            className="fixed px-3 py-2 rounded shadow-lg max-w-xs z-[9999]"
-            style={{ 
-              backgroundColor: '#f6cda1',
-              color: '#8b4513',
-              left: `${tooltipPosition.x}px`,
-              top: `${tooltipPosition.y}px`
-            }}
+            className="px-3 py-2 rounded shadow-lg"
+            style={tooltipStyle}
           >
             <div className="flex items-start justify-between">
               <span className="text-xs whitespace-pre-wrap pr-2">{text}</span>
