@@ -793,7 +793,18 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                         <button 
                           onClick={() => {
                             if (confirm(`Projekt "${project.name}" wirklich löschen?`)) {
-                              setProjects(projects.filter(p => p.id !== project.id));
+                              // Projekt aus Liste entfernen
+                              const updatedProjects = projects.filter(p => p.id !== project.id);
+                              setProjects(updatedProjects);
+                              
+                              // Projekt aus localStorage entfernen
+                              localStorage.setItem('qa_projects', JSON.stringify(updatedProjects));
+                              
+                              // Test-Suites und Test-Cases für dieses Projekt aus localStorage löschen
+                              localStorage.removeItem(`qa_suites_${project.id}`);
+                              localStorage.removeItem(`qa_cases_${project.id}`);
+                              console.log(`Projekt ${project.id} und zugehörige Daten aus localStorage gelöscht`);
+                              
                               // Update company project count
                               setCompanies(companies.map(c => 
                                 c.id === project.companyId 
