@@ -160,7 +160,7 @@ async def generate_test_data(
 @router.delete("/clear-database")
 async def clear_database(current_user: User = Depends(require_admin)):
     """
-    DANGER: Clear all projects and test data, but keep ID2 GmbH company
+    DANGER: Clear all projects, test data, and companies (except ID2 GmbH)
     ID2 GmbH is required for system operation (protected company)
     """
     
@@ -181,11 +181,57 @@ async def clear_database(current_user: User = Depends(require_admin)):
     })
     
     # Keep admin users, delete others
-    await users_collection.delete_many({"role": {"$ne": "admin"}})
+    deleted_users = await users_collection.delete_many({"role": {"$ne": "admin"}})
     
     return {
         "message": "Datenbank erfolgreich geleert",
         "deleted_projects": deleted_projects.deleted_count,
         "deleted_companies": deleted_companies.deleted_count,
+        "deleted_users": deleted_users.deleted_count,
         "preserved": "ID2 GmbH Firma und Admin-Benutzer beibehalten"
+    }
+
+
+@router.post("/optimize-database")
+async def optimize_database(current_user: User = Depends(require_admin)):
+    """
+    Optimize MongoDB collections (similar to MySQL OPTIMIZE TABLE)
+    Compacts collections to reduce disk space and improve performance
+    """
+    try:
+        from database import db
+        
+        # Get list of all collections
+        collection_names = await db.list_collection_names()
+        
+        optimized_collections = []
+        errors = []
+        
+        # Compact each collection (MongoDB equivalent of OPTIMIZE)
+        for collection_name in collection_names:
+            try:
+                # Run compact command on collection
+                result = await db.command("compact", collection_name)
+                optimized_collections.append({
+                    "collection": collection_name,
+                    "status": "success",
+                    "result": str(result)
+                })
+            except Exception as e:
+                errors.append({
+                    "collection": collection_name,
+                    "error": str(e)
+                })
+        
+        return {
+            "message": "Datenbank-Optimierung abgeschlossen",
+            "optimized": len(optimized_collections),
+            "errors": len(errors),
+            "details": {
+                "optimized_collections": optimized_collections,
+                "errors": errors
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler bei der Optimierung: {str(e)}")
     }
