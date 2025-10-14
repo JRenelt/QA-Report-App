@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { X, Book, Code, Download, HelpCircle } from 'lucide-react';
+import { X, Book, Code, Download, HelpCircle, BookOpen } from 'lucide-react';
 
 interface HelpModalProps {
   isOpen: boolean;
   onClose: () => void;
   darkMode: boolean;
   currentUser?: any;
+  onOpenGlossary?: () => void;
 }
 
 const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode, currentUser }) => {
