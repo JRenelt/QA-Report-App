@@ -210,12 +210,40 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showCompanyManagement, setShowCompanyManagement] = useState(false);
 
-  const [availableCompanies] = useState([
-    { id: 'ID2', name: 'ID2 GmbH' },
-    { id: 'TG01', name: 'TechGlobal Solutions AG' },
-    { id: 'DE02', name: 'Digital Excellence GmbH' },
-    { id: 'IN03', name: 'Innovate Systems Ltd.' }
-  ]);
+  // Companies aus localStorage laden (synchron mit CompanyManagement)
+  const [availableCompanies, setAvailableCompanies] = useState(() => {
+    const storedCompanies = localStorage.getItem('qa_companies');
+    if (storedCompanies) {
+      try {
+        return JSON.parse(storedCompanies);
+      } catch (e) {
+        console.error('Fehler beim Laden der Companies:', e);
+      }
+    }
+    // Fallback: Nur ID2
+    return [{ id: 'ID2', name: 'ID2 GmbH' }];
+  });
+  
+  // Companies aus localStorage aktualisieren (Polling)
+  React.useEffect(() => {
+    const updateCompanies = () => {
+      const storedCompanies = localStorage.getItem('qa_companies');
+      if (storedCompanies) {
+        try {
+          const parsed = JSON.parse(storedCompanies);
+          setAvailableCompanies(parsed);
+          console.log('Companies aktualisiert aus localStorage:', parsed.length);
+        } catch (e) {
+          console.error('Fehler beim Aktualisieren der Companies:', e);
+        }
+      }
+    };
+    
+    // Poll alle 2 Sekunden
+    const interval = setInterval(updateCompanies, 2000);
+    return () => clearInterval(interval);
+  }, []);
+  
   // Projekte dynamisch aus localStorage laden
   const [projects, setProjects] = useState(() => {
     const saved = localStorage.getItem('qa_projects');
