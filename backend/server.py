@@ -3,9 +3,10 @@ QA-Report-App FastAPI Backend - MongoDB Version
 Multi-Projekt QA Management System
 """
 
-from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
+from fastapi import FastAPI, Depends, HTTPException, status, APIRouter, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer
+from fastapi.responses import Response
 from contextlib import asynccontextmanager
 import os
 from pathlib import Path
@@ -37,6 +38,15 @@ app = FastAPI(
     version=os.getenv("APP_VERSION", "1.0.0"),
     lifespan=lifespan
 )
+
+# Global NoCache Middleware - KRITISCH für Browser-Cache-Probleme
+@app.middleware("http")
+async def add_nocache_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 # Create router with /api prefix
 api_router = APIRouter(prefix="/api")
