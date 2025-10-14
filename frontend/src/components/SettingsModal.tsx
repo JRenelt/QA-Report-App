@@ -87,7 +87,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
       console.log('🔍 DEBUG: Backend URL:', backendUrl);
       console.log('🔍 DEBUG: Making request to:', `${backendUrl}/api/admin/generate-test-data`);
       console.log('🔍 DEBUG: Auth Token available:', !!authToken);
@@ -134,7 +134,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
       const response = await fetch(`${backendUrl}/api/admin/clear-database`, {
         method: 'DELETE',
         headers: {
@@ -192,7 +192,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
       
       // Projekt-ID aus localStorage oder ersten verfügbaren Projekt
       const projects = JSON.parse(localStorage.getItem('qa_projects') || '[]');
@@ -245,7 +245,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
       
       // Projekt-ID aus localStorage
       const projects = JSON.parse(localStorage.getItem('qa_projects') || '[]');
