@@ -286,7 +286,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   }, [projects]);
   
   // Current user's company (for normal users)
-  const currentUserCompany = availableCompanies.find(c => c.id === (user?.companyId || 'ID2')) || availableCompanies[0];
+  const currentUserCompany = availableCompanies.find((c: any) => c.id === (user?.companyId || 'ID2')) || availableCompanies[0];
 
   // Initialize company selection (nur Company, NICHT Projekt)
   React.useEffect(() => {
