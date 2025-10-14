@@ -588,13 +588,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return calculatedWidth;
   };
 
-  // Auto-resize bei Suite-Änderungen
+  // Auto-resize bei Suite-Änderungen und Projektwechsel
   React.useEffect(() => {
     if (!isResizing) {
       const optimalWidth = calculateOptimalSidebarWidth();
       setSidebarWidth(optimalWidth);
     }
-  }, [testSuites, testCases, isResizing]);
+  }, [testSuites, testCases, isResizing, selectedProjectId, projects, selectedCompanyId]);
 
   React.useEffect(() => {
     const handleMouseMoveEvent = (e: MouseEvent) => {
