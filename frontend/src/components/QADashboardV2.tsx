@@ -276,7 +276,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       let tooltipY = 0;
 
       // STANDARD: ÜBER dem Element (bevorzugte Position)
-      const hasSpaceAbove = rect.top > tooltipHeight + spacing + 20;
+      const hasSpaceAbove = rect.top > tooltipHeight + spacing;
       
       if (hasSpaceAbove) {
         // STANDARD: Über dem Element, zentriert
