@@ -1084,7 +1084,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   onChange={(e) => {
                     setSelectedCompanyId(e.target.value);
                     // Reset auf erste Test-Suite der neuen Firma
-                    const companyProjects = projects.filter(p => p.companyId === e.target.value);
+                    const companyProjects = projects.filter((p: any) => p.companyId === e.target.value);
                     if (companyProjects.length > 0) {
                       setSelectedProjectId(companyProjects[0].id);
                       // Hier müsste die erste Test-Suite des ersten Projekts gesetzt werden
