@@ -239,6 +239,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     const [showTooltip, setShowTooltip] = useState(false);
     const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
     const [tooltipStyle, setTooltipStyle] = useState<React.CSSProperties>({});
+    const [lineCoords, setLineCoords] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
     const triggerRef = useRef<HTMLDivElement>(null);
 
     // Tooltips nur anzeigen wenn aktiviert
@@ -273,51 +274,87 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         whiteSpace: 'pre-wrap'
       };
 
+      // Zentrum des Elements (Startpunkt der Linie)
+      const elementCenterX = rect.left + rect.width / 2;
+      const elementCenterY = rect.top + rect.height / 2;
+      
+      let tooltipX = 0;
+      let tooltipY = 0;
+
       // Fall 4: Element links unten → Tooltip oben-rechts
       if (isLeft && isBottom) {
-        style.left = rect.right + spacing;
-        style.bottom = viewport.height - rect.top + spacing;
+        tooltipX = rect.right + spacing;
+        tooltipY = rect.top - tooltipHeight - spacing;
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
       // Fall 4 Variante: Element rechts unten → Tooltip oben-links
       else if (isRight && isBottom) {
-        style.right = viewport.width - rect.left + spacing;
-        style.bottom = viewport.height - rect.top + spacing;
+        tooltipX = rect.left - tooltipWidth - spacing;
+        tooltipY = rect.top - tooltipHeight - spacing;
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
       // Fall 4 Variante: Element links oben → Tooltip unten-rechts
       else if (isLeft && isTop) {
-        style.left = rect.right + spacing;
-        style.top = rect.bottom + spacing;
+        tooltipX = rect.right + spacing;
+        tooltipY = rect.bottom + spacing;
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
       // Fall 4 Variante: Element rechts oben → Tooltip unten-links
       else if (isRight && isTop) {
-        style.right = viewport.width - rect.left + spacing;
-        style.top = rect.bottom + spacing;
+        tooltipX = rect.left - tooltipWidth - spacing;
+        tooltipY = rect.bottom + spacing;
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
       // Fall 1: Element links → Tooltip rechts
       else if (isLeft) {
-        style.left = rect.right + spacing;
-        style.top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+        tooltipX = rect.right + spacing;
+        tooltipY = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
       // Fall 2: Element rechts → Tooltip links
       else if (isRight) {
-        style.right = viewport.width - rect.left + spacing;
-        style.top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+        tooltipX = rect.left - tooltipWidth - spacing;
+        tooltipY = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
       // Fall 3: Element unten → Tooltip oben
       else if (isBottom) {
-        style.left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-        style.bottom = viewport.height - rect.top + spacing;
+        tooltipX = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+        tooltipY = rect.top - tooltipHeight - spacing;
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
       // Fall 3 Variante: Element oben → Tooltip unten
       else if (isTop) {
-        style.left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-        style.top = rect.bottom + spacing;
+        tooltipX = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+        tooltipY = rect.bottom + spacing;
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
       // Standard: Zentriert, oben
       else {
-        style.left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-        style.top = rect.top - tooltipHeight - spacing;
+        tooltipX = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+        tooltipY = rect.top - tooltipHeight - spacing;
+        style.left = tooltipX;
+        style.top = tooltipY;
       }
+
+      // Berechne Linie vom Element-Zentrum zum Tooltip-Zentrum
+      const tooltipCenterX = tooltipX + tooltipWidth / 2;
+      const tooltipCenterY = tooltipY + tooltipHeight / 2;
+      
+      setLineCoords({
+        x1: elementCenterX,
+        y1: elementCenterY,
+        x2: tooltipCenterX,
+        y2: tooltipCenterY
+      });
 
       return style;
     };
@@ -356,10 +393,53 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       >
         {children}
         {showTooltip && tooltipsEnabled && (
-          <div 
-            className="px-3 py-2 rounded shadow-lg"
-            style={tooltipStyle}
-          >
+          <>
+            {/* Dynamische Verbindungslinie */}
+            <svg
+              className="fixed pointer-events-none"
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: 9998
+              }}
+            >
+              <line
+                x1={lineCoords.x1}
+                y1={lineCoords.y1}
+                x2={lineCoords.x2}
+                y2={lineCoords.y2}
+                stroke="#8b4513"
+                strokeWidth="2"
+                strokeDasharray="4,4"
+                opacity="0.6"
+              />
+              {/* Kleiner Kreis am Element (Startpunkt) */}
+              <circle
+                cx={lineCoords.x1}
+                cy={lineCoords.y1}
+                r="4"
+                fill="#8b4513"
+                opacity="0.8"
+              />
+              {/* Kleiner Kreis am Tooltip (Endpunkt) */}
+              <circle
+                cx={lineCoords.x2}
+                cy={lineCoords.y2}
+                r="4"
+                fill="#f6cda1"
+                stroke="#8b4513"
+                strokeWidth="2"
+              />
+            </svg>
+            
+            {/* Tooltip */}
+            <div 
+              className="px-3 py-2 rounded shadow-lg"
+              style={tooltipStyle}
+            >
             <div className="flex items-start justify-between">
               <span className="text-xs whitespace-pre-wrap pr-2">{text}</span>
               <button
