@@ -147,7 +147,14 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
       createdAt: new Date().toISOString(),
       status: 'active'
     }
-  ]);
+    ];
+  });
+  
+  // Projekte in localStorage synchronisieren
+  React.useEffect(() => {
+    localStorage.setItem('qa_projects', JSON.stringify(projects));
+  }, [projects]);
+  
   const [showCompanyForm, setShowCompanyForm] = useState(false);
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [editingCompany, setEditingCompany] = useState<Company | null>(null);
