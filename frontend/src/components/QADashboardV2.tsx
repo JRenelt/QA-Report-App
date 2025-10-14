@@ -1379,8 +1379,34 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
           {/* Test Cases List */}
           <div className="flex-1 overflow-y-auto p-4 pb-16">
-            <div className="space-y-3">
-              {currentTests.map((test) => (
+            {/* Zeige Nachricht wenn kein Projekt ausgewählt */}
+            {!selectedProjectId ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center py-12 px-4">
+                  <FolderOpen className="h-16 w-16 text-gray-500 mx-auto mb-4" />
+                  <h3 className="text-gray-400 text-xl font-semibold mb-2">
+                    Kein Projekt ausgewählt
+                  </h3>
+                  <p className="text-gray-500 text-base">
+                    Bitte wählen Sie ein Projekt aus der Sidebar aus, um Testfälle anzuzeigen.
+                  </p>
+                </div>
+              </div>
+            ) : currentTests.length === 0 ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center py-12 px-4">
+                  <FileText className="h-16 w-16 text-gray-500 mx-auto mb-4" />
+                  <h3 className="text-gray-400 text-xl font-semibold mb-2">
+                    Keine Testfälle vorhanden
+                  </h3>
+                  <p className="text-gray-500 text-base">
+                    Erstellen Sie einen neuen Testfall über das Eingabefeld oben.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {currentTests.map((test) => (
                 <div
                   key={test.id}
                   className={`bg-[#2C313A] border-t-4 rounded-lg p-4 hover:shadow-lg transition-all ${
