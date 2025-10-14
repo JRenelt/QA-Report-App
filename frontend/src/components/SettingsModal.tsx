@@ -176,25 +176,106 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   };
 
   const handleExportPDF = async () => {
+    if (!authToken) {
+      showMessage('error', '❌ Nicht authentifiziert');
+      return;
+    }
+
+    // "Speichern unter" Dialog simulieren mit Dateiname-Auswahl
+    const defaultName = `QA-Bericht_${new Date().toISOString().split('T')[0]}`;
+    const fileName = prompt('PDF-Dateiname:', defaultName);
+    
+    if (!fileName) {
+      showMessage('error', 'Export abgebrochen');
+      return;
+    }
+
     setLoading(true);
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
-      // This would need a project ID - for now, show a message
-      showMessage('success', 'PDF-Export wird vorbereitet...');
+      
+      // Projekt-ID aus localStorage oder ersten verfügbaren Projekt
+      const projects = JSON.parse(localStorage.getItem('qa_projects') || '[]');
+      const projectId = projects[0]?.id || 'PROJ001';
+      
+      const response = await fetch(`${backendUrl}/api/pdf/export/${projectId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${fileName}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      showMessage('success', `✅ PDF gespeichert: ${fileName}.pdf`);
     } catch (error) {
-      showMessage('error', '❌ Fehler beim PDF-Export');
+      console.error('PDF Export Fehler:', error);
+      showMessage('error', `❌ Fehler beim PDF-Export: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
     } finally {
       setLoading(false);
     }
   };
 
   const handleExportCSV = async () => {
+    if (!authToken) {
+      showMessage('error', '❌ Nicht authentifiziert');
+      return;
+    }
+
+    // "Speichern unter" Dialog simulieren mit Dateiname-Auswahl
+    const defaultName = `QA-Tests_${new Date().toISOString().split('T')[0]}`;
+    const fileName = prompt('CSV-Dateiname:', defaultName);
+    
+    if (!fileName) {
+      showMessage('error', 'Export abgebrochen');
+      return;
+    }
+
     setLoading(true);
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamonitor-suite.preview.emergentagent.com';
-      showMessage('success', 'CSV-Export wird vorbereitet...');
+      
+      // Projekt-ID aus localStorage
+      const projects = JSON.parse(localStorage.getItem('qa_projects') || '[]');
+      const projectId = projects[0]?.id || 'PROJ001';
+      
+      const response = await fetch(`${backendUrl}/api/export/csv/${projectId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${fileName}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      showMessage('success', `✅ CSV gespeichert: ${fileName}.csv`);
     } catch (error) {
-      showMessage('error', '❌ Fehler beim CSV-Export');
+      console.error('CSV Export Fehler:', error);
+      showMessage('error', `❌ Fehler beim CSV-Export: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
     } finally {
       setLoading(false);
     }
