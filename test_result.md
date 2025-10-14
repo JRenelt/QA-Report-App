@@ -629,7 +629,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Auto-Open Edit Modal bei neuer Test-Erstellung - ✅ COMPLETED SUCCESSFULLY"
+    - "Auto-Open Edit Modal bei neuer Test-Erstellung - ✅ COMPLETED SUCCESSFULLY WITH GERMAN REVIEW IMPROVEMENTS"
     - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch)"
     - "Company Management Modal - ❌ FAILED (Factory icon not accessible in header)"
     - "Template Test-ID Format - ❌ INCOMPLETE (depends on Company Management modal)"
