@@ -136,6 +136,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   });
   const [editTitle, setEditTitle] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Ref für Beschreibungsfeld - Auto-Focus + Text-Selection
+  const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
+  
   const [itemsPerPage, setItemsPerPage] = useState(() => {
     const saved = localStorage.getItem('itemsPerPage');
     return saved ? parseInt(saved) : 10;
