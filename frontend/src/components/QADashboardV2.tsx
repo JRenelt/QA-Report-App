@@ -1243,10 +1243,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               >
                 {(() => {
                   const userProjects = user?.role === 'admin' 
-                    ? projects.filter(p => p.companyId === selectedCompanyId)
-                    : projects.filter(p => p.companyId === currentUserCompany?.id);
+                    ? projects.filter((p: any) => p.companyId === selectedCompanyId)
+                    : projects.filter((p: any) => p.companyId === currentUserCompany?.id);
                   
-                  return userProjects.map(project => (
+                  return userProjects.map((project: any) => (
                     <option key={project.id} value={project.id}>
                       {project.name}
                     </option>
