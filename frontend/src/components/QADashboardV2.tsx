@@ -494,7 +494,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         test_id: `${suitePrefix}${String(nextNumber).padStart(4, '0')}`,
         suite_id: activeSuite,
         title: testName,
-        description: `Automatisch erstellter Test: ${testName}`,
+        description: `Beschreiben Sie den ${testName}`, // Hilfreicher Default-Text
         status: 'pending'
       };
       
