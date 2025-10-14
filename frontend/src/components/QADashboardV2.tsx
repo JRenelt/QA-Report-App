@@ -394,7 +394,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         {children}
         {showTooltip && tooltipsEnabled && (
           <>
-            {/* Dynamische Verbindungslinie */}
+            {/* Dynamische Verbindungslinie mit Verjüngung */}
             <svg
               className="fixed pointer-events-none"
               style={{
@@ -406,32 +406,73 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 zIndex: 9998
               }}
             >
+              {/* Verjüngende Linie (breit am Tooltip, schmal am Element) */}
+              <defs>
+                <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#c9a882" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="#c9a882" stopOpacity="0.6" />
+                </linearGradient>
+              </defs>
+              
+              {/* Polygon für verjüngende Form */}
+              <polygon
+                points={(() => {
+                  // Berechne senkrechte Vektoren für Linienbreite
+                  const dx = lineCoords.x2 - lineCoords.x1;
+                  const dy = lineCoords.y2 - lineCoords.y1;
+                  const length = Math.sqrt(dx * dx + dy * dy);
+                  const perpX = -dy / length;
+                  const perpY = dx / length;
+                  
+                  // Am Element: schmal (1px Breite)
+                  const elementWidth = 1;
+                  const p1x = lineCoords.x1 + perpX * elementWidth;
+                  const p1y = lineCoords.y1 + perpY * elementWidth;
+                  const p2x = lineCoords.x1 - perpX * elementWidth;
+                  const p2y = lineCoords.y1 - perpY * elementWidth;
+                  
+                  // Am Tooltip: breit (6px Breite)
+                  const tooltipWidth = 6;
+                  const p3x = lineCoords.x2 - perpX * tooltipWidth;
+                  const p3y = lineCoords.y2 - perpY * tooltipWidth;
+                  const p4x = lineCoords.x2 + perpX * tooltipWidth;
+                  const p4y = lineCoords.y2 + perpY * tooltipWidth;
+                  
+                  return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y}`;
+                })()}
+                fill="url(#lineGradient)"
+                opacity="0.4"
+              />
+              
+              {/* Gestrichelte Mittellinie für bessere Sichtbarkeit */}
               <line
                 x1={lineCoords.x1}
                 y1={lineCoords.y1}
                 x2={lineCoords.x2}
                 y2={lineCoords.y2}
-                stroke="#8b4513"
-                strokeWidth="2"
-                strokeDasharray="4,4"
-                opacity="0.6"
+                stroke="#d4a574"
+                strokeWidth="1"
+                strokeDasharray="3,3"
+                opacity="0.5"
               />
+              
               {/* Kleiner Kreis am Element (Startpunkt) */}
               <circle
                 cx={lineCoords.x1}
                 cy={lineCoords.y1}
-                r="4"
-                fill="#8b4513"
-                opacity="0.8"
+                r="3"
+                fill="#c9a882"
+                opacity="0.7"
               />
-              {/* Kleiner Kreis am Tooltip (Endpunkt) */}
+              {/* Größerer Kreis am Tooltip (Endpunkt) */}
               <circle
                 cx={lineCoords.x2}
                 cy={lineCoords.y2}
-                r="4"
+                r="5"
                 fill="#f6cda1"
-                stroke="#8b4513"
+                stroke="#c9a882"
                 strokeWidth="2"
+                opacity="0.8"
               />
             </svg>
             
