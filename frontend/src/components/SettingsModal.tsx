@@ -120,6 +120,35 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     }
   };
 
+  const handleOptimizeDatabase = async () => {
+    if (!confirm('Datenbank optimieren?\n\nDiese Aktion komprimiert die MongoDB-Collections und verbessert die Performance.\nDies kann einige Sekunden dauern.')) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
+      const response = await fetch(`${backendUrl}/api/admin/optimize-database`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Fehler bei der Datenbank-Optimierung');
+      }
+
+      const result = await response.json();
+      showMessage('success', `✅ Datenbank optimiert: ${result.optimized} Collections komprimiert`);
+    } catch (error) {
+      showMessage('error', '❌ Fehler bei der Datenbank-Optimierung');
+      console.error('Optimize database error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleClearDatabase = async () => {
     if (!confirm('🚨 GEFAHR: Diese Aktion löscht ALLE Projekte, Testdaten und Firmen (außer ID2)!\n\nALLE Firmen (außer ID2 GmbH), Projekte, Tests und Ergebnisse werden unwiderruflich gelöscht.\nDie Firma ID2 GmbH bleibt erhalten (Systemvoraussetzung).\n\nDiese Aktion kann NICHT rückgängig gemacht werden!\n\nMöchten Sie wirklich fortfahren?')) {
       return;
