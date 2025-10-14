@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Monitor, Tablet, Smartphone, Wrench, Moon, FileText, Palette, Menu, 
   Plus, Check, X, AlertTriangle, RotateCcw, Edit, MessageSquare, 
