@@ -255,7 +255,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         height: window.innerHeight
       };
 
-      const spacing = 6; // Näher am Element für bessere Usability
+      const spacing = 3; // 50% näher am Element (war 6px)
       const tooltipWidth = 200; // Geschätzte Tooltip-Breite
       const tooltipHeight = 60; // Geschätzte Tooltip-Höhe
 
