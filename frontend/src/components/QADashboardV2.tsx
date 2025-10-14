@@ -287,7 +287,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       }
       // Notfall: Kein Platz oben → Unter dem Element
       else {
-        const hasSpaceBelow = rect.bottom + tooltipHeight + spacing + 20 < viewport.height;
+        const hasSpaceBelow = rect.bottom + tooltipHeight + spacing < viewport.height;
         
         if (hasSpaceBelow) {
           tooltipX = elementCenterX - tooltipWidth / 2;
