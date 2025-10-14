@@ -419,7 +419,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         test_suite_id: activeSuite,
         test_id: `${suitePrefix}${String(nextNumber).padStart(4, '0')}`,
         name: testName,
-        description: `Automatisch erstellter Test: ${testName}`,
+        description: `Beschreiben Sie den ${testName}`, // Hilfreicher Default-Text
         priority: 2, // medium priority
         expected_result: '',
         sort_order: nextNumber,
