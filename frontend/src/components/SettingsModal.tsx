@@ -172,6 +172,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     try {
       // 1. Backend-Datenbank leeren
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
+      console.log('Leere Datenbank, URL:', `${backendUrl}/api/admin/clear-database`);
+      console.log('Auth Token:', authToken ? 'vorhanden' : 'fehlt');
+      
       const response = await fetch(`${backendUrl}/api/admin/clear-database`, {
         method: 'DELETE',
         headers: {
@@ -179,8 +182,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         }
       });
 
+      console.log('Clear Database Response Status:', response.status);
+
       if (!response.ok) {
-        throw new Error('Fehler beim Leeren der Backend-Datenbank');
+        const errorText = await response.text();
+        console.error('Clear Database Error Response:', errorText);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
       // 2. LocalStorage komplett leeren
