@@ -499,6 +499,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       setTestCases(prevTests => [...prevTests, newTest]);
       setNewTestName('');
       
+      // KREDO: "Kein Testfall ohne Beschreibung" - Edit-Modal auch bei lokalem Fallback öffnen
+      setEditingTest(newTest);
+      setShowEditModal(true);
+      console.log('Edit-Modal geöffnet für neuen Test (Fallback):', newTest.test_id);
+      
       // Verbesserte Fehlermeldung
       const fullErrorMessage = `⚠️ WARNUNG: Test wurde lokal erstellt, aber Backend-Speicherung fehlgeschlagen\n\n` +
         `🔍 Diagnose: ${errorMessage}\n\n` +
