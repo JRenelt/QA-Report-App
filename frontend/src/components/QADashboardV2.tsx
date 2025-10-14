@@ -1303,23 +1303,21 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 })()}
               </select>
               
-              {/* Orange Counter für noch zu testende Testfälle (5-stellig) */}
-              <CustomTooltip text="Anzahl der noch zu testenden Testfälle">
-                <div className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded text-base font-bold min-w-[80px] text-center">
-                  {(() => {
-                    // Zeige "-----" wenn kein Projekt ausgewählt
-                    if (!selectedProjectId) {
-                      return '-----';
-                    }
-                    // Berechne Anzahl offener Tests für aktuelles Projekt
-                    const openTestsCount = testCases.filter(t => 
-                      t.status === 'pending' || t.status === 'warning'
-                    ).length;
-                    // 5-stellig formatieren
-                    return String(openTestsCount).padStart(5, '0');
-                  })()}
-                </div>
-              </CustomTooltip>
+              {/* Orange Counter für noch zu testende Testfälle (5-stellig) - nur wenn Projekt ausgewählt */}
+              {selectedProjectId && (
+                <CustomTooltip text="Anzahl der noch zu testenden Testfälle">
+                  <div className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded text-base font-bold min-w-[80px] text-center">
+                    {(() => {
+                      // Berechne Anzahl offener Tests für aktuelles Projekt
+                      const openTestsCount = testCases.filter(t => 
+                        t.status === 'pending' || t.status === 'warning'
+                      ).length;
+                      // 5-stellig formatieren
+                      return String(openTestsCount).padStart(5, '0');
+                    })()}
+                  </div>
+                </CustomTooltip>
+              )}
             </div>
           </div>
 
