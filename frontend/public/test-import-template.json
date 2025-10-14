@@ -1,0 +1,265 @@
+{
+  "version": "1.0",
+  "projectName": "Beispiel Projekt",
+  "description": "Template für QA-Projekt Import",
+  "testBereiche": [
+    {
+      "id": "kopfzeile",
+      "name": "Kopfzeile",
+      "description": "Tests für den Kopfzeilen-Bereich",
+      "icon": "menu",
+      "tests": [
+        {
+          "testId": "K001",
+          "title": "Logo Darstellung Desktop",
+          "description": "Logo wird korrekt in Desktop-Auflösung angezeigt und ist klickbar"
+        },
+        {
+          "testId": "K002",
+          "title": "Navigation Menü",
+          "description": "Alle Navigationselemente sind sichtbar und funktionsfähig"
+        },
+        {
+          "testId": "K003",
+          "title": "User Menü",
+          "description": "Benutzer-Dropdown mit Profil, Einstellungen und Logout funktioniert"
+        }
+      ]
+    },
+    {
+      "id": "login",
+      "name": "Login Bereich",
+      "description": "Tests für Login und Authentifizierung",
+      "icon": "lock",
+      "tests": [
+        {
+          "testId": "L001",
+          "title": "Standard Login",
+          "description": "Login mit Email und Passwort funktioniert korrekt"
+        },
+        {
+          "testId": "L002",
+          "title": "Two Factor Authentication",
+          "description": "2FA funktioniert mit verschiedenen Methoden (SMS, App, Email)"
+        },
+        {
+          "testId": "L003",
+          "title": "Passwort vergessen",
+          "description": "Password-Reset-Flow funktioniert und sendet E-Mail"
+        }
+      ]
+    },
+    {
+      "id": "sidebar",
+      "name": "Sidebar Navigation",
+      "description": "Tests für die seitliche Navigation",
+      "icon": "sidebar",
+      "tests": [
+        {
+          "testId": "S001",
+          "title": "Navigation Links",
+          "description": "Alle Sidebar-Links sind anklickbar und führen zur richtigen Seite"
+        },
+        {
+          "testId": "S002",
+          "title": "Collapse/Expand",
+          "description": "Sidebar kann eingeklappt und ausgeklappt werden"
+        },
+        {
+          "testId": "S003",
+          "title": "Active State",
+          "description": "Aktive Seite wird in der Sidebar korrekt hervorgehoben"
+        }
+      ]
+    },
+    {
+      "id": "hauptinhalt",
+      "name": "Hauptinhalt",
+      "description": "Tests für den Hauptinhaltsbereich",
+      "icon": "file",
+      "tests": [
+        {
+          "testId": "H001",
+          "title": "Content Darstellung",
+          "description": "Hauptinhalt wird korrekt angezeigt und formatiert"
+        },
+        {
+          "testId": "H002",
+          "title": "Scroll-Verhalten",
+          "description": "Scrollen funktioniert smooth und Header bleibt fixiert"
+        },
+        {
+          "testId": "H003",
+          "title": "Ladeanimation",
+          "description": "Loading Spinner wird bei Datenabfrage angezeigt"
+        }
+      ]
+    },
+    {
+      "id": "footer",
+      "name": "Fußzeile",
+      "description": "Tests für den Footer-Bereich",
+      "icon": "footer",
+      "tests": [
+        {
+          "testId": "F001",
+          "title": "Footer Links",
+          "description": "Alle Footer-Links funktionieren (Impressum, Datenschutz, etc.)"
+        },
+        {
+          "testId": "F002",
+          "title": "Copyright Info",
+          "description": "Copyright-Information wird korrekt angezeigt"
+        },
+        {
+          "testId": "F003",
+          "title": "Social Media Icons",
+          "description": "Social Media Links funktionieren und öffnen in neuem Tab"
+        }
+      ]
+    },
+    {
+      "id": "dialoge",
+      "name": "Dialoge und Modale",
+      "description": "Tests für Dialoge und modale Fenster",
+      "icon": "dialog",
+      "tests": [
+        {
+          "testId": "D001",
+          "title": "Modal Öffnen/Schließen",
+          "description": "Modale können geöffnet und geschlossen werden (X, ESC, Overlay-Click)"
+        },
+        {
+          "testId": "D002",
+          "title": "Bestätigungs-Dialoge",
+          "description": "Bestätigungs-Dialoge für kritische Aktionen funktionieren"
+        },
+        {
+          "testId": "D003",
+          "title": "Focus Management",
+          "description": "Focus wird korrekt im Modal gehalten und nach Schließen zurückgesetzt"
+        }
+      ]
+    },
+    {
+      "id": "formulare",
+      "name": "Formular Eingaben",
+      "description": "Tests für Formulare und Eingabefelder",
+      "icon": "form",
+      "tests": [
+        {
+          "testId": "FO001",
+          "title": "Input Validierung",
+          "description": "Eingabefelder validieren korrekt (Email, Telefon, Pflichtfelder)"
+        },
+        {
+          "testId": "FO002",
+          "title": "Fehlermeldungen",
+          "description": "Fehlermeldungen werden klar und verständlich angezeigt"
+        },
+        {
+          "testId": "FO003",
+          "title": "Formular Absenden",
+          "description": "Formular-Submit funktioniert und zeigt Erfolgs-/Fehlermeldung"
+        }
+      ]
+    },
+    {
+      "id": "loading",
+      "name": "Loading und Feedback",
+      "description": "Tests für Lade-Indikatoren und Feedback",
+      "icon": "loading",
+      "tests": [
+        {
+          "testId": "LO001",
+          "title": "Loading Spinner",
+          "description": "Loading Spinner wird während asynchroner Operationen angezeigt"
+        },
+        {
+          "testId": "LO002",
+          "title": "Erfolgs-Meldungen",
+          "description": "Erfolgreiche Aktionen zeigen Bestätigungs-Meldung (Toast/Snackbar)"
+        },
+        {
+          "testId": "LO003",
+          "title": "Fehler-Meldungen",
+          "description": "Fehler werden benutzerfreundlich mit Lösungshinweisen angezeigt"
+        }
+      ]
+    },
+    {
+      "id": "responsive",
+      "name": "Responsive Design",
+      "description": "Tests für verschiedene Bildschirmgrößen",
+      "icon": "responsive",
+      "tests": [
+        {
+          "testId": "R001",
+          "title": "Mobile Ansicht",
+          "description": "App funktioniert korrekt auf Smartphones (< 768px)"
+        },
+        {
+          "testId": "R002",
+          "title": "Tablet Ansicht",
+          "description": "App funktioniert korrekt auf Tablets (768px - 1024px)"
+        },
+        {
+          "testId": "R003",
+          "title": "Desktop Ansicht",
+          "description": "App nutzt den Desktop-Platz optimal aus (> 1024px)"
+        },
+        {
+          "testId": "R004",
+          "title": "Breakpoint-Übergänge",
+          "description": "Übergänge zwischen Breakpoints sind smooth und ohne Layout-Brüche"
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "name": "Performance",
+      "description": "Tests für Ladezeiten und Performance",
+      "icon": "zap",
+      "tests": [
+        {
+          "testId": "P001",
+          "title": "Initiales Laden",
+          "description": "App lädt in unter 3 Sekunden (First Contentful Paint)"
+        },
+        {
+          "testId": "P002",
+          "title": "Navigation Speed",
+          "description": "Navigation zwischen Seiten erfolgt ohne merkbare Verzögerung"
+        },
+        {
+          "testId": "P003",
+          "title": "Große Datenmengen",
+          "description": "App bleibt responsiv bei großen Datenlisten (1000+ Einträge)"
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "name": "Barrierefreiheit",
+      "description": "Tests für Accessibility (A11y)",
+      "icon": "accessibility",
+      "tests": [
+        {
+          "testId": "A001",
+          "title": "Keyboard Navigation",
+          "description": "Alle Funktionen sind per Tastatur erreichbar (Tab, Enter, ESC)"
+        },
+        {
+          "testId": "A002",
+          "title": "Screen Reader",
+          "description": "Wichtige Elemente haben ARIA-Labels und sind für Screen Reader nutzbar"
+        },
+        {
+          "testId": "A003",
+          "title": "Kontrast",
+          "description": "Farbkontraste erfüllen WCAG 2.1 AA Standard (4.5:1)"
+        }
+      ]
+    }
+  ]
+}
