@@ -376,7 +376,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
           
           // Neues Projekt erstellen für Import
           const newProject = {
-            id: `project-${Date.now()}`,
+            id: `PROJ${Date.now()}`,  // Konsistentes Format mit anderen Projekten
             companyId: targetCompanyId,
             name: data.projectName || 'Importiertes Projekt',
             description: data.description || 'Aus Template importiert',
@@ -388,7 +388,51 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
             createdAt: new Date().toISOString()
           };
           
-          setProjects([...projects, newProject]);
+          // Projekte aktualisieren und in localStorage speichern
+          const updatedProjects = [...projects, newProject];
+          setProjects(updatedProjects);
+          localStorage.setItem('qa_projects', JSON.stringify(updatedProjects));
+          console.log('Projekt gespeichert in localStorage:', newProject.id);
+          
+          // Test-Suites für das neue Projekt erstellen und in localStorage speichern
+          const importedTestSuites = data.testBereiche.map((bereich: any, index: number) => ({
+            id: String(index + 1),
+            name: bereich.name || `Testbereich ${index + 1}`,
+            icon: bereich.icon || 'file',
+            description: bereich.description || '',
+            created_by: currentUser?.username || 'system',
+            created_at: new Date().toISOString(),
+            totalTests: bereich.tests?.length || 0,
+            passedTests: 0,
+            failedTests: 0,
+            openTests: bereich.tests?.length || 0
+          }));
+          
+          // Test-Cases für das neue Projekt erstellen
+          const importedTestCases: any[] = [];
+          data.testBereiche.forEach((bereich: any, suiteIndex: number) => {
+            if (bereich.tests && Array.isArray(bereich.tests)) {
+              bereich.tests.forEach((test: any, testIndex: number) => {
+                importedTestCases.push({
+                  id: `test-${Date.now()}-${suiteIndex}-${testIndex}`,
+                  test_id: test.testId || test.test_id || `T${String(testIndex + 1).padStart(4, '0')}`,
+                  suite_id: String(suiteIndex + 1),
+                  title: test.title || test.name || `Test ${testIndex + 1}`,
+                  description: test.description || test.beschreibung || '',
+                  status: 'pending' as const,
+                  note: ''
+                });
+              });
+            }
+          });
+          
+          // Test-Suites und Test-Cases in localStorage speichern für das neue Projekt
+          const suiteKey = `qa_suites_${newProject.id}`;
+          const casesKey = `qa_cases_${newProject.id}`;
+          localStorage.setItem(suiteKey, JSON.stringify(importedTestSuites));
+          localStorage.setItem(casesKey, JSON.stringify(importedTestCases));
+          console.log(`Test-Suites gespeichert für Projekt ${newProject.id}:`, importedTestSuites.length);
+          console.log(`Test-Cases gespeichert für Projekt ${newProject.id}:`, importedTestCases.length);
           
           // Update company project count
           setCompanies(companies.map(c => 
@@ -406,9 +450,10 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
           alert(`✅ Import erfolgreich!\n\n` +
             `Projekt: ${newProject.name}\n` +
             `Firma: ${companies.find(c => c.id === targetCompanyId)?.name}\n` +
-            `Testbereiche: ${data.testBereiche.length}\n` +
-            `Testfälle: ${totalTests}\n\n` +
-            `Das Projekt wurde der ausgewählten Firma zugeordnet.`);
+            `Testbereiche: ${importedTestSuites.length}\n` +
+            `Testfälle: ${importedTestCases.length}\n\n` +
+            `Das Projekt wurde der ausgewählten Firma zugeordnet.\n` +
+            `Wählen Sie das Projekt im Dashboard aus, um die Testfälle zu sehen.`);
         } else {
           alert('Ungültiges Template-Format!\n\nErwartet:\n{\n  "projectName": "...",\n  "testBereiche": [...]\n}');
         }
