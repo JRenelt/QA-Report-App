@@ -1422,41 +1422,44 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                           <Edit className="h-4 w-4 text-white" />
                         </button>
                       </CustomTooltip>
-                      <button 
-                        onClick={() => {
-                          setSelectedTest(test);
-                          setEditNote(test.note || '');
-                          setShowNoteModal(true);
-                        }}
-                        className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors" 
-                        title="Notiz"
-                      >
-                        <MessageSquare className="h-4 w-4 text-white" />
-                      </button>
-                      <button 
-                        onClick={() => {
-                          // Reset test
-                          const updated = testCases.map(t => 
-                            t.id === test.id ? { ...t, status: 'pending' as const } : t
-                          );
-                          setTestCases(updated);
-                        }}
-                        className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors" 
-                        title="Reset"
-                      >
-                        <RotateCcw className="h-4 w-4 text-white" />
-                      </button>
-                      <button 
-                        onClick={() => {
-                          if (confirm('Test wirklich löschen?')) {
-                            setTestCases(testCases.filter(t => t.id !== test.id));
-                          }
-                        }}
-                        className="p-2 bg-red-600 hover:bg-red-700 rounded transition-colors" 
-                        title="Löschen"
-                      >
-                        <Trash2 className="h-4 w-4 text-white" />
-                      </button>
+                      <CustomTooltip text="Notiz hinzufügen oder bearbeiten">
+                        <button 
+                          onClick={() => {
+                            setSelectedTest(test);
+                            setEditNote(test.note || '');
+                            setShowNoteModal(true);
+                          }}
+                          className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
+                        >
+                          <MessageSquare className="h-4 w-4 text-white" />
+                        </button>
+                      </CustomTooltip>
+                      <CustomTooltip text="Test zurücksetzen auf 'Unbearbeitet'">
+                        <button 
+                          onClick={() => {
+                            // Reset test
+                            const updated = testCases.map(t => 
+                              t.id === test.id ? { ...t, status: 'pending' as const } : t
+                            );
+                            setTestCases(updated);
+                          }}
+                          className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
+                        >
+                          <RotateCcw className="h-4 w-4 text-white" />
+                        </button>
+                      </CustomTooltip>
+                      <CustomTooltip text="Test dauerhaft löschen">
+                        <button 
+                          onClick={() => {
+                            if (confirm('Test wirklich löschen?')) {
+                              setTestCases(testCases.filter(t => t.id !== test.id));
+                            }
+                          }}
+                          className="p-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
+                        >
+                          <Trash2 className="h-4 w-4 text-white" />
+                        </button>
+                      </CustomTooltip>
                     </div>
                   </div>
                 </div>
