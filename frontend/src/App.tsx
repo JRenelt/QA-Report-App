@@ -291,6 +291,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [settingsInitialTab, setSettingsInitialTab] = useState<'appearance' | 'import-export' | 'advanced'>('appearance');
   const [showHelp, setShowHelp] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
 
   useEffect(() => {
     // Apply dark mode to document
