@@ -3,10 +3,11 @@ import {
   Monitor, Tablet, Smartphone, Wrench, Moon, FileText, Palette, Menu, 
   Plus, Check, X, AlertTriangle, RotateCcw, Edit, MessageSquare, 
   Trash2, Save, FileDown, Archive, HelpCircle, Settings, Crown, UserRound, FlaskConical, LogOut, Users,
-  CheckCircle, User, FunnelX, Coffee, CircleOff, MousePointerClick, CircleCheck, Factory, FolderOpen
+  CheckCircle, User, FunnelX, Coffee, CircleOff, MousePointerClick, CircleCheck, Factory, FolderOpen, BookOpen
 } from 'lucide-react';
 import UserManagement from './UserManagement';
 import CompanyManagement from './CompanyManagement';
+import GlossaryModal from './GlossaryModal';
 import qaService from '../services/qaService';
 
 interface QADashboardV2Props {
