@@ -222,13 +222,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   React.useEffect(() => {
     if (user?.role === 'admin' && !selectedCompanyId && availableCompanies.length > 0) {
       setSelectedCompanyId(availableCompanies[0].id);
-      const companyProjects = projects.filter(p => p.companyId === availableCompanies[0].id);
+      const companyProjects = projects.filter((p: any) => p.companyId === availableCompanies[0].id);
       if (companyProjects.length > 0) {
         setSelectedProjectId(companyProjects[0].id);
       }
     } else if (user?.role !== 'admin' && currentUserCompany) {
       setSelectedCompanyId(currentUserCompany.id);
-      const userProjects = projects.filter(p => p.companyId === currentUserCompany.id);
+      const userProjects = projects.filter((p: any) => p.companyId === currentUserCompany.id);
       if (userProjects.length > 0) {
         setSelectedProjectId(userProjects[0].id);
       }
