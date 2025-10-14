@@ -351,6 +351,11 @@ function App() {
           currentUser={user}
           onOpenGlossary={() => setShowGlossary(true)}
         />
+        <GlossaryModal
+          isOpen={showGlossary}
+          onClose={() => setShowGlossary(false)}
+          darkMode={darkMode}
+        />
 
         {!authToken ? (
           <>
