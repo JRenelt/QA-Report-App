@@ -186,12 +186,12 @@ const UserManagement: React.FC<UserManagementProps> = ({
   };
 
   // Rollenbasierte Filterung
-  const isAdmin = currentUser.role === 'admin';
+  const isAdmin = currentUser?.role === 'admin';
   
   const filteredUsers = users
     .filter(user => {
       // Admin sieht alle User, QA-Tester nur User seiner Firma
-      if (!isAdmin && currentUser.companyId) {
+      if (!isAdmin && currentUser?.companyId) {
         return user.companyId === currentUser.companyId;
       }
       return true;
