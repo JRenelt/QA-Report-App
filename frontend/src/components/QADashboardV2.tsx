@@ -210,9 +210,6 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showCompanyManagement, setShowCompanyManagement] = useState(false);
 
-  // Company and Project Management State
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
-  const [selectedProjectId, setSelectedProjectId] = useState<string>('');
   const [availableCompanies] = useState([
     { id: 'ID2', name: 'ID2 GmbH' },
     { id: 'TG01', name: 'TechGlobal Solutions AG' },
