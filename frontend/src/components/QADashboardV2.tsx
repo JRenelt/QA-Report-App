@@ -255,15 +255,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         height: window.innerHeight
       };
 
-      const spacing = 8; // Reduzierter Abstand für weniger diagonale Verschiebung
+      const spacing = 6; // Näher am Element für bessere Usability
       const tooltipWidth = 200; // Geschätzte Tooltip-Breite
       const tooltipHeight = 60; // Geschätzte Tooltip-Höhe
-
-      // Element-Position im Viewport bestimmen
-      const isLeft = rect.left < viewport.width / 3;
-      const isRight = rect.right > (viewport.width * 2) / 3;
-      const isTop = rect.top < viewport.height / 3;
-      const isBottom = rect.bottom > (viewport.height * 2) / 3;
 
       let style: React.CSSProperties = {
         position: 'fixed',
@@ -281,68 +275,44 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       let tooltipX = 0;
       let tooltipY = 0;
 
-      // Fall 4: Element links unten → Tooltip oben-rechts
-      if (isLeft && isBottom) {
-        tooltipX = rect.right + spacing;
+      // STANDARD: ÜBER dem Element (bevorzugte Position)
+      const hasSpaceAbove = rect.top > tooltipHeight + spacing + 20;
+      
+      if (hasSpaceAbove) {
+        // STANDARD: Über dem Element, zentriert
+        tooltipX = elementCenterX - tooltipWidth / 2;
         tooltipY = rect.top - tooltipHeight - spacing;
         style.left = tooltipX;
         style.top = tooltipY;
       }
-      // Fall 4 Variante: Element rechts unten → Tooltip oben-links
-      else if (isRight && isBottom) {
-        tooltipX = rect.left - tooltipWidth - spacing;
-        tooltipY = rect.top - tooltipHeight - spacing;
-        style.left = tooltipX;
-        style.top = tooltipY;
-      }
-      // Fall 4 Variante: Element links oben → Tooltip unten-rechts
-      else if (isLeft && isTop) {
-        tooltipX = rect.right + spacing;
-        tooltipY = rect.bottom + spacing;
-        style.left = tooltipX;
-        style.top = tooltipY;
-      }
-      // Fall 4 Variante: Element rechts oben → Tooltip unten-links
-      else if (isRight && isTop) {
-        tooltipX = rect.left - tooltipWidth - spacing;
-        tooltipY = rect.bottom + spacing;
-        style.left = tooltipX;
-        style.top = tooltipY;
-      }
-      // Fall 1: Element links → Tooltip rechts
-      else if (isLeft) {
-        tooltipX = rect.right + spacing;
-        tooltipY = rect.top + (rect.height / 2) - (tooltipHeight / 2);
-        style.left = tooltipX;
-        style.top = tooltipY;
-      }
-      // Fall 2: Element rechts → Tooltip links
-      else if (isRight) {
-        tooltipX = rect.left - tooltipWidth - spacing;
-        tooltipY = rect.top + (rect.height / 2) - (tooltipHeight / 2);
-        style.left = tooltipX;
-        style.top = tooltipY;
-      }
-      // Fall 3: Element unten → Tooltip oben
-      else if (isBottom) {
-        tooltipX = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-        tooltipY = rect.top - tooltipHeight - spacing;
-        style.left = tooltipX;
-        style.top = tooltipY;
-      }
-      // Fall 3 Variante: Element oben → Tooltip unten
-      else if (isTop) {
-        tooltipX = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-        tooltipY = rect.bottom + spacing;
-        style.left = tooltipX;
-        style.top = tooltipY;
-      }
-      // Standard: Zentriert, oben
+      // Notfall: Kein Platz oben → Unter dem Element
       else {
-        tooltipX = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-        tooltipY = rect.top - tooltipHeight - spacing;
-        style.left = tooltipX;
-        style.top = tooltipY;
+        const hasSpaceBelow = rect.bottom + tooltipHeight + spacing + 20 < viewport.height;
+        
+        if (hasSpaceBelow) {
+          tooltipX = elementCenterX - tooltipWidth / 2;
+          tooltipY = rect.bottom + spacing;
+          style.left = tooltipX;
+          style.top = tooltipY;
+        }
+        // Extremfall: Rechts oder links vom Element
+        else {
+          const hasSpaceRight = rect.right + tooltipWidth + spacing < viewport.width;
+          
+          if (hasSpaceRight) {
+            // Rechts
+            tooltipX = rect.right + spacing;
+            tooltipY = elementCenterY - tooltipHeight / 2;
+            style.left = tooltipX;
+            style.top = tooltipY;
+          } else {
+            // Links (letzter Ausweg)
+            tooltipX = rect.left - tooltipWidth - spacing;
+            tooltipY = elementCenterY - tooltipHeight / 2;
+            style.left = tooltipX;
+            style.top = tooltipY;
+          }
+        }
       }
 
       // Berechne Linie vom Element-Zentrum zum Tooltip-Zentrum
