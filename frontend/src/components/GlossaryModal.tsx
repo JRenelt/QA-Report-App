@@ -26,13 +26,13 @@ const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose, darkMode
       id: 'id-format',
       term: 'ID-Format',
       category: 'Projektregeln',
-      definition: 'Anfangsbuchstabe JEDES Wortes im Titel des Testfalles, wobei Sonderzeichen als Leerzeichen gewertet werden. Zu den Sonderzeichen gehören: & / % - + = ( ) [ ] { } < > | \\ : ; , . ? ! " \' ` ~ @ # $ ^ * _',
+      definition: 'Anfangsbuchstabe JEDES Wortes im Titel des Testfalles + laufende Nummer (3-stellig). Format: [BUCHSTABEN][NUMMER]. Sonderzeichen werden als Leerzeichen gewertet: & / % - + = ( ) [ ] { } < > | \\ : ; , . ? ! " \' ` ~ @ # $ ^ * _',
       examples: [
-        'Logo Darstellung Desktop → LDD (3 Wörter)',
-        'Navigation Menü → NM (2 Wörter)',
-        'Modal Öffnen & Schließen → MÖS (& = Leerzeichen, 3 Wörter)',
-        'User-Verwaltung/Admin → UVA (- und / = Leerzeichen, 3 Wörter)',
-        'Performance (100% CPU) → P1C (Klammern und % = Leerzeichen, 3 Wörter)'
+        'Logo Darstellung Desktop → LDD001 (3 Wörter + Nr. 001)',
+        'Navigation Menü → NM002 (2 Wörter + Nr. 002)',
+        'Modal Öffnen & Schließen → MÖS003 (& = Leerzeichen, 3 Wörter + Nr. 003)',
+        'User-Verwaltung/Admin → UVA004 (- und / = Leerzeichen, 3 Wörter + Nr. 004)',
+        'Performance (100% CPU) → P1C005 (Klammern und % = Leerzeichen, 3 Wörter + Nr. 005)'
       ],
       relatedTerms: ['Testfall', 'Testbereich', 'Test-Suites']
     },
