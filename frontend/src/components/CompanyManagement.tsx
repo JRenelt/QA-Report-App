@@ -545,13 +545,30 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                   Template
                 </button>
                 <button
-                  onClick={() => {
-                    const input = document.createElement('input');
-                    input.type = 'file';
-                    input.accept = '.json,.csv';
-                    input.onchange = (e: any) => {
-                      const file = e.target.files[0];
-                      if (file) {
+                  onClick={() => document.getElementById('project-import-input')?.click()}
+                  disabled={!selectedCompanyForEdit && isAdmin}
+                  className={`px-4 py-2 rounded-lg flex items-center ${
+                    (!selectedCompanyForEdit && isAdmin)
+                      ? 'bg-gray-400 cursor-not-allowed text-gray-600'
+                      : 'bg-green-600 hover:bg-green-700 text-white'
+                  }`}
+                  title={(!selectedCompanyForEdit && isAdmin) ? 'Bitte erst eine Firma auswählen' : 'Template importieren'}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  Import
+                </button>
+                <input
+                  id="project-import-input"
+                  type="file"
+                  accept=".json,.csv"
+                  style={{ display: 'none' }}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      handleTemplateImport(file);
+                    }
+                  }}
+                />
                         const reader = new FileReader();
                         reader.onload = (event) => {
                           try {
