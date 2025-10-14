@@ -1385,56 +1385,56 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           {/* Toolbar (über Footer) */}
           <div className="bg-[#282C34] border-t border-gray-700 p-3">
             <div className="flex items-center justify-between">
-              {/* Filter Buttons - Mit Symbolen */}
+              {/* Filter Buttons - Rechteckig wie "Überspringen" */}
               <div className="flex space-x-2">
                 <CustomTooltip text={`Alle Tests anzeigen (${statusCounts.all})`}>
                   <button
                     onClick={() => setFilterStatus('all')}
-                    className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
-                      filterStatus === 'all' ? 'bg-cyan-600 text-white' : 'bg-cyan-300 hover:bg-cyan-400 text-cyan-800'
+                    className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                      filterStatus === 'all' ? 'bg-cyan-600 text-white shadow-md' : 'bg-cyan-300 hover:bg-cyan-400 text-cyan-800'
                     }`}
                   >
-                    <FunnelX className="h-4 w-4" />
+                    <FunnelX className="h-4 w-4 inline" />
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text={`Bestandene Tests anzeigen (${statusCounts.success})`}>
                   <button
                     onClick={() => setFilterStatus('success')}
-                    className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
-                      filterStatus === 'success' ? 'bg-green-600 text-white' : 'bg-green-300 hover:bg-green-400 text-green-800'
+                    className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                      filterStatus === 'success' ? 'bg-green-600 text-white shadow-md' : 'bg-green-300 hover:bg-green-400 text-green-800'
                     }`}
                   >
-                    <Check className="h-4 w-4" />
+                    <Check className="h-4 w-4 inline" />
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text={`Fehlgeschlagene Tests anzeigen (${statusCounts.error})`}>
                   <button
                     onClick={() => setFilterStatus('error')}
-                    className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
-                      filterStatus === 'error' ? 'bg-red-600 text-white' : 'bg-red-300 hover:bg-red-400 text-red-800'
+                    className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                      filterStatus === 'error' ? 'bg-red-600 text-white shadow-md' : 'bg-red-300 hover:bg-red-400 text-red-800'
                     }`}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-4 w-4 inline" />
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text={`Tests in Bearbeitung anzeigen (${statusCounts.warning})`}>
                   <button
                     onClick={() => setFilterStatus('warning')}
-                    className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
-                      filterStatus === 'warning' ? 'bg-orange-600 text-white' : 'bg-orange-300 hover:bg-orange-400 text-orange-800'
+                    className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                      filterStatus === 'warning' ? 'bg-orange-600 text-white shadow-md' : 'bg-orange-300 hover:bg-orange-400 text-orange-800'
                     }`}
                   >
-                    <Coffee className="h-4 w-4" />
+                    <Coffee className="h-4 w-4 inline" />
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text={`Unbearbeitete Tests anzeigen (${statusCounts.pending})`}>
                   <button
                     onClick={() => setFilterStatus('pending')}
-                    className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
-                      filterStatus === 'pending' ? 'bg-gray-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-800'
+                    className={`px-3 py-1 rounded text-sm font-medium transition-all ${
+                      filterStatus === 'pending' ? 'bg-gray-600 text-white shadow-md' : 'bg-gray-300 hover:bg-gray-400 text-gray-800'
                     }`}
                   >
-                    <CircleOff className="h-4 w-4" />
+                    <CircleOff className="h-4 w-4 inline" />
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text={`Übersprungene Tests anzeigen (${statusCounts.skipped})`}>
