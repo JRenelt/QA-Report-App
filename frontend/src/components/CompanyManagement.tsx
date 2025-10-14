@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Building2, Plus, Edit, Trash2, Users, FolderOpen, X, Save, Download, FileDown } from 'lucide-react';
+import { Building2, Plus, Edit, Trash2, Users, FolderOpen, X, Save, Download, FileDown, Upload } from 'lucide-react';
 
 interface Company {
   id: string;
