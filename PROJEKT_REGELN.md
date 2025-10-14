@@ -38,6 +38,7 @@
 - **Dropdown-Breite**: Volle Breite unter dem Header
 - **Sidebar-Breite**: Dynamisch, mindestens 280px
 - **Dark Mode**: Alle Komponenten müssen Dark Mode unterstützen
+- **Glossar**: Nur für Admins zugänglich (Admin-Bereich)
 
 ### Backend-Routen
 **REGEL:** Alle API-Routen MÜSSEN mit `/api` beginnen
