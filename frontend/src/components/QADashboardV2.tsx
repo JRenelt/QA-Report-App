@@ -1186,7 +1186,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       : 'bg-white border-gray-300 text-gray-700'
                   }`}
                 >
-                  {availableCompanies.map(company => (
+                  {availableCompanies.map((company: any) => (
                     <option key={company.id} value={company.id}>
                       {company.name}
                     </option>
