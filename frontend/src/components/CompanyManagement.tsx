@@ -64,14 +64,13 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
       projectsCount: 0
     }];
   });
-      city: 'Düsseldorf',
-      postalCode: '40212',
-      country: 'Deutschland',
-      createdAt: new Date().toISOString(),
-      usersCount: 1,
-      projectsCount: 1
-    }
-  ]);
+  
+  // Companies in localStorage speichern wenn sie sich ändern
+  React.useEffect(() => {
+    localStorage.setItem('qa_companies', JSON.stringify(companies));
+    console.log('Companies in localStorage gespeichert:', companies.length);
+  }, [companies]);
+  
   const [projects, setProjects] = useState<Project[]>(() => {
     const saved = localStorage.getItem('qa_projects');
     if (saved) {
