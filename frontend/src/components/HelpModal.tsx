@@ -89,35 +89,37 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode, curren
             {/* BENUTZERHANDBUCH */}
             {activeTab === 'manual' && (
               <div className={`space-y-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                {/* Glossar-Link prominent oben */}
-                <div className={`p-4 rounded-lg border-2 ${
-                  darkMode 
-                    ? 'bg-cyan-900/20 border-cyan-500' 
-                    : 'bg-cyan-50 border-cyan-400'
-                }`}>
-                  <div className="flex items-start space-x-3">
-                    <BookOpen className="h-6 w-6 text-cyan-500 flex-shrink-0 mt-1" />
-                    <div className="flex-1">
-                      <h4 className={`text-lg font-bold mb-2 ${darkMode ? 'text-cyan-400' : 'text-cyan-700'}`}>
-                        📚 Projekt-Glossar & Wiki
-                      </h4>
-                      <p className="mb-3">
-                        Finden Sie alle wichtigen Begriffe, Regeln und Konzepte im Projekt-Glossar.
-                        Durchsuchen Sie über 10 Einträge mit Beispielen und verwandten Begriffen.
-                      </p>
-                      <button
-                        onClick={() => {
-                          onClose();
-                          onOpenGlossary?.();
-                        }}
-                        className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors flex items-center space-x-2"
-                      >
-                        <BookOpen className="h-4 w-4" />
-                        <span>Glossar öffnen</span>
-                      </button>
+                {/* Glossar-Link prominent oben - nur für Admins */}
+                {isAdmin && (
+                  <div className={`p-4 rounded-lg border-2 ${
+                    darkMode 
+                      ? 'bg-cyan-900/20 border-cyan-500' 
+                      : 'bg-cyan-50 border-cyan-400'
+                  }`}>
+                    <div className="flex items-start space-x-3">
+                      <BookOpen className="h-6 w-6 text-cyan-500 flex-shrink-0 mt-1" />
+                      <div className="flex-1">
+                        <h4 className={`text-lg font-bold mb-2 ${darkMode ? 'text-cyan-400' : 'text-cyan-700'}`}>
+                          📚 Projekt-Glossar & Wiki <span className="text-xs bg-orange-500 text-white px-2 py-1 rounded ml-2">ADMIN</span>
+                        </h4>
+                        <p className="mb-3">
+                          Finden Sie alle wichtigen Begriffe, Regeln und Konzepte im Projekt-Glossar.
+                          Durchsuchen Sie über 10 Einträge mit Beispielen und verwandten Begriffen.
+                        </p>
+                        <button
+                          onClick={() => {
+                            onClose();
+                            onOpenGlossary?.();
+                          }}
+                          className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg font-semibold transition-colors flex items-center space-x-2"
+                        >
+                          <BookOpen className="h-4 w-4" />
+                          <span>Glossar öffnen</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 <section>
                   <h3 className={`text-xl font-bold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
