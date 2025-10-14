@@ -210,9 +210,25 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     ];
   });
   
-  // Projekte in localStorage synchronisieren
+  // Projekte automatisch aus localStorage aktualisieren (Polling alle 2 Sekunden)
   useEffect(() => {
-    localStorage.setItem('qa_projects', JSON.stringify(projects));
+    const pollInterval = setInterval(() => {
+      const saved = localStorage.getItem('qa_projects');
+      if (saved) {
+        try {
+          const newProjects = JSON.parse(saved);
+          // Nur aktualisieren wenn sich was geändert hat
+          if (JSON.stringify(newProjects) !== JSON.stringify(projects)) {
+            console.log('Projekte aktualisiert aus localStorage:', newProjects.length);
+            setProjects(newProjects);
+          }
+        } catch (e) {
+          console.error('Fehler beim Aktualisieren der Projekte:', e);
+        }
+      }
+    }, 2000); // Alle 2 Sekunden prüfen
+
+    return () => clearInterval(pollInterval);
   }, [projects]);
   
   // Current user's company (for normal users)
