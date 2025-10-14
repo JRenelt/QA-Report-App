@@ -1,0 +1,265 @@
+{
+  "version": "2.0",
+  "projectName": "Beispiel Projekt",
+  "description": "Template für QA-Projekt Import mit korrekten Test-IDs",
+  "testBereiche": [
+    {
+      "id": "kopfzeile",
+      "name": "Kopfzeile",
+      "description": "Tests für den Kopfzeilen-Bereich",
+      "icon": "menu",
+      "tests": [
+        {
+          "testId": "LDD",
+          "title": "Logo Darstellung Desktop",
+          "description": "Logo wird korrekt in Desktop-Auflösung angezeigt und ist klickbar"
+        },
+        {
+          "testId": "NM",
+          "title": "Navigation Menü",
+          "description": "Alle Navigationselemente sind sichtbar und funktionsfähig"
+        },
+        {
+          "testId": "UM",
+          "title": "User Menü",
+          "description": "Benutzer-Dropdown mit Profil, Einstellungen und Logout funktioniert"
+        }
+      ]
+    },
+    {
+      "id": "login",
+      "name": "Login Bereich",
+      "description": "Tests für Login und Authentifizierung",
+      "icon": "lock",
+      "tests": [
+        {
+          "testId": "SL",
+          "title": "Standard Login",
+          "description": "Login mit Email und Passwort funktioniert korrekt"
+        },
+        {
+          "testId": "TFA",
+          "title": "Two Factor Authentication",
+          "description": "2FA funktioniert mit verschiedenen Methoden (SMS, App, Email)"
+        },
+        {
+          "testId": "PV",
+          "title": "Passwort vergessen",
+          "description": "Password-Reset-Flow funktioniert und sendet E-Mail"
+        }
+      ]
+    },
+    {
+      "id": "sidebar",
+      "name": "Sidebar Navigation",
+      "description": "Tests für die seitliche Navigation",
+      "icon": "sidebar",
+      "tests": [
+        {
+          "testId": "NL",
+          "title": "Navigation Links",
+          "description": "Alle Sidebar-Links sind anklickbar und führen zur richtigen Seite"
+        },
+        {
+          "testId": "CE",
+          "title": "Collapse & Expand",
+          "description": "Sidebar kann eingeklappt und ausgeklappt werden"
+        },
+        {
+          "testId": "AS",
+          "title": "Active State",
+          "description": "Aktive Seite wird in der Sidebar korrekt hervorgehoben"
+        }
+      ]
+    },
+    {
+      "id": "hauptinhalt",
+      "name": "Hauptinhalt",
+      "description": "Tests für den Hauptinhaltsbereich",
+      "icon": "file",
+      "tests": [
+        {
+          "testId": "CD",
+          "title": "Content Darstellung",
+          "description": "Hauptinhalt wird korrekt angezeigt und formatiert"
+        },
+        {
+          "testId": "SV",
+          "title": "Scroll-Verhalten",
+          "description": "Scrollen funktioniert smooth und Header bleibt fixiert"
+        },
+        {
+          "testId": "LA",
+          "title": "Ladeanimation",
+          "description": "Loading Spinner wird bei Datenabfrage angezeigt"
+        }
+      ]
+    },
+    {
+      "id": "footer",
+      "name": "Fußzeile",
+      "description": "Tests für den Footer-Bereich",
+      "icon": "footer",
+      "tests": [
+        {
+          "testId": "FL",
+          "title": "Footer Links",
+          "description": "Alle Footer-Links funktionieren (Impressum, Datenschutz, etc.)"
+        },
+        {
+          "testId": "CI",
+          "title": "Copyright Info",
+          "description": "Copyright-Information wird korrekt angezeigt"
+        },
+        {
+          "testId": "SMI",
+          "title": "Social Media Icons",
+          "description": "Social Media Links funktionieren und öffnen in neuem Tab"
+        }
+      ]
+    },
+    {
+      "id": "dialoge",
+      "name": "Dialoge und Modale",
+      "description": "Tests für Dialoge und modale Fenster",
+      "icon": "dialog",
+      "tests": [
+        {
+          "testId": "MÖS",
+          "title": "Modal Öffnen & Schließen",
+          "description": "Modale können geöffnet und geschlossen werden (X, ESC, Overlay-Click)"
+        },
+        {
+          "testId": "BD",
+          "title": "Bestätigungs-Dialoge",
+          "description": "Bestätigungs-Dialoge für kritische Aktionen funktionieren"
+        },
+        {
+          "testId": "FM",
+          "title": "Focus Management",
+          "description": "Focus wird korrekt im Modal gehalten und nach Schließen zurückgesetzt"
+        }
+      ]
+    },
+    {
+      "id": "formulare",
+      "name": "Formular Eingaben",
+      "description": "Tests für Formulare und Eingabefelder",
+      "icon": "form",
+      "tests": [
+        {
+          "testId": "IV",
+          "title": "Input Validierung",
+          "description": "Eingabefelder validieren korrekt (Email, Telefon, Pflichtfelder)"
+        },
+        {
+          "testId": "FM",
+          "title": "Fehlermeldungen",
+          "description": "Fehlermeldungen werden klar und verständlich angezeigt"
+        },
+        {
+          "testId": "FA",
+          "title": "Formular Absenden",
+          "description": "Formular-Submit funktioniert und zeigt Erfolgs-/Fehlermeldung"
+        }
+      ]
+    },
+    {
+      "id": "loading",
+      "name": "Loading und Feedback",
+      "description": "Tests für Lade-Indikatoren und Feedback",
+      "icon": "loading",
+      "tests": [
+        {
+          "testId": "LS",
+          "title": "Loading Spinner",
+          "description": "Loading Spinner wird während asynchroner Operationen angezeigt"
+        },
+        {
+          "testId": "EM",
+          "title": "Erfolgs-Meldungen",
+          "description": "Erfolgreiche Aktionen zeigen Bestätigungs-Meldung (Toast/Snackbar)"
+        },
+        {
+          "testId": "FEM",
+          "title": "Fehler-Meldungen",
+          "description": "Fehler werden benutzerfreundlich mit Lösungshinweisen angezeigt"
+        }
+      ]
+    },
+    {
+      "id": "responsive",
+      "name": "Responsive Design",
+      "description": "Tests für verschiedene Bildschirmgrößen",
+      "icon": "responsive",
+      "tests": [
+        {
+          "testId": "MA",
+          "title": "Mobile Ansicht",
+          "description": "App funktioniert korrekt auf Smartphones (< 768px)"
+        },
+        {
+          "testId": "TA",
+          "title": "Tablet Ansicht",
+          "description": "App funktioniert korrekt auf Tablets (768px - 1024px)"
+        },
+        {
+          "testId": "DA",
+          "title": "Desktop Ansicht",
+          "description": "App nutzt den Desktop-Platz optimal aus (> 1024px)"
+        },
+        {
+          "testId": "BÜ",
+          "title": "Breakpoint-Übergänge",
+          "description": "Übergänge zwischen Breakpoints sind smooth und ohne Layout-Brüche"
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "name": "Performance",
+      "description": "Tests für Ladezeiten und Performance",
+      "icon": "zap",
+      "tests": [
+        {
+          "testId": "IL",
+          "title": "Initiales Laden",
+          "description": "App lädt in unter 3 Sekunden (First Contentful Paint)"
+        },
+        {
+          "testId": "NS",
+          "title": "Navigation Speed",
+          "description": "Navigation zwischen Seiten erfolgt ohne merkbare Verzögerung"
+        },
+        {
+          "testId": "GD",
+          "title": "Große Datenmengen",
+          "description": "App bleibt responsiv bei großen Datenlisten (1000+ Einträge)"
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "name": "Barrierefreiheit",
+      "description": "Tests für Accessibility (A11y)",
+      "icon": "accessibility",
+      "tests": [
+        {
+          "testId": "KN",
+          "title": "Keyboard Navigation",
+          "description": "Alle Funktionen sind per Tastatur erreichbar (Tab, Enter, ESC)"
+        },
+        {
+          "testId": "SR",
+          "title": "Screen Reader",
+          "description": "Wichtige Elemente haben ARIA-Labels und sind für Screen Reader nutzbar"
+        },
+        {
+          "testId": "K",
+          "title": "Kontrast",
+          "description": "Farbkontraste erfüllen WCAG 2.1 AA Standard (4.5:1)"
+        }
+      ]
+    }
+  ]
+}
