@@ -239,7 +239,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
 
   const handleCreateProject = () => {
     const project: Project = {
-      id: `proj-${Date.now()}`,
+      id: `PROJ${Date.now()}`,  // Konsistentes Format
       companyId: newProject.companyId || userCompanyId,
       name: newProject.name,
       description: newProject.description,
@@ -249,7 +249,33 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
       status: newProject.status
     };
 
-    setProjects([...projects, project]);
+    // Projekte aktualisieren und in localStorage speichern
+    const updatedProjects = [...projects, project];
+    setProjects(updatedProjects);
+    localStorage.setItem('qa_projects', JSON.stringify(updatedProjects));
+    console.log('Projekt gespeichert in localStorage:', project.id);
+    
+    // Standard Test-Suites für neues Projekt erstellen
+    const defaultTestSuites = [
+      { id: '1', name: 'Allgemeines Design', icon: 'palette', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '2', name: 'Testfall Kopfzeile', icon: 'menu', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '3', name: 'Navigation Bereich', icon: 'navigation', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '4', name: 'Suchfeld Bereich', icon: 'search', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '5', name: 'Sidebar Bereich', icon: 'sidebar', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '6', name: 'Hauptinhalt Bereich', icon: 'file', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '7', name: 'Footer Bereich', icon: 'footer', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '8', name: 'Dialoge und Modale', icon: 'dialog', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '9', name: 'Formular Eingaben', icon: 'form', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '10', name: 'Loading und Feedback', icon: 'loading', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+      { id: '11', name: 'Responsive Design', icon: 'responsive', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
+    ];
+    
+    // Test-Suites und leere Test-Cases für neues Projekt in localStorage speichern
+    const suiteKey = `qa_suites_${project.id}`;
+    const casesKey = `qa_cases_${project.id}`;
+    localStorage.setItem(suiteKey, JSON.stringify(defaultTestSuites));
+    localStorage.setItem(casesKey, JSON.stringify([]));
+    console.log(`Standard Test-Suites erstellt für neues Projekt ${project.id}`);
     
     // Update company project count
     setCompanies(companies.map(c => 
