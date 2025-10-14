@@ -492,6 +492,18 @@ frontend:
           agent: "testing"
           comment: "Edit modal working perfectly. Opens correctly, Test-ID field properly disabled (not editable), Title and Description fields editable, Save functionality works, modal closes after save. Data persistence confirmed."
 
+  - task: "Auto-Open Edit Modal bei neuer Test-Erstellung"
+    implemented: true
+    working: true
+    file: "frontend/src/components/QADashboardV2.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ FEATURE 'Kein Testfall ohne Beschreibung' WORKING CORRECTLY! Test completed successfully: (1) Login admin/admin123 ✅ (2) Test input field 'Neuer Testname...' found ✅ (3) Test name 'Design Farbanpassung Test' entered and created with Enter key ✅ (4) Edit modal opens AUTOMATICALLY after test creation (Test-ID: AL0006) ✅ (5) Modal contains: Test-ID field (disabled/readonly), Title field (editable with correct name), Description field (editable) ✅ (6) Description 'Testet die Farbanpassungen im Design-System' can be added ✅ (7) Save button functional ✅ (8) Test appears in test list ✅. Console logs confirm: 'Edit-Modal geöffnet für neuen Test (Fallback): AL0006'. Feature works as intended despite Mixed Content Error (fallback mechanism successful)."
+
   - task: "Note Modal Functionality"
     implemented: true
     working: true
