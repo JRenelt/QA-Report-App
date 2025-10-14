@@ -348,6 +348,7 @@ function App() {
           onClose={() => setShowHelp(false)}
           darkMode={darkMode}
           currentUser={user}
+          onOpenGlossary={() => setShowGlossary(true)}
         />
 
         {!authToken ? (
