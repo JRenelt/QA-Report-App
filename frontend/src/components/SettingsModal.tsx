@@ -128,6 +128,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     setLoading(true);
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
+      console.log('Optimiere Datenbank, URL:', `${backendUrl}/api/admin/optimize-database`);
+      console.log('Auth Token:', authToken ? 'vorhanden' : 'fehlt');
+      
       const response = await fetch(`${backendUrl}/api/admin/optimize-database`, {
         method: 'POST',
         headers: {
@@ -135,8 +138,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         }
       });
 
+      console.log('Optimize Response Status:', response.status);
+      
       if (!response.ok) {
-        throw new Error('Fehler bei der Datenbank-Optimierung');
+        const errorText = await response.text();
+        console.error('Optimize Error Response:', errorText);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
       const result = await response.json();
