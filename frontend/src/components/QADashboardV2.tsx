@@ -210,6 +210,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   });
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showCompanyManagement, setShowCompanyManagement] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
 
   // Companies aus localStorage laden (synchron mit CompanyManagement)
   const [availableCompanies, setAvailableCompanies] = useState(() => {
