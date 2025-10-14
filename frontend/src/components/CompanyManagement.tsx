@@ -645,21 +645,24 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                       >
                         <Edit className="h-4 w-4" />
                       </button>
-                      <button 
-                        onClick={() => {
-                          if (confirm(`Firma "${company.name}" wirklich löschen?`)) {
-                            setCompanies(companies.filter(c => c.id !== company.id));
-                            if (activeCompanyId === company.id) {
-                              setActiveCompanyId('');
-                              setSelectedCompanyForEdit('');
+                      {/* Delete Button - nur für Firmen außer ID2 (geschützt) */}
+                      {company.id !== 'ID2' && (
+                        <button 
+                          onClick={() => {
+                            if (confirm(`Firma "${company.name}" wirklich löschen?`)) {
+                              setCompanies(companies.filter(c => c.id !== company.id));
+                              if (activeCompanyId === company.id) {
+                                setActiveCompanyId('');
+                                setSelectedCompanyForEdit('');
+                              }
                             }
-                          }
-                        }}
-                        className="text-red-500 hover:text-red-700"
-                        title="Löschen"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                          }}
+                          className="text-red-500 hover:text-red-700"
+                          title="Löschen"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </div>
                   <div className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
