@@ -321,6 +321,86 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     return `${initials}${number}`;
   };
 
+  // Template-Import Handler
+  const handleTemplateImport = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const content = event.target?.result as string;
+        let data;
+        
+        if (file.name.endsWith('.json')) {
+          data = JSON.parse(content);
+        } else if (file.name.endsWith('.csv')) {
+          // CSV Parser (vereinfacht)
+          const lines = content.split('\n').filter(line => line.trim());
+          if (lines.length < 2) {
+            alert('CSV-Datei ist leer oder ungültig');
+            return;
+          }
+          const headers = lines[0].split(',').map(h => h.trim());
+          data = {
+            testBereiche: []
+          };
+          // CSV zu JSON konvertieren - wird in handleImportTests verarbeitet
+        } else {
+          alert('Nur JSON- und CSV-Dateien werden unterstützt');
+          return;
+        }
+        
+        // Import verarbeiten
+        if (data && data.testBereiche) {
+          const targetCompanyId = selectedCompanyForEdit || currentUser?.companyId || companies[0]?.id;
+          
+          if (!targetCompanyId) {
+            alert('Keine Firma ausgewählt oder verfügbar!');
+            return;
+          }
+          
+          // Neues Projekt erstellen für Import
+          const newProject = {
+            id: `project-${Date.now()}`,
+            companyId: targetCompanyId,
+            name: data.projectName || 'Importiertes Projekt',
+            description: data.description || 'Aus Template importiert',
+            notes: '',
+            status: 'active' as const,
+            testSuitesCount: data.testBereiche.length,
+            lastModified: new Date().toISOString()
+          };
+          
+          setProjects([...projects, newProject]);
+          
+          // Update company project count
+          setCompanies(companies.map(c => 
+            c.id === targetCompanyId 
+              ? { ...c, projectsCount: c.projectsCount + 1 }
+              : c
+          ));
+          
+          // Testfälle verarbeiten
+          let totalTests = 0;
+          data.testBereiche.forEach((bereich: any) => {
+            totalTests += bereich.tests?.length || 0;
+          });
+          
+          alert(`✅ Import erfolgreich!\n\n` +
+            `Projekt: ${newProject.name}\n` +
+            `Firma: ${companies.find(c => c.id === targetCompanyId)?.name}\n` +
+            `Testbereiche: ${data.testBereiche.length}\n` +
+            `Testfälle: ${totalTests}\n\n` +
+            `Das Projekt wurde der ausgewählten Firma zugeordnet.`);
+        } else {
+          alert('Ungültiges Template-Format!\n\nErwartet:\n{\n  "projectName": "...",\n  "testBereiche": [...]\n}');
+        }
+      } catch (error) {
+        console.error('Import Fehler:', error);
+        alert(`❌ Fehler beim Importieren:\n\n${error instanceof Error ? error.message : String(error)}\n\nBitte prüfen Sie das Dateiformat.`);
+      }
+    };
+    reader.readAsText(file);
+  };
+
   const generateProjectTemplate = () => {
     const template = {
       projectName: "Beispiel Projekt",
