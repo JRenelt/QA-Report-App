@@ -234,4 +234,3 @@ async def optimize_database(current_user: User = Depends(require_admin)):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Fehler bei der Optimierung: {str(e)}")
-    }
