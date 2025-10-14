@@ -40,8 +40,19 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
   currentUser 
 }) => {
   const [activeTab, setActiveTab] = useState<'companies' | 'projects'>('companies');
-  const [companies, setCompanies] = useState<Company[]>([
-    {
+  
+  // Companies aus localStorage laden (oder Fallback zur ID2)
+  const [companies, setCompanies] = useState<Company[]>(() => {
+    const storedCompanies = localStorage.getItem('qa_companies');
+    if (storedCompanies) {
+      try {
+        return JSON.parse(storedCompanies);
+      } catch (e) {
+        console.error('Fehler beim Laden der Companies aus localStorage:', e);
+      }
+    }
+    // Fallback: Nur ID2 GmbH (System-Firma)
+    return [{
       id: 'ID2',
       name: 'ID2 GmbH',
       address: 'Brockhausweg 66b',
@@ -50,34 +61,9 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
       country: 'Deutschland',
       createdAt: new Date().toISOString(),
       usersCount: 2,
-      projectsCount: 2
-    },
-    {
-      id: 'TG01',
-      name: 'TechGlobal Solutions AG',
-      address: 'Maximilianstraße 35',
-      city: 'München',
-      postalCode: '80539',
-      country: 'Deutschland',
-      createdAt: new Date().toISOString(),
-      usersCount: 1,
-      projectsCount: 1
-    },
-    {
-      id: 'DE02',
-      name: 'Digital Excellence GmbH',
-      address: 'Friedrichstraße 158',
-      city: 'Berlin',
-      postalCode: '10117',
-      country: 'Deutschland',
-      createdAt: new Date().toISOString(),
-      usersCount: 1,
-      projectsCount: 1
-    },
-    {
-      id: 'IN03',
-      name: 'Innovate Systems Ltd.',
-      address: 'Königsallee 92',
+      projectsCount: 0
+    }];
+  });
       city: 'Düsseldorf',
       postalCode: '40212',
       country: 'Deutschland',
