@@ -149,12 +149,18 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     postalCode: '',
     country: 'Deutschland'
   });
-  const [newProject, setNewProject] = useState({
+  const [newProject, setNewProject] = useState<{
+    companyId: string;
+    name: string;
+    description: string;
+    notes: string;
+    status: 'active' | 'completed' | 'archived';
+  }>({
     companyId: '',
     name: '',
     description: '',
     notes: '',
-    status: 'active' as 'active' | 'completed' | 'archived'
+    status: 'active'
   });
 
   // Admin: Firma zur Bearbeitung/Ansicht auswählen (MUSS vor return stehen!)
