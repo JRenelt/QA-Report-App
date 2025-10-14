@@ -626,7 +626,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "VOLLSTÄNDIGER FRONTEND-TEST NACH KOMPILIERUNGS-FIX ABGESCHLOSSEN"
+    - "Auto-Open Edit Modal bei neuer Test-Erstellung - ✅ COMPLETED SUCCESSFULLY"
     - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch)"
     - "Company Management Modal - ❌ FAILED (Factory icon not accessible in header)"
     - "Template Test-ID Format - ❌ INCOMPLETE (depends on Company Management modal)"
