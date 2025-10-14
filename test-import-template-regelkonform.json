@@ -1,0 +1,514 @@
+{
+  "version": "3.0",
+  "projectName": "QA Master Portal - Vollständiger Testplan",
+  "description": "Umfassende Testdaten mit regelkonformen Test-IDs (Anfangsbuchstabe JEDES Wortes, Sonderzeichen = Leerzeichen)",
+  "testBereiche": [
+    {
+      "id": "login-auth",
+      "name": "Login & Authentifizierung",
+      "description": "Tests für den Login-Prozess und Authentifizierung",
+      "icon": "lock",
+      "tests": [
+        {
+          "testId": "SLMEP",
+          "title": "Standard-Login mit Email & Passwort",
+          "description": "Benutzer kann sich mit gültiger Email und Passwort anmelden"
+        },
+        {
+          "testId": "FUMWE",
+          "title": "Fehlerhafte User-Meldung während Error",
+          "description": "Klare Fehlermeldung bei falschen Anmeldedaten"
+        },
+        {
+          "testId": "PVF",
+          "title": "Passwort-Vergessen Funktion",
+          "description": "Password-Reset per E-Mail funktioniert korrekt"
+        },
+        {
+          "testId": "2FAMSAE",
+          "title": "2FA mit SMS & Email",
+          "description": "Zwei-Faktor-Authentifizierung mit verschiedenen Methoden"
+        },
+        {
+          "testId": "AN",
+          "title": "Auto-Logout nach 30min",
+          "description": "Automatischer Logout nach Inaktivität"
+        },
+        {
+          "testId": "RMSF",
+          "title": "Remember-Me Speicher-Funktion",
+          "description": "Benutzer bleibt angemeldet bei 'Angemeldet bleiben'"
+        }
+      ]
+    },
+    {
+      "id": "kopfzeile",
+      "name": "Kopfzeile & Header",
+      "description": "Tests für den oberen Header-Bereich",
+      "icon": "menu",
+      "tests": [
+        {
+          "testId": "LDDA",
+          "title": "Logo-Darstellung Desktop & Auflösung",
+          "description": "Logo wird in allen Desktop-Auflösungen korrekt angezeigt"
+        },
+        {
+          "testId": "NMASE",
+          "title": "Navigation-Menü alle Seiten erreichbar",
+          "description": "Alle Menüpunkte führen zur korrekten Seite"
+        },
+        {
+          "testId": "UDFPESUL",
+          "title": "User-Dropdown für Profil, Einstellungen & Logout",
+          "description": "Benutzer-Menü mit allen Funktionen"
+        },
+        {
+          "testId": "BFAF",
+          "title": "Benachrichtigungs-Funktion (Alert-Feed)",
+          "description": "Benachrichtigungsglocke zeigt neue Meldungen"
+        },
+        {
+          "testId": "SMV",
+          "title": "Search-Menü Volltext",
+          "description": "Globale Suche funktioniert über alle Bereiche"
+        }
+      ]
+    },
+    {
+      "id": "firmenverwaltung",
+      "name": "Firmenverwaltung & Projekte",
+      "description": "Tests für Firma- und Projektverwaltung",
+      "icon": "factory",
+      "tests": [
+        {
+          "testId": "NFE",
+          "title": "Neue Firma erstellen",
+          "description": "Admin kann neue Firma mit allen Pflichtfeldern anlegen"
+        },
+        {
+          "testId": "FELKD",
+          "title": "Firma editieren (Logo, Kontaktdaten)",
+          "description": "Firmendaten können bearbeitet und gespeichert werden"
+        },
+        {
+          "testId": "FLAPATP",
+          "title": "Firma löschen → Alle Projekte & Test-Punkte",
+          "description": "Kaskadierendes Löschen: Firma + Projekte + Tests"
+        },
+        {
+          "testId": "IGBNS",
+          "title": "ID2 GmbH Bestand-Nachweis (Schutz)",
+          "description": "ID2 kann nicht gelöscht werden (System-Firma)"
+        },
+        {
+          "testId": "NPFE",
+          "title": "Neues Projekt für Firma erstellen",
+          "description": "Projekt kann einer Firma zugeordnet werden"
+        },
+        {
+          "testId": "PITJ",
+          "title": "Projekt-Import (Template JSON)",
+          "description": "JSON-Template mit Testbereichen importieren"
+        },
+        {
+          "testId": "PLAATDL",
+          "title": "Projekt löschen → Alle Testdaten löschen",
+          "description": "Projekt-Löschung entfernt Test-Suites und Test-Cases"
+        }
+      ]
+    },
+    {
+      "id": "test-management",
+      "name": "Test-Management & Testfälle",
+      "description": "Tests für Testfall-Verwaltung",
+      "icon": "clipboard",
+      "tests": [
+        {
+          "testId": "NTIE",
+          "title": "Neuer Testfall in Erstellen",
+          "description": "Testfall mit Titel und Beschreibung anlegen"
+        },
+        {
+          "testId": "TIDRKIF",
+          "title": "Test-ID richtig kalkuliert (ID-Format)",
+          "description": "Test-ID wird automatisch nach Regel generiert (Anfangsbuchstaben)"
+        },
+        {
+          "testId": "TSÄPSWEF",
+          "title": "Test-Status ändern (Pending, Success, Warning, Error, Failed)",
+          "description": "Alle Status-Übergänge funktionieren korrekt"
+        },
+        {
+          "testId": "TEMB",
+          "title": "Testfall editieren (Modal-Box)",
+          "description": "Edit-Modal öffnet mit vorausgefüllten Daten"
+        },
+        {
+          "testId": "TAFV",
+          "title": "Testfall auto-focus Verhalten",
+          "description": "Cursor springt automatisch ins Beschreibungsfeld"
+        },
+        {
+          "testId": "TLKB",
+          "title": "Testfall löschen (Confirmation-Box)",
+          "description": "Bestätigungs-Dialog vor dem Löschen"
+        },
+        {
+          "testId": "NTFZB",
+          "title": "Notiz-Feld zu Beschreibung",
+          "description": "Notiz-Feld für zusätzliche Informationen"
+        }
+      ]
+    },
+    {
+      "id": "sidebar-navigation",
+      "name": "Sidebar & Test-Bereiche",
+      "description": "Tests für die seitliche Navigation",
+      "icon": "sidebar",
+      "tests": [
+        {
+          "testId": "TBDA",
+          "title": "Testbereiche dynamisch anzeigen",
+          "description": "Testbereiche erscheinen nach Projektauswahl"
+        },
+        {
+          "testId": "CFZB",
+          "title": "Counter für zu-testende Bereiche",
+          "description": "Orange Counter zeigt Anzahl offener Tests (5-stellig)"
+        },
+        {
+          "testId": "TCNWP",
+          "title": "Testbereich-Counter nur wenn Projekt",
+          "description": "Counter wird ausgeblendet wenn kein Projekt ausgewählt"
+        },
+        {
+          "testId": "SBDA",
+          "title": "Sidebar-Breite dynamisch anpassen",
+          "description": "Sidebar passt sich dem längsten Eintrag an (min 280px)"
+        },
+        {
+          "testId": "ASHT",
+          "title": "Aktiver Suite hervorgehoben (Tooltip)",
+          "description": "Ausgewählter Testbereich wird visuell markiert"
+        }
+      ]
+    },
+    {
+      "id": "filter-sort",
+      "name": "Filter & Sortierung",
+      "description": "Tests für Filter- und Sortierfunktionen",
+      "icon": "filter",
+      "tests": [
+        {
+          "testId": "FNSPSWEF",
+          "title": "Filter nach Status (Pending, Success, Warning, Error, Failed)",
+          "description": "Testfälle nach Status filtern"
+        },
+        {
+          "testId": "QFVTK",
+          "title": "Quadratische Filter-Buttons (visuelle Konsistenz)",
+          "description": "Filter-Buttons haben quadratische Form"
+        },
+        {
+          "testId": "MAF",
+          "title": "Mehrfach-Auswahl Filter",
+          "description": "Mehrere Status gleichzeitig filtern"
+        },
+        {
+          "testId": "FAZ",
+          "title": "Filter aufheben (Zurücksetzen)",
+          "description": "Alle Filter mit einem Klick entfernen"
+        },
+        {
+          "testId": "SNAD",
+          "title": "Sortierung nach Alphabet, Datum",
+          "description": "Tests sortieren nach verschiedenen Kriterien"
+        }
+      ]
+    },
+    {
+      "id": "pdf-export",
+      "name": "PDF-Export & Berichte",
+      "description": "Tests für PDF-Generierung und Export",
+      "icon": "file-down",
+      "tests": [
+        {
+          "testId": "PBTG",
+          "title": "PDF-Bericht (Test-Gesamt)",
+          "description": "Vollständiger Test-Report als PDF exportieren"
+        },
+        {
+          "testId": "PFPI",
+          "title": "PDF für Projekt-Inhalt",
+          "description": "Projekt-spezifischer PDF-Export"
+        },
+        {
+          "testId": "SUDVP",
+          "title": "Speichern-unter Dialog (Vollständige-Pfad)",
+          "description": "Benutzer kann Dateinamen und Speicherort wählen"
+        },
+        {
+          "testId": "PFMLFUDF",
+          "title": "PDF-Format mit Logo, Footer & Datum-Feld",
+          "description": "Corporate Design im PDF-Export"
+        },
+        {
+          "testId": "CEFATD",
+          "title": "CSV-Export für alle Test-Daten",
+          "description": "Test-Daten als CSV für Excel exportieren"
+        }
+      ]
+    },
+    {
+      "id": "import-export",
+      "name": "Import & Export Funktionen",
+      "description": "Tests für Daten-Import und -Export",
+      "icon": "upload",
+      "tests": [
+        {
+          "testId": "JTIK",
+          "title": "JSON-Template importieren (Konfiguration)",
+          "description": "Projekt aus JSON-Template erstellen"
+        },
+        {
+          "testId": "JVFE",
+          "title": "JSON-Validierung Fehler-Erkennung",
+          "description": "Fehlerhafte JSON wird erkannt und abgelehnt"
+        },
+        {
+          "testId": "EIDRKIF",
+          "title": "Excel-Import (Daten-Reihen korrekt ID-Format)",
+          "description": "Excel-Import mit automatischer ID-Generierung"
+        },
+        {
+          "testId": "TEAJ",
+          "title": "Template erstellen (Als JSON)",
+          "description": "Aktuelles Projekt als Template exportieren"
+        },
+        {
+          "testId": "TDLAD",
+          "title": "Testdaten laden (Aus Datei)",
+          "description": "Gespeicherte Testdaten wieder importieren"
+        }
+      ]
+    },
+    {
+      "id": "user-management",
+      "name": "Benutzerverwaltung & Rollen",
+      "description": "Tests für User-Management",
+      "icon": "users",
+      "tests": [
+        {
+          "testId": "NUMEA",
+          "title": "Neuer User mit Email & Admin-Status",
+          "description": "Admin kann neue Benutzer anlegen"
+        },
+        {
+          "testId": "RZAQTUA",
+          "title": "Rollen-Zuweisung (Admin, QA-Tester, User-Admin)",
+          "description": "Benutzer-Rollen können vergeben werden"
+        },
+        {
+          "testId": "QTNSNU",
+          "title": "QA-Tester nur sieht nur User",
+          "description": "Eingeschränkte Sicht für QA-Tester (nur eigene Firma)"
+        },
+        {
+          "testId": "UDEA",
+          "title": "User deaktivieren (Entfernen/Archivieren)",
+          "description": "Benutzer können deaktiviert werden"
+        },
+        {
+          "testId": "PAUM",
+          "title": "Passwort ändern (User-Modal)",
+          "description": "Benutzer kann Passwort selbst ändern"
+        },
+        {
+          "testId": "FZFÜ",
+          "title": "Firma-Zuordnung für Überblick",
+          "description": "User sind Firmen zugeordnet"
+        }
+      ]
+    },
+    {
+      "id": "settings-advanced",
+      "name": "Einstellungen & Erweitert",
+      "description": "Tests für Settings und Admin-Funktionen",
+      "icon": "settings",
+      "tests": [
+        {
+          "testId": "DMLU",
+          "title": "Dark-Mode (Light/Umschalten)",
+          "description": "Dark/Light Mode Toggle funktioniert"
+        },
+        {
+          "testId": "TDKE",
+          "title": "Testdaten komplett erstellen",
+          "description": "Demo-Daten für Testzwecke generieren"
+        },
+        {
+          "testId": "DLAFPUL",
+          "title": "Datenbank leeren (Alle Firmen (P) und lokaler)",
+          "description": "Datenbank zurücksetzen, ID2 bleibt erhalten"
+        },
+        {
+          "testId": "DOMCF",
+          "title": "Datenbank optimieren (MongoDB Compact-Funktion)",
+          "description": "MongoDB Collections komprimieren"
+        },
+        {
+          "testId": "GEZUE",
+          "title": "Gefahrenbereich eingeschränkt (Zugriff-Einschränkung)",
+          "description": "Kritische Funktionen nur für Admins"
+        },
+        {
+          "testId": "EZUS",
+          "title": "Einstellungen zurücksetzen (Auf Standard)",
+          "description": "User-Einstellungen auf Default zurücksetzen"
+        }
+      ]
+    },
+    {
+      "id": "glossar-wiki",
+      "name": "Glossar & Dokumentation",
+      "description": "Tests für Glossar und Wiki (Admin-Bereich)",
+      "icon": "book-open",
+      "tests": [
+        {
+          "testId": "GNFA",
+          "title": "Glossar nur für Admin",
+          "description": "Glossar ist nur für Admin-Rolle sichtbar"
+        },
+        {
+          "testId": "SFBB",
+          "title": "Suchfunktion (Filter Begriffe/Beispiele)",
+          "description": "Glossar-Suche durchsucht alle Felder"
+        },
+        {
+          "testId": "SHMGH",
+          "title": "Such-Highlighting markiert (Gelbe Hervorhebung)",
+          "description": "Suchbegriffe werden gelb markiert"
+        },
+        {
+          "testId": "KFPQTBU",
+          "title": "Kategorie-Filter (Projektregeln, QA-Technik, Backend, UI)",
+          "description": "Filter nach Kategorien funktioniert"
+        },
+        {
+          "testId": "VBKW",
+          "title": "Verwandte Begriffe (Klickbar/Weitersuche)",
+          "description": "Verwandte Begriffe sind verlinkt"
+        },
+        {
+          "testId": "GLISD",
+          "title": "Glossar-Link in System-Dokumentation",
+          "description": "Glossar ist über Hilfe-Modal erreichbar"
+        }
+      ]
+    },
+    {
+      "id": "responsive-mobile",
+      "name": "Responsive Design & Mobile",
+      "description": "Tests für verschiedene Bildschirmgrößen",
+      "icon": "smartphone",
+      "tests": [
+        {
+          "testId": "MAM768",
+          "title": "Mobile Ansicht < 768px",
+          "description": "App funktioniert auf Smartphones"
+        },
+        {
+          "testId": "TA768B1024",
+          "title": "Tablet Ansicht 768-1024px",
+          "description": "Optimierte Darstellung für Tablets"
+        },
+        {
+          "testId": "DA1024",
+          "title": "Desktop Ansicht > 1024px",
+          "description": "Volle Feature-Set auf Desktop"
+        },
+        {
+          "testId": "BÜS",
+          "title": "Breakpoint-Übergänge smooth",
+          "description": "Keine Layout-Sprünge bei Resize"
+        },
+        {
+          "testId": "HMKA",
+          "title": "Hamburger-Menü (Klappbar, Animation)",
+          "description": "Mobile Navigation funktioniert"
+        },
+        {
+          "testId": "TGMO",
+          "title": "Touch-Gesten (Mobile-Optimiert)",
+          "description": "Swipe und Touch-Events funktionieren"
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "name": "Performance & Ladezeiten",
+      "description": "Tests für App-Performance",
+      "icon": "zap",
+      "tests": [
+        {
+          "testId": "ILU3SFCP",
+          "title": "Initiales Laden (Unter 3s First-Contentful-Paint)",
+          "description": "Erste Inhalte erscheinen in unter 3 Sekunden"
+        },
+        {
+          "testId": "NSOM",
+          "title": "Navigation-Speed ohne Merkbar-Verzögerung",
+          "description": "Seitenwechsel erfolgt sofort"
+        },
+        {
+          "testId": "GD1000E",
+          "title": "Große Daten (1000+ Einträge)",
+          "description": "App bleibt bei vielen Testfällen responsiv"
+        },
+        {
+          "testId": "LSPADA",
+          "title": "LocalStorage Polling (Auto-Daten Aktualisierung)",
+          "description": "Daten werden alle 2s synchronisiert"
+        },
+        {
+          "testId": "MVVO",
+          "title": "Memory-Verbrauch vertretbar (Optimiert)",
+          "description": "Keine Memory-Leaks bei Langzeit-Nutzung"
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "name": "Barrierefreiheit (A11y)",
+      "description": "Tests für Accessibility",
+      "icon": "accessibility",
+      "tests": [
+        {
+          "testId": "KNTEE",
+          "title": "Keyboard-Navigation (Tab, Enter, ESC)",
+          "description": "Alle Funktionen per Tastatur erreichbar"
+        },
+        {
+          "testId": "SRMAL",
+          "title": "Screen-Reader mit ARIA-Labels",
+          "description": "Wichtige Elemente sind für Screen Reader beschriftet"
+        },
+        {
+          "testId": "KEWAA451",
+          "title": "Kontrast erfüllt WCAG-AA (4.5:1)",
+          "description": "Farbkontraste sind barrierefrei"
+        },
+        {
+          "testId": "FMIB",
+          "title": "Focus-Mode (Indicator-Border)",
+          "description": "Fokus ist immer sichtbar"
+        },
+        {
+          "testId": "VG150",
+          "title": "Vergrößerung (150% Zoom)",
+          "description": "App funktioniert bei Browser-Zoom"
+        }
+      ]
+    }
+  ]
+}
