@@ -1625,6 +1625,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               <div>
                 <label className="block text-sm font-medium mb-2">Beschreibung</label>
                 <textarea
+                  ref={descriptionTextareaRef}
                   value={editDescription}
                   onChange={(e) => setEditDescription(e.target.value)}
                   className="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white text-sm focus:border-cyan-500 focus:outline-none"
