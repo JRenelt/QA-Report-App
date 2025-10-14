@@ -139,28 +139,6 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
   const [activeSuite, setActiveSuite] = useState<string>('1');
   const [newTestName, setNewTestName] = useState('');
-      description: 'Responsive Darstellung auf Tablet-Geräten',
-      status: 'error'
-    },
-    {
-      id: '3', test_id: 'AD0003', suite_id: '1',
-      title: 'Mobile Darstellung',
-      description: 'Mobile-optimierte Darstellung',
-      status: 'success'
-    },
-    {
-      id: '4', test_id: 'AD0004', suite_id: '1',
-      title: 'Responsive Breakpoints',
-      description: 'Übergänge zwischen verschiedenen Bildschirmgrößen',
-      status: 'warning'
-    },
-    {
-      id: '5', test_id: 'AD0005', suite_id: '1',
-      title: 'Dark Theme Konsistenz',
-      description: 'Konsistente Darstellung im Dark Mode',
-      status: 'pending'
-    },
-  ]);
 
   const [selectedTest, setSelectedTest] = useState<TestCase | null>(null);
   const [showNoteModal, setShowNoteModal] = useState(false);
