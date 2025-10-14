@@ -86,7 +86,17 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
       projectsCount: 1
     }
   ]);
-  const [projects, setProjects] = useState<Project[]>([
+  const [projects, setProjects] = useState<Project[]>(() => {
+    const saved = localStorage.getItem('qa_projects');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Fehler beim Laden der Projekte:', e);
+      }
+    }
+    // Fallback zu Standard-Projekten
+    return [
     {
       id: 'PROJ001',
       companyId: 'ID2',
