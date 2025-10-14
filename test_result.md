@@ -555,10 +555,10 @@ frontend:
   - task: "Mixed Content Error Fix"
     implemented: true
     working: false
-    file: "frontend/src/services/qaService.js"
-    stuck_count: 0
+    file: "frontend/src/services/qaService.ts"
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: false
           agent: "testing"
@@ -566,6 +566,9 @@ frontend:
         - working: false
           agent: "testing"
           comment: "CONFIRMED CRITICAL ISSUE: Mixed Content Error persists. Frontend making HTTP requests to HTTPS backend: 'http://qamonitor-suite.preview.emergentagent.com/api/users/' blocked. This affects User Management, Company Management, and all backend API calls. Frontend must use HTTPS for all backend requests to match the HTTPS frontend domain."
+        - working: false
+          agent: "testing"
+          comment: "GERMAN REVIEW FINAL TEST CONFIRMS: Mixed Content Error STILL CRITICAL. Console shows: 'Mixed Content: The page at https://qamonitor-suite.preview.emergentagent.com/ was loaded over HTTPS, but requested an insecure resource http://qamonitor-suite.preview.emergentagent.com/api/users/'. Error: 'Fehler beim Laden der Benutzer: TypeError: Failed to fetch'. This blocks ALL backend API calls including User Management, Company Management, and data loading. Frontend MUST use HTTPS protocol for all backend requests."
 
   - task: "Benutzerverwaltung Rollenbasiert (Admin)"
     implemented: true
