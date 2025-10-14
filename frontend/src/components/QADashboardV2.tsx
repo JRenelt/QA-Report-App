@@ -1286,6 +1286,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     : 'bg-white border-gray-300 text-gray-700'
                 }`}
               >
+                {/* Platzhalter wenn kein Projekt ausgewählt */}
+                {!selectedProjectId && (
+                  <option value="">Bitte Projekt auswählen</option>
+                )}
                 {(() => {
                   const userProjects = user?.role === 'admin' 
                     ? projects.filter((p: any) => p.companyId === selectedCompanyId)
