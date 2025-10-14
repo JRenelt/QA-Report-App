@@ -3,13 +3,16 @@
 ## 🎯 Wichtige Projekt-Regeln
 
 ### Test-ID Format
-**REGEL:** Test-IDs bestehen aus den Anfangsbuchstaben der Wörter im Titel
-- Sonderzeichen (&, /, %, -, etc.) werden als Leerzeichen behandelt
+**REGEL:** Anfangsbuchstabe JEDES Wortes im Titel des Testfalles, wobei Sonderzeichen als Leerzeichen gewertet werden
+- Sonderzeichen die als Leerzeichen behandelt werden: & / % - + = ( ) [ ] { } < > | \ : ; , . ? ! " ' ` ~ @ # $ ^ * _
+- Umlaute bleiben erhalten (Ä, Ö, Ü)
 - Beispiele:
-  - "Logo Darstellung Desktop" → **LDD**
-  - "Navigation Menü" → **NM**
-  - "Modal Öffnen & Schließen" → **MÖS**
-  - "Collapse & Expand" → **CE**
+  - "Logo Darstellung Desktop" → **LDD** (3 Wörter)
+  - "Navigation Menü" → **NM** (2 Wörter)
+  - "Modal Öffnen & Schließen" → **MÖS** (& = Leerzeichen, 3 Wörter)
+  - "Collapse & Expand" → **CE** (& = Leerzeichen, 2 Wörter)
+  - "User-Verwaltung/Admin" → **UVA** (- und / = Leerzeichen, 3 Wörter)
+  - "Performance (100% CPU)" → **P1C** (( und ) und % = Leerzeichen, 3 Wörter)
 
 ### Datenhaltung
 **REGEL:** Alle Client-seitigen Daten in localStorage
