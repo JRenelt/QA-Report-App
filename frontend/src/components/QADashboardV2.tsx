@@ -508,14 +508,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       setShowEditModal(true);
       console.log('Edit-Modal geöffnet für neuen Test (Fallback):', newTest.test_id);
       
-      // Verbesserte Fehlermeldung
-      const fullErrorMessage = `⚠️ WARNUNG: Test wurde lokal erstellt, aber Backend-Speicherung fehlgeschlagen\n\n` +
-        `🔍 Diagnose: ${errorMessage}\n\n` +
-        `Backend URL: ${process.env.REACT_APP_BACKEND_URL || 'Nicht konfiguriert'}\n` +
-        `Authentifizierung: ${authToken ? 'Token vorhanden' : 'Kein Token'}\n\n` +
-        `Der Test wurde vorläufig lokal gespeichert.`;
-      
-      alert(fullErrorMessage);
+      // KEINE Warnmeldung mehr - Modal öffnet sich ja bereits für Beschreibung
     }
   };
 
