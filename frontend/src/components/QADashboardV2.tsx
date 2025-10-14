@@ -1326,8 +1326,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             <div className="px-5 pb-6">
               {/* Zeige Testbereiche nur wenn Projekt ausgewählt */}
               {!selectedProjectId ? (
-                <div className="text-center py-12 px-4">
-                  <p className="text-gray-400 text-base">
+                <div className="text-center py-8 px-2">
+                  <p className="text-gray-400 text-sm leading-relaxed">
                     Bitte wählen Sie ein Projekt aus, um Testbereiche anzuzeigen.
                   </p>
                 </div>
