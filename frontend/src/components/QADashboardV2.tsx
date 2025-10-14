@@ -451,7 +451,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       console.log('=== TEST ERSTELLUNG ERFOLGREICH (BACKEND) ===');
       
       // KREDO: "Kein Testfall ohne Beschreibung" - Edit-Modal sofort öffnen
-      setEditingTest(newTest);
+      setSelectedTest(newTest);
+      setEditTitle(newTest.title || '');
+      setEditDescription(newTest.description || '');
       setShowEditModal(true);
       console.log('Edit-Modal geöffnet für neuen Test:', newTest.test_id);
       
