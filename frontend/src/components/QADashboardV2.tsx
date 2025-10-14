@@ -502,7 +502,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       setNewTestName('');
       
       // KREDO: "Kein Testfall ohne Beschreibung" - Edit-Modal auch bei lokalem Fallback öffnen
-      setEditingTest(newTest);
+      setSelectedTest(newTest);
+      setEditTitle(newTest.title || '');
+      setEditDescription(newTest.description || '');
       setShowEditModal(true);
       console.log('Edit-Modal geöffnet für neuen Test (Fallback):', newTest.test_id);
       
