@@ -440,21 +440,20 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               className="px-3 py-2 rounded shadow-lg"
               style={tooltipStyle}
             >
-            <div className="flex items-start justify-between">
-              <span className="text-xs whitespace-pre-wrap pr-2">{text}</span>
-              <button
-                onClick={handleCloseTooltip}
-                className="ml-1 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center hover:bg-orange-200 transition-colors"
-                title="Tooltip schließen"
-              >
-                <CircleCheck className="h-3 w-3" />
-              </button>
+              <div className="flex items-start justify-between">
+                <span className="text-xs whitespace-pre-wrap pr-2">{text}</span>
+                {localStorage.getItem('manualTooltipClose') === 'true' && (
+                  <button
+                    onClick={handleCloseTooltip}
+                    className="ml-1 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center hover:bg-orange-200 transition-colors"
+                    aria-label="Tooltip schließen"
+                  >
+                    <CircleCheck className="h-3 w-3 text-saddlebrown" />
+                  </button>
+                )}
+              </div>
             </div>
-            <div 
-              className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent"
-              style={{ borderTopColor: '#f6cda1' }}
-            ></div>
-          </div>
+          </>
         )}
       </div>
     );
