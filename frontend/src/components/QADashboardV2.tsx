@@ -1322,32 +1322,41 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           {/* Test Suites List - Vergrößertes Design (100% größer) */}
           <div className="flex-1 overflow-y-auto">
             <div className="px-5 pb-6">
-              {testSuites.map((suite) => {
-                const stats = calculateSuiteStats(suite.id);
-                const isActive = suite.id === activeSuite;
+              {/* Zeige Testbereiche nur wenn Projekt ausgewählt */}
+              {!selectedProjectId ? (
+                <div className="text-center py-12 px-4">
+                  <p className="text-gray-400 text-base">
+                    Bitte wählen Sie ein Projekt aus, um Testbereiche anzuzeigen.
+                  </p>
+                </div>
+              ) : (
+                testSuites.map((suite) => {
+                  const stats = calculateSuiteStats(suite.id);
+                  const isActive = suite.id === activeSuite;
 
-                return (
-                  <button
-                    key={suite.id}
-                    onClick={() => setActiveSuite(suite.id)}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded text-left transition-all hover:bg-gray-700 ${
-                      isActive ? 'bg-gray-700' : ''
-                    }`}
-                  >
-                    <FileText className="h-5 w-5 flex-shrink-0 text-gray-400" />
-                    <div className="flex-1 min-w-0 text-base text-gray-300 truncate">
-                      {suite.name}
-                    </div>
-                    <div className="flex items-center">
-                      <CustomTooltip text={`${stats.openTests} noch zu testende Aufgaben in diesem Bereich`}>
-                        <span className="bg-cyan-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-base font-bold">
-                          {stats.openTests}
-                        </span>
-                      </CustomTooltip>
-                    </div>
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={suite.id}
+                      onClick={() => setActiveSuite(suite.id)}
+                      className={`w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded text-left transition-all hover:bg-gray-700 ${
+                        isActive ? 'bg-gray-700' : ''
+                      }`}
+                    >
+                      <FileText className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                      <div className="flex-1 min-w-0 text-base text-gray-300 truncate">
+                        {suite.name}
+                      </div>
+                      <div className="flex items-center">
+                        <CustomTooltip text={`${stats.openTests} noch zu testende Aufgaben in diesem Bereich`}>
+                          <span className="bg-cyan-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-base font-bold">
+                            {stats.openTests}
+                          </span>
+                        </CustomTooltip>
+                      </div>
+                    </button>
+                  );
+                })
+              )}
             </div>
           </div>
           
