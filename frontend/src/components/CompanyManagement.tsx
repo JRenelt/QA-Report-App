@@ -366,7 +366,9 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
             notes: '',
             status: 'active' as const,
             testSuitesCount: data.testBereiche.length,
-            lastModified: new Date().toISOString()
+            lastModified: new Date().toISOString(),
+            createdBy: currentUser?.username || 'system',
+            createdAt: new Date().toISOString()
           };
           
           setProjects([...projects, newProject]);
