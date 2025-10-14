@@ -66,6 +66,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const updateTooltipSettings = (delay: 'fest' | 'kurz' | 'lang') => {
     setUserSettings(prev => ({ ...prev, tooltipDelay: delay }));
   };
+  
+  // Company and Project Management State (muss VOR useEffect deklariert werden)
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
+  const [selectedProjectId, setSelectedProjectId] = useState<string>('');
+  
   // State declarations
   const [testSuites, setTestSuites] = useState<TestSuite[]>([]);
   const [testCases, setTestCases] = useState<TestCase[]>([]);
