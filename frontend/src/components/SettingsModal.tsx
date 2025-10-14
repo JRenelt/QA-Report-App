@@ -121,7 +121,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   };
 
   const handleClearDatabase = async () => {
-    if (!confirm('🚨 GEFAHR: Diese Aktion löscht ALLE Projekte und Testdaten!\n\nALLE Projekte, Tests und Ergebnisse werden unwiderruflich gelöscht.\nDie Firma ID2 GmbH bleibt erhalten (Systemvoraussetzung).\n\nDiese Aktion kann NICHT rückgängig gemacht werden!\n\nMöchten Sie wirklich fortfahren?')) {
+    if (!confirm('🚨 GEFAHR: Diese Aktion löscht ALLE Projekte, Testdaten und Firmen (außer ID2)!\n\nALLE Firmen (außer ID2 GmbH), Projekte, Tests und Ergebnisse werden unwiderruflich gelöscht.\nDie Firma ID2 GmbH bleibt erhalten (Systemvoraussetzung).\n\nDiese Aktion kann NICHT rückgängig gemacht werden!\n\nMöchten Sie wirklich fortfahren?')) {
       return;
     }
 
@@ -147,12 +147,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         throw new Error('Fehler beim Leeren der Backend-Datenbank');
       }
 
-      // 2. LocalStorage komplett leeren (alle Projekte, Test-Suites, Test-Cases)
-      // Alle qa_* Keys löschen
+      // 2. LocalStorage komplett leeren
       const keysToRemove: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key && (key.startsWith('qa_projects') || key.startsWith('qa_suites_') || key.startsWith('qa_cases_'))) {
+        if (key && (
+          key.startsWith('qa_projects') || 
+          key.startsWith('qa_suites_') || 
+          key.startsWith('qa_cases_') ||
+          key === 'qa_companies'  // Alle Companies löschen (wird mit ID2 neu initialisiert)
+        )) {
           keysToRemove.push(key);
         }
       }
@@ -162,7 +166,22 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         console.log(`LocalStorage gelöscht: ${key}`);
       });
 
-      showMessage('success', '✅ Datenbank und alle Projekte geleert (ID2 GmbH bleibt erhalten)');
+      // 3. ID2 GmbH in localStorage wiederherstellen
+      const id2Company = {
+        id: 'ID2',
+        name: 'ID2 GmbH',
+        address: 'Brockhausweg 66b',
+        city: 'Hamburg',
+        postalCode: '22117',
+        country: 'Deutschland',
+        createdAt: new Date().toISOString(),
+        usersCount: 2,
+        projectsCount: 0
+      };
+      localStorage.setItem('qa_companies', JSON.stringify([id2Company]));
+      console.log('ID2 GmbH in localStorage wiederhergestellt');
+
+      showMessage('success', '✅ Datenbank geleert - Alle Firmen (außer ID2), Projekte und Testdaten gelöscht');
       setTimeout(() => window.location.reload(), 2000);
     } catch (error) {
       showMessage('error', '❌ Fehler beim Leeren der Datenbank');
