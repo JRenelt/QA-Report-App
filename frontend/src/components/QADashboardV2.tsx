@@ -364,7 +364,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         {children}
         {showTooltip && tooltipsEnabled && (
           <>
-            {/* Dynamische Verbindungslinie mit Verjüngung */}
+            {/* Dynamische Verbindungslinie mit Verjüngung - Voll-Ton */}
             <svg
               className="fixed pointer-events-none"
               style={{
@@ -379,12 +379,12 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               {/* Verjüngende Linie (breit am Tooltip, schmal am Element) */}
               <defs>
                 <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#c9a882" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#c9a882" stopOpacity="0.6" />
+                  <stop offset="0%" stopColor="#d4a574" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#c9a882" stopOpacity="1" />
                 </linearGradient>
               </defs>
               
-              {/* Polygon für verjüngende Form */}
+              {/* Polygon für verjüngende Form - Voll-Ton */}
               <polygon
                 points={(() => {
                   // Berechne senkrechte Vektoren für Linienbreite
@@ -401,8 +401,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   const p2x = lineCoords.x1 - perpX * elementWidth;
                   const p2y = lineCoords.y1 - perpY * elementWidth;
                   
-                  // Am Tooltip: breit (6px Breite)
-                  const tooltipWidth = 6;
+                  // Am Tooltip: breit (8px Breite für bessere Sichtbarkeit)
+                  const tooltipWidth = 8;
                   const p3x = lineCoords.x2 - perpX * tooltipWidth;
                   const p3y = lineCoords.y2 - perpY * tooltipWidth;
                   const p4x = lineCoords.x2 + perpX * tooltipWidth;
@@ -411,38 +411,38 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   return `${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y} ${p4x},${p4y}`;
                 })()}
                 fill="url(#lineGradient)"
-                opacity="0.4"
+                opacity="1"
               />
               
-              {/* Gestrichelte Mittellinie für bessere Sichtbarkeit */}
+              {/* Gestrichelte Mittellinie für Definition - Voll-Ton */}
               <line
                 x1={lineCoords.x1}
                 y1={lineCoords.y1}
                 x2={lineCoords.x2}
                 y2={lineCoords.y2}
-                stroke="#d4a574"
-                strokeWidth="1"
-                strokeDasharray="3,3"
-                opacity="0.5"
+                stroke="#c9a882"
+                strokeWidth="1.5"
+                strokeDasharray="3,2"
+                opacity="1"
               />
               
-              {/* Kleiner Kreis am Element (Startpunkt) */}
+              {/* Kleiner Kreis am Element (Startpunkt) - Voll-Ton */}
               <circle
                 cx={lineCoords.x1}
                 cy={lineCoords.y1}
                 r="3"
                 fill="#c9a882"
-                opacity="0.7"
+                opacity="1"
               />
-              {/* Größerer Kreis am Tooltip (Endpunkt) */}
+              {/* Größerer Kreis am Tooltip (Endpunkt) - Voll-Ton */}
               <circle
                 cx={lineCoords.x2}
                 cy={lineCoords.y2}
-                r="5"
+                r="6"
                 fill="#f6cda1"
                 stroke="#c9a882"
-                strokeWidth="2"
-                opacity="0.8"
+                strokeWidth="2.5"
+                opacity="1"
               />
             </svg>
             
