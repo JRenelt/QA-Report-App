@@ -160,6 +160,18 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
     return () => clearInterval(pollInterval);
   }, [itemsPerPage]);
+  
+  // Auto-Focus + Text-Selection für Beschreibungsfeld im Edit-Modal
+  useEffect(() => {
+    if (showEditModal && descriptionTextareaRef.current) {
+      // Focus auf Beschreibungsfeld
+      descriptionTextareaRef.current.focus();
+      // Text markieren (für schnelles Löschen/Überschreiben)
+      descriptionTextareaRef.current.select();
+      console.log('Beschreibungsfeld fokussiert und Text markiert');
+    }
+  }, [showEditModal]);
+  
   const [sidebarWidth, setSidebarWidth] = useState(350); // Vergrößert von 256px auf 350px für 100% größeren Content
   const [isResizing, setIsResizing] = useState(false);
   const [userSettings, setUserSettings] = useState({
