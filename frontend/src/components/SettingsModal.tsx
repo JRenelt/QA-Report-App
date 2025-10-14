@@ -121,7 +121,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   };
 
   const handleClearDatabase = async () => {
-    if (!confirm('🚨 GEFAHR: Diese Aktion löscht die KOMPLETTE Datenbank!\n\nALLE Firmen, Projekte, Tests und Ergebnisse werden unwiderruflich gelöscht.\n\nDiese Aktion kann NICHT rückgängig gemacht werden!\n\nMöchten Sie wirklich fortfahren?')) {
+    if (!confirm('🚨 GEFAHR: Diese Aktion löscht ALLE Projekte und Testdaten!\n\nALLE Projekte, Tests und Ergebnisse werden unwiderruflich gelöscht.\nDie Firma ID2 GmbH bleibt erhalten (Systemvoraussetzung).\n\nDiese Aktion kann NICHT rückgängig gemacht werden!\n\nMöchten Sie wirklich fortfahren?')) {
       return;
     }
 
@@ -134,6 +134,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
+      // 1. Backend-Datenbank leeren
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
       const response = await fetch(`${backendUrl}/api/admin/clear-database`, {
         method: 'DELETE',
@@ -142,14 +143,30 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         }
       });
 
-      if (response.ok) {
-        showMessage('success', '✅ Datenbank geleert');
-        setTimeout(() => window.location.reload(), 2000);
-      } else {
-        throw new Error('Fehler beim Leeren der Datenbank');
+      if (!response.ok) {
+        throw new Error('Fehler beim Leeren der Backend-Datenbank');
       }
+
+      // 2. LocalStorage komplett leeren (alle Projekte, Test-Suites, Test-Cases)
+      // Alle qa_* Keys löschen
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('qa_projects') || key.startsWith('qa_suites_') || key.startsWith('qa_cases_'))) {
+          keysToRemove.push(key);
+        }
+      }
+      
+      keysToRemove.forEach(key => {
+        localStorage.removeItem(key);
+        console.log(`LocalStorage gelöscht: ${key}`);
+      });
+
+      showMessage('success', '✅ Datenbank und alle Projekte geleert (ID2 GmbH bleibt erhalten)');
+      setTimeout(() => window.location.reload(), 2000);
     } catch (error) {
       showMessage('error', '❌ Fehler beim Leeren der Datenbank');
+      console.error('Clear database error:', error);
     } finally {
       setLoading(false);
     }
