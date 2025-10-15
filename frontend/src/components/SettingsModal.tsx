@@ -434,7 +434,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
       const projects = JSON.parse(localStorage.getItem('qa_projects') || '[]');
       const projectId = projects[0]?.id || 'PROJ001';
       
-      const response = await fetch(`${backendUrl}/api/pdf/export/${projectId}`, {
+      const response = await fetch(`${backendUrl}/api/pdf-reports/generate/${projectId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${authToken}`,
