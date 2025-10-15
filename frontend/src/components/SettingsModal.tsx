@@ -207,6 +207,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
       console.log('Mass Data Response Status:', response.status);
       
       if (!response.ok) {
+        // 409 Conflict = Projekte vorhanden
+        if (response.status === 409) {
+          const errorData = await response.json();
+          console.error('Projekte bereits vorhanden:', errorData);
+          showMessage('error', errorData.detail?.error || 'Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.');
+          return;
+        }
+        
         const errorText = await response.text();
         console.error('Mass Data Error:', errorText);
         throw new Error(`HTTP ${response.status}: ${errorText}`);
