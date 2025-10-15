@@ -502,13 +502,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${fileName}.csv`;
+      a.download = `${fileName}.xlsx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
       
-      showMessage('success', `✅ CSV gespeichert: ${fileName}.csv`);
+      showMessage('success', `✅ Excel gespeichert: ${fileName}.xlsx`);
     } catch (error) {
       console.error('CSV Export Fehler:', error);
       showMessage('error', `❌ Fehler beim CSV-Export: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
