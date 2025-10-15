@@ -272,15 +272,18 @@ backend:
   
   - task: "CSV/Excel Export from Settings Modal"
     implemented: true
-    working: "NA"
+    working: true
     file: "frontend/src/components/SettingsModal.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "BUG FIX: CSV Export endpoint corrected from '/api/export/csv/{projectId}' to '/api/import-export/export-excel/{projectId}' to match backend route. File extension changed from .csv to .xlsx as backend returns Excel format. Success message updated to 'Excel gespeichert'. Added validation: checks if projects exist in localStorage before attempting export."
+        - working: true
+          agent: "testing"
+          comment: "🇩🇪 GERMAN PHASE 2 SCENARIO 3 PASSED: CSV/Excel export endpoint working correctly. GET /api/import-export/export-excel/{project_id} returns HTTP 200 with proper Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet. Excel file generation successful with admin authentication."
 
   - task: "Companies API Endpoint"
     implemented: true
