@@ -225,7 +225,7 @@ backend:
   - task: "Mass Data Generation with Safety Check"
     implemented: true
     working: true
-    file: "backend/routes/admin.py"
+    file: "backend/routes/admin.py, frontend/src/components/SettingsModal.tsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
@@ -236,6 +236,45 @@ backend:
         - working: true
           agent: "testing"
           comment: "🇩🇪 GERMAN TEST REQUEST COMPLETED SUCCESSFULLY! ✅ ALL 3 SCENARIOS PASSED: (A) No Projects - Generation ALLOWED: Database cleared, verified empty projects array, mass data generated successfully (50 companies, 50 projects, 125,000 test cases) ✅ (B) MongoDB Projects - Generation DENIED: Test data created (1 project), mass data generation correctly returned HTTP 409 Conflict with proper error message and existing_projects_mongodb count ✅ (C) LocalStorage Projects - Generation DENIED: Database cleared, hasLocalStorageProjects=true sent, correctly returned HTTP 409 Conflict with has_local_storage_projects=true ✅ ADDITIONAL TESTS PASSED: Missing parameter defaults to false (generation allowed), Admin authentication required (HTTP 403 without auth). CRITICAL BUG FIXED: HTTPException(409) was being caught and re-raised as HTTP 500 - moved safety checks outside try-catch block to allow proper 409 responses. Mass data safety check implementation is fully functional and secure."
+        - working: true
+          agent: "main"
+          comment: "IMPROVED ERROR HANDLING: Frontend 409 error handling improved with better error message extraction (errorData.detail?.error || errorData.detail). Added try-catch for JSON parsing to prevent crashes."
+  
+  - task: "Test Data Generation - Frontend Sync"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/SettingsModal.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "BUG FIX: After successful test data generation, frontend now loads companies and projects from backend API and stores in localStorage (similar to mass data generation). Added: (1) Fetch /api/companies and store in 'qa_companies' (2) Fetch /api/projects and store in 'qa_projects' (3) window.location.reload() after 2 seconds to refresh UI. This fixes the issue where generated test data was not visible in frontend."
+  
+  - task: "PDF Export from Settings Modal"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/SettingsModal.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "BUG FIX: PDF Export endpoint corrected from '/api/pdf/export/{projectId}' to '/api/pdf-reports/generate/{projectId}' to match backend route. Added validation: checks if projects exist in localStorage before attempting export, shows error message if no projects found."
+  
+  - task: "CSV/Excel Export from Settings Modal"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/SettingsModal.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "BUG FIX: CSV Export endpoint corrected from '/api/export/csv/{projectId}' to '/api/import-export/export-excel/{projectId}' to match backend route. File extension changed from .csv to .xlsx as backend returns Excel format. Success message updated to 'Excel gespeichert'. Added validation: checks if projects exist in localStorage before attempting export."
 
   - task: "Companies API Endpoint"
     implemented: true
