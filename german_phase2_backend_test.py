@@ -145,7 +145,7 @@ class GermanPhase2Tester:
             
             # Step 5: Check projects endpoint
             print("Step 5: Checking projects endpoint...")
-            projects_response = self.session.get(f"{API_BASE}/projects", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
             if projects_response.status_code != 200:
                 self.log_test("Scenario 1 - Projects Check", False, 
