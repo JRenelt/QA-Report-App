@@ -46,6 +46,16 @@
 - Richtig: `/api/admin/clear-database`
 - Falsch: `/admin/clear-database`
 
+### Frontend-Testing
+**REGEL:** Nach jeder Änderung Frontend auf Anomalien und gewünschtes Ergebnis prüfen
+- Screenshot-Tool verwenden, um visuelle Veränderungen zu überprüfen
+- Browser-Console-Logs auf Fehler prüfen (capture_logs=true)
+- Testen ob API-Calls erfolgreich sind (Network-Tab prüfen)
+- Fehlermeldungen im UI auf Korrektheit prüfen
+- Daten-Synchronisation zwischen Backend und Frontend verifizieren
+- localStorage-Status nach Operationen prüfen
+- **WICHTIG**: Bei "Failed to fetch" oder ähnlichen Fehlern IMMER Browser-Console und Network-Tab prüfen
+
 ### Lokalisierung
 **REGEL:** Alle UI-Texte auf Deutsch
 - Buttons, Labels, Meldungen
