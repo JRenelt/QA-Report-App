@@ -949,15 +949,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                       </button>
 
                       <button
-                        onClick={handleResetLocalStorage}
-                        disabled={loading}
-                        className="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
-                      >
-                        <Database className="h-4 w-4 mr-2" />
-                        LocalStorage zurücksetzen
-                      </button>
-
-                      <button
                         onClick={handleOptimizeDatabase}
                         disabled={loading}
                         className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
