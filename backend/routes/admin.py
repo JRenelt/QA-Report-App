@@ -361,5 +361,8 @@ async def generate_mass_data(
             "warning": "Diese Daten sind NUR für Performance-Tests! Verwenden Sie 'Datenbank leeren' zum Entfernen."
         }
         
+    except HTTPException:
+        # Re-raise HTTPExceptions (like our 409 safety check)
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Fehler bei der Masse-Daten Generierung: {str(e)}")
