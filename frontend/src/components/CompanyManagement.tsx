@@ -386,10 +386,25 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
           }
           
           // Neues Projekt erstellen für Import
+          // Prüfe ob Projektname bereits existiert und füge _1, _2, etc. hinzu
+          let projectName = data.projectName || 'Importiertes Projekt';
+          let counter = 1;
+          const existingNames = projects.map(p => p.name);
+          let finalProjectName = projectName;
+          
+          while (existingNames.includes(finalProjectName)) {
+            finalProjectName = `${projectName}_${counter}`;
+            counter++;
+          }
+          
+          if (finalProjectName !== projectName) {
+            console.log(`Projektname existiert bereits. Umbenannt zu: ${finalProjectName}`);
+          }
+          
           const newProject = {
             id: `PROJ${Date.now()}`,  // Konsistentes Format mit anderen Projekten
             companyId: targetCompanyId,
-            name: data.projectName || 'Importiertes Projekt',
+            name: finalProjectName,
             description: data.description || 'Aus Template importiert',
             notes: '',
             status: 'active' as const,
