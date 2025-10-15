@@ -275,9 +275,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           console.log('Projekte aktualisiert aus localStorage:', newProjects.length);
           setProjects(newProjects);
         }
-        } catch (e) {
-          console.error('Fehler beim Aktualisieren der Projekte:', e);
-        }
+      } catch (e) {
+        console.error('Fehler beim Aktualisieren der Projekte:', e);
       }
     }, 2000); // Alle 2 Sekunden prüfen
 
