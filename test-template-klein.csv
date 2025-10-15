@@ -1,0 +1,9 @@
+Testbereich-ID,Testbereich-Name,Test-ID,Testfall-Titel,Beschreibung
+login,Login & Authentifizierung,SLMEP001,Standard-Login mit Email & Passwort,Benutzer kann sich mit gültiger Email und Passwort anmelden
+login,Login & Authentifizierung,FBF002,Fehlerhafte Benutzer-Fehlermeldung,Klare Fehlermeldung bei falschen Anmeldedaten
+navigation,Navigation & Header,NMA001,Navigation-Menü Alle,Alle Navigationselemente sind sichtbar und funktionsfähig
+navigation,Navigation & Header,LD002,Logo Darstellung,Logo wird korrekt angezeigt und ist klickbar
+test-verwaltung,Test-Verwaltung,NTE001,Neuer Testfall Erstellen,Testfall kann mit Titel und Beschreibung angelegt werden
+test-verwaltung,Test-Verwaltung,TSÄ002,Test-Status Ändern,Status kann zwischen Pending Success Warning Error gewechselt werden
+export,Export & Berichte,PBE001,PDF-Bericht Erstellen,PDF-Report kann generiert und heruntergeladen werden
+export,Export & Berichte,CEF002,CSV-Export Funktion,Test-Daten können als CSV exportiert werden
