@@ -1072,17 +1072,17 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                   {isAdmin && advancedSection === 'danger' && (
                     <div className="space-y-6">
                       <div className="p-4 rounded-lg border-2 border-red-500 bg-red-50 bg-opacity-10">
-                        <div className="flex items-start mb-4">
-                          <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
-                          <div>
-                            <h4 className="font-bold text-red-500 text-lg">
-                              Gefahrenbereich
-                            </h4>
-                            <p className="text-sm text-red-600 mt-1">
-                              Diese Aktionen können nicht rückgängig gemacht werden!
-                            </p>
-                          </div>
-                        </div>
+                    <div className="flex items-start mb-4">
+                      <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
+                      <div>
+                        <h4 className="font-bold text-red-500 text-lg">
+                          Gefahrenbereich
+                        </h4>
+                        <p className="text-sm text-red-600 mt-1">
+                          Diese Aktionen können nicht rückgängig gemacht werden!
+                        </p>
+                      </div>
+                    </div>
 
                         <div className="space-y-3">
                           <button
