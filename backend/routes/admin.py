@@ -251,23 +251,24 @@ async def generate_mass_data(
     import uuid
     from datetime import datetime
     
+    # SAFETY CHECK 1: Check MongoDB for existing projects
+    existing_projects_count = await projects_collection.count_documents({})
+    
+    # SAFETY CHECK 2: Check if frontend reports localStorage projects
+    has_local_storage_projects = data.get('hasLocalStorageProjects', False)
+    
+    # If projects exist in MongoDB OR localStorage → DENY
+    if existing_projects_count > 0 or has_local_storage_projects:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "error": "Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.",
+                "existing_projects_mongodb": existing_projects_count,
+                "has_local_storage_projects": has_local_storage_projects
+            }
+        )
+    
     try:
-        # SAFETY CHECK 1: Check MongoDB for existing projects
-        existing_projects_count = await projects_collection.count_documents({})
-        
-        # SAFETY CHECK 2: Check if frontend reports localStorage projects
-        has_local_storage_projects = data.get('hasLocalStorageProjects', False)
-        
-        # If projects exist in MongoDB OR localStorage → DENY
-        if existing_projects_count > 0 or has_local_storage_projects:
-            raise HTTPException(
-                status_code=409,
-                detail={
-                    "error": "Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.",
-                    "existing_projects_mongodb": existing_projects_count,
-                    "has_local_storage_projects": has_local_storage_projects
-                }
-            )
         
         # Start time
         start_time = datetime.now()
