@@ -13,6 +13,7 @@ interface SettingsModalProps {
 
 const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode, toggleDarkMode, authToken, initialTab, currentUser }) => {
   const [activeTab, setActiveTab] = useState<'appearance' | 'import-export' | 'advanced'>(initialTab || 'appearance');
+  const [advancedSection, setAdvancedSection] = useState<'system' | 'testdata' | 'danger'>('system');
   const [itemsPerPage, setItemsPerPage] = useState(localStorage.getItem('itemsPerPage') || '10');
   const [showTooltips, setShowTooltips] = useState(localStorage.getItem('showTooltips') !== 'false');
   const [messageDelay, setMessageDelay] = useState(parseInt(localStorage.getItem('messageDelay') || '3000'));
