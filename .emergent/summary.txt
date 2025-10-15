@@ -1,36 +1,50 @@
 <analysis>
-The AI engineer successfully guided the QA-Report-App from an initial MVP state through multiple iterations, primarily focusing on extensive UI/UX improvements, feature additions, and bug fixes. The work encompassed major UI redesigns, particularly for the dashboard sidebar, implementing dynamic and role-based functionalities, resolving persistent frontend and backend errors (e.g., React hooks, TypeScript type issues, mixed content errors), and refining user interaction elements like tooltips and forms. The development process was highly iterative, driven by continuous user feedback, image analysis, and systematic debugging. Key achievements include a dynamic sidebar, comprehensive company/project management, enhanced login UI, global caching fixes, and intelligent tooltip positioning. The immediate task involves dynamically loading test data based on project selection.
+The AI engineer focused on enhancing the QA-Report-App, transitioning it from MVP to a more robust, user-friendly system. Initial work involved UI/UX, feature additions like dynamic sidebar, role-based access, improved login, and comprehensive company/project management. The core task in the provided trajectory involved fixing dynamic data loading, addressing UI inconsistencies (e.g., project dropdown, sidebar width, counter visibility), and resolving persistent issues with database operations (clear, optimize) due to authentication failures. Significant effort was also put into refining test ID generation rules, creating a glossary feature with admin-only access, and generating various test data templates. The work was highly iterative, driven by direct user feedback, with a strong emphasis on TypeScript error checking and maintaining the German localization. The latest unresolved issue is the failure to display mass-generated projects in the frontend because they are only created in the backend, not synchronized with local storage.
 </analysis>
 
 <product_requirements>
-The user requested a QA-Report-App with a FastAPI backend (MongoDB, JWT auth) and React TypeScript frontend, localized in German. Key features include PDF Report Generation, Excel Import/Export, Archive Management, and a multi-user system (Admin, QA-Tester). The core design centered on a detailed  with a fixed header/footer, dark mode, multi-tab settings, and help modals. The dashboard required a left sidebar (Test-Bereiche, later Testfälle) showing dynamic test counts/statuses, a fixed action bar, and interactive test cards.
+The QA-Report-App is a full-stack application with a FastAPI backend (MongoDB, JWT auth) and React TypeScript frontend, localized in German. It generates PDF reports, imports/exports Excel/CSV, manages archives, and supports Admin/QA-Tester roles. The  is central, featuring a dynamic sidebar for test areas/test cases, fixed headers/footers, dark mode, multi-tab settings, and help modals.
 
-User feedback continuously focused on UI precision, functional status changes, persistent settings, specific styling for buttons/tooltips, and a compact design. Recent requests included: comprehensive Company & Project Management with admin control; a detailed PDF report structure (pending); explicit versioning; a structured sidebar layout with dynamic counters; role-based restrictions for QA-Testers; improved Login Dark Mode contrast; renaming Testpunkte to Testfälle; template download/import with correct ID generation; auto-opening edit modal for new test cases with auto-focus and default text; dynamic, edge-aware tooltip positioning with a tapering, full-tone line; square filter buttons; and dynamic loading of projects and associated test data.
+Key user requests and implementations throughout the trajectory:
+*   **UI/UX:** Fixed header/footer, dark mode, multi-tab settings, help modals. Dynamic sidebar (project selection, counter, test areas), square filter buttons, compact design, improved Login Dark Mode contrast.
+*   **Data Management:** Comprehensive Company & Project Management with admin control, explicit versioning. Template download/import with correct ID generation. Auto-opening edit modal for new test cases with auto-focus and default text. Dynamic, edge-aware tooltip positioning.
+*   **Role-based Access:** Role-based restrictions for QA-Testers. Glossary feature to be Admin-only.
+*   **Database Operations:** Implement Database leeren (clear database) to keep only ID2 company, delete all projects/test data, and clear local storage. Implement DB Optimieren (optimize database).
+*   **Test Data/Templates:** Dynamically load projects and associated test data. Generate new JSON/CSV templates (small, full, regelkonform IDs). Implement mass data generation (50 companies, 50 test suites/cases each) for performance testing, only visible for Admin.
+*   **ID Format:** Test IDs to be initials of each word in the test case title, replacing special characters with spaces, followed by a running 3-digit number.
+*   **System Documentation:** Create persistent project rules () and a glossary/wiki with search and highlighting features.
 </product_requirements>
 
 <key_technical_concepts>
 -   **Backend**: FastAPI, MongoDB (pymongo), JWT Authentication (python-jose, bcrypt).
--   **Frontend**: React.js, TypeScript, Tailwind CSS, Lucide-React for icons, React Router DOM, Local Storage for state persistence.
+-   **Frontend**: React.js, TypeScript, Tailwind CSS, Lucide-React for icons, React Router DOM, Local Storage for state persistence, Craco for build customization.
 -   **Deployment**: Supervisor, Kubernetes Ingress.
 -   **Data Handling**: JSON/CSV import/export, UUIDs.
--   **Architecture**: Full-stack, client-server model.
+-   **Architecture**: Full-stack, client-server model, German localization.
 </key_technical_concepts>
 
 <code_architecture>
 The application uses a full-stack architecture:
 
 
-
 -   ****: Entry point. Added global NoCache middleware. Modified health check endpoint to .
--   ****: Manages global state. Passes  to  and . Fixed health check API call to .
--   ****: The core dashboard. Restructured sidebar (project selection, counter, test areas). Implemented dynamic tooltip positioning with conical lines. Changed filter buttons to square. Added auto-open edit modal for new test cases with auto-focus/selection and dynamic default description. Implemented polling for  to reflect new projects. Currently being modified to link test suites and test cases to .
+-   ****: Modified  to only preserve ID2 company and admin users, delete all projects/test data. Added  endpoint. Added  endpoint for performance testing.
+-   ****: Contains JWT authentication logic.
+-   ****: Manages global state. Passes  to  and . Fixed health check API call to . GlossaryModal integrated, visibility tied to admin role.
+-   ****: Hardcoded test cases removed (lines 142-163).  declaration moved before  (around line 70-73). Project dropdown placeholder Bitte Projekt auswählen added. Test areas and counter now display only when a project is selected. Sidebar width calculation () adjusted to accommodate longer project names and no project selected message. Project selection and project polling now load/save from/to localStorage. Glossary button added, visible only to admins.  (company dropdown) now loads from localStorage instead of being hardcoded.
 -   ****: Improved contrast for elements in Dark Mode.
--   ****: Restricted Gefahrenbereich to admins, limited test data generation for QA-Testers, and implemented PDF/CSV export functionalities.
--   ****: Implemented role-based visibility, hiding Technische Doc and Installationshilfen for QA-Testers.
+-   ****: Restricted Gefahrenbereich to admins, limited test data generation for QA-Testers, and implemented PDF/CSV export functionalities. Datenbank leeren now clears all relevant localStorage keys. DB Optimieren and Masse-Daten generieren buttons added (the latter for admin only). Error logging for API calls improved.
+-   ****: Implemented role-based visibility, hiding Technische Doc and Installationshilfen for QA-Testers. Link to GlossaryModal added, restricted to Admin.
 -   ****: Implemented role-based user filtering and restrictions on create/delete for QA-Testers. Added  to the  interface. Resolved a  role runtime error.
--   ****: Enables admin to select and manage company projects. Implemented correct test ID generation for templates and . Integrated with  for project persistence.
+-   ****: Hardcoded companies removed (lines 43-90, and 67-74 remnants).  and  now save projects and their associated test data to localStorage. Projects are saved to localStorage after create, update, or delete.  now cascades to delete associated projects/test data from localStorage. Delete button for company ID2 is hidden. Template download buttons (JSON/CSV) added. Duplicate project import now appends , , etc. to the project name.
+-   ****: A new component created for a Wiki/Glossar, accessible only to Admin users. Contains search and highlighting functionality.
 -   ****: Added custom scrollbar styles for Dark Mode.
 -   ****: Added global NoCache meta-tags.
+-   ****: Created to store persistent project rules (ID format, data handling, ID2 protection, cascading delete, UI/UX, backend conventions, German localization, TypeScript, forbidden actions, best practices).
+-   ****: Created as a short README for new developers.
+-   ****: Created to document test ID generation for verification.
+-   ****: New JSON template with updated ID format.
+-   ****, ****: New smaller templates.
 </code_architecture>
 
 <pending_tasks>
@@ -38,13 +52,15 @@ The application uses a full-stack architecture:
 -   **PDF/CSV Export Dialogs:** Implement Save as dialogs (explicit file naming) for PDF/CSV exports.
 -   **Test Data Load Function:** Implement the Load Test Data function (currently OF).
 -   **Dark/Bright Mode UI Anpassungen:** Address remaining UI elements not adapting correctly to dark/light mode.
--   **Hardcoded Test Suites/Cases**: Remove hardcoded test suite/case data and load them dynamically based on .
+-   **Masse-Daten Generierung Frontend Update:** After mass data generation in the backend, the frontend does not display the newly created companies/projects from MongoDB; it only loads from localStorage. This needs synchronization.
+-   **DB Leeren/Optimieren Frontend Error Messages:** The UI still shows Fehler beim Leeren der Datenbank or Fehler beim Optimieren, despite backend success. This implies a frontend display/handling error.
+-   **Projekt-Löschung Sofort Sichtbar (Re-evaluation):** User reported that project deletion results are only visible after a reload. The  was updated, but the issue persists, possibly due to filtering or other UI update mechanisms.
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer was addressing a critical UI issue where Testbereiche (test areas) and Testfälle (test cases) in the  were not updating dynamically upon switching projects. The core problem identified was that  and  were hardcoded within the component and lacked any association with a . To resolve this, the AI engineer began implementing a  hook in . This hook is designed to trigger upon changes to the , allowing for dynamic loading and saving of project-specific test data. The last action taken was to add this  hook, and the next step is to remove the old, hardcoded test case data from the component to ensure only dynamically loaded data is used.
+Immediately before this summary request, the AI engineer was addressing the issue where Masse-Daten (mass-generated data) created in the backend were not visible in the frontend. The core problem identified is that the frontend ( and ) primarily loads company and project data from , while the mass data generation function ( in ) creates these entities directly in the MongoDB backend. Consequently, the frontend has no mechanism to fetch or synchronize these newly created backend entities into its local state or  without a manual intervention or explicit API call. The AI engineer has just acknowledged this root cause and the last action taken was to state the next logical step: Ich muss das Frontend erweitern, damit es nach der Masse-Daten-Generierung die Daten aus dem Backend lädt. (I need to extend the frontend so that it loads the data from the backend after the mass data generation.)
 </current_work>
 
 <optional_next_step>
-Remove the old hardcoded  from .
+Check for existing backend API endpoints  and  to fetch the company and project data from MongoDB.
 </optional_next_step>

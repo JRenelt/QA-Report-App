@@ -30,7 +30,7 @@ Deutschsprachige QA-Management-Anwendung für Test-Berichte und Projekt-Verwaltu
 
 ## 🔗 Links
 
-- Template-Download: https://qamaster-portal.preview.emergentagent.com/test-import-template-v2.json
+- Template-Download: https://testsync-pro.preview.emergentagent.com/test-import-template-v2.json
 - API-Docs: `/api/docs`
 
 ---
