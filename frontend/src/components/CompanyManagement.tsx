@@ -731,13 +731,6 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
               </h3>
               <div className="flex space-x-2">
                 <button
-                  onClick={generateProjectTemplate}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center"
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  Template
-                </button>
-                <button
                   onClick={() => document.getElementById('project-import-input')?.click()}
                   disabled={!selectedCompanyForEdit && isAdmin}
                   className={`px-4 py-2 rounded-lg flex items-center ${
@@ -762,6 +755,51 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                     }
                   }}
                 />
+                {/* Template Download */}
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const btn = e.currentTarget;
+                      const menu = btn.nextElementSibling as HTMLElement;
+                      if (menu) {
+                        menu.classList.toggle('hidden');
+                      }
+                    }}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center"
+                    title="Template downloaden"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Template
+                  </button>
+                  {/* Dropdown Menu */}
+                  <div className={`hidden absolute left-0 mt-2 w-40 rounded-lg shadow-lg z-50 ${darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'}`}>
+                    <a
+                      href="/test-template-klein.csv"
+                      download="qa-template.csv"
+                      className={`block px-4 py-2 text-sm hover:bg-gray-700 rounded-t-lg ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}
+                      onClick={() => {
+                        setTimeout(() => {
+                          document.querySelectorAll('.hidden').forEach(el => el.classList.add('hidden'));
+                        }, 100);
+                      }}
+                    >
+                      📊 CSV (Standard)
+                    </a>
+                    <a
+                      href="/test-template-klein.json"
+                      download="qa-template.json"
+                      className={`block px-4 py-2 text-sm hover:bg-gray-700 rounded-b-lg ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}
+                      onClick={() => {
+                        setTimeout(() => {
+                          document.querySelectorAll('.hidden').forEach(el => el.classList.add('hidden'));
+                        }, 100);
+                      }}
+                    >
+                      📄 JSON
+                    </a>
+                  </div>
+                </div>
                 <button
                   onClick={() => setShowProjectForm(true)}
                   className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center"
