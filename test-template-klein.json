@@ -1,0 +1,79 @@
+{
+  "version": "1.0",
+  "projectName": "Standard QA Template",
+  "description": "Basis-Template mit 4 Testbereichen und 8 Testfällen",
+  "testBereiche": [
+    {
+      "id": "login",
+      "name": "Login & Authentifizierung",
+      "description": "Tests für Login und Benutzer-Authentifizierung",
+      "icon": "lock",
+      "tests": [
+        {
+          "testId": "SLMEP001",
+          "title": "Standard-Login mit Email & Passwort",
+          "description": "Benutzer kann sich mit gültiger Email und Passwort anmelden"
+        },
+        {
+          "testId": "FBF002",
+          "title": "Fehlerhafte Benutzer-Fehlermeldung",
+          "description": "Klare Fehlermeldung bei falschen Anmeldedaten"
+        }
+      ]
+    },
+    {
+      "id": "navigation",
+      "name": "Navigation & Header",
+      "description": "Tests für Navigation und Kopfzeile",
+      "icon": "menu",
+      "tests": [
+        {
+          "testId": "NMA001",
+          "title": "Navigation-Menü Alle",
+          "description": "Alle Navigationselemente sind sichtbar und funktionsfähig"
+        },
+        {
+          "testId": "LD002",
+          "title": "Logo Darstellung",
+          "description": "Logo wird korrekt angezeigt und ist klickbar"
+        }
+      ]
+    },
+    {
+      "id": "test-verwaltung",
+      "name": "Test-Verwaltung",
+      "description": "Tests für Testfall-Management",
+      "icon": "clipboard",
+      "tests": [
+        {
+          "testId": "NTE001",
+          "title": "Neuer Testfall Erstellen",
+          "description": "Testfall kann mit Titel und Beschreibung angelegt werden"
+        },
+        {
+          "testId": "TSÄ002",
+          "title": "Test-Status Ändern",
+          "description": "Status kann zwischen Pending, Success, Warning, Error gewechselt werden"
+        }
+      ]
+    },
+    {
+      "id": "export",
+      "name": "Export & Berichte",
+      "description": "Tests für PDF und CSV Export",
+      "icon": "file-down",
+      "tests": [
+        {
+          "testId": "PBE001",
+          "title": "PDF-Bericht Erstellen",
+          "description": "PDF-Report kann generiert und heruntergeladen werden"
+        },
+        {
+          "testId": "CEF002",
+          "title": "CSV-Export Funktion",
+          "description": "Test-Daten können als CSV exportiert werden"
+        }
+      ]
+    }
+  ]
+}
