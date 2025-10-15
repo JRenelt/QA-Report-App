@@ -709,11 +709,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Test Data Generation - Frontend Sync - ✅ COMPLETED SUCCESSFULLY - German Phase 2 Scenario 1 passed"
-    - "PDF Export from Settings Modal - ✅ COMPLETED SUCCESSFULLY - German Phase 2 Scenario 2 passed"
-    - "CSV/Excel Export from Settings Modal - ✅ COMPLETED SUCCESSFULLY - German Phase 2 Scenario 3 passed"
-    - "Mass Data Generation with Safety Check - ✅ COMPLETED SUCCESSFULLY - All German Phase 2 Scenarios 4 & 5 passed"
-    - "Auto-Open Edit Modal bei neuer Test-Erstellung - ✅ COMPLETED SUCCESSFULLY WITH GERMAN REVIEW IMPROVEMENTS"
+    - "Login Authentication Fix - ❌ CRITICAL BLOCKING ISSUE (No auth token stored after login)"
+    - "Test Data Generation - Frontend Sync - ❌ FAILED (Authentication failure prevents API calls)"
+    - "PDF Export from Settings Modal - ❌ LIKELY AFFECTED (Authentication required)"
+    - "CSV/Excel Export from Settings Modal - ❌ LIKELY AFFECTED (Authentication required)"
+    - "Mass Data Generation with Safety Check - ❌ LIKELY AFFECTED (Authentication required)"
     - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch)"
     - "Company Management Modal - ❌ FAILED (Factory icon not accessible in header)"
     - "Template Test-ID Format - ❌ INCOMPLETE (depends on Company Management modal)"
