@@ -62,7 +62,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('qa_token', data.access_token);
+        localStorage.setItem('authToken', data.access_token);  // Fixed: Changed from 'qa_token' to 'authToken'
         localStorage.setItem('qa_user', JSON.stringify(data.user));
         onLogin(data.access_token, data.user);
       } else {
