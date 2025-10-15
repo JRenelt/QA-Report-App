@@ -1,42 +1,42 @@
 {
   "total_tests": 5,
-  "passed": 0,
-  "failed": 5,
-  "success_rate": 0.0,
+  "passed": 5,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
-      "test": "Scenario 1 - Companies Check",
-      "success": false,
-      "message": "Failed to get companies: HTTP 403",
-      "timestamp": "2025-10-15T08:18:33.417377",
+      "test": "Scenario 1 - Testdaten Generieren + Frontend Sync",
+      "success": true,
+      "message": "\u2705 ALL CHECKS PASSED: Generated 2 companies with 18 test cases, verified 2 companies and 2 projects in database",
+      "timestamp": "2025-10-15T08:19:07.816440",
       "response_data": null
     },
     {
-      "test": "Scenario 2 - Projects Check",
-      "success": false,
-      "message": "Failed to get projects: HTTP 403",
-      "timestamp": "2025-10-15T08:18:33.473808",
+      "test": "Scenario 2 - PDF Export Endpoint",
+      "success": true,
+      "message": "\u2705 PDF export successful: HTTP 200, Content-Type: application/pdf",
+      "timestamp": "2025-10-15T08:19:07.885342",
       "response_data": null
     },
     {
-      "test": "Scenario 3 - Projects Check",
-      "success": false,
-      "message": "Failed to get projects: HTTP 403",
-      "timestamp": "2025-10-15T08:18:33.488804",
+      "test": "Scenario 3 - CSV/Excel Export Endpoint",
+      "success": true,
+      "message": "\u2705 Excel export successful: HTTP 200, Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "timestamp": "2025-10-15T08:19:07.906186",
       "response_data": null
     },
     {
-      "test": "Scenario 4 - Projects Check",
-      "success": false,
-      "message": "Failed to get projects: HTTP 403",
-      "timestamp": "2025-10-15T08:18:33.545756",
+      "test": "Scenario 4 - Massendaten mit Projekten (409 Error)",
+      "success": true,
+      "message": "\u2705 ALL CHECKS PASSED: HTTP 409 Conflict with correct error message structure",
+      "timestamp": "2025-10-15T08:19:07.958923",
       "response_data": null
     },
     {
-      "test": "Scenario 5 - Projects Check",
-      "success": false,
-      "message": "Failed to get projects: HTTP 403",
-      "timestamp": "2025-10-15T08:18:33.665910",
+      "test": "Scenario 5 - Massendaten ohne Projekte (Success)",
+      "success": true,
+      "message": "\u2705 ALL CHECKS PASSED: Generated 50 companies, 50 projects, 125000 test cases",
+      "timestamp": "2025-10-15T08:19:10.980209",
       "response_data": null
     }
   ]
