@@ -641,6 +641,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Mass Data Generation with Safety Check - NEWLY IMPLEMENTED - Needs Backend Testing"
     - "Auto-Open Edit Modal bei neuer Test-Erstellung - ✅ COMPLETED SUCCESSFULLY WITH GERMAN REVIEW IMPROVEMENTS"
     - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch)"
     - "Company Management Modal - ❌ FAILED (Factory icon not accessible in header)"
