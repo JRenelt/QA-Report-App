@@ -156,6 +156,42 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     }
   };
 
+  const handleGenerateMassData = async () => {
+    if (!confirm('⚠️ WARNUNG: Masse-Daten generieren?\n\nDiese Funktion erstellt:\n• 50 Firmen\n• 50 Testbereiche pro Firma\n• 50 Testfälle pro Bereich\n\nGesamt: 125.000 Testfälle!\n\nDies dient NUR Performance-Tests und kann mehrere Minuten dauern.\n\nFortfahren?')) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qamaster-portal.preview.emergentagent.com';
+      console.log('Generiere Masse-Daten...');
+      
+      const response = await fetch(`${backendUrl}/api/admin/generate-mass-data`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        }
+      });
+
+      console.log('Mass Data Response Status:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Mass Data Error:', errorText);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
+      }
+
+      const result = await response.json();
+      showMessage('success', `✅ Masse-Daten generiert: ${result.stats.companies} Firmen, ${result.stats.test_cases} Testfälle in ${Math.round(result.duration_seconds)}s`);
+      setTimeout(() => window.location.reload(), 3000);
+    } catch (error) {
+      showMessage('error', '❌ Fehler bei der Masse-Daten Generierung');
+      console.error('Generate mass data error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleClearDatabase = async () => {
     if (!confirm('🚨 GEFAHR: Diese Aktion löscht ALLE Projekte, Testdaten und Firmen (außer ID2)!\n\nALLE Firmen (außer ID2 GmbH), Projekte, Tests und Ergebnisse werden unwiderruflich gelöscht.\nDie Firma ID2 GmbH bleibt erhalten (Systemvoraussetzung).\n\nDiese Aktion kann NICHT rückgängig gemacht werden!\n\nMöchten Sie wirklich fortfahren?')) {
       return;
