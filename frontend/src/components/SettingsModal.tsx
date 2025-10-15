@@ -190,24 +190,40 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
-      // 2. LocalStorage komplett leeren
+      // 2. LocalStorage komplett leeren - ALLE qa_* Keys sammeln
       const keysToRemove: string[] = [];
+      
+      // Wichtig: Alle Keys ZUERST sammeln (nicht während Iteration löschen)
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && (
           key.startsWith('qa_projects') || 
           key.startsWith('qa_suites_') || 
           key.startsWith('qa_cases_') ||
-          key === 'qa_companies'  // Alle Companies löschen (wird mit ID2 neu initialisiert)
+          key === 'qa_companies'
         )) {
           keysToRemove.push(key);
         }
       }
       
+      console.log(`LocalStorage: ${keysToRemove.length} Keys gefunden zum Löschen:`, keysToRemove);
+      
+      // Alle Keys löschen
       keysToRemove.forEach(key => {
         localStorage.removeItem(key);
-        console.log(`LocalStorage gelöscht: ${key}`);
+        console.log(`✅ LocalStorage gelöscht: ${key}`);
       });
+      
+      // Zusätzlich: Sicherstellen, dass keine qa_* Keys mehr existieren
+      const remainingKeys: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith('qa_') || key.includes('project') || key.includes('suite') || key.includes('case'))) {
+          remainingKeys.push(key);
+          localStorage.removeItem(key);
+          console.log(`⚠️ Zusätzlich gelöscht: ${key}`);
+        }
+      }
 
       // 3. ID2 GmbH in localStorage wiederherstellen
       const id2Company = {
@@ -222,7 +238,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         projectsCount: 0
       };
       localStorage.setItem('qa_companies', JSON.stringify([id2Company]));
-      console.log('ID2 GmbH in localStorage wiederhergestellt');
+      localStorage.setItem('qa_projects', JSON.stringify([]));  // Leere Projekt-Liste
+      console.log('✅ ID2 GmbH in localStorage wiederhergestellt');
+      console.log('✅ Leere Projekt-Liste erstellt');
 
       showMessage('success', '✅ Datenbank geleert - Alle Firmen (außer ID2), Projekte und Testdaten gelöscht');
       setTimeout(() => window.location.reload(), 2000);
