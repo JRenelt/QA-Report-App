@@ -239,9 +239,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
       if (!response.ok) {
         // 409 Conflict = Projekte vorhanden
         if (response.status === 409) {
-          const errorData = await response.json();
-          console.error('Projekte bereits vorhanden:', errorData);
-          showMessage('error', errorData.detail?.error || 'Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.');
+          try {
+            const errorData = await response.json();
+            console.error('Projekte bereits vorhanden:', errorData);
+            const errorMessage = errorData.detail?.error || errorData.detail || 'Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.';
+            showMessage('error', errorMessage);
+          } catch (e) {
+            showMessage('error', 'Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.');
+          }
           return;
         }
         
