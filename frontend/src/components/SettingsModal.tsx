@@ -858,16 +858,69 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
               </div>
             )}
 
-            {/* 3. ERWEITERTE EINSTELLUNGEN */}
+            {/* 3. ERWEITERTE EINSTELLUNGEN - MIT SIDEBAR */}
             {activeTab === 'advanced' && (
-              <div className="space-y-6">
-                <div>
-                  <h3 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                    Erweiterte Optionen
-                  </h3>
+              <div className="flex gap-4 h-[500px]">
+                {/* Sidebar Navigation */}
+                <div className={`w-48 flex-shrink-0 border-r ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+                  <div className="space-y-1 pr-4">
+                    <button
+                      onClick={() => setAdvancedSection('system')}
+                      className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                        advancedSection === 'system'
+                          ? darkMode
+                            ? 'bg-cyan-600 text-white'
+                            : 'bg-cyan-500 text-white'
+                          : darkMode
+                            ? 'text-gray-300 hover:bg-gray-700'
+                            : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      System
+                    </button>
+                    <button
+                      onClick={() => setAdvancedSection('testdata')}
+                      className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                        advancedSection === 'testdata'
+                          ? darkMode
+                            ? 'bg-cyan-600 text-white'
+                            : 'bg-cyan-500 text-white'
+                          : darkMode
+                            ? 'text-gray-300 hover:bg-gray-700'
+                            : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      Testdaten
+                    </button>
+                    {isAdmin && (
+                      <button
+                        onClick={() => setAdvancedSection('danger')}
+                        className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                          advancedSection === 'danger'
+                            ? 'bg-red-600 text-white'
+                            : darkMode
+                              ? 'text-red-400 hover:bg-red-900/20'
+                              : 'text-red-600 hover:bg-red-50'
+                        }`}
+                      >
+                        Gefahrenbereich
+                      </button>
+                    )}
+                  </div>
+                </div>
 
-                  {/* Message Delay - 5 Stufen System */}
-                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                {/* Main Content Area */}
+                <div className="flex-1 overflow-y-auto pr-2">
+                  {/* SYSTEM SECTION */}
+                  {advancedSection === 'system' && (
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                          System-Einstellungen
+                        </h3>
+
+                        {/* Message Delay - 5 Stufen System */}
+                        <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
                     <label className={`block font-medium mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                       Tooltip-Verzögerung
                     </label>
