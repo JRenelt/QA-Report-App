@@ -222,6 +222,18 @@ backend:
           agent: "testing"
           comment: "GERMAN REVIEW RE-TEST: Test data generation CONFIRMED WORKING. User report 'Test data generation OF' is INCORRECT. Generated 2 companies with 6 test cases successfully. Endpoint /api/admin/generate-test-data fully functional with admin authentication."
 
+  - task: "Mass Data Generation with Safety Check"
+    implemented: true
+    working: "NA"
+    file: "backend/routes/admin.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "NEWLY IMPLEMENTED: Added safety check to /api/admin/generate-mass-data endpoint. Backend now checks: (1) MongoDB for existing projects via projects_collection.count_documents() (2) Request body parameter 'hasLocalStorageProjects' from frontend. If projects exist in MongoDB OR localStorage → Returns HTTP 409 Conflict with error message 'Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.' If no projects → Generation proceeds normally. Frontend (SettingsModal.tsx handleGenerateMassData) checks localStorage for qa_projects, qa_suites_*, qa_cases_* before API call. Sends hasLocalStorageProjects flag to backend. Shows error message on 409 response. READY FOR TESTING."
+
   - task: "Companies API Endpoint"
     implemented: true
     working: true
