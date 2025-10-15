@@ -127,7 +127,7 @@ class GermanPhase2Tester:
             
             # Step 4: Check companies endpoint
             print("Step 4: Checking companies endpoint...")
-            companies_response = self.session.get(f"{API_BASE}/companies", timeout=10)
+            companies_response = self.session.get(f"{API_BASE}/companies/", timeout=10)
             
             if companies_response.status_code != 200:
                 self.log_test("Scenario 1 - Companies Check", False, 
