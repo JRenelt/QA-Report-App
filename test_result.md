@@ -683,6 +683,10 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Test Data Generation - Frontend Sync - NEWLY FIXED - Needs Testing"
+    - "PDF Export from Settings Modal - NEWLY FIXED - Needs Testing"
+    - "CSV/Excel Export from Settings Modal - NEWLY FIXED - Needs Testing"
+    - "Mass Data Generation Error Messages - IMPROVED - Needs Testing"
     - "Mass Data Generation with Safety Check - ✅ COMPLETED SUCCESSFULLY - All 3 German test scenarios passed"
     - "Auto-Open Edit Modal bei neuer Test-Erstellung - ✅ COMPLETED SUCCESSFULLY WITH GERMAN REVIEW IMPROVEMENTS"
     - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch)"
