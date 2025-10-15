@@ -1,161 +1,161 @@
 {
   "total_tests": 22,
-  "passed": 21,
-  "failed": 1,
-  "success_rate": 95.45454545454545,
+  "passed": 22,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "Health Check",
       "success": true,
       "message": "Health check successful (internal) - Status: None, DB: None",
-      "timestamp": "2025-10-15T07:48:28.665958",
+      "timestamp": "2025-10-15T07:49:02.910181",
       "response_data": null
     },
     {
       "test": "Admin Login",
       "success": true,
       "message": "Admin login successful - User: admin, Role: admin",
-      "timestamp": "2025-10-15T07:48:28.919859",
+      "timestamp": "2025-10-15T07:49:03.140817",
       "response_data": null
     },
     {
       "test": "QA Demo Login",
-      "success": false,
-      "message": "HTTP 401: {\"detail\":\"Incorrect username or password\"}",
-      "timestamp": "2025-10-15T07:48:28.954446",
+      "success": true,
+      "message": "QA demo login successful - User: qa_demo, Role: qa_tester",
+      "timestamp": "2025-10-15T07:49:03.398324",
       "response_data": null
     },
     {
       "test": "Invalid Credentials",
       "success": true,
       "message": "Correctly rejected invalid credentials with 401 Unauthorized",
-      "timestamp": "2025-10-15T07:48:28.963347",
+      "timestamp": "2025-10-15T07:49:03.407330",
       "response_data": null
     },
     {
       "test": "Missing Fields",
       "success": true,
       "message": "Correctly rejected incomplete credentials with 422 Validation Error",
-      "timestamp": "2025-10-15T07:48:28.972499",
+      "timestamp": "2025-10-15T07:49:03.414624",
       "response_data": null
     },
     {
       "test": "JWT Token Validation",
       "success": true,
       "message": "Correctly rejected invalid JWT token with 401 Unauthorized",
-      "timestamp": "2025-10-15T07:48:29.006490",
+      "timestamp": "2025-10-15T07:49:03.449080",
       "response_data": null
     },
     {
       "test": "Authenticated Endpoint",
       "success": true,
       "message": "Profile endpoint successful - User: admin",
-      "timestamp": "2025-10-15T07:48:29.014926",
+      "timestamp": "2025-10-15T07:49:03.458261",
       "response_data": null
     },
     {
       "test": "Generate Test Data",
       "success": true,
       "message": "Test data generation successful: Testdaten erfolgreich generiert - 3 companies, 27 test cases",
-      "timestamp": "2025-10-15T07:48:29.922624",
+      "timestamp": "2025-10-15T07:49:04.310184",
       "response_data": null
     },
     {
       "test": "Companies API",
       "success": true,
       "message": "Companies endpoint accessible - Found 3 companies",
-      "timestamp": "2025-10-15T07:48:29.930209",
+      "timestamp": "2025-10-15T07:49:04.358778",
       "response_data": null
     },
     {
       "test": "Projects API",
       "success": true,
       "message": "Projects endpoint accessible - Found 3 projects",
-      "timestamp": "2025-10-15T07:48:29.977055",
+      "timestamp": "2025-10-15T07:49:04.368631",
       "response_data": null
     },
     {
       "test": "Test Suites API",
       "success": true,
       "message": "Test suites endpoint accessible - Found 3 test suites",
-      "timestamp": "2025-10-15T07:48:30.030338",
+      "timestamp": "2025-10-15T07:49:04.460974",
       "response_data": null
     },
     {
       "test": "Test Cases API",
       "success": true,
       "message": "Test cases endpoint accessible - Found 3 test cases",
-      "timestamp": "2025-10-15T07:48:30.049640",
+      "timestamp": "2025-10-15T07:49:04.526910",
       "response_data": null
     },
     {
       "test": "PDF Reports API",
       "success": true,
       "message": "PDF generation successful - Content-Type: application/pdf",
-      "timestamp": "2025-10-15T07:48:30.118982",
+      "timestamp": "2025-10-15T07:49:04.595506",
       "response_data": null
     },
     {
       "test": "CSV Export API",
       "success": true,
       "message": "Excel export successful - Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "timestamp": "2025-10-15T07:48:30.184863",
+      "timestamp": "2025-10-15T07:49:04.661705",
       "response_data": null
     },
     {
       "test": "Users List API",
       "success": true,
-      "message": "Users list endpoint accessible - Found 1 users",
-      "timestamp": "2025-10-15T07:48:30.191472",
+      "message": "Users list endpoint accessible - Found 2 users",
+      "timestamp": "2025-10-15T07:49:04.709709",
       "response_data": null
     },
     {
       "test": "Users Create API",
       "success": true,
-      "message": "User creation successful - Created user: testuser_20251015_074830",
-      "timestamp": "2025-10-15T07:48:30.419702",
+      "message": "User creation successful - Created user: testuser_20251015_074904",
+      "timestamp": "2025-10-15T07:49:04.940161",
       "response_data": null
     },
     {
       "test": "Clear Database",
       "success": true,
       "message": "Database cleared successfully - Datenbank erfolgreich geleert",
-      "timestamp": "2025-10-15T07:48:30.479182",
+      "timestamp": "2025-10-15T07:49:04.951359",
       "response_data": null
     },
     {
       "test": "Mass Data Scenario A",
       "success": true,
       "message": "\u2705 SCENARIO A PASSED: Mass data generated successfully - 50 companies, 50 projects, 125000 test cases",
-      "timestamp": "2025-10-15T07:48:33.258129",
+      "timestamp": "2025-10-15T07:49:08.005028",
       "response_data": null
     },
     {
       "test": "Mass Data Scenario B",
       "success": true,
       "message": "\u2705 SCENARIO B PASSED: Mass data correctly denied - HTTP 409 Conflict, 1 projects in MongoDB",
-      "timestamp": "2025-10-15T07:48:34.137754",
+      "timestamp": "2025-10-15T07:49:08.934810",
       "response_data": null
     },
     {
       "test": "Mass Data Scenario C",
       "success": true,
       "message": "\u2705 SCENARIO C PASSED: Mass data correctly denied - HTTP 409 Conflict, localStorage projects detected",
-      "timestamp": "2025-10-15T07:48:34.198713",
+      "timestamp": "2025-10-15T07:49:09.004910",
       "response_data": null
     },
     {
       "test": "Mass Data Missing Parameter",
       "success": true,
       "message": "\u2705 Missing parameter handled correctly - defaults to false, generation successful",
-      "timestamp": "2025-10-15T07:48:37.116552",
+      "timestamp": "2025-10-15T07:49:11.886068",
       "response_data": null
     },
     {
       "test": "Mass Data Auth Required",
       "success": true,
       "message": "\u2705 Authentication correctly required - HTTP 403",
-      "timestamp": "2025-10-15T07:48:37.175881",
+      "timestamp": "2025-10-15T07:49:11.946017",
       "response_data": null
     }
   ]
