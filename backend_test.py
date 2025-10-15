@@ -669,6 +669,243 @@ class BackendTester:
         except requests.exceptions.RequestException as e:
             self.log_test("Users Create API", False, f"Request failed: {str(e)}")
             return False
+
+    # GERMAN TEST REQUEST: MASSE-DATEN SAFETY CHECK TESTING
+    def test_clear_database(self):
+        """Test database clearing for mass data safety check"""
+        if not self.auth_token:
+            self.log_test("Clear Database", False, "No auth token available")
+            return False
+        
+        try:
+            response = self.session.delete(f"{API_BASE}/admin/clear-database", timeout=30)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Clear Database", True, 
+                            f"Database cleared successfully - {data.get('message', 'Cleared')}")
+                return True
+            elif response.status_code == 403:
+                self.log_test("Clear Database", False, 
+                            "Access denied - admin role required (403)")
+                return False
+            else:
+                self.log_test("Clear Database", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Clear Database", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_mass_data_scenario_a_no_projects_allowed(self):
+        """SCENARIO A: Keine Projekte - Generation ERLAUBT"""
+        if not self.auth_token:
+            self.log_test("Mass Data Scenario A", False, "No auth token available")
+            return False
+        
+        try:
+            # Step 1: Clear database completely
+            clear_response = self.session.delete(f"{API_BASE}/admin/clear-database", timeout=30)
+            if clear_response.status_code != 200:
+                self.log_test("Mass Data Scenario A", False, 
+                            f"Failed to clear database: HTTP {clear_response.status_code}")
+                return False
+            
+            # Step 2: Verify projects collection is empty
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
+            if projects_response.status_code == 200:
+                projects = projects_response.json()
+                if len(projects) > 0:
+                    self.log_test("Mass Data Scenario A", False, 
+                                f"Database not empty - found {len(projects)} projects")
+                    return False
+            
+            # Step 3: Attempt mass data generation with no localStorage projects
+            mass_data_payload = {"hasLocalStorageProjects": False}
+            response = self.session.post(f"{API_BASE}/admin/generate-mass-data", 
+                                       json=mass_data_payload, timeout=60)
+            
+            if response.status_code == 200:
+                data = response.json()
+                stats = data.get('stats', {})
+                companies = stats.get('companies', 0)
+                projects = stats.get('projects', 0)
+                test_cases = stats.get('test_cases', 0)
+                
+                self.log_test("Mass Data Scenario A", True, 
+                            f"✅ SCENARIO A PASSED: Mass data generated successfully - {companies} companies, {projects} projects, {test_cases} test cases")
+                return True
+            else:
+                self.log_test("Mass Data Scenario A", False, 
+                            f"❌ SCENARIO A FAILED: Expected HTTP 200, got {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Mass Data Scenario A", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_mass_data_scenario_b_mongodb_projects_denied(self):
+        """SCENARIO B: Projekte in MongoDB - Generation VERWEIGERT"""
+        if not self.auth_token:
+            self.log_test("Mass Data Scenario B", False, "No auth token available")
+            return False
+        
+        try:
+            # Step 1: Ensure we have test data in MongoDB
+            test_data_payload = {"companies": 1, "testsPerCompany": 1}
+            test_data_response = self.session.post(f"{API_BASE}/admin/generate-test-data", 
+                                                 json=test_data_payload, timeout=30)
+            
+            if test_data_response.status_code != 200:
+                self.log_test("Mass Data Scenario B", False, 
+                            f"Failed to generate test data: HTTP {test_data_response.status_code}")
+                return False
+            
+            # Step 2: Verify projects exist in MongoDB
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
+            if projects_response.status_code == 200:
+                projects = projects_response.json()
+                if len(projects) == 0:
+                    self.log_test("Mass Data Scenario B", False, 
+                                "No projects found in MongoDB after test data generation")
+                    return False
+            else:
+                self.log_test("Mass Data Scenario B", False, 
+                            f"Cannot verify projects: HTTP {projects_response.status_code}")
+                return False
+            
+            # Step 3: Attempt mass data generation (should be denied)
+            mass_data_payload = {"hasLocalStorageProjects": False}
+            response = self.session.post(f"{API_BASE}/admin/generate-mass-data", 
+                                       json=mass_data_payload, timeout=30)
+            
+            if response.status_code == 409:
+                data = response.json()
+                error_detail = data.get('detail', {})
+                
+                # Check required response fields
+                if (error_detail.get('error') == "Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank." and
+                    error_detail.get('existing_projects_mongodb', 0) > 0):
+                    
+                    self.log_test("Mass Data Scenario B", True, 
+                                f"✅ SCENARIO B PASSED: Mass data correctly denied - HTTP 409 Conflict, {error_detail.get('existing_projects_mongodb')} projects in MongoDB")
+                    return True
+                else:
+                    self.log_test("Mass Data Scenario B", False, 
+                                f"❌ SCENARIO B FAILED: HTTP 409 but incorrect response format: {data}")
+                    return False
+            else:
+                self.log_test("Mass Data Scenario B", False, 
+                            f"❌ SCENARIO B FAILED: Expected HTTP 409 Conflict, got {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Mass Data Scenario B", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_mass_data_scenario_c_localstorage_projects_denied(self):
+        """SCENARIO C: LocalStorage-Projekte vorhanden - Generation VERWEIGERT"""
+        if not self.auth_token:
+            self.log_test("Mass Data Scenario C", False, "No auth token available")
+            return False
+        
+        try:
+            # Step 1: Clear database to ensure no MongoDB projects
+            clear_response = self.session.delete(f"{API_BASE}/admin/clear-database", timeout=30)
+            if clear_response.status_code != 200:
+                self.log_test("Mass Data Scenario C", False, 
+                            f"Failed to clear database: HTTP {clear_response.status_code}")
+                return False
+            
+            # Step 2: Attempt mass data generation with localStorage projects flag
+            mass_data_payload = {"hasLocalStorageProjects": True}
+            response = self.session.post(f"{API_BASE}/admin/generate-mass-data", 
+                                       json=mass_data_payload, timeout=30)
+            
+            if response.status_code == 409:
+                data = response.json()
+                error_detail = data.get('detail', {})
+                
+                # Check required response fields
+                if (error_detail.get('error') == "Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank." and
+                    error_detail.get('has_local_storage_projects') == True):
+                    
+                    self.log_test("Mass Data Scenario C", True, 
+                                f"✅ SCENARIO C PASSED: Mass data correctly denied - HTTP 409 Conflict, localStorage projects detected")
+                    return True
+                else:
+                    self.log_test("Mass Data Scenario C", False, 
+                                f"❌ SCENARIO C FAILED: HTTP 409 but incorrect response format: {data}")
+                    return False
+            else:
+                self.log_test("Mass Data Scenario C", False, 
+                            f"❌ SCENARIO C FAILED: Expected HTTP 409 Conflict, got {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Mass Data Scenario C", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_mass_data_missing_parameter(self):
+        """Test mass data generation without hasLocalStorageProjects parameter"""
+        if not self.auth_token:
+            self.log_test("Mass Data Missing Parameter", False, "No auth token available")
+            return False
+        
+        try:
+            # Clear database first
+            clear_response = self.session.delete(f"{API_BASE}/admin/clear-database", timeout=30)
+            if clear_response.status_code != 200:
+                self.log_test("Mass Data Missing Parameter", False, 
+                            f"Failed to clear database: HTTP {clear_response.status_code}")
+                return False
+            
+            # Test without hasLocalStorageProjects parameter (should default to false)
+            mass_data_payload = {}  # Empty payload
+            response = self.session.post(f"{API_BASE}/admin/generate-mass-data", 
+                                       json=mass_data_payload, timeout=60)
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Mass Data Missing Parameter", True, 
+                            f"✅ Missing parameter handled correctly - defaults to false, generation successful")
+                return True
+            else:
+                self.log_test("Mass Data Missing Parameter", False, 
+                            f"❌ Expected HTTP 200, got {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Mass Data Missing Parameter", False, f"Request failed: {str(e)}")
+            return False
+
+    def test_mass_data_auth_required(self):
+        """Test mass data generation requires admin authentication"""
+        try:
+            # Test without authentication
+            no_auth_session = requests.Session()
+            no_auth_session.headers.update({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            })
+            
+            mass_data_payload = {"hasLocalStorageProjects": False}
+            response = no_auth_session.post(f"{API_BASE}/admin/generate-mass-data", 
+                                          json=mass_data_payload, timeout=30)
+            
+            if response.status_code in [401, 403]:
+                self.log_test("Mass Data Auth Required", True, 
+                            f"✅ Authentication correctly required - HTTP {response.status_code}")
+                return True
+            else:
+                self.log_test("Mass Data Auth Required", False, 
+                            f"❌ Expected HTTP 401/403, got {response.status_code}: {response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Mass Data Auth Required", False, f"Request failed: {str(e)}")
+            return False
     
     def run_all_tests(self):
         """Run all backend tests"""
