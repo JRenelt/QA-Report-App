@@ -432,7 +432,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
       
       // Projekt-ID aus localStorage oder ersten verfügbaren Projekt
       const projects = JSON.parse(localStorage.getItem('qa_projects') || '[]');
-      const projectId = projects[0]?.id || 'PROJ001';
+      
+      if (!projects || projects.length === 0) {
+        showMessage('error', '❌ Keine Projekte vorhanden. Bitte erstellen Sie zuerst ein Projekt.');
+        setLoading(false);
+        return;
+      }
+      
+      const projectId = projects[0]?.id;
       
       const response = await fetch(`${backendUrl}/api/pdf-reports/generate/${projectId}`, {
         method: 'GET',
