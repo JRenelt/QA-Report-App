@@ -953,34 +953,125 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                     </div>
                   </div>
 
-                  {/* Manual Tooltip Close */}
-                  <div className={`mt-4 flex items-center justify-between p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                    <div>
-                      <div className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                        Manuelles Schließen
-                      </div>
-                      <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                        Tooltips mit X-Button schließen statt automatisch
+                        {/* Manual Tooltip Close */}
+                        <div className={`mt-4 flex items-center justify-between p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                          <div>
+                            <div className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                              Manuelles Schließen
+                            </div>
+                            <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                              Tooltips mit X-Button schließen statt automatisch
+                            </div>
+                          </div>
+                          <button
+                            onClick={handleManualTooltipToggle}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                              manualTooltipClose ? 'bg-qa-primary-600' : 'bg-gray-300'
+                            }`}
+                          >
+                            <span
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                manualTooltipClose ? 'translate-x-6' : 'translate-x-1'
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {/* Einstellungen zurücksetzen */}
+                        <div className="mt-4">
+                          <button
+                            onClick={handleResetSettings}
+                            disabled={loading}
+                            className="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                          >
+                            Einstellungen zurücksetzen
+                          </button>
+                        </div>
+
+                        {/* DB Optimieren */}
+                        <div className="mt-4">
+                          <button
+                            onClick={handleOptimizeDatabase}
+                            disabled={loading}
+                            className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
+                          >
+                            <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            Datenbank optimieren
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <button
-                      onClick={handleManualTooltipToggle}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        manualTooltipClose ? 'bg-qa-primary-600' : 'bg-gray-300'
-                      }`}
-                    >
-                      <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          manualTooltipClose ? 'translate-x-6' : 'translate-x-1'
-                        }`}
-                      />
-                    </button>
-                  </div>
-                </div>
+                  )}
 
-                {/* DANGER ZONE - Nur für Admins */}
-                {isAdmin && (
-                  <div className="mt-8 p-4 rounded-lg border-2 border-red-500 bg-red-50 bg-opacity-10">
+                  {/* TESTDATEN SECTION */}
+                  {advancedSection === 'testdata' && (
+                    <div className="space-y-6">
+                      <h3 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                        Testdaten Verwaltung
+                      </h3>
+
+                      {/* Testdaten generieren */}
+                      <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                        <div className="flex items-start mb-3">
+                          <Database className="h-5 w-5 text-yellow-500 mr-2 mt-0.5" />
+                          <div className="flex-1">
+                            <h4 className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                              Testdaten generieren
+                            </h4>
+                            <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                              {isAdmin 
+                                ? 'Erstellt 15 Firmen mit je 100 Testfällen' 
+                                : 'Erstellt 1 Projekt mit 10 Testbereichen à 10 Testfällen'}
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={handleGenerateTestData}
+                          disabled={loading}
+                          className="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          {loading ? 'Wird erstellt...' : 'Testdaten generieren'}
+                        </button>
+                        <p className="text-xs text-yellow-600 mt-2">
+                          ⚠️ Warnung: Löscht alle vorhandenen Daten!
+                        </p>
+                      </div>
+
+                      {/* Masse-Daten generieren - Nur Admin */}
+                      {isAdmin && (
+                        <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                          <div className="flex items-start mb-3">
+                            <Database className="h-5 w-5 text-purple-500 mr-2 mt-0.5" />
+                            <div className="flex-1">
+                              <h4 className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                                Masse-Daten generieren
+                              </h4>
+                              <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                                Performance-Test: 50 Firmen, 50 Projekte, 125.000 Testfälle
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={handleGenerateMassData}
+                            disabled={loading}
+                            className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
+                          >
+                            <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            {loading ? 'Generiert...' : 'Masse-Daten generieren'}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* GEFAHRENBEREICH SECTION - Nur Admin */}
+                  {isAdmin && advancedSection === 'danger' && (
+                    <div className="space-y-6">
+                      <div className="p-4 rounded-lg border-2 border-red-500 bg-red-50 bg-opacity-10">
                     <div className="flex items-start mb-4">
                       <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
                       <div>
