@@ -910,6 +910,7 @@ class BackendTester:
     def run_all_tests(self):
         """Run all backend tests"""
         print("🧪 Starting QA-Report-App Backend Tests")
+        print("🇩🇪 GERMAN TEST REQUEST: Masse-Daten Safety Check Testing")
         print("=" * 60)
         
         # Critical tests as specified in the German review request
@@ -933,6 +934,14 @@ class BackendTester:
             ("CSV Export API", self.test_csv_export_api),
             ("Users List API", self.test_users_list_api),
             ("Users Create API", self.test_users_create_api),
+            
+            # GERMAN TEST REQUEST: MASSE-DATEN SAFETY CHECK SCENARIOS
+            ("Clear Database", self.test_clear_database),
+            ("🇩🇪 SCENARIO A: No Projects - Generation ALLOWED", self.test_mass_data_scenario_a_no_projects_allowed),
+            ("🇩🇪 SCENARIO B: MongoDB Projects - Generation DENIED", self.test_mass_data_scenario_b_mongodb_projects_denied),
+            ("🇩🇪 SCENARIO C: LocalStorage Projects - Generation DENIED", self.test_mass_data_scenario_c_localstorage_projects_denied),
+            ("Mass Data Missing Parameter", self.test_mass_data_missing_parameter),
+            ("Mass Data Auth Required", self.test_mass_data_auth_required),
         ]
         
         passed = 0
