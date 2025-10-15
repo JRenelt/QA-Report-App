@@ -239,6 +239,9 @@ backend:
         - working: true
           agent: "main"
           comment: "IMPROVED ERROR HANDLING: Frontend 409 error handling improved with better error message extraction (errorData.detail?.error || errorData.detail). Added try-catch for JSON parsing to prevent crashes."
+        - working: true
+          agent: "testing"
+          comment: "🇩🇪 GERMAN PHASE 2 SCENARIOS 4 & 5 PASSED: Mass data safety check working perfectly. SCENARIO 4: With existing projects, POST /api/admin/generate-mass-data correctly returns HTTP 409 Conflict with proper error message 'Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.' SCENARIO 5: With empty database, mass data generation successful - generated 50 companies, 50 projects, 125,000 test cases. All safety checks and error handling working correctly."
   
   - task: "Test Data Generation - Frontend Sync"
     implemented: true
