@@ -391,6 +391,60 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     }
   };
 
+  const handleResetLocalStorage = () => {
+    if (!confirm('⚠️ WARNUNG: LocalStorage zurücksetzen?\n\nDiese Aktion löscht ALLE im Browser gespeicherten QA-Daten:\n• Firmen (außer ID2)\n• Projekte\n• Testbereiche\n• Testfälle\n\nDie Datenbank auf dem Server bleibt unverändert.\n\nMöchten Sie fortfahren?')) {
+      return;
+    }
+
+    try {
+      // Sammle alle qa_* Keys
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (
+          key.startsWith('qa_projects') || 
+          key.startsWith('qa_suites_') || 
+          key.startsWith('qa_cases_') ||
+          key === 'qa_companies' ||
+          key.startsWith('selectedProject')
+        )) {
+          keysToRemove.push(key);
+        }
+      }
+      
+      console.log(`LocalStorage Reset: ${keysToRemove.length} Keys gefunden zum Löschen:`, keysToRemove);
+      
+      // Alle Keys löschen
+      keysToRemove.forEach(key => {
+        localStorage.removeItem(key);
+        console.log(`✅ LocalStorage gelöscht: ${key}`);
+      });
+      
+      // ID2 GmbH wiederherstellen
+      const id2Company = {
+        id: 'ID2',
+        name: 'ID2 GmbH',
+        address: 'Brockhausweg 66b',
+        city: 'Hamburg',
+        postalCode: '22117',
+        country: 'Deutschland',
+        createdAt: new Date().toISOString(),
+        usersCount: 2,
+        projectsCount: 0
+      };
+      localStorage.setItem('qa_companies', JSON.stringify([id2Company]));
+      localStorage.setItem('qa_projects', JSON.stringify([]));
+      
+      console.log('✅ ID2 GmbH wiederhergestellt, Projekte auf [] gesetzt');
+      
+      showMessage('success', `✅ LocalStorage zurückgesetzt: ${keysToRemove.length} Einträge gelöscht`);
+      setTimeout(() => window.location.reload(), 2000);
+    } catch (error) {
+      console.error('Fehler beim LocalStorage Reset:', error);
+      showMessage('error', '❌ Fehler beim Zurücksetzen des LocalStorage');
+    }
+  };
+
   const handleResetSettings = () => {
     if (!confirm('Möchten Sie alle Einstellungen auf die Standardwerte zurücksetzen?')) {
       return;
