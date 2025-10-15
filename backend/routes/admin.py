@@ -237,16 +237,38 @@ async def optimize_database(current_user: User = Depends(require_admin)):
 
 
 @router.post("/generate-mass-data")
-async def generate_mass_data(current_user: User = Depends(require_admin)):
+async def generate_mass_data(
+    data: Dict,
+    current_user: User = Depends(require_admin)
+):
     """
     DEVELOPMENT ONLY: Generate massive test data for performance testing
     Creates: 50 companies, 50 test suites per company, 50 test cases per suite
     Total: 50 companies × 50 suites × 50 cases = 125,000 test cases
+    
+    SAFETY: Checks if projects exist in MongoDB AND/OR localStorage before generating
     """
     import uuid
     from datetime import datetime
     
     try:
+        # SAFETY CHECK 1: Check MongoDB for existing projects
+        existing_projects_count = await projects_collection.count_documents({})
+        
+        # SAFETY CHECK 2: Check if frontend reports localStorage projects
+        has_local_storage_projects = data.get('hasLocalStorageProjects', False)
+        
+        # If projects exist in MongoDB OR localStorage → DENY
+        if existing_projects_count > 0 or has_local_storage_projects:
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "error": "Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.",
+                    "existing_projects_mongodb": existing_projects_count,
+                    "has_local_storage_projects": has_local_storage_projects
+                }
+            )
+        
         # Start time
         start_time = datetime.now()
         
