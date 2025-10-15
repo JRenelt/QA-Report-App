@@ -106,7 +106,37 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
       if (response.ok) {
         const data = await response.json();
+        
+        // Lade die neuen Firmen aus dem Backend und speichere in localStorage
+        console.log('Lade Firmen aus Backend...');
+        const companiesResponse = await fetch(`${backendUrl}/api/companies`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+          }
+        });
+        
+        if (companiesResponse.ok) {
+          const companies = await companiesResponse.json();
+          localStorage.setItem('qa_companies', JSON.stringify(companies));
+          console.log(`✅ ${companies.length} Firmen in localStorage gespeichert`);
+        }
+        
+        // Lade die Projekte aus dem Backend
+        console.log('Lade Projekte aus Backend...');
+        const projectsResponse = await fetch(`${backendUrl}/api/projects`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+          }
+        });
+        
+        if (projectsResponse.ok) {
+          const projects = await projectsResponse.json();
+          localStorage.setItem('qa_projects', JSON.stringify(projects));
+          console.log(`✅ ${projects.length} Projekte in localStorage gespeichert`);
+        }
+        
         showMessage('success', `✅ Testdaten erstellt: ${data.companies} Firmen, ${data.testCases} Testfälle`);
+        setTimeout(() => window.location.reload(), 2000);
       } else {
         const errorText = await response.text();
         console.error('Backend-Fehler:', response.status, errorText);
