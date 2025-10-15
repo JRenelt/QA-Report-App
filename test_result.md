@@ -245,9 +245,9 @@ backend:
   
   - task: "Test Data Generation - Frontend Sync"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/components/SettingsModal.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -257,6 +257,9 @@ backend:
         - working: true
           agent: "testing"
           comment: "🇩🇪 GERMAN PHASE 2 SCENARIO 1 PASSED: Test data generation + frontend sync working correctly. Successfully generated 2 companies with 18 test cases. Backend API endpoints verified: /api/companies/ returns 2 companies, /api/projects/ returns 2 projects. All data properly accessible for frontend synchronization."
+        - working: false
+          agent: "testing"
+          comment: "❌ CRITICAL AUTHENTICATION FAILURE: Complete E2E test reveals login functionality is broken. No auth token or user data stored in localStorage after login (admin/admin123). User appears logged in but is NOT authenticated. API calls never triggered due to authentication check failure. NO network requests captured when clicking 'Testdaten generieren'. ROOT CAUSE: Login authentication endpoint not working or not storing tokens properly."
   
   - task: "PDF Export from Settings Modal"
     implemented: true
