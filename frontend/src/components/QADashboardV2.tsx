@@ -251,19 +251,16 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     const saved = localStorage.getItem('qa_projects');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsedProjects = JSON.parse(saved);
+        console.log('Projekte aus localStorage geladen:', parsedProjects.length);
+        return parsedProjects;
       } catch (e) {
         console.error('Fehler beim Laden der Projekte:', e);
       }
     }
-    // Fallback zu Standard-Projekten
-    return [
-      { id: 'PROJ001', name: 'E-Commerce Plattform Redesign', companyId: 'ID2' },
-      { id: 'PROJ002', name: 'Mobile Banking App Security Audit', companyId: 'TG01' },
-      { id: 'PROJ003', name: 'CRM Dashboard Performance Optimization', companyId: 'DE02' },
-      { id: 'PROJ004', name: 'IoT Device Management Portal', companyId: 'IN03' },
-      { id: 'PROJ005', name: 'Multi-Cloud Infrastructure Dashboard', companyId: 'ID2' }
-    ];
+    // KEIN Fallback mehr - leeres Array wenn keine Projekte vorhanden
+    console.log('Keine Projekte in localStorage gefunden - leeres Array');
+    return [];
   });
   
   // Projekte automatisch aus localStorage aktualisieren (Polling alle 2 Sekunden)
