@@ -267,14 +267,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   useEffect(() => {
     const pollInterval = setInterval(() => {
       const saved = localStorage.getItem('qa_projects');
-      if (saved) {
-        try {
-          const newProjects = JSON.parse(saved);
-          // Nur aktualisieren wenn sich was geändert hat
-          if (JSON.stringify(newProjects) !== JSON.stringify(projects)) {
-            console.log('Projekte aktualisiert aus localStorage:', newProjects.length);
-            setProjects(newProjects);
-          }
+      try {
+        // Wenn qa_projects existiert, parsen; sonst leeres Array
+        const newProjects = saved ? JSON.parse(saved) : [];
+        // Nur aktualisieren wenn sich was geändert hat
+        if (JSON.stringify(newProjects) !== JSON.stringify(projects)) {
+          console.log('Projekte aktualisiert aus localStorage:', newProjects.length);
+          setProjects(newProjects);
+        }
         } catch (e) {
           console.error('Fehler beim Aktualisieren der Projekte:', e);
         }
