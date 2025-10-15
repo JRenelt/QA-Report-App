@@ -185,7 +185,7 @@ class GermanPhase2Tester:
         try:
             # Step 1: Check if projects exist, generate if needed
             print("Step 1: Checking for existing projects...")
-            projects_response = self.session.get(f"{API_BASE}/projects", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
             if projects_response.status_code != 200:
                 self.log_test("Scenario 2 - Projects Check", False, 
@@ -209,7 +209,7 @@ class GermanPhase2Tester:
                     return False
                 
                 # Re-fetch projects
-                projects_response = self.session.get(f"{API_BASE}/projects", timeout=10)
+                projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
                 projects = projects_response.json()
             
             if len(projects) == 0:
@@ -267,7 +267,7 @@ class GermanPhase2Tester:
         try:
             # Step 1: Check if projects exist, generate if needed
             print("Step 1: Checking for existing projects...")
-            projects_response = self.session.get(f"{API_BASE}/projects", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
             if projects_response.status_code != 200:
                 self.log_test("Scenario 3 - Projects Check", False, 
@@ -291,7 +291,7 @@ class GermanPhase2Tester:
                     return False
                 
                 # Re-fetch projects
-                projects_response = self.session.get(f"{API_BASE}/projects", timeout=10)
+                projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
                 projects = projects_response.json()
             
             if len(projects) == 0:
@@ -351,7 +351,7 @@ class GermanPhase2Tester:
         try:
             # Step 1: Ensure projects exist
             print("Step 1: Ensuring projects exist...")
-            projects_response = self.session.get(f"{API_BASE}/projects", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
             if projects_response.status_code != 200:
                 self.log_test("Scenario 4 - Projects Check", False, 
@@ -470,7 +470,7 @@ class GermanPhase2Tester:
             
             # Step 2: Verify projects collection is empty
             print("Step 2: Verifying empty projects...")
-            projects_response = self.session.get(f"{API_BASE}/projects", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
             if projects_response.status_code != 200:
                 self.log_test("Scenario 5 - Projects Check", False, 
