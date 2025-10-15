@@ -157,6 +157,32 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   };
 
   const handleGenerateMassData = async () => {
+    // SAFETY CHECK: Prüfe localStorage auf vorhandene Projekte
+    const localProjects = localStorage.getItem('qa_projects');
+    let hasLocalStorageProjects = false;
+    
+    if (localProjects) {
+      try {
+        const projects = JSON.parse(localProjects);
+        hasLocalStorageProjects = Array.isArray(projects) && projects.length > 0;
+      } catch (e) {
+        console.warn('Fehler beim Parsen von qa_projects:', e);
+      }
+    }
+    
+    // Zusätzliche Prüfung: Suche nach qa_suites_* und qa_cases_* Keys
+    const hasOtherProjectData = Object.keys(localStorage).some(key => 
+      key.startsWith('qa_suites_') || key.startsWith('qa_cases_')
+    );
+    
+    hasLocalStorageProjects = hasLocalStorageProjects || hasOtherProjectData;
+    
+    // Wenn Projekte gefunden → WARNUNG mit klarer Anweisung
+    if (hasLocalStorageProjects) {
+      showMessage('error', '❌ Masse-Daten-Import nicht möglich. Es sind bereits Projekte vorhanden. Bitte leeren Sie zuerst die Datenbank.');
+      return;
+    }
+    
     if (!confirm('⚠️ WARNUNG: Masse-Daten generieren?\n\nDiese Funktion erstellt:\n• 50 Firmen\n• 50 Testbereiche pro Firma\n• 50 Testfälle pro Bereich\n\nGesamt: 125.000 Testfälle!\n\nDies dient NUR Performance-Tests und kann mehrere Minuten dauern.\n\nFortfahren?')) {
       return;
     }
@@ -165,12 +191,17 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
       console.log('Generiere Masse-Daten...');
+      console.log('LocalStorage Projekte vorhanden:', hasLocalStorageProjects);
       
       const response = await fetch(`${backendUrl}/api/admin/generate-mass-data`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,
-        }
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          hasLocalStorageProjects: hasLocalStorageProjects
+        })
       });
 
       console.log('Mass Data Response Status:', response.status);
