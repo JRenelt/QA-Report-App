@@ -234,3 +234,109 @@ async def optimize_database(current_user: User = Depends(require_admin)):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Fehler bei der Optimierung: {str(e)}")
+
+
+@router.post("/generate-mass-data")
+async def generate_mass_data(current_user: User = Depends(require_admin)):
+    """
+    DEVELOPMENT ONLY: Generate massive test data for performance testing
+    Creates: 50 companies, 50 test suites per company, 50 test cases per suite
+    Total: 50 companies × 50 suites × 50 cases = 125,000 test cases
+    """
+    import uuid
+    from datetime import datetime
+    
+    try:
+        # Start time
+        start_time = datetime.now()
+        
+        stats = {
+            "companies": 0,
+            "projects": 0,
+            "test_suites": 0,
+            "test_cases": 0
+        }
+        
+        # Generate 50 companies
+        for company_num in range(1, 51):
+            company = {
+                "id": f"PERF_COMP_{company_num:03d}",
+                "name": f"Performance Test Firma {company_num}",
+                "address": f"Teststraße {company_num}",
+                "city": "Hamburg",
+                "postalCode": "22117",
+                "country": "Deutschland",
+                "createdAt": datetime.utcnow().isoformat(),
+                "usersCount": 1,
+                "projectsCount": 1
+            }
+            await companies_collection.insert_one(company)
+            stats["companies"] += 1
+            
+            # Create 1 project per company (with 50 test suites)
+            project_id = f"PERF_PROJ_{company_num:03d}"
+            project = {
+                "id": project_id,
+                "companyId": company["id"],
+                "name": f"Performance Test Projekt {company_num}",
+                "description": "Automatisch generiertes Performance-Test-Projekt",
+                "status": "active",
+                "createdBy": current_user.username,
+                "createdAt": datetime.utcnow().isoformat()
+            }
+            await projects_collection.insert_one(project)
+            stats["projects"] += 1
+            
+            # Generate 50 test suites per project
+            for suite_num in range(1, 51):
+                suite_id = f"SUITE_{company_num:03d}_{suite_num:03d}"
+                suite = {
+                    "id": suite_id,
+                    "project_id": project_id,
+                    "name": f"Testbereich {suite_num}",
+                    "description": f"Performance Test Suite {suite_num}",
+                    "icon": "file",
+                    "created_by": current_user.username,
+                    "created_at": datetime.utcnow().isoformat(),
+                    "totalTests": 50,
+                    "passedTests": 0,
+                    "failedTests": 0,
+                    "openTests": 50
+                }
+                await test_suites_collection.insert_one(suite)
+                stats["test_suites"] += 1
+                
+                # Generate 50 test cases per suite
+                test_cases_batch = []
+                for test_num in range(1, 51):
+                    test_case = {
+                        "id": uuid.uuid4().hex,
+                        "test_id": f"PERF{company_num:03d}{suite_num:03d}{test_num:03d}",
+                        "suite_id": suite_id,
+                        "project_id": project_id,
+                        "title": f"Performance Testfall {test_num}",
+                        "description": f"Automatisch generierter Testfall für Performance-Tests (Company {company_num}, Suite {suite_num}, Test {test_num})",
+                        "status": "pending",
+                        "note": "",
+                        "created_at": datetime.utcnow().isoformat()
+                    }
+                    test_cases_batch.append(test_case)
+                    stats["test_cases"] += 1
+                
+                # Bulk insert test cases for better performance
+                if test_cases_batch:
+                    await test_cases_collection.insert_many(test_cases_batch)
+        
+        # End time
+        end_time = datetime.now()
+        duration = (end_time - start_time).total_seconds()
+        
+        return {
+            "message": "Masse-Daten erfolgreich generiert",
+            "stats": stats,
+            "duration_seconds": duration,
+            "warning": "Diese Daten sind NUR für Performance-Tests! Verwenden Sie 'Datenbank leeren' zum Entfernen."
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Fehler bei der Masse-Daten Generierung: {str(e)}")
