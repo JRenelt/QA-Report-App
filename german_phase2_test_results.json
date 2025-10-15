@@ -1,0 +1,43 @@
+{
+  "total_tests": 5,
+  "passed": 0,
+  "failed": 5,
+  "success_rate": 0.0,
+  "results": [
+    {
+      "test": "Scenario 1 - Companies Check",
+      "success": false,
+      "message": "Failed to get companies: HTTP 403",
+      "timestamp": "2025-10-15T08:18:33.417377",
+      "response_data": null
+    },
+    {
+      "test": "Scenario 2 - Projects Check",
+      "success": false,
+      "message": "Failed to get projects: HTTP 403",
+      "timestamp": "2025-10-15T08:18:33.473808",
+      "response_data": null
+    },
+    {
+      "test": "Scenario 3 - Projects Check",
+      "success": false,
+      "message": "Failed to get projects: HTTP 403",
+      "timestamp": "2025-10-15T08:18:33.488804",
+      "response_data": null
+    },
+    {
+      "test": "Scenario 4 - Projects Check",
+      "success": false,
+      "message": "Failed to get projects: HTTP 403",
+      "timestamp": "2025-10-15T08:18:33.545756",
+      "response_data": null
+    },
+    {
+      "test": "Scenario 5 - Projects Check",
+      "success": false,
+      "message": "Failed to get projects: HTTP 403",
+      "timestamp": "2025-10-15T08:18:33.665910",
+      "response_data": null
+    }
+  ]
+}
