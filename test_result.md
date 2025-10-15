@@ -718,6 +718,7 @@ test_plan:
     - "Company Management Modal - ❌ FAILED (Factory icon not accessible in header)"
     - "Template Test-ID Format - ❌ INCOMPLETE (depends on Company Management modal)"
   stuck_tasks: 
+    - "Login Authentication Fix - CRITICAL: Login form accepts credentials but NO auth token stored in localStorage. User appears logged in but NOT authenticated. Breaks ALL API functionality."
     - "Mixed Content Error Fix - CRITICAL: HTTP/HTTPS protocol mismatch blocking ALL backend API calls (User Management, Company Management, data loading)"
     - "Company Management Modal - Factory icon not found in header, modal does not open"
     - "Template Test-ID Format - Cannot test due to Company Management modal issues"
