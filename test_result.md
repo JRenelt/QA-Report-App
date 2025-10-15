@@ -257,15 +257,18 @@ backend:
   
   - task: "PDF Export from Settings Modal"
     implemented: true
-    working: "NA"
+    working: true
     file: "frontend/src/components/SettingsModal.tsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "BUG FIX: PDF Export endpoint corrected from '/api/pdf/export/{projectId}' to '/api/pdf-reports/generate/{projectId}' to match backend route. Added validation: checks if projects exist in localStorage before attempting export, shows error message if no projects found."
+        - working: true
+          agent: "testing"
+          comment: "🇩🇪 GERMAN PHASE 2 SCENARIO 2 PASSED: PDF export endpoint working correctly. GET /api/pdf-reports/generate/{project_id} returns HTTP 200 with proper Content-Type: application/pdf. Endpoint accessible with admin authentication and generates PDF successfully."
   
   - task: "CSV/Excel Export from Settings Modal"
     implemented: true
