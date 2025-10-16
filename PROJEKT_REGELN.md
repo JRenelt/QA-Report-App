@@ -56,6 +56,39 @@
 - localStorage-Status nach Operationen prüfen
 - **WICHTIG**: Bei "Failed to fetch" oder ähnlichen Fehlern IMMER Browser-Console und Network-Tab prüfen
 
+### Browser-Cache Management
+**REGEL:** Bei persistenten Problemen trotz Code-Änderungen muss der Browser-Cache geleert werden
+
+**Methode 1: Cache über F12 (Entwickler-Konsole) leeren**
+1. F12 drücken (Entwickler-Tools öffnen)
+2. **Application Tab** wählen
+3. Links: **"Lokaler Speicher"** erweitern
+4. Auf `https://testsync-pro.preview.emergentagent.com` klicken
+5. Alle Keys/Einträge auf der rechten Seite auswählen
+6. **Delete-Taste** drücken oder Button "Websitedaten löschen" verwenden
+7. Optional: **"Service Workers"** → Alle "Unregister" klicken
+8. **Seite neu laden** (F5 oder Strg+Shift+R)
+
+**Methode 2: Cache über Browser-Einstellungen löschen**
+1. **Strg + Shift + Delete** drücken
+2. **"Bilder und Dateien im Cache"** auswählen
+3. Zeitraum: **"Alle Zeit"** oder **"Letzte 24 Stunden"**
+4. **"Daten löschen"** klicken
+5. **Hard Refresh**: Strg + Shift + R
+
+**Methode 3: Cache während Entwicklung deaktivieren**
+1. F12 (DevTools öffnen)
+2. Oben rechts: **3 Punkte (⋮)** → **Settings**
+3. Unter **"Network"**: Aktivieren Sie **"Disable cache (while DevTools is open)"**
+4. **DevTools OFFEN LASSEN** während der Entwicklung
+
+**Wann Cache leeren?**
+- Nach größeren Code-Änderungen am Frontend
+- Bei "Mixed Content" Fehlern (HTTP vs HTTPS)
+- Wenn alte JavaScript-Versionen trotz Rebuild geladen werden
+- Bei persistenten "Failed to fetch" Fehlern
+- Wenn localStorage-Daten inkonsistent sind
+
 ### Lokalisierung
 **REGEL:** Alle UI-Texte auf Deutsch
 - Buttons, Labels, Meldungen
