@@ -263,36 +263,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
       const result = await response.json();
       
-      // Lade die neuen Firmen aus dem Backend und speichere in localStorage
-      console.log('Lade Firmen aus Backend...');
-      const companiesResponse = await fetch(`${backendUrl}/api/companies`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-        }
-      });
+      console.log('✅ Masse-Daten erfolgreich generiert!');
+      console.log('Stats:', result.stats);
       
-      if (companiesResponse.ok) {
-        const companies = await companiesResponse.json();
-        localStorage.setItem('qa_companies', JSON.stringify(companies));
-        console.log(`✅ ${companies.length} Firmen in localStorage gespeichert`);
-      }
+      // Erfolgsmeldung mit Anweisung
+      showMessage('success', `✅ Masse-Daten generiert: ${result.stats.companies} Firmen, ${result.stats.test_cases} Testfälle in ${Math.round(result.duration_seconds)}s. Bitte laden Sie die Seite neu (F5), um die Daten zu sehen.`);
       
-      // Lade die Projekte aus dem Backend
-      console.log('Lade Projekte aus Backend...');
-      const projectsResponse = await fetch(`${backendUrl}/api/projects`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-        }
-      });
-      
-      if (projectsResponse.ok) {
-        const projects = await projectsResponse.json();
-        localStorage.setItem('qa_projects', JSON.stringify(projects));
-        console.log(`✅ ${projects.length} Projekte in localStorage gespeichert`);
-      }
-      
-      showMessage('success', `✅ Masse-Daten generiert: ${result.stats.companies} Firmen, ${result.stats.test_cases} Testfälle in ${Math.round(result.duration_seconds)}s`);
-      setTimeout(() => window.location.reload(), 2000);
+      // KEIN automatischer Reload mehr wegen CDN-Cache-Problem
+      // User muss manuell F5 drücken
+      console.log('⚠️ Bitte Seite manuell neu laden (F5) um Daten zu sehen!');
     } catch (error) {
       showMessage('error', '❌ Fehler bei der Masse-Daten Generierung');
       console.error('Generate mass data error:', error);
