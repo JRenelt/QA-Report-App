@@ -490,7 +490,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      // FORCE HTTPS - Never use HTTP!
+      const backendUrl = (process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com').replace('http://', 'https://');
       
       // Projekt-ID aus localStorage oder ersten verfügbaren Projekt
       const projects = JSON.parse(localStorage.getItem('qa_projects') || '[]');
@@ -550,7 +551,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      // FORCE HTTPS - Never use HTTP!
+      const backendUrl = (process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com').replace('http://', 'https://');
       
       // Projekt-ID aus localStorage
       const projects = JSON.parse(localStorage.getItem('qa_projects') || '[]');
