@@ -263,6 +263,42 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return [];
   });
   
+  // Initial Backend Load - Projekte vom Backend holen wenn localStorage leer ist
+  useEffect(() => {
+    const loadProjectsFromBackend = async () => {
+      const saved = localStorage.getItem('qa_projects');
+      if (!saved || JSON.parse(saved).length === 0) {
+        console.log('⚠️ LocalStorage leer - lade Projekte aus Backend...');
+        try {
+          const backendUrl = 'https://testsync-pro.preview.emergentagent.com';
+          const authToken = localStorage.getItem('authToken');
+          
+          if (!authToken) {
+            console.log('⚠️ Kein authToken - kann Projekte nicht laden');
+            return;
+          }
+          
+          const response = await fetch(`${backendUrl}/api/projects`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+          });
+          
+          if (response.ok) {
+            const backendProjects = await response.json();
+            console.log(`✅ ${backendProjects.length} Projekte aus Backend geladen`);
+            localStorage.setItem('qa_projects', JSON.stringify(backendProjects));
+            setProjects(backendProjects);
+          } else {
+            console.error('❌ Backend-Fehler beim Laden der Projekte:', response.status);
+          }
+        } catch (error) {
+          console.error('❌ Fehler beim Laden der Projekte aus Backend:', error);
+        }
+      }
+    };
+    
+    loadProjectsFromBackend();
+  }, []); // Nur beim ersten Laden
+
   // Projekte automatisch aus localStorage aktualisieren (Polling alle 2 Sekunden)
   useEffect(() => {
     const pollInterval = setInterval(() => {
