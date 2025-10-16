@@ -10,6 +10,15 @@
 - **WICHTIG:** Alle Frontend-Änderungen müssen in allen 3 Browsern getestet werden
 - Browser-spezifische Probleme (z.B. Cache, Service Workers) müssen in allen 3 Browsern verifiziert werden
 
+### Bekanntes Problem: CloudFront CDN Cache
+**PROBLEM:** CloudFront CDN (d2adkz2s9zlge.cloudfront.net) cached alte JavaScript-Bundles
+- **Symptom:** Browser lädt alte Version trotz Code-Änderungen und Rebuild
+- **Ursache:** CDN-Cache wird nicht automatisch bei Code-Änderungen invalidiert
+- **Lösung:** Emergent Support muss CDN-Cache manuell invalidieren
+- **Workaround:** Rebuild allein reicht NICHT aus - CDN-Cache-Invalidierung erforderlich
+- **Test ob behoben:** Console prüfen auf "Mixed Content: http://" Fehler - wenn weg, dann behoben
+- **Support-Kontakt:** support@emergent.sh mit Job-ID und Preview-URL
+
 ### Test-ID Format
 **REGEL:** Anfangsbuchstabe JEDES Wortes im Titel des Testfalles + laufende Nummer (3-stellig)
 - **Format:** `[BUCHSTABEN][NUMMER]` (z.B. LDD001, SLMEP002)
