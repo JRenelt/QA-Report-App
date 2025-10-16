@@ -263,6 +263,44 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     return [];
   });
   
+  const [isLoadingProjects, setIsLoadingProjects] = useState(false);
+  
+  // MANUELLE Reload-Funktion für User
+  const handleReloadProjectsFromBackend = async () => {
+    setIsLoadingProjects(true);
+    console.log('🔄 MANUELLER RELOAD - Lade Projekte aus Backend...');
+    try {
+      const backendUrl = 'https://testsync-pro.preview.emergentagent.com';
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        alert('❌ Nicht angemeldet! Bitte erneut einloggen.');
+        setIsLoadingProjects(false);
+        return;
+      }
+      
+      const response = await fetch(`${backendUrl}/api/projects`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const backendProjects = await response.json();
+        console.log(`✅ ${backendProjects.length} Projekte aus Backend geladen`);
+        localStorage.setItem('qa_projects', JSON.stringify(backendProjects));
+        setProjects(backendProjects);
+        alert(`✅ ${backendProjects.length} Projekte aus Backend geladen!`);
+      } else {
+        console.error('❌ Backend-Fehler:', response.status);
+        alert(`❌ Backend-Fehler: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('❌ Fehler:', error);
+      alert(`❌ Fehler: ${error}`);
+    } finally {
+      setIsLoadingProjects(false);
+    }
+  };
+  
   // Initial Backend Load - Projekte vom Backend holen wenn localStorage leer ist
   useEffect(() => {
     const loadProjectsFromBackend = async () => {
