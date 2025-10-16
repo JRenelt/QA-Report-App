@@ -270,7 +270,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     setIsLoadingProjects(true);
     console.log('🔄 MANUELLER RELOAD - Lade Projekte aus Backend...');
     try {
-      const backendUrl = 'https://testsync-pro.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
       const token = localStorage.getItem('authToken');
       
       if (!token) {
