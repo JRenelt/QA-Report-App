@@ -316,7 +316,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     setLoading(true);
     try {
       // 1. Backend-Datenbank leeren
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      // FORCE HTTPS - Never use HTTP!
+      const backendUrl = (process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com').replace('http://', 'https://');
+      console.log('🔒 BACKEND URL (FORCED HTTPS):', backendUrl);
       console.log('Leere Datenbank, URL:', `${backendUrl}/api/admin/clear-database`);
       console.log('Auth Token:', authToken ? 'vorhanden' : 'fehlt');
       
