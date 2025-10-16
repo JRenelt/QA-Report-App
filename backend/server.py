@@ -117,9 +117,10 @@ app.include_router(api_router)
 
 if __name__ == "__main__":
     import uvicorn
+    import os
     uvicorn.run(
         "server:app",
         host="0.0.0.0",
-        port=8001,
+        port=int(os.getenv('PORT', 8001)),  # Deployment-ready: configurable via environment
         reload=True
     )
