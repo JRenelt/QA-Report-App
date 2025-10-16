@@ -220,7 +220,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      // FORCE HTTPS - Never use HTTP!
+      const backendUrl = (process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com').replace('http://', 'https://');
+      console.log('🔒 BACKEND URL (FORCED HTTPS):', backendUrl);
       console.log('Generiere Masse-Daten...');
       console.log('LocalStorage Projekte vorhanden:', hasLocalStorageProjects);
       
