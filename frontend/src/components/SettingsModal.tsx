@@ -223,11 +223,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
     setLoading(true);
     try {
-      // FORCE HTTPS - Never use HTTP!
-      const backendUrl = (process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com').replace('http://', 'https://');
-      console.log('🔒 BACKEND URL (FORCED HTTPS):', backendUrl);
-      console.log('Generiere Masse-Daten...');
-      console.log('LocalStorage Projekte vorhanden:', hasLocalStorageProjects);
+      // HARDCODED HTTPS - ABSOLUTE URL
+      const backendUrl = 'https://testsync-pro.preview.emergentagent.com';
+      console.log('🔒🔒🔒 HARDCODED BACKEND URL:', backendUrl);
+      console.log('🔒🔒🔒 Generiere Masse-Daten...');
+      console.log('🔒🔒🔒 LocalStorage Projekte vorhanden:', hasLocalStorageProjects);
       
       const response = await fetch(`${backendUrl}/api/admin/generate-mass-data`, {
         method: 'POST',
