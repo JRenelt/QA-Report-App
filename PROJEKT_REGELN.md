@@ -2,6 +2,14 @@
 
 ## 🎯 Wichtige Projekt-Regeln
 
+### Entwicklungsumgebung
+**REGEL:** User arbeitet mit 3 Browsern für Testing und Entwicklung
+- **Chrome** (primär für Entwicklung und DevTools)
+- **Edge** (Cross-Browser Testing)
+- **Firefox** (Cross-Browser Testing)
+- **WICHTIG:** Alle Frontend-Änderungen müssen in allen 3 Browsern getestet werden
+- Browser-spezifische Probleme (z.B. Cache, Service Workers) müssen in allen 3 Browsern verifiziert werden
+
 ### Test-ID Format
 **REGEL:** Anfangsbuchstabe JEDES Wortes im Titel des Testfalles + laufende Nummer (3-stellig)
 - **Format:** `[BUCHSTABEN][NUMMER]` (z.B. LDD001, SLMEP002)
