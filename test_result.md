@@ -686,6 +686,18 @@ frontend:
     priority: "high"
     needs_retesting: true
     status_history:
+  - task: "Reload Button Functionality"
+    implemented: true
+    working: false
+    file: "frontend/src/components/QADashboardV2.tsx"
+    stuck_count: 1
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: "🔄 CRITICAL RELOAD BUTTON TEST COMPLETED - USER FRUSTRATION CONFIRMED! ✅ BUTTON FUNCTIONALITY: Yellow reload button found and working correctly with proper tooltip '🔄 Projekte aus Backend laden (CDN-Cache Workaround)'. Button is clickable and triggers handleReloadProjectsFromBackend function. ❌ CRITICAL MIXED CONTENT ERROR IDENTIFIED: Root cause of 'Failed to fetch' error is Mixed Content Security Policy violation. Frontend (HTTPS) attempting HTTP requests to backend API. Console errors: 'Mixed Content: The page at https://testsync-pro.preview.emergentagent.com/ was loaded over HTTPS, but requested an insecure resource http://testsync-pro.preview.emergentagent.com/api/projects/'. ❌ NETWORK ANALYSIS: Found 2 API requests - HTTPS request (correct) and HTTP request (blocked by browser). No projects loaded because HTTP API call fails. No success alert shown because operation fails. ✅ INITIAL STATE VERIFIED: Dashboard correctly shows 'Bitte Projekt auswählen' placeholder when localStorage is empty. ❌ USER EXPERIENCE: Button appears to work but shows 'Failed to fetch' due to protocol mismatch. This confirms user's frustration - functionality exists but Mixed Content Error prevents it from working. URGENT FIX REQUIRED: All backend API calls must use HTTPS protocol to match frontend domain."
+
   - task: "Login Authentication Fix"
     implemented: false
     working: false
