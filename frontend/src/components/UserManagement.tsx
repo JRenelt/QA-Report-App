@@ -415,8 +415,8 @@ const UserManagement: React.FC<UserManagementProps> = ({
                         <Edit className="h-4 w-4 text-white" />
                       </button>
                     )}
-                    {/* Delete: Nur Admin, nicht sich selbst */}
-                    {isAdmin && user.id !== currentUser.id && (
+                    {/* Delete: SysOp/Admin können löschen, aber nicht sich selbst oder jre */}
+                    {canDeleteUser && user.id !== currentUser.id && user.username !== 'jre' && (
                       <button
                         onClick={() => handleDeleteUser(user.id)}
                         className="p-2 bg-red-600 hover:bg-red-700 rounded transition-colors"
