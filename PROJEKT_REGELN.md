@@ -106,6 +106,13 @@
 - Bei persistenten "Failed to fetch" Fehlern
 - Wenn localStorage-Daten inkonsistent sind
 
+### Systemanalyse-Seite
+**REGEL:** Referenz zur System-Analyse-Seite
+- **URL:** `https://qa-report-app.preview.emergentagent.com/system-analyse.html`
+- **Kurzname:** Wenn User von dieser Seite spricht, wird sie zukünftig "systemanalyse.html" genannt
+- **Zweck:** Diese Seite dient zur System-Analyse und Diagnostik der Applikation
+- **WICHTIG:** User verwendet diesen Kurznamen zur vereinfachten Kommunikation
+
 ### Lokalisierung
 **REGEL:** Alle UI-Texte auf Deutsch
 - Buttons, Labels, Meldungen
