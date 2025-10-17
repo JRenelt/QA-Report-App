@@ -10,7 +10,7 @@ interface User {
   email: string;
   first_name: string;
   last_name: string;
-  role: 'admin' | 'qa_tester';
+  role: 'sysop' | 'admin' | 'qa_tester';  // Erweitert um 'sysop'
   is_active: boolean;
   created_at: string;
   updated_at: string;
