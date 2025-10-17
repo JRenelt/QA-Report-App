@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Users, Plus, Edit, Trash2, Save, X, Search, Crown, UserRound, 
-  Mail, Key, Shield, CheckCircle, XCircle, AlertCircle
+  Mail, Key, Shield, CheckCircle, XCircle, AlertCircle, Eye, EyeOff
 } from 'lucide-react';
 
 interface User {
