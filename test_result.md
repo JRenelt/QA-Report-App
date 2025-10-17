@@ -459,6 +459,33 @@ backend:
           agent: "testing"
           comment: "✅ BUG-001 FIXED: Correct endpoint is /api/pdf-reports/generate/{project_id} - returns 200 OK with Content-Type: application/pdf. No more 500 Internal Server Error (UnboundLocalError). Admin authentication working correctly."
 
+  - task: "SysOp Login Authentication"
+    implemented: true
+    working: true
+    file: "backend/routes/auth.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: "🇩🇪 GERMAN TEST: SysOp login (jre/sysop123) FAILED with 401 error, no auth token stored. Admin login (admin_techco/admin123) SUCCESSFUL with proper authentication and token storage. Mixed results: Admin authentication works, SysOp authentication broken."
+        - working: true
+          agent: "testing"
+          comment: "✅ GERMAN REVIEW ISSUE 1 RESOLVED: SysOp login (jre/sysop123) now works correctly! Authentication successful with proper JWT token generation. User object returned with correct username='jre' and role='sysop'. SysOp user was successfully created in database and authentication endpoint is functioning properly."
+
+  - task: "SysOp Companies API Permissions"
+    implemented: true
+    working: false
+    file: "backend/routes/companies.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: "❌ GERMAN REVIEW ISSUE 2 IDENTIFIED: SysOp role permissions bug in Companies API. SysOp user gets 0 companies while Admin gets 6 companies (AutoParts Solutions, FinTech Innovations, HealthCare Systems, ID2.de, MediaDesign AG, TechCorp GmbH). ROOT CAUSE: Line 19 in companies.py only checks for role=='admin', but auth.py line 104 states 'SysOp hat ALLE Admin-Rechte'. BUG: SysOp should have same access as Admin. SOLUTION NEEDED: Change line 19 from 'if current_user.role == \"admin\":' to 'if current_user.role in [\"admin\", \"sysop\"]:'. This affects Companies API endpoint GET /api/companies/ - SysOp users should see all companies like Admin users do."
+
 frontend:
   - task: "Login Dark Mode Kontrast"
     implemented: true
