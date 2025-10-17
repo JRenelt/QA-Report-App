@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA-Report-App - Projektregeln</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #764ba2;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        p, li {
+            margin-bottom: 10px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 0.95em;
+        }
+
+        .rule-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .forbidden-box {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-left: 5px solid #f44336;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .best-practice-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #495057;
+            border-bottom: none;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📘 QA-Report-App - Projekt-Regeln und Standards</h1>
+
+        <div class="toc">
+            <h2>📑 Inhaltsverzeichnis</h2>
+            <ul>
+                <li><a href="#ai-agent">🤖 AI-Agent Arbeitsregeln</a></li>
+                <li><a href="#rollen">👥 Rollen-System</a></li>
+                <li><a href="#geschuetzt">🔒 Geschützte Daten</a></li>
+                <li><a href="#entwicklung">💻 Entwicklungsumgebung</a></li>
+                <li><a href="#fehler-muster">🐛 Bekannte Fehler-Muster</a></li>
+                <li><a href="#test-id">🔢 Test-ID Format</a></li>
+                <li><a href="#datenhaltung">💾 Datenhaltung</a></li>
+                <li><a href="#ui-ux">🎨 UI/UX Standards</a></li>
+                <li><a href="#backend">🔧 Backend-Routen</a></li>
+                <li><a href="#cache">🗑️ Browser-Cache Management</a></li>
+                <li><a href="#links">🔗 Wichtige Links</a></li>
+                <li><a href="#verboten">🚫 Verboten</a></li>
+                <li><a href="#best-practices">✅ Best Practices</a></li>
+            </ul>
+        </div>
+
+        <h2 id="ai-agent">🤖 AI-Agent Arbeitsregeln</h2>
+        <div class="rule-box">
+            <h3>Kritische Arbeitsabläufe für AI-Agent</h3>
+            <ol>
+                <li><strong>Erledigte Aufgaben:</strong>
+                    <ul>
+                        <li>❌ NIEMALS erledigte Aufgaben wieder auf "unerledigt" setzen</li>
+                        <li>✅ NUR User darf Aufgaben manuell auf "unerledigt" stellen</li>
+                        <li>✅ Bei Unsicherheit: User fragen, ob Aufgabe wirklich erledigt ist</li>
+                    </ul>
+                </li>
+                <li><strong>Projektregeln anzeigen:</strong>
+                    <ul>
+                        <li>✅ Nach JEDER Änderung an PROJEKT_REGELN.md die komplette Datei anzeigen</li>
+                        <li>✅ User muss Änderungen sofort sehen können</li>
+                    </ul>
+                </li>
+                <li><strong>Frontend-Kompilierungs-Check:</strong>
+                    <ul>
+                        <li>✅ Nach JEDER erledigten Aufgabe Frontend-Logs prüfen</li>
+                        <li>✅ Command: <code>tail -n 50 /var/log/supervisor/frontend.out.log | grep -i "compiled\|error\|failed"</code></li>
+                        <li>✅ Auf "Compiled with problems:" oder andere Fehler prüfen</li>
+                        <li>✅ User SOFORT informieren wenn Frontend nicht kompiliert</li>
+                        <li>✅ Fehler NICHT ignorieren - Frontend muss immer zugänglich sein</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <h2 id="rollen">👥 Rollen-System</h2>
+        <div class="rule-box">
+            <h3>Drei Rollen mit unterschiedlichen Berechtigungen</h3>
+            
+            <h4>1. SysOp (System-Operator)</h4>
+            <ul>
+                <li><strong>Höchste Rechte</strong> im gesamten System</li>
+                <li>Kann ALLE User sehen und verwalten (inkl. Admins)</li>
+                <li>Kann Firmen anlegen, bearbeiten, löschen</li>
+                <li>Kann User mit Rollen "admin" und "qa_tester" anlegen</li>
+                <li>Kann KEINE weiteren SysOps anlegen (nur "jre" existiert)</li>
+                <li>Zugriff auf alle Systemfunktionen</li>
+                <li><strong>User:</strong> Jörg Renelt (jre) bei Firma ID2.de</li>
+            </ul>
+
+            <h4>2. Admin (Administrator)</h4>
+            <ul>
+                <li>Kann Firmen anlegen, bearbeiten, löschen</li>
+                <li>Kann User mit Rollen "admin" und "qa_tester" für alle Firmen anlegen</li>
+                <li>Kann KEINE SysOps anlegen oder sehen</li>
+                <li>Kann KEINE SysOps bearbeiten oder löschen</li>
+                <li>Voller Zugriff auf eigene Firma und alle anderen Firmen (außer ID2 SysOp)</li>
+            </ul>
+
+            <h4>3. QA-Tester</h4>
+            <ul>
+                <li>Kann NUR eigenes Profil bearbeiten</li>
+                <li>Kann KEINE User anlegen oder löschen</li>
+                <li>Sieht NUR sich selbst in der User-Verwaltung</li>
+                <li>Kann Tests erstellen, bearbeiten, ausführen</li>
+                <li>Zugriff nur auf eigene Firma</li>
+            </ul>
+        </div>
+
+        <h2 id="geschuetzt">🔒 Geschützte Daten</h2>
+        <div class="warning-box">
+            <h3>REGEL: ID2 GmbH ist die System-Firma und DARF NICHT gelöscht werden</h3>
+            <ul>
+                <li>Bei "Datenbank leeren": Alle Firmen löschen AUSSER ID2</li>
+                <li>Papierkorb-Symbol bei ID2 ausblenden</li>
+                <li>ID2 muss immer in localStorage vorhanden sein</li>
+            </ul>
+
+            <h3>REGEL: SysOp-User "Jörg Renelt" DARF NIEMALS gelöscht werden</h3>
+            <ul>
+                <li><strong>Username:</strong> <code>jre</code></li>
+                <li><strong>Password:</strong> <code>sysop123</code> (bis auf weiteres, später ändern empfohlen)</li>
+                <li><strong>Firma:</strong> ID2.de</li>
+                <li><strong>Rolle:</strong> SysOp (System-Administrator - höchste Rechte)</li>
+                <li><strong>Wichtig:</strong> Dieser User ist der einzige System-Administrator und muss IMMER existieren</li>
+                <li>Bei "Datenbank leeren": User "jre" MUSS erhalten bleiben</li>
+                <li>Papierkorb-Symbol bei diesem User ausblenden</li>
+                <li>Kein Löschen über UI oder Backend möglich</li>
+                <li>Kein Update der Rolle möglich (IMMER sysop bleiben)</li>
+            </ul>
+
+            <h3>WARNUNG: Passwort-Anzeige in Klarschrift (User-Management)</h3>
+            <ul>
+                <li>Passwörter können temporär im Klartext angezeigt werden (Eye/EyeOff Toggle)</li>
+                <li>Dies ist ein bewusstes Security-Risk auf Wunsch des Users</li>
+                <li>Nur in User-Management Modal verfügbar (Create/Edit)</li>
+                <li>Toggle wird beim Schließen des Modals zurückgesetzt</li>
+                <li><strong>Hinweis:</strong> In Production-Umgebung sollte dies deaktiviert werden</li>
+            </ul>
+        </div>
+
+        <h2 id="entwicklung">💻 Entwicklungsumgebung</h2>
+        <div class="rule-box">
+            <h3>REGEL: User arbeitet mit 3 Browsern für Testing und Entwicklung</h3>
+            <ul>
+                <li><strong>Chrome</strong> (primär für Entwicklung und DevTools)</li>
+                <li><strong>Edge</strong> (Cross-Browser Testing)</li>
+                <li><strong>Firefox</strong> (Cross-Browser Testing)</li>
+                <li><strong>WICHTIG:</strong> Alle Frontend-Änderungen müssen in allen 3 Browsern getestet werden</li>
+                <li>Browser-spezifische Probleme (z.B. Cache, Service Workers) müssen in allen 3 Browsern verifiziert werden</li>
+            </ul>
+        </div>
+
+        <h2 id="fehler-muster">🐛 Bekannte Fehler-Muster</h2>
+        <div class="warning-box">
+            <h3>1. CloudFront CDN Cache Problem</h3>
+            <ul>
+                <li><strong>Symptom:</strong> Browser lädt alte Version trotz Code-Änderungen und Rebuild</li>
+                <li><strong>Ursache:</strong> CDN-Cache wird nicht automatisch bei Code-Änderungen invalidiert</li>
+                <li><strong>Lösung:</strong> Emergent Support muss CDN-Cache manuell invalidieren</li>
+                <li><strong>Workaround:</strong> Rebuild allein reicht NICHT aus - CDN-Cache-Invalidierung erforderlich</li>
+                <li><strong>Test ob behoben:</strong> Console prüfen auf "Mixed Content: http://" Fehler - wenn weg, dann behoben</li>
+                <li><strong>Support-Kontakt:</strong> support@emergent.sh mit Job-ID und Preview-URL</li>
+            </ul>
+
+            <h3>2. JSX-Fragment-Error</h3>
+            <ul>
+                <li><strong>Symptom:</strong> TypeScript-Fehler "Unexpected token" mit Zeichen wie <code>}`}></code></li>
+                <li><strong>Ursache:</strong> Bei Code-Ersetzungen bleiben versehentlich Syntax-Reste stehen</li>
+                <li><strong>Prävention:</strong>
+                    <ul>
+                        <li>Immer die komplette Zeile/Block prüfen nach Änderungen</li>
+                        <li>TypeScript-Compiler-Fehler sofort checken</li>
+                        <li><code>tail -n 50 /var/log/supervisor/frontend.out.log</code> nach jeder Änderung ausführen</li>
+                    </ul>
+                </li>
+                <li><strong>Lösung:</strong> Fehlerhafte Syntax-Reste manuell entfernen</li>
+            </ul>
+        </div>
+
+        <h2 id="test-id">🔢 Test-ID Format</h2>
+        <div class="rule-box">
+            <h3>REGEL: Anfangsbuchstabe JEDES Wortes im Titel + laufende Nummer (3-stellig)</h3>
+            <ul>
+                <li><strong>Format:</strong> <code>[BUCHSTABEN][NUMMER]</code> (z.B. LDD001, SLMEP002)</li>
+                <li>Sonderzeichen die als Leerzeichen behandelt werden: & / % - + = ( ) [ ] { } < > | \ : ; , . ? ! " ' ` ~ @ # $ ^ * _</li>
+                <li>Umlaute bleiben erhalten (Ä, Ö, Ü)</li>
+                <li>Laufende Nummer: 3-stellig mit führenden Nullen (001, 002, 003, ...)</li>
+            </ul>
+            <h4>Beispiele:</h4>
+            <ul>
+                <li>"Logo Darstellung Desktop" → <strong>LDD001</strong> (3 Wörter + Nr. 001)</li>
+                <li>"Navigation Menü" → <strong>NM002</strong> (2 Wörter + Nr. 002)</li>
+                <li>"Modal Öffnen & Schließen" → <strong>MÖS003</strong> (& = Leerzeichen, 3 Wörter + Nr. 003)</li>
+                <li>"User-Verwaltung/Admin" → <strong>UVA004</strong> (- und / = Leerzeichen, 3 Wörter + Nr. 004)</li>
+                <li>"Performance (100% CPU)" → <strong>P1C005</strong> (Klammern und % = Leerzeichen, 3 Wörter + Nr. 005)</li>
+            </ul>
+        </div>
+
+        <h2 id="datenhaltung">💾 Datenhaltung</h2>
+        <div class="rule-box">
+            <h3>REGEL: Alle Client-seitigen Daten in localStorage</h3>
+            <ul>
+                <li>Firmen: <code>qa_companies</code></li>
+                <li>Projekte: <code>qa_projects</code></li>
+                <li>Test-Suites: <code>qa_suites_{projectId}</code></li>
+                <li>Test-Cases: <code>qa_cases_{projectId}</code></li>
+            </ul>
+        </div>
+
+        <h2 id="ui-ux">🎨 UI/UX Standards</h2>
+        <div class="rule-box">
+            <ul>
+                <li><strong>Counter-Position:</strong> Oben rechts neben "Projekt-Auswahl" Header</li>
+                <li><strong>Dropdown-Breite:</strong> Volle Breite unter dem Header</li>
+                <li><strong>Sidebar-Breite:</strong> Dynamisch, mindestens 280px</li>
+                <li><strong>Dark Mode:</strong> Alle Komponenten müssen Dark Mode unterstützen</li>
+                <li><strong>Glossar:</strong> Nur für Admins zugänglich (Admin-Bereich)</li>
+            </ul>
+        </div>
+
+        <h2 id="backend">🔧 Backend-Routen</h2>
+        <div class="rule-box">
+            <h3>REGEL: Alle API-Routen MÜSSEN mit <code>/api</code> beginnen</h3>
+            <ul>
+                <li>✅ Richtig: <code>/api/admin/clear-database</code></li>
+                <li>❌ Falsch: <code>/admin/clear-database</code></li>
+            </ul>
+        </div>
+
+        <h2 id="cache">🗑️ Browser-Cache Management</h2>
+        <div class="rule-box">
+            <h3>REGEL: Bei persistenten Problemen trotz Code-Änderungen muss der Browser-Cache geleert werden</h3>
+            
+            <h4>Methode 1: Cache über F12 (Entwickler-Konsole) leeren</h4>
+            <ol>
+                <li>F12 drücken (Entwickler-Tools öffnen)</li>
+                <li><strong>Application Tab</strong> wählen</li>
+                <li>Links: <strong>"Lokaler Speicher"</strong> erweitern</li>
+                <li>Auf <code>https://report-qa-portal.preview.emergentagent.com</code> klicken</li>
+                <li>Alle Keys/Einträge auf der rechten Seite auswählen</li>
+                <li><strong>Delete-Taste</strong> drücken oder Button "Websitedaten löschen" verwenden</li>
+                <li>Optional: <strong>"Service Workers"</strong> → Alle "Unregister" klicken</li>
+                <li><strong>Seite neu laden</strong> (F5 oder Strg+Shift+R)</li>
+            </ol>
+
+            <h4>Methode 2: Cache über Browser-Einstellungen löschen</h4>
+            <ol>
+                <li><strong>Strg + Shift + Delete</strong> drücken</li>
+                <li><strong>"Bilder und Dateien im Cache"</strong> auswählen</li>
+                <li>Zeitraum: <strong>"Alle Zeit"</strong> oder <strong>"Letzte 24 Stunden"</strong></li>
+                <li><strong>"Daten löschen"</strong> klicken</li>
+                <li><strong>Hard Refresh:</strong> Strg + Shift + R</li>
+            </ol>
+
+            <h4>Wann Cache leeren?</h4>
+            <ul>
+                <li>Nach größeren Code-Änderungen am Frontend</li>
+                <li>Bei "Mixed Content" Fehlern (HTTP vs HTTPS)</li>
+                <li>Wenn alte JavaScript-Versionen trotz Rebuild geladen werden</li>
+                <li>Bei persistenten "Failed to fetch" Fehlern</li>
+                <li>Wenn localStorage-Daten inkonsistent sind</li>
+            </ul>
+        </div>
+
+        <h2 id="links">🔗 Wichtige Links</h2>
+        <div class="rule-box">
+            <ul>
+                <li><strong>System-Analyse:</strong> <a href="https://report-qa-portal.preview.emergentagent.com/system-analyse.html" target="_blank">system-analyse.html</a></li>
+                <li><strong>Fehler-Management:</strong> <a href="https://report-qa-portal.preview.emergentagent.com/fehler-management.html" target="_blank">fehler-management.html</a></li>
+                <li><strong>Projektregeln:</strong> <a href="https://report-qa-portal.preview.emergentagent.com/projekt-regeln.html" target="_blank">projekt-regeln.html</a> (diese Seite)</li>
+            </ul>
+        </div>
+
+        <h2 id="verboten">🚫 Verboten</h2>
+        <div class="forbidden-box">
+            <ol>
+                <li>❌ Hardcoded Firmen/Projekte außer ID2 als Fallback</li>
+                <li>❌ ID2 GmbH löschen oder umbenennen</li>
+                <li>❌ URLs oder Ports in .env-Dateien ändern</li>
+                <li>❌ MongoDB ObjectID verwenden (nur UUIDs!)</li>
+                <li>❌ npm verwenden (nur yarn!)</li>
+            </ol>
+        </div>
+
+        <h2 id="best-practices">✅ Best Practices</h2>
+        <div class="best-practice-box">
+            <ol>
+                <li>✅ Immer TypeScript-Fehler prüfen vor Build</li>
+                <li>✅ localStorage-Änderungen sofort committen</li>
+                <li>✅ Console-Logging für Debugging hinzufügen</li>
+                <li>✅ Error-Messages benutzerfreundlich auf Deutsch</li>
+                <li>✅ Bestätigungs-Dialoge bei kritischen Aktionen</li>
+            </ol>
+        </div>
+
+        <div class="footer">
+            <p><strong>Letzte Aktualisierung:</strong> <span id="last-update"></span></p>
+            <p><strong>Version:</strong> 1.0</p>
+        </div>
+    </div>
+
+    <script>
+        // Aktuelles Datum/Zeit anzeigen
+        document.getElementById('last-update').textContent = new Date().toLocaleString('de-DE');
+    </script>
+</body>
+</html>
