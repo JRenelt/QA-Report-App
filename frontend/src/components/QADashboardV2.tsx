@@ -2292,23 +2292,6 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         </div>
       )}
 
-      {/* Company Management Modal */}
-      <CompanyManagement
-        isOpen={showCompanyManagement}
-        onClose={() => setShowCompanyManagement(false)}
-        darkMode={darkMode}
-        authToken={authToken}
-        currentUser={user}
-      />
-
-      {/* User Management Modal */}
-      <UserManagement
-        authToken={authToken}
-        currentUser={user}
-        isOpen={showUserManagement}
-        onClose={() => setShowUserManagement(false)}
-      />
-
       {/* Fixed Footer - Immer am unteren Bildschirmrand */}
       <footer className={`fixed bottom-0 left-0 right-0 z-10 ${
         darkMode ? 'bg-[#282C34] border-t border-gray-700' : 'bg-white border-t border-gray-300'
