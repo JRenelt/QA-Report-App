@@ -108,14 +108,14 @@
 
 ### Systemanalyse-Seite
 **REGEL:** Referenz zur System-Analyse-Seite
-- **URL:** `https://qa-report-app.preview.emergentagent.com/system-analyse.html`
+- **URL:** `https://report-qa-portal.preview.emergentagent.com/system-analyse.html`
 - **Kurzname:** Wenn User von dieser Seite spricht, wird sie zukünftig "systemanalyse.html" genannt
 - **Zweck:** Diese Seite dient zur System-Analyse und Diagnostik der Applikation
 - **WICHTIG:** User verwendet diesen Kurznamen zur vereinfachten Kommunikation
 
 ### Fehler-Management-System
 **REGEL:** Interaktives Fehler-Management-Wiki
-- **URL:** `https://qa-report-app.preview.emergentagent.com/fehler-management.html`
+- **URL:** `https://report-qa-portal.preview.emergentagent.com/fehler-management.html`
 - **Kurzname:** "fehler-management.html" oder "Fehler-Wiki"
 - **Zweck:** Umfassende Dokumentation aller Frontend/Backend-Fehler, Design-Anomalien und Systemprobleme
 - **Features:**
