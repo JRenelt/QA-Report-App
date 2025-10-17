@@ -121,47 +121,110 @@ async def create_qa_demo_user():
     print(f"✅ QA demo user created: username=qa_demo, password=demo123")
 
 async def create_sample_data():
-    """Create sample company and project"""
+    """Create 5 sample companies with 2 users each"""
     
-    # Get admin user
+    # Get admin user for created_by
     admin = await users_collection.find_one({"username": "admin"})
     if not admin:
         print("❌ Admin user not found")
         return
     
-    # Check if sample company exists
-    existing_company = await companies_collection.find_one({"name": "Demo Firma"})
-    if existing_company:
-        print("✅ Sample data already exists")
-        return
+    companies_data = [
+        {"name": "TechCorp GmbH", "description": "Softwareentwicklung und IT-Beratung"},
+        {"name": "MediaDesign AG", "description": "Kreativagentur für digitale Medien"},
+        {"name": "AutoParts Solutions", "description": "Zulieferer für Automobilindustrie"},
+        {"name": "HealthCare Systems", "description": "Medizintechnik und Gesundheitssoftware"},
+        {"name": "FinTech Innovations", "description": "Finanzdienstleistungen und Banking-Apps"}
+    ]
     
-    # Create sample company
-    company = {
-        "id": str(uuid.uuid4()),
-        "name": "Demo Firma",
-        "description": "Beispiel-Firma für QA-Testing",
-        "logo_url": None,
-        "created_by": admin["id"],
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow()
-    }
-    await companies_collection.insert_one(company)
-    print(f"✅ Sample company created: {company['name']}")
+    created_companies = []
     
-    # Create sample project
-    project = {
-        "id": str(uuid.uuid4()),
-        "name": "Demo Projekt",
-        "description": "Beispiel-Projekt für QA-Testing",
-        "template_type": "web_app_qa",
-        "status": "active",
-        "company_id": company["id"],
-        "created_by": admin["id"],
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow()
-    }
-    await projects_collection.insert_one(project)
-    print(f"✅ Sample project created: {project['name']}")
+    for company_data in companies_data:
+        # Check if company already exists
+        existing_company = await companies_collection.find_one({"name": company_data["name"]})
+        if existing_company:
+            print(f"⚠️  Company '{company_data['name']}' already exists")
+            created_companies.append(existing_company)
+            continue
+        
+        # Create company
+        company = {
+            "id": str(uuid.uuid4()),
+            "name": company_data["name"],
+            "description": company_data["description"],
+            "logo_url": None,
+            "created_by": admin["id"],
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        await companies_collection.insert_one(company)
+        created_companies.append(company)
+        print(f"✅ Company created: {company['name']}")
+    
+    # Create 2 users per company
+    user_counter = 1
+    for company in created_companies:
+        # Check if users already exist for this company
+        existing_users_count = await users_collection.count_documents({"companyId": company["id"]})
+        if existing_users_count >= 2:
+            print(f"⚠️  Users for company '{company['name']}' already exist")
+            continue
+        
+        # Create Admin user for company
+        admin_user = {
+            "id": str(uuid.uuid4()),
+            "username": f"admin_{company['name'].split()[0].lower()[:6]}",
+            "email": f"admin@{company['name'].split()[0].lower()}.de",
+            "first_name": "Admin",
+            "last_name": company['name'].split()[0],
+            "hashed_password": get_password_hash("admin123"),
+            "role": UserRole.admin.value,
+            "companyId": company["id"],
+            "language_preference": Language.DE.value,
+            "is_active": True,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        await users_collection.insert_one(admin_user)
+        print(f"  ✅ Admin user created: {admin_user['username']}")
+        
+        # Create QA Tester for company
+        tester_user = {
+            "id": str(uuid.uuid4()),
+            "username": f"tester_{company['name'].split()[0].lower()[:6]}",
+            "email": f"tester@{company['name'].split()[0].lower()}.de",
+            "first_name": "Tester",
+            "last_name": company['name'].split()[0],
+            "hashed_password": get_password_hash("test123"),
+            "role": UserRole.qa_tester.value,
+            "companyId": company["id"],
+            "language_preference": Language.DE.value,
+            "is_active": True,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        await users_collection.insert_one(tester_user)
+        print(f"  ✅ Tester user created: {tester_user['username']}")
+        user_counter += 2
+    
+    # Create sample project for first company
+    first_company = created_companies[0] if created_companies else None
+    if first_company:
+        existing_project = await projects_collection.find_one({"company_id": first_company["id"]})
+        if not existing_project:
+            project = {
+                "id": str(uuid.uuid4()),
+                "name": "Demo Projekt",
+                "description": "Beispiel-Projekt für QA-Testing",
+                "template_type": "web_app_qa",
+                "status": "active",
+                "company_id": first_company["id"],
+                "created_by": admin["id"],
+                "created_at": datetime.utcnow(),
+                "updated_at": datetime.utcnow()
+            }
+            await projects_collection.insert_one(project)
+            print(f"✅ Sample project created: {project['name']}")
 
 async def main():
     """Main initialization function"""
