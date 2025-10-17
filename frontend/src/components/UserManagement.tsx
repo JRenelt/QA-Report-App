@@ -31,6 +31,8 @@ const UserManagement: React.FC<UserManagementProps> = ({
   onClose 
 }) => {
   const [users, setUsers] = useState<User[]>([]);
+  const [companies, setCompanies] = useState<any[]>([]);
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -43,14 +45,45 @@ const UserManagement: React.FC<UserManagementProps> = ({
     last_name: '',
     role: 'qa_tester' as 'admin' | 'qa_tester',
     password: '',
-    is_active: true
+    is_active: true,
+    companyId: ''
   });
 
-  // Benutzer laden
+  // Firmen laden
+  const loadCompanies = async () => {
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+      const response = await fetch(`${backendUrl}/api/companies/`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setCompanies(data);
+        
+        // Default: Firma des eingeloggten Users
+        if (currentUser?.companyId) {
+          setSelectedCompanyId(currentUser.companyId);
+        } else if (data.length > 0) {
+          setSelectedCompanyId(data[0].id);
+        }
+      } else {
+        console.error('Fehler beim Laden der Firmen');
+      }
+    } catch (error) {
+      console.error('Fehler beim Laden der Firmen:', error);
+    }
+  };
+
+  // Benutzer laden (gefiltert nach Firma)
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users`, {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+      const response = await fetch(`${backendUrl}/api/users/`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
           'Content-Type': 'application/json'
@@ -72,22 +105,48 @@ const UserManagement: React.FC<UserManagementProps> = ({
 
   useEffect(() => {
     if (isOpen) {
+      loadCompanies();
       loadUsers();
     }
   }, [isOpen, authToken]);
+  
+  // Users neu laden wenn Firma gewechselt wird
+  useEffect(() => {
+    if (isOpen && selectedCompanyId) {
+      loadUsers();
+    }
+  }, [selectedCompanyId]);
 
   // Benutzer erstellen
   const handleCreateUser = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users`, {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+      const response = await fetch(`${backendUrl}/api/users/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          companyId: selectedCompanyId // Firma automatisch zuweisen
+        })
       });
 
+      if (response.ok) {
+        await loadUsers();
+        setShowCreateModal(false);
+        resetForm();
+      } else {
+        const errorData = await response.json();
+        console.error('Fehler beim Erstellen des Benutzers:', errorData);
+        alert(`Fehler: ${errorData.detail || 'Benutzer konnte nicht erstellt werden'}`);
+      }
+    } catch (error) {
+      console.error('Fehler beim Erstellen des Benutzers:', error);
+      alert('Netzwerkfehler: Benutzer konnte nicht erstellt werden. Bitte Backend-URL prüfen.');
+    }
+  };
       if (response.ok) {
         await loadUsers();
         setShowCreateModal(false);
