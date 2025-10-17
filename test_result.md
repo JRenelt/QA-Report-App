@@ -423,6 +423,42 @@ backend:
           agent: "testing"
           comment: "GERMAN REVIEW SPECIFIC TEST: Login with admin@test.com/admin123 FAILED with 401 Unauthorized. However, login with admin/admin123 (username) works perfectly. Email-based login not supported or user admin@test.com does not exist."
 
+  - task: "BUG-003 Fix: Companies API Endpoint"
+    implemented: true
+    working: true
+    file: "backend/routes/companies.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ BUG-003 FIXED: GET /api/companies/ returns 200 OK with 'Demo Firma' - Found 1 companies. Admin authentication working correctly with JWT tokens. Endpoint accessible with proper trailing slash."
+
+  - task: "BUG-002 Fix: Projects API Endpoint"
+    implemented: true
+    working: true
+    file: "backend/routes/projects.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ BUG-002 FIXED: GET /api/projects/ returns 200 OK with 'Demo Projekt' - Found 1 projects. Admin authentication working correctly with JWT tokens. Endpoint accessible with proper trailing slash."
+
+  - task: "BUG-001 Fix: PDF Generation Endpoint"
+    implemented: true
+    working: true
+    file: "backend/routes/pdf_reports.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ BUG-001 FIXED: Correct endpoint is /api/pdf-reports/generate/{project_id} - returns 200 OK with Content-Type: application/pdf. No more 500 Internal Server Error (UnboundLocalError). Admin authentication working correctly."
+
 frontend:
   - task: "Login Dark Mode Kontrast"
     implemented: true
