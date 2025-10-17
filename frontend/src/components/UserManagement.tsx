@@ -63,6 +63,8 @@ const UserManagement: React.FC<UserManagementProps> = ({
       if (response.ok) {
         const data = await response.json();
         setCompanies(data);
+        console.log(`[UserManagement] ${data.length} Firmen geladen`);
+        console.log('[UserManagement] Firmen:', data.map((c: any) => ({ id: c.id, name: c.name })));
         
         // Default: Alle Firmen anzeigen (leerer String)
         setSelectedCompanyId('');
