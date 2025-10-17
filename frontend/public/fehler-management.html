@@ -379,28 +379,32 @@
                     </div>
                 </li>
                 
-                <li class="error-item critical" id="error-fe-002" data-status="open">
+                <li class="error-item critical completed" id="error-fe-002" data-status="completed">
                     <div class="title">
-                        <span>FE-002: Modal-Interaktionen defekt</span>
-                        <button class="status-toggle" onclick="toggleStatus('error-fe-002')">Als Erledigt markieren</button>
+                        <span>FE-002: Modal-Interaktionen defekt <span class="badge completed">✅ ERLEDIGT</span></span>
+                        <button class="status-toggle completed" onclick="toggleStatus('error-fe-002')">Erledigt ✓</button>
                     </div>
                     <div class="description">
                         <strong>Komponente:</strong> <span class="code-ref">SettingsModal.tsx</span>, <span class="code-ref">CompanyManagement.tsx</span>, <span class="code-ref">UserManagement.tsx</span><br>
                         <strong>Problem:</strong> Modals öffnen nicht oder Overlay blockiert Interaktionen<br>
-                        <strong>Auswirkung:</strong> Systemeinstellungen, Firmen-/Benutzerverwaltung nicht zugänglich
+                        <strong style="color: #28a745;">✅ FIX:
+                        1. Doppelte Modal-Renderings entfernt (QADashboardV2.tsx Zeile 2296-2310)<br>
+                        2. z-index Konflikte behoben (z-50 für Modals)<br>
+                        3. isOpen-Check funktioniert korrekt<br>
+                        4. Overlay onClick schließt Modal korrekt</strong>
                         
                         <div class="reproduction-steps">
-                            <h4>Reproduktionsschritte:</h4>
+                            <h4>Getestet:</h4>
                             <ol>
-                                <li>Login mit admin/admin123</li>
-                                <li>Klicke auf Settings-Button (Zahnrad-Icon)</li>
-                                <li>Modal öffnet nicht oder ist nicht bedienbar</li>
-                                <li>Alternativ: Klicke auf Company/User Management Icons</li>
+                                <li>Settings-Button öffnet Modal korrekt</li>
+                                <li>Company/User Management Icons funktionieren</li>
+                                <li>Overlay-Click schließt Modal</li>
+                                <li>X-Button schließt Modal</li>
                             </ol>
                         </div>
                     </div>
                     <div class="meta">
-                        <span class="badge critical">KRITISCH</span>
+                        <span class="badge completed">✅ ERLEDIGT</span>
                         <span>⚛️ Frontend</span>
                         <span>⏱️ Fix: 1-2 Std</span>
                         <span class="timestamp" data-timestamp=""></span>
