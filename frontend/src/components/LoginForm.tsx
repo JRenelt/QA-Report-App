@@ -7,7 +7,9 @@ interface LoginFormProps {
   darkMode?: boolean;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMode = false }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMode = true }) => {
+  // Login ist PERMANENT im Dark Mode - ignoriere darkMode Prop
+  const forceDarkMode = true;
   const [formData, setFormData] = useState({
     username: '',
     password: ''
