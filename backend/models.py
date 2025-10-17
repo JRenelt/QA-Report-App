@@ -10,8 +10,9 @@ import uuid
 
 # Enums
 class UserRole(str, Enum):
-    admin = "admin"
-    qa_tester = "qa_tester"
+    sysop = "sysop"      # System-Administrator (nur ID2, höchste Rechte)
+    admin = "admin"      # Administrator (kann Firmen + User anlegen, aber keine SysOps)
+    qa_tester = "qa_tester"  # Tester (nur eigenes Profil ändern, keine User anlegen)
     reviewer = "reviewer"
 
 class Language(str, Enum):
