@@ -238,6 +238,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
       is_active: user.is_active,
       companyId: user.companyId || selectedCompanyId
     });
+    setShowPassword(false); // Passwort-Anzeige zurücksetzen
     setShowEditModal(true);
   };
 
