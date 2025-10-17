@@ -72,7 +72,7 @@ async def get_company(company_id: str, current_user: User = Depends(get_current_
         )
     
     # Check access rights
-    if current_user.role != "admin" and company["created_by"] != current_user.id:
+    if current_user.role not in ["admin", "sysop"] and company["created_by"] != current_user.id:
         # Check if user has access via projects
         projects = await projects_collection.find({"company_id": company_id}).to_list(1000)
         project_ids = [p["id"] for p in projects]
