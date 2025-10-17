@@ -178,8 +178,8 @@ async def generate_pdf_report(
     
     for case_id in case_ids:
         if case_id in latest_results:
-            status = latest_results[case_id]["status"]
-            status_counts[status] = status_counts.get(status, 0) + 1
+            result_status = latest_results[case_id]["status"]
+            status_counts[result_status] = status_counts.get(result_status, 0) + 1
         else:
             status_counts["untested"] += 1
     
@@ -314,8 +314,8 @@ async def get_report_summary(
     
     for case_id in case_ids:
         if case_id in latest_results:
-            status = latest_results[case_id]["status"]
-            status_counts[status] = status_counts.get(status, 0) + 1
+            result_status = latest_results[case_id]["status"]
+            status_counts[result_status] = status_counts.get(result_status, 0) + 1
         else:
             status_counts["untested"] += 1
     
