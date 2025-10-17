@@ -38,6 +38,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [showPassword, setShowPassword] = useState(false); // Passwort anzeigen Toggle
   const [formData, setFormData] = useState({
     username: '',
     email: '',
