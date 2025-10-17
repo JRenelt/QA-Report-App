@@ -14,7 +14,7 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, darkMode, curren
 
   if (!isOpen) return null;
 
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'sysop';
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
