@@ -234,20 +234,22 @@ async def main():
         # Initialize indexes
         await init_db()
         
+        # Create SysOp user and ID2 company FIRST
+        await create_sysop_user()
+        
         # Create admin user
         await create_admin_user()
         
-        # Create QA demo user
-        await create_qa_demo_user()
-        
-        # Create sample data
+        # Create sample data (5 companies with 2 users each)
         await create_sample_data()
         
         print("\n✅ Database initialization complete!")
         print("\n📝 Login credentials:")
+        print("   SysOp (ID2) - Username: jre, Password: sysop123")
         print("   Admin - Username: admin, Password: admin123")
-        print("   QA Demo - Username: qa_demo, Password: demo123")
-        print("\n⚠️  Please change the admin password after first login!\n")
+        print("   Company Admins - Username: admin_[firma], Password: admin123")
+        print("   Company Testers - Username: tester_[firma], Password: test123")
+        print("\n⚠️  Please change passwords after first login!\n")
         
     except Exception as e:
         print(f"\n❌ Error during initialization: {e}")
