@@ -796,23 +796,17 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Reload Button Functionality - ❌ CRITICAL MIXED CONTENT ERROR (Button works but HTTP/HTTPS protocol mismatch blocks API calls)"
-    - "Login Authentication Fix - ❌ CRITICAL BLOCKING ISSUE (No auth token stored after login)"
-    - "Test Data Generation - Frontend Sync - ❌ FAILED (Authentication failure prevents API calls)"
-    - "PDF Export from Settings Modal - ❌ LIKELY AFFECTED (Authentication required)"
-    - "CSV/Excel Export from Settings Modal - ❌ LIKELY AFFECTED (Authentication required)"
-    - "Mass Data Generation with Safety Check - ❌ LIKELY AFFECTED (Authentication required)"
-    - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch)"
-    - "Company Management Modal - ❌ FAILED (Factory icon not accessible in header)"
-    - "Template Test-ID Format - ❌ INCOMPLETE (depends on Company Management modal)"
+    - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch blocks some API calls)"
+    - "SysOp Login Authentication - ❌ CRITICAL (jre/sysop123 fails with 401 error)"
+    - "Company Management Data Loading - ❌ FAILED (0 companies loaded due to Mixed Content Error)"
+    - "German Company CRUD Operations - ❌ INCOMPLETE (Cannot test create/edit/delete without data)"
+    - "QA-Tester Role Testing - ❌ INCOMPLETE (Modal interaction issues prevent testing)"
+    - "Template Test-ID Format - ❌ INCOMPLETE (depends on Company Management data)"
   stuck_tasks: 
-    - "Reload Button Functionality - CRITICAL: Button functionality works correctly but Mixed Content Error prevents API calls. Frontend making HTTP requests to HTTPS backend blocked by browser security policy. Root cause of user's 'Failed to fetch' frustration."
-    - "Login Authentication Fix - CRITICAL: Login form accepts credentials but NO auth token stored in localStorage. User appears logged in but NOT authenticated. Breaks ALL API functionality."
-    - "Mixed Content Error Fix - CRITICAL: HTTP/HTTPS protocol mismatch blocking ALL backend API calls (User Management, Company Management, data loading)"
-    - "Company Management Modal - Factory icon not found in header, modal does not open"
-    - "Template Test-ID Format - Cannot test due to Company Management modal issues"
-    - "Logout Functionality - accessibility issue"
-    - "Admin Login with Email - email-based login not implemented"
+    - "Mixed Content Error Fix - CRITICAL: Some API calls use HTTP while frontend is HTTPS, causing browser security policy violations. Affects company data loading and project API calls."
+    - "SysOp Login Authentication - CRITICAL: jre/sysop123 credentials return 401 Unauthorized, no auth token stored. SysOp role cannot be tested."
+    - "German Company Management Testing - BLOCKED: UI works but 0 companies loaded from backend due to Mixed Content Error. Cannot test CRUD operations without data."
+    - "German Role-Based Permissions Testing - PARTIAL: Admin permissions work correctly, but SysOp and QA-Tester roles cannot be fully tested due to authentication and modal issues."
   test_all: false
   test_priority: "high_first"
 
