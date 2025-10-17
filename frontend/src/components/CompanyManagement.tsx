@@ -40,36 +40,42 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
   currentUser 
 }) => {
   const [activeTab, setActiveTab] = useState<'companies' | 'projects'>('companies');
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loading, setLoading] = useState(false);
   
-  // Companies aus localStorage laden (oder Fallback zur ID2)
-  const [companies, setCompanies] = useState<Company[]>(() => {
-    const storedCompanies = localStorage.getItem('qa_companies');
-    if (storedCompanies) {
-      try {
-        return JSON.parse(storedCompanies);
-      } catch (e) {
-        console.error('Fehler beim Laden der Companies aus localStorage:', e);
+  // Companies vom Backend laden
+  const loadCompanies = async () => {
+    try {
+      setLoading(true);
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+      const response = await fetch(`${backendUrl}/api/companies/`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setCompanies(data);
+        localStorage.setItem('qa_companies', JSON.stringify(data));
+        console.log(`✅ ${data.length} Companies vom Backend geladen`);
+      } else {
+        console.error('❌ Fehler beim Laden der Companies:', response.status);
       }
+    } catch (error) {
+      console.error('❌ Fehler beim Laden der Companies:', error);
+    } finally {
+      setLoading(false);
     }
-    // Fallback: Nur ID2 GmbH (System-Firma)
-    return [{
-      id: 'ID2',
-      name: 'ID2 GmbH',
-      address: 'Brockhausweg 66b',
-      city: 'Hamburg',
-      postalCode: '22117',
-      country: 'Deutschland',
-      createdAt: new Date().toISOString(),
-      usersCount: 2,
-      projectsCount: 0
-    }];
-  });
+  };
   
-  // Companies in localStorage speichern wenn sie sich ändern
-  React.useEffect(() => {
-    localStorage.setItem('qa_companies', JSON.stringify(companies));
-    console.log('Companies in localStorage gespeichert:', companies.length);
-  }, [companies]);
+  // Companies beim Öffnen laden
+  useEffect(() => {
+    if (isOpen && authToken) {
+      loadCompanies();
+    }
+  }, [isOpen, authToken]);
   
   const [projects, setProjects] = useState<Project[]>(() => {
     const saved = localStorage.getItem('qa_projects');
