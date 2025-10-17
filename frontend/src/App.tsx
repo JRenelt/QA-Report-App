@@ -333,7 +333,8 @@ function App() {
 
   return (
     <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
-      <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-200`}>
+      {/* Login-Seite: PERMANENT Dark Mode, Dashboard: User-wählbar */}
+      <div className={`min-h-screen ${!authToken ? 'bg-gray-900' : (darkMode ? 'bg-gray-900' : 'bg-gray-50')} transition-colors duration-200`}>
         {/* Modals */}
         <SettingsModal
           isOpen={showSettings}
