@@ -272,6 +272,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
       
       // DANN: Filter nach ausgewählter Firma (wenn nicht "Alle")
       if (selectedCompanyId && user.companyId !== selectedCompanyId) {
+        console.log(`[Filter] User ${user.username} ausgeschlossen: companyId ${user.companyId} !== ${selectedCompanyId}`);
         return false;
       }
       
@@ -282,6 +283,14 @@ const UserManagement: React.FC<UserManagementProps> = ({
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
     );
+  
+  // Debug-Log für gefilterte User
+  React.useEffect(() => {
+    if (users.length > 0) {
+      console.log(`[UserManagement] Filter angewendet: ${users.length} -> ${filteredUsers.length} User`);
+      console.log(`[UserManagement] selectedCompanyId: "${selectedCompanyId}"`);
+    }
+  }, [selectedCompanyId, users, filteredUsers.length]);
   
   // Funktion zur Hervorhebung des Suchtexts (gelbe Markierung)
   const highlightText = (text: string, search: string) => {
