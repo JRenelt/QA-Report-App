@@ -559,12 +559,15 @@ const UserManagement: React.FC<UserManagementProps> = ({
               />
               <select
                 value={formData.role}
-                onChange={(e) => setFormData({...formData, role: e.target.value as 'admin' | 'qa_tester'})}
+                onChange={(e) => setFormData({...formData, role: e.target.value as 'sysop' | 'admin' | 'qa_tester'})}
                 className="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white text-sm focus:border-cyan-500 focus:outline-none"
-                disabled={selectedUser.id === currentUser.id} // Eigene Rolle nicht ändern
+                disabled={selectedUser.id === currentUser.id || isTester} // Eigene Rolle nicht ändern, Tester kann Rolle nicht ändern
               >
                 <option value="qa_tester">QA-Tester</option>
                 <option value="admin">Administrator</option>
+                {selectedUser.role === 'sysop' && (
+                  <option value="sysop">SysOp</option>
+                )}
               </select>
               <div className="flex items-center space-x-2">
                 <input
