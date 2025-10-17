@@ -80,7 +80,7 @@
 1. F12 drücken (Entwickler-Tools öffnen)
 2. **Application Tab** wählen
 3. Links: **"Lokaler Speicher"** erweitern
-4. Auf `https://testsync-pro.preview.emergentagent.com` klicken
+4. Auf `https://report-qa-portal.preview.emergentagent.com` klicken
 5. Alle Keys/Einträge auf der rechten Seite auswählen
 6. **Delete-Taste** drücken oder Button "Websitedaten löschen" verwenden
 7. Optional: **"Service Workers"** → Alle "Unregister" klicken

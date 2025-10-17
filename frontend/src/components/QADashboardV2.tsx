@@ -270,7 +270,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     setIsLoadingProjects(true);
     console.log('🔄 MANUELLER RELOAD - Lade Projekte aus Backend...');
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
       const token = localStorage.getItem('authToken');
       
       if (!token) {
@@ -308,7 +308,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       if (!saved || JSON.parse(saved).length === 0) {
         console.log('⚠️ LocalStorage leer - lade Projekte aus Backend...');
         try {
-          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
           const authToken = localStorage.getItem('authToken');
           
           if (!authToken) {

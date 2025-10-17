@@ -89,7 +89,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     setLoading(true);
     try {
       // Use environment variable for deployment-ready code
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
       console.log('🔒 Backend URL (from env):', backendUrl);
       console.log('🔍 DEBUG: Making request to:', `${backendUrl}/api/admin/generate-test-data`);
       console.log('🔍 DEBUG: Auth Token available:', !!authToken);
@@ -138,7 +138,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     setLoading(true);
     try {
       // Use environment variable for deployment-ready code
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
       console.log('🔒 Backend URL (from env):', backendUrl);
       console.log('Optimiere Datenbank, URL:', `${backendUrl}/api/admin/optimize-database`);
       console.log('Auth Token:', authToken ? 'vorhanden' : 'fehlt');
@@ -202,7 +202,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     setLoading(true);
     try {
       // Use environment variable for deployment-ready code
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
       console.log('🔒 Backend URL (from env):', backendUrl);
       console.log('🔒🔒🔒 Generiere Masse-Daten...');
       console.log('🔒🔒🔒 LocalStorage Projekte vorhanden:', hasLocalStorageProjects);
@@ -274,7 +274,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     try {
       // 1. Backend-Datenbank leeren
       // Use environment variable for deployment-ready code
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
       console.log('🔒 Backend URL (from env):', backendUrl);
       console.log('Leere Datenbank, URL:', `${backendUrl}/api/admin/clear-database`);
       console.log('Auth Token:', authToken ? 'vorhanden' : 'fehlt');
@@ -448,7 +448,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     setLoading(true);
     try {
       // Use environment variable for deployment-ready code
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
       console.log('🔒 Backend URL (from env):', backendUrl);
       
       // Projekt-ID aus localStorage oder ersten verfügbaren Projekt
@@ -510,7 +510,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     setLoading(true);
     try {
       // Use environment variable for deployment-ready code
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testsync-pro.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
       console.log('🔒 Backend URL (from env):', backendUrl);
       
       // Projekt-ID aus localStorage

@@ -1,66 +1,59 @@
 <analysis>
-The AI engineer focused on enhancing the QA-Report-App, transitioning it from MVP to a more robust, user-friendly system. Initial work involved UI/UX, feature additions like dynamic sidebar, role-based access, improved login, and comprehensive company/project management. The core task in the provided trajectory involved fixing dynamic data loading, addressing UI inconsistencies (e.g., project dropdown, sidebar width, counter visibility), and resolving persistent issues with database operations (clear, optimize) due to authentication failures. Significant effort was also put into refining test ID generation rules, creating a glossary feature with admin-only access, and generating various test data templates. The work was highly iterative, driven by direct user feedback, with a strong emphasis on TypeScript error checking and maintaining the German localization. The latest unresolved issue is the failure to display mass-generated projects in the frontend because they are only created in the backend, not synchronized with local storage.
+The AI engineer has been meticulously working on the QA-Report-App, transitioning it from an MVP to a more robust system. A significant portion of the trajectory focused on resolving dynamic data loading issues, UI inconsistencies, and persistent database operation problems, often complicated by authentication failures and local storage synchronization challenges. The core issue that consumed the latter part of the development cycle was a persistent Mixed Content error, where the frontend (running on HTTPS) attempted to make API calls via HTTP. Despite numerous code fixes (Auth token, hardcoded projects, URL protocols) and attempts to bypass caching mechanisms, the deployed frontend continued to serve outdated JavaScript bundles from a CloudFront CDN. This infrastructure-level caching issue has blocked all recent code changes from becoming visible and functional in the preview environment, leading to user frustration. The engineer has identified the CDN as the root cause and has provided instructions for user to contact support, while simultaneously making the application deployment-ready by removing all hardcoded URLs.
 </analysis>
 
 <product_requirements>
-The QA-Report-App is a full-stack application with a FastAPI backend (MongoDB, JWT auth) and React TypeScript frontend, localized in German. It generates PDF reports, imports/exports Excel/CSV, manages archives, and supports Admin/QA-Tester roles. The  is central, featuring a dynamic sidebar for test areas/test cases, fixed headers/footers, dark mode, multi-tab settings, and help modals.
-
-Key user requests and implementations throughout the trajectory:
-*   **UI/UX:** Fixed header/footer, dark mode, multi-tab settings, help modals. Dynamic sidebar (project selection, counter, test areas), square filter buttons, compact design, improved Login Dark Mode contrast.
-*   **Data Management:** Comprehensive Company & Project Management with admin control, explicit versioning. Template download/import with correct ID generation. Auto-opening edit modal for new test cases with auto-focus and default text. Dynamic, edge-aware tooltip positioning.
-*   **Role-based Access:** Role-based restrictions for QA-Testers. Glossary feature to be Admin-only.
-*   **Database Operations:** Implement Database leeren (clear database) to keep only ID2 company, delete all projects/test data, and clear local storage. Implement DB Optimieren (optimize database).
-*   **Test Data/Templates:** Dynamically load projects and associated test data. Generate new JSON/CSV templates (small, full, regelkonform IDs). Implement mass data generation (50 companies, 50 test suites/cases each) for performance testing, only visible for Admin.
-*   **ID Format:** Test IDs to be initials of each word in the test case title, replacing special characters with spaces, followed by a running 3-digit number.
-*   **System Documentation:** Create persistent project rules () and a glossary/wiki with search and highlighting features.
+The QA-Report-App is a full-stack, German-localized application for QA reporting (FastAPI/MongoDB backend, React/TypeScript frontend). It generates PDF reports, imports/exports Excel/CSV, and supports Admin/QA-Tester roles. Features include:
+*   **UI/UX:** Fixed headers/footers, dark mode, multi-tab settings, dynamic sidebar for project selection, square filter buttons, improved login contrast.
+*   **Data Management:** Comprehensive Company & Project Management with template download/import and correct ID generation. Dynamic data loading from backend, synchronized with .
+*   **Role-based Access:** Restricted Gefahrenbereich, tech docs, mass data generation, and glossary to Admin-only. QA-Testers see only their company, with restricted create/delete.
+*   **Database Operations:** Datenbank leeren (clear database, preserving ID2 company/admin users, deleting projects/test data, clearing local storage), DB Optimieren, and mass data generation for performance testing (Admin-only).
+*   **Test Data/Templates:** Dynamically load projects and associated test data.
+*   **ID Format:** Test IDs derived from initials of test case titles.
+*   **Documentation:** Persistent project rules and a glossary/wiki.
 </product_requirements>
 
 <key_technical_concepts>
 -   **Backend**: FastAPI, MongoDB (pymongo), JWT Authentication (python-jose, bcrypt).
--   **Frontend**: React.js, TypeScript, Tailwind CSS, Lucide-React for icons, React Router DOM, Local Storage for state persistence, Craco for build customization.
--   **Deployment**: Supervisor, Kubernetes Ingress.
+-   **Frontend**: React.js, TypeScript, Tailwind CSS, Local Storage, React Router DOM.
+-   **Deployment**: Supervisor, Kubernetes Ingress, CloudFront CDN.
 -   **Data Handling**: JSON/CSV import/export, UUIDs.
 -   **Architecture**: Full-stack, client-server model, German localization.
 </key_technical_concepts>
 
 <code_architecture>
-The application uses a full-stack architecture:
 
-
--   ****: Entry point. Added global NoCache middleware. Modified health check endpoint to .
--   ****: Modified  to only preserve ID2 company and admin users, delete all projects/test data. Added  endpoint. Added  endpoint for performance testing.
--   ****: Contains JWT authentication logic.
--   ****: Manages global state. Passes  to  and . Fixed health check API call to . GlossaryModal integrated, visibility tied to admin role.
--   ****: Hardcoded test cases removed (lines 142-163).  declaration moved before  (around line 70-73). Project dropdown placeholder Bitte Projekt auswählen added. Test areas and counter now display only when a project is selected. Sidebar width calculation () adjusted to accommodate longer project names and no project selected message. Project selection and project polling now load/save from/to localStorage. Glossary button added, visible only to admins.  (company dropdown) now loads from localStorage instead of being hardcoded.
--   ****: Improved contrast for elements in Dark Mode.
--   ****: Restricted Gefahrenbereich to admins, limited test data generation for QA-Testers, and implemented PDF/CSV export functionalities. Datenbank leeren now clears all relevant localStorage keys. DB Optimieren and Masse-Daten generieren buttons added (the latter for admin only). Error logging for API calls improved.
--   ****: Implemented role-based visibility, hiding Technische Doc and Installationshilfen for QA-Testers. Link to GlossaryModal added, restricted to Admin.
--   ****: Implemented role-based user filtering and restrictions on create/delete for QA-Testers. Added  to the  interface. Resolved a  role runtime error.
--   ****: Hardcoded companies removed (lines 43-90, and 67-74 remnants).  and  now save projects and their associated test data to localStorage. Projects are saved to localStorage after create, update, or delete.  now cascades to delete associated projects/test data from localStorage. Delete button for company ID2 is hidden. Template download buttons (JSON/CSV) added. Duplicate project import now appends , , etc. to the project name.
--   ****: A new component created for a Wiki/Glossar, accessible only to Admin users. Contains search and highlighting functionality.
--   ****: Added custom scrollbar styles for Dark Mode.
--   ****: Added global NoCache meta-tags.
--   ****: Created to store persistent project rules (ID format, data handling, ID2 protection, cascading delete, UI/UX, backend conventions, German localization, TypeScript, forbidden actions, best practices).
--   ****: Created as a short README for new developers.
--   ****: Created to document test ID generation for verification.
--   ****: New JSON template with updated ID format.
--   ****, ****: New smaller templates.
+-   ****: Configured to dynamically load its port using .
+-   ****: Implemented a check before mass data generation, returning HTTP 409 if projects exist.
+-   ****: Manages global  state, reading from .
+-   ****:
+    -   Removed hardcoded fallback projects and adjusted polling logic.
+    -   Added an  hook for initial backend project loading and a manual Reload button in the header.
+    -   All hardcoded backend URLs replaced with .
+-   ****: Corrected  storage from  to  in .
+-   ****:
+    -    and  now include  checks, 409 error handling, and instruct manual page reload after success.
+    -   PDF/CSV export endpoints corrected, and  extension fixed for Excel export.
+    -   Project existence checks added to export functions.
+    -   Temporarily implemented a sidebar, but this was reverted due to TypeScript errors and is no longer present in the code. All backend URLs now correctly use .
+-   ****: Removed hardcoded fallback projects.
+-   ****: Updated with rules on frontend anomalies, browser cache clearing, and user browser preferences.
 </code_architecture>
 
 <pending_tasks>
--   **PDF Report Structure:** Rework the test report preview () as per detailed user specifications.
--   **PDF/CSV Export Dialogs:** Implement Save as dialogs (explicit file naming) for PDF/CSV exports.
--   **Test Data Load Function:** Implement the Load Test Data function (currently OF).
--   **Dark/Bright Mode UI Anpassungen:** Address remaining UI elements not adapting correctly to dark/light mode.
--   **Masse-Daten Generierung Frontend Update:** After mass data generation in the backend, the frontend does not display the newly created companies/projects from MongoDB; it only loads from localStorage. This needs synchronization.
--   **DB Leeren/Optimieren Frontend Error Messages:** The UI still shows Fehler beim Leeren der Datenbank or Fehler beim Optimieren, despite backend success. This implies a frontend display/handling error.
--   **Projekt-Löschung Sofort Sichtbar (Re-evaluation):** User reported that project deletion results are only visible after a reload. The  was updated, but the issue persists, possibly due to filtering or other UI update mechanisms.
+-   **PDF Report Structure:** Rework the test report preview ().
+-   **PDF/CSV Export Dialogs:** Implement Save as dialogs with explicit file naming.
+-   **Test Data Load Function:** Implement the Load Test Data function.
+-   **Dark/Bright Mode UI Anpassungen:** Address remaining UI elements not adapting correctly.
+-   **User/Company Management Enhancements:** Admin needs CRUD for all users/companies, ability to block. QA-Tester needs restricted profile editing.
+-   **Glossary Update:** Add Dashboard, Modal, Settings-Modal to the glossary.
+-   **CDN Cache Invalidierung:** Critical blocker: CloudFront CDN is serving old JavaScript bundles, causing Mixed Content errors and preventing new fixes from being visible. This requires support intervention.
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer was addressing the issue where Masse-Daten (mass-generated data) created in the backend were not visible in the frontend. The core problem identified is that the frontend ( and ) primarily loads company and project data from , while the mass data generation function ( in ) creates these entities directly in the MongoDB backend. Consequently, the frontend has no mechanism to fetch or synchronize these newly created backend entities into its local state or  without a manual intervention or explicit API call. The AI engineer has just acknowledged this root cause and the last action taken was to state the next logical step: Ich muss das Frontend erweitern, damit es nach der Masse-Daten-Generierung die Daten aus dem Backend lädt. (I need to extend the frontend so that it loads the data from the backend after the mass data generation.)
+The AI engineer's current work revolves around a critical deployment and caching issue. Despite numerous code changes, including correcting authentication token storage, removing hardcoded projects, ensuring  is cleared, fixing API endpoints, and replacing all hardcoded backend URLs with environment variables (making the app Deployment-Ready), the deployed frontend preview consistently exhibits Mixed Content errors. This occurs because the CloudFront CDN continues to serve an older JavaScript bundle that still attempts API calls over HTTP instead of HTTPS. Consequently, none of the recent fixes are visible or functional to the user, leading to a Failed to fetch error for most backend operations (mass data generation, test data generation, database operations). The backend itself confirms successful data generation, but the frontend cannot retrieve or display it. The user has contacted support, and the AI engineer has provided detailed testing instructions and follow-up email drafts. The current state is that the code is functionally correct and deployment-ready, but the live preview environment is broken due to an external CDN caching problem, which is outside the AI engineer's direct control to resolve via code. The user's latest input indicates they are still seeing the HTTP error despite following instructions, and support has suggested the AI engineer fix it using DEV-Tool messages.
 </current_work>
 
 <optional_next_step>
-Check for existing backend API endpoints  and  to fetch the company and project data from MongoDB.
+Based on the user's latest feedback, analyze the provided DEV-Tool F12 screenshot to identify the exact HTTP error.
 </optional_next_step>

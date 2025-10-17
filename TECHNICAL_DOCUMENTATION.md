@@ -90,7 +90,7 @@ Die **QA-Report-App** ist eine [Full-Stack-Webanwendung](#architektur) für [Qua
 ### Umgebungsvariablen
 **Frontend (.env):**
 ```
-REACT_APP_BACKEND_URL=https://testsync-pro.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://report-qa-portal.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 ```
 
