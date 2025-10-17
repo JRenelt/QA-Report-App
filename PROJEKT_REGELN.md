@@ -37,6 +37,16 @@
 - **Test ob behoben:** Console prüfen auf "Mixed Content: http://" Fehler - wenn weg, dann behoben
 - **Support-Kontakt:** support@emergent.sh mit Job-ID und Preview-URL
 
+### Bekannte Fehler-Muster
+**REGEL:** JSX-Fragment-Error (häufiger Syntax-Fehler)
+- **Symptom:** TypeScript-Fehler "Unexpected token" mit Zeichen wie `}`}>`
+- **Ursache:** Bei Code-Ersetzungen bleiben versehentlich Syntax-Reste stehen
+- **Prävention:**
+  - Immer die komplette Zeile/Block prüfen nach Änderungen
+  - TypeScript-Compiler-Fehler sofort checken
+  - `tail -n 50 /var/log/supervisor/frontend.out.log` nach jeder Änderung ausführen
+- **Lösung:** Fehlerhafte Syntax-Reste manuell entfernen
+
 ### Test-ID Format
 **REGEL:** Anfangsbuchstabe JEDES Wortes im Titel des Testfalles + laufende Nummer (3-stellig)
 - **Format:** `[BUCHSTABEN][NUMMER]` (z.B. LDD001, SLMEP002)
