@@ -1,35 +1,35 @@
 {
   "total_tests": 4,
-  "passed": 1,
-  "failed": 3,
-  "success_rate": 25.0,
+  "passed": 4,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "Admin Login",
       "success": true,
       "message": "Admin login successful - User: admin, Role: admin",
-      "timestamp": "2025-10-17T06:41:44.845910",
+      "timestamp": "2025-10-17T06:42:06.952679",
       "response_data": null
     },
     {
       "test": "BUG-003 Companies Endpoint",
-      "success": false,
-      "message": "\u274c BUG-003 NOT FIXED: Expected 200 OK, got HTTP 403: {\"detail\":\"Not authenticated\"}",
-      "timestamp": "2025-10-17T06:41:44.904690",
+      "success": true,
+      "message": "\u2705 BUG-003 FIXED: GET /api/companies returns 200 OK with 'Demo Firma' - Found 1 companies",
+      "timestamp": "2025-10-17T06:42:06.969469",
       "response_data": null
     },
     {
       "test": "BUG-002 Projects Endpoint",
-      "success": false,
-      "message": "\u274c BUG-002 NOT FIXED: Expected 200 OK, got HTTP 403: {\"detail\":\"Not authenticated\"}",
-      "timestamp": "2025-10-17T06:41:44.964368",
+      "success": true,
+      "message": "\u2705 BUG-002 FIXED: GET /api/projects returns 200 OK with 'Demo Projekt' - Found 1 projects",
+      "timestamp": "2025-10-17T06:42:06.982000",
       "response_data": null
     },
     {
       "test": "BUG-001 PDF Generate Endpoint",
-      "success": false,
-      "message": "No project ID available for testing",
-      "timestamp": "2025-10-17T06:41:44.964404",
+      "success": true,
+      "message": "\u2705 BUG-001 FIXED: Correct endpoint is /api/pdf-reports/generate/941fbd87-bdd7-473a-88d4-0ed6789b603e - returns 200 OK - Content-Type: application/pdf",
+      "timestamp": "2025-10-17T06:42:07.063448",
       "response_data": null
     }
   ]
