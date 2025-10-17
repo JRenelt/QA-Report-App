@@ -135,7 +135,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
 
   if (!isOpen) return null;
 
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'sysop';
   const userCompanyId = currentUser?.companyId || 'comp-1';
 
   // Filter companies and projects based on user role
