@@ -147,17 +147,6 @@ const UserManagement: React.FC<UserManagementProps> = ({
       alert('Netzwerkfehler: Benutzer konnte nicht erstellt werden. Bitte Backend-URL prüfen.');
     }
   };
-      if (response.ok) {
-        await loadUsers();
-        setShowCreateModal(false);
-        resetForm();
-      } else {
-        console.error('Fehler beim Erstellen des Benutzers');
-      }
-    } catch (error) {
-      console.error('Fehler beim Erstellen des Benutzers:', error);
-    }
-  };
 
   // Benutzer aktualisieren
   const handleUpdateUser = async () => {
