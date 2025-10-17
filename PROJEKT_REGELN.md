@@ -73,14 +73,16 @@
 - Papierkorb-Symbol bei ID2 ausblenden
 - ID2 muss immer in localStorage vorhanden sein
 
-**REGEL:** Admin-User "Jörg Renelt" DARF NIEMALS gelöscht werden
+**REGEL:** SysOp-User "Jörg Renelt" DARF NIEMALS gelöscht werden
 - **Username:** `jre`
+- **Password:** `sysop123` (ändern nach erstem Login!)
 - **Firma:** ID2.de
-- **Rolle:** SysOp (System-Administrator)
-- **Wichtig:** Dieser User ist der System-Administrator und muss immer existieren
+- **Rolle:** SysOp (System-Administrator - höchste Rechte)
+- **Wichtig:** Dieser User ist der einzige System-Administrator und muss IMMER existieren
 - Bei "Datenbank leeren": User "jre" MUSS erhalten bleiben
 - Papierkorb-Symbol bei diesem User ausblenden
 - Kein Löschen über UI oder Backend möglich
+- Kein Update der Rolle möglich (IMMER sysop bleiben)
 
 **WARNUNG:** Passwort-Anzeige in Klarschrift (User-Management)
 - Passwörter können temporär im Klartext angezeigt werden (Eye/EyeOff Toggle)
