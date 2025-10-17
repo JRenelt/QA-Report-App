@@ -1275,8 +1275,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             {/* Firmenanzeige/Auswahl */}
             <div className="flex items-center mt-1">
               <Factory className="h-4 w-4 mr-2 text-gray-500" />
-              {user?.role === 'admin' ? (
-                /* Admin: Firmenauswahl-Dropdown */
+              {(user?.role === 'admin' || user?.role === 'sysop') ? (
+                /* Admin/SysOp: Firmenauswahl-Dropdown */
                 <select
                   value={selectedCompanyId}
                   onChange={(e) => {
