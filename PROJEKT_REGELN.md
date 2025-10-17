@@ -101,7 +101,7 @@
 
 **REGEL:** SysOp-User "Jörg Renelt" DARF NIEMALS gelöscht werden
 - **Username:** `jre`
-- **Password:** `sysop123` (ändern nach erstem Login!)
+- **Password:** `sysop123` (bis auf weiteres, später ändern empfohlen)
 - **Firma:** ID2.de
 - **Rolle:** SysOp (System-Administrator - höchste Rechte)
 - **Wichtig:** Dieser User ist der einzige System-Administrator und muss IMMER existieren
