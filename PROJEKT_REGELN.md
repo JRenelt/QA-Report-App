@@ -2,6 +2,24 @@
 
 ## 🎯 Wichtige Projekt-Regeln
 
+### AI-Agent Arbeitsregeln
+**REGEL:** Kritische Arbeitsabläufe für AI-Agent
+1. **Erledigte Aufgaben:** 
+   - ❌ NIEMALS erledigte Aufgaben wieder auf "unerledigt" setzen
+   - ✅ NUR User darf Aufgaben manuell auf "unerledigt" stellen
+   - ✅ Bei Unsicherheit: User fragen, ob Aufgabe wirklich erledigt ist
+
+2. **Projektregeln anzeigen:**
+   - ✅ Nach JEDER Änderung an PROJEKT_REGELN.md die komplette Datei anzeigen
+   - ✅ User muss Änderungen sofort sehen können
+
+3. **Frontend-Kompilierungs-Check:**
+   - ✅ Nach JEDER erledigten Aufgabe Frontend-Logs prüfen
+   - ✅ Command: `tail -n 50 /var/log/supervisor/frontend.out.log | grep -i "compiled\|error\|failed"`
+   - ✅ Auf "Compiled with problems:" oder andere Fehler prüfen
+   - ✅ User SOFORT informieren wenn Frontend nicht kompiliert
+   - ✅ Fehler NICHT ignorieren - Frontend muss immer zugänglich sein
+
 ### Entwicklungsumgebung
 **REGEL:** User arbeitet mit 3 Browsern für Testing und Entwicklung
 - **Chrome** (primär für Entwicklung und DevTools)
