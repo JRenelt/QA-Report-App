@@ -478,11 +478,12 @@ const UserManagement: React.FC<UserManagementProps> = ({
               />
               <select
                 value={formData.role}
-                onChange={(e) => setFormData({...formData, role: e.target.value as 'admin' | 'qa_tester'})}
+                onChange={(e) => setFormData({...formData, role: e.target.value as 'sysop' | 'admin' | 'qa_tester'})}
                 className="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white text-sm focus:border-cyan-500 focus:outline-none"
               >
                 <option value="qa_tester">QA-Tester</option>
                 <option value="admin">Administrator</option>
+                {/* SysOp kann nur von anderem SysOp angelegt werden (nicht implementiert - jre ist einziger) */}
               </select>
               <div className="flex items-center space-x-2">
                 <input
