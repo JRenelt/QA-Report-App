@@ -101,6 +101,6 @@ def require_role(required_roles: list):
     return role_checker
 
 # Role-based dependencies
-require_admin = require_role(["admin"])
-require_qa_or_admin = require_role(["admin", "qa_tester"])
-require_any_role = require_role(["admin", "qa_tester", "reviewer"])
+require_admin = require_role(["sysop", "admin"])  # SysOp hat ALLE Admin-Rechte
+require_qa_or_admin = require_role(["sysop", "admin", "qa_tester"])
+require_any_role = require_role(["sysop", "admin", "qa_tester", "reviewer"])
