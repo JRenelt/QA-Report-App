@@ -67,6 +67,32 @@
 - Test-Suites: `qa_suites_{projectId}`
 - Test-Cases: `qa_cases_{projectId}`
 
+### Rollen-System
+**REGEL:** Drei Rollen mit unterschiedlichen Berechtigungen
+
+**1. SysOp (System-Operator)**
+- **Höchste Rechte** im gesamten System
+- Kann ALLE User sehen und verwalten (inkl. Admins)
+- Kann Firmen anlegen, bearbeiten, löschen
+- Kann User mit Rollen "admin" und "qa_tester" anlegen
+- Kann KEINE weiteren SysOps anlegen (nur "jre" existiert)
+- Zugriff auf alle Systemfunktionen
+- **User:** Jörg Renelt (jre) bei Firma ID2.de
+
+**2. Admin (Administrator)**
+- Kann Firmen anlegen, bearbeiten, löschen
+- Kann User mit Rollen "admin" und "qa_tester" für alle Firmen anlegen
+- Kann KEINE SysOps anlegen oder sehen
+- Kann KEINE SysOps bearbeiten oder löschen
+- Voller Zugriff auf eigene Firma und alle anderen Firmen (außer ID2 SysOp)
+
+**3. QA-Tester**
+- Kann NUR eigenes Profil bearbeiten
+- Kann KEINE User anlegen oder löschen
+- Sieht NUR sich selbst in der User-Verwaltung
+- Kann Tests erstellen, bearbeiten, ausführen
+- Zugriff nur auf eigene Firma
+
 ### Geschützte Daten
 **REGEL:** ID2 GmbH ist die System-Firma und DARF NICHT gelöscht werden
 - Bei "Datenbank leeren": Alle Firmen löschen AUSSER ID2
