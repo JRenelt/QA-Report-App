@@ -107,10 +107,10 @@ async def update_company(
         )
     
     # Check permissions
-    if current_user.role != "admin" and company["created_by"] != current_user.id:
+    if current_user.role not in ["admin", "sysop"] and company["created_by"] != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only company creator or admin can update"
+            detail="Only company creator, admin or sysop can update"
         )
     
     update_data = {
