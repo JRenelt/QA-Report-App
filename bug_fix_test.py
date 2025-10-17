@@ -137,7 +137,8 @@ class BugFixTester:
             return False
         
         try:
-            response = self.session.get(f"{API_BASE}/projects", timeout=10)
+            # Try with trailing slash first (as per existing backend_test.py)
+            response = self.session.get(f"{API_BASE}/projects/", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
