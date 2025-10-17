@@ -1,16 +1,9 @@
 <analysis>
-The AI engineer has been meticulously working on the QA-Report-App, transitioning it from an MVP to a more robust system. A significant portion of the trajectory focused on resolving dynamic data loading issues, UI inconsistencies, and persistent database operation problems, often complicated by authentication failures and local storage synchronization challenges. The core issue that consumed the latter part of the development cycle was a persistent Mixed Content error, where the frontend (running on HTTPS) attempted to make API calls via HTTP. Despite numerous code fixes (Auth token, hardcoded projects, URL protocols) and attempts to bypass caching mechanisms, the deployed frontend continued to serve outdated JavaScript bundles from a CloudFront CDN. This infrastructure-level caching issue has blocked all recent code changes from becoming visible and functional in the preview environment, leading to user frustration. The engineer has identified the CDN as the root cause and has provided instructions for user to contact support, while simultaneously making the application deployment-ready by removing all hardcoded URLs.
+The AI engineer has been actively developing the QA-Report-App, addressing several critical bugs and implementing new features requested by the user. Initially, three critical backend bugs (PDF-Report, GET /api/projects, GET /api/companies) were identified and successfully resolved. A significant portion of the work involved improving user and company management, including implementing role-based access (SysOp, Admin, QA-Tester) and enhancing UI elements like login page dark mode and password visibility toggles. A persistent Mixed Content error (frontend HTTPS, API HTTP) due to CloudFront CDN caching has been a recurring blocker, identified as an infrastructure problem beyond direct code fixes. Most recently, the AI engineer improved the Error Management Wiki and adjusted project rules. The current state is that the SysOp login is critically failing with a 401 error, and company management is not displaying data, leading to a blocked workflow.
 </analysis>
 
 <product_requirements>
-The QA-Report-App is a full-stack, German-localized application for QA reporting (FastAPI/MongoDB backend, React/TypeScript frontend). It generates PDF reports, imports/exports Excel/CSV, and supports Admin/QA-Tester roles. Features include:
-*   **UI/UX:** Fixed headers/footers, dark mode, multi-tab settings, dynamic sidebar for project selection, square filter buttons, improved login contrast.
-*   **Data Management:** Comprehensive Company & Project Management with template download/import and correct ID generation. Dynamic data loading from backend, synchronized with .
-*   **Role-based Access:** Restricted Gefahrenbereich, tech docs, mass data generation, and glossary to Admin-only. QA-Testers see only their company, with restricted create/delete.
-*   **Database Operations:** Datenbank leeren (clear database, preserving ID2 company/admin users, deleting projects/test data, clearing local storage), DB Optimieren, and mass data generation for performance testing (Admin-only).
-*   **Test Data/Templates:** Dynamically load projects and associated test data.
-*   **ID Format:** Test IDs derived from initials of test case titles.
-*   **Documentation:** Persistent project rules and a glossary/wiki.
+The QA-Report-App is a German-localized full-stack application (FastAPI/MongoDB backend, React/TypeScript frontend) designed for QA reporting, featuring PDF report generation, Excel/CSV import/export, and Admin/QA-Tester roles. Key features include: UI/UX with fixed headers/footers, dark mode, multi-tab settings, dynamic sidebar for project selection, improved login contrast, and a comprehensive error management wiki. Data management encompasses Company & Project Management with template support and dynamic data loading synchronized with . Role-based access restricts features like Gefahrenbereich and mass data generation to Admin/SysOp. Database operations include clearing and optimizing the DB, and mass data generation for performance. Test IDs are derived from test case titles. Documentation features persistent project rules and a glossary/wiki. The system also now has a SysOp role with ultimate control.
 </product_requirements>
 
 <key_technical_concepts>
@@ -23,37 +16,67 @@ The QA-Report-App is a full-stack, German-localized application for QA reporting
 
 <code_architecture>
 
--   ****: Configured to dynamically load its port using .
--   ****: Implemented a check before mass data generation, returning HTTP 409 if projects exist.
--   ****: Manages global  state, reading from .
+**File Changes Summary:**
 -   ****:
-    -   Removed hardcoded fallback projects and adjusted polling logic.
-    -   Added an  hook for initial backend project loading and a manual Reload button in the header.
-    -   All hardcoded backend URLs replaced with .
--   ****: Corrected  storage from  to  in .
+    -   Added  to  enum for new role.
+    -   Added  field to the  Pydantic model. This was crucial for correctly associating users with companies and was a root cause for a previous filtering issue.
 -   ****:
-    -    and  now include  checks, 409 error handling, and instruct manual page reload after success.
-    -   PDF/CSV export endpoints corrected, and  extension fixed for Excel export.
-    -   Project existence checks added to export functions.
-    -   Temporarily implemented a sidebar, but this was reverted due to TypeScript errors and is no longer present in the code. All backend URLs now correctly use .
--   ****: Removed hardcoded fallback projects.
--   ****: Updated with rules on frontend anomalies, browser cache clearing, and user browser preferences.
+    -   Modified  decorator to allow both admin and sysop roles, granting SysOp full administrative permissions.
+-   ****:
+    -   Completely rewritten to populate the database with a  user, multiple companies, and associated users (Admin and QA-Tester roles). Ensures a rich test environment and consistent  for all users.
+-   ****:
+    -   Fixed  by correctly importing  for HTTP response codes.
+-   ****:
+    -   Updated the user creation (POST) endpoint to correctly save the  for new users.
+-   ****:
+    -   Created to document bugs found in the system, with the ability to mark them as ERLEDIGT.
+-   ****:
+    -   Created as a comprehensive, interactive error management wiki. Button Als erledigt markieren changed to Erledigen with a red background. Statistic cards and navigation buttons were fused into a single row.
+-   ****:
+    -   Created as an HTML version of the  for browser access.
+-   ****:
+    -   Adjusted conditional styling for the main container, header, and footer to enforce a full dark mode on the login page ().
+-   ****:
+    -   Added  to fetch companies dynamically, ensuring consistent data loading.
+-   ****:
+    -   Corrected  storage key from  to  in .
+    -   Modified styling to enforce a permanent dark mode for the login form elements.
+    -   Fixed a critical JSX syntax error that prevented compilation.
+-   ****:
+    -   Updated permission check for Gefahrenbereich to include both admin and sysop roles.
+-   ****:
+    -   Implemented company dropdown filter, allowing selection of Alle Firmen (All Companies) as default.
+    -   Added search filter with yellow highlighting for matching user names/emails.
+    -   Adjusted role-based logic for displaying/editing/deleting users and for role selection in create/edit modals (restricting sysop creation).
+    -   Implemented a password visibility toggle (Eye/EyeOff icon) for the password field in create/edit user modals.
+    -   Resolved duplicate modal rendering.
+-   ****:
+    -   Modified to load companies from the backend using  instead of only .
+-   ****:
+    -   Updated with new AI agent rules (not reverting completed tasks, showing rules after changes, checking frontend compilation).
+    -   Added a rule protecting the jre SysOp user from deletion.
+    -   Documented the JSX-Fragment-Error.
+    -   Documented the creation of the error management wiki.
+    -   Added explicit role definitions for SysOp, Admin, and QA-Tester.
+    -   Added a security note regarding the temporary password visibility toggle.
+    -   Added notes on user filtering logic.
+-   ****:
+    -   Modified to dynamically retrieve the  from  before each API call to prevent race conditions.
 </code_architecture>
 
 <pending_tasks>
 -   **PDF Report Structure:** Rework the test report preview ().
 -   **PDF/CSV Export Dialogs:** Implement Save as dialogs with explicit file naming.
 -   **Test Data Load Function:** Implement the Load Test Data function.
--   **Dark/Bright Mode UI Anpassungen:** Address remaining UI elements not adapting correctly.
+-   **Dark/Bright Mode UI Anpassungen:** Address remaining UI elements not adapting correctly (Light Mode consistency).
 -   **User/Company Management Enhancements:** Admin needs CRUD for all users/companies, ability to block. QA-Tester needs restricted profile editing.
 -   **Glossary Update:** Add Dashboard, Modal, Settings-Modal to the glossary.
--   **CDN Cache Invalidierung:** Critical blocker: CloudFront CDN is serving old JavaScript bundles, causing Mixed Content errors and preventing new fixes from being visible. This requires support intervention.
 </pending_tasks>
 
 <current_work>
-The AI engineer's current work revolves around a critical deployment and caching issue. Despite numerous code changes, including correcting authentication token storage, removing hardcoded projects, ensuring  is cleared, fixing API endpoints, and replacing all hardcoded backend URLs with environment variables (making the app Deployment-Ready), the deployed frontend preview consistently exhibits Mixed Content errors. This occurs because the CloudFront CDN continues to serve an older JavaScript bundle that still attempts API calls over HTTP instead of HTTPS. Consequently, none of the recent fixes are visible or functional to the user, leading to a Failed to fetch error for most backend operations (mass data generation, test data generation, database operations). The backend itself confirms successful data generation, but the frontend cannot retrieve or display it. The user has contacted support, and the AI engineer has provided detailed testing instructions and follow-up email drafts. The current state is that the code is functionally correct and deployment-ready, but the live preview environment is broken due to an external CDN caching problem, which is outside the AI engineer's direct control to resolve via code. The user's latest input indicates they are still seeing the HTTP error despite following instructions, and support has suggested the AI engineer fix it using DEV-Tool messages.
+The AI engineer's immediate work is focused on resolving critical application functionality issues. The most pressing problem is a **401 Incorrect username or password error** preventing the SysOp user (jre with password sysop123) from logging in, as confirmed by both direct login attempts and the testing agent. This authentication failure consequently blocks the ability to properly test and interact with other backend-dependent features, such as the company management, which currently displays 0 companies despite recent fixes to load data from the backend. The underlying cause of the login failure needs to be debugged, potentially involving database issues with the password hash or a misconfiguration in the authentication flow. Concurrently, the **Mixed Content error (FE-001/BUG-010)** persists, where the frontend (HTTPS) attempts insecure HTTP API calls, identified as a CloudFront CDN caching problem beyond current code control and requiring support intervention. The  and the  wiki have been extensively updated to document new rules, roles, and bug fixes, providing a clear audit trail.
 </current_work>
 
 <optional_next_step>
-Based on the user's latest feedback, analyze the provided DEV-Tool F12 screenshot to identify the exact HTTP error.
+Immediately debug and resolve the 401 login error for the SysOp user jre.
 </optional_next_step>

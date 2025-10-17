@@ -53,7 +53,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
   // Firmen laden
   const loadCompanies = async () => {
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
       const response = await fetch(`${backendUrl}/api/companies/`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -81,7 +81,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
       const response = await fetch(`${backendUrl}/api/users/`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -125,7 +125,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
   // Benutzer erstellen
   const handleCreateUser = async () => {
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
       const response = await fetch(`${backendUrl}/api/users/`, {
         method: 'POST',
         headers: {

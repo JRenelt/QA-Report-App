@@ -114,6 +114,6 @@ Sonderzeichen: & / % - + = ( ) [ ] { } < > | \ : ; , . ? ! " ' ` ~ @ # $ ^ * _
 
 ## Download-Link
 
-**URL:** https://report-qa-portal.preview.emergentagent.com/test-import-template-regelkonform.json
+**URL:** https://qa-report-fixer.preview.emergentagent.com/test-import-template-regelkonform.json
 
 **Größe:** 17KB

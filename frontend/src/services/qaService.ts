@@ -1,6 +1,6 @@
 // QA Service für Backend-Integration
 
-const API_BASE = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+const API_BASE = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
 
 export interface TestCase {
   id: string;
