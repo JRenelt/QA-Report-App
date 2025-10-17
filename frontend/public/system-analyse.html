@@ -360,14 +360,15 @@
             <p style="margin-bottom: 20px;">Diese Bugs verhindern die grundlegende Nutzung und müssen SOFORT behoben werden.</p>
             
             <ul class="bug-list">
-                <li class="bug-item critical" id="bug-001">
-                    <div class="title">BUG-001: PDF-Report Endpoint - UnboundLocalError</div>
+                <li class="bug-item critical completed" id="bug-001">
+                    <div class="title">BUG-001: PDF-Report Endpoint - UnboundLocalError <span class="badge completed">✅ ERLEDIGT</span></div>
                     <div class="description">
                         Datei: /app/backend/routes/pdf_reports.py, Zeile 42<br>
-                        Problem: Variable 'status' nicht importiert, führt zu 500 Error bei PDF-Export
+                        Problem: Variable 'status' nicht importiert, führt zu 500 Error bei PDF-Export<br>
+                        <strong style="color: #28a745;">✅ FIX: Variable 'status' in 'result_status' umbenannt, Namenskonflikt behoben</strong>
                     </div>
                     <div class="meta">
-                        <span class="badge critical">KRITISCH</span>
+                        <span class="badge completed">✅ ERLEDIGT</span>
                         <span>📄 Backend</span>
                         <span>⏱️ Fix: 30 Min</span>
                     </div>
