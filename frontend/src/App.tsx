@@ -363,9 +363,9 @@ function App() {
 
         {!authToken ? (
           <>
-            {/* Fixed Header nur für Login-Seite */}
+            {/* Fixed Header nur für Login-Seite - PERMANENT Dark Mode */}
             <Header 
-              darkMode={darkMode} 
+              darkMode={true}  // Login-Seite IMMER Dark Mode
               toggleDarkMode={toggleDarkMode} 
               user={user}
               onLogout={handleLogout}
@@ -377,13 +377,13 @@ function App() {
             <main className="pt-20 pb-16 px-4 sm:px-6 lg:px-8">
               <div className="max-w-7xl mx-auto">
                 <div className="max-w-md mx-auto">
-                  <LoginForm onLogin={handleLogin} darkMode={darkMode} />
-                  <SystemStatus darkMode={darkMode} />
+                  <LoginForm onLogin={handleLogin} darkMode={true} />  {/* PERMANENT Dark Mode */}
+                  <SystemStatus darkMode={true} />  {/* PERMANENT Dark Mode */}
                 </div>
               </div>
             </main>
-            {/* Fixed Footer */}
-            <Footer darkMode={darkMode} />
+            {/* Fixed Footer - PERMANENT Dark Mode */}
+            <Footer darkMode={true} />
           </>
         ) : (
           /* Fullscreen Dashboard mit eigenem Header */
