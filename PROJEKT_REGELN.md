@@ -154,6 +154,7 @@
 **REGEL:** Interaktives Fehler-Management-Wiki
 - **URL:** `https://report-qa-portal.preview.emergentagent.com/fehler-management.html`
 - **Kurzname:** "fehler-management.html" oder "Fehler-Wiki"
+- **Datei:** `/app/frontend/public/fehler-management.html`
 - **Zweck:** Umfassende Dokumentation aller Frontend/Backend-Fehler, Design-Anomalien und Systemprobleme
 - **Features:**
   - Vollständige Analyse aller Buttons, Links und API-Endpoints
@@ -163,11 +164,13 @@
   - Erledigte Items: Grüner "ERLEDIGT"-Badge + Zeitstempel
   - Hypertext-Navigation zwischen Fehler-Kategorien
   - Gruppierung nach: Kritisch, Wichtig, Klein, Design, Code-Qualität
+  - Bekannte Fehler-Muster Sektion (z.B. JSX-Fragment-Error)
 - **Aktualisierung:** 
-  - Automatisch bei neuen Bugs
+  - Automatisch bei neuen Bugs durch AI-Agent
   - Manuell durch User über UI-Buttons
-  - Zeitstempel wird bei Status-Änderung gespeichert
+  - Zeitstempel wird bei Status-Änderung gespeichert in localStorage
 - **WICHTIG:** Alle Fehler müssen reproduzierbar und mit Code-Referenzen dokumentiert sein
+- **Status-Persistenz:** LocalStorage speichert erledigte/offene Status pro Fehler-ID
 
 ### Lokalisierung
 **REGEL:** Alle UI-Texte auf Deutsch
