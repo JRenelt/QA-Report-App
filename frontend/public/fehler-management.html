@@ -613,6 +613,29 @@
                         <span class="timestamp" data-timestamp=""></span>
                     </div>
                 </li>
+                <li class="error-item important completed" id="error-fe-006" data-status="completed">
+                    <div class="title">
+                        <span>FE-006: Userverwaltung ohne Firmen-Filter <span class="badge completed">✅ ERLEDIGT</span></span>
+                        <button class="status-toggle completed" onclick="toggleStatus('error-fe-006')">Erledigt ✓</button>
+                    </div>
+                    <div class="description">
+                        <strong>Komponente:</strong> <span class="code-ref">UserManagement.tsx</span><br>
+                        <strong>Problem:</strong> Keine Möglichkeit Firma auszuwählen, fehlende Backend-URL, "Failed to fetch" Fehler<br>
+                        <strong style="color: #28a745;">✅ FIX:
+                        1. Firmen-Dropdown hinzugefügt mit loadCompanies()<br>
+                        2. Default-Firma = eingeloggte Firma des Users<br>
+                        3. Filter: Nur User der ausgewählten Firma anzeigen<br>
+                        4. Backend-URL Fix: process.env.REACT_APP_BACKEND_URL mit Fallback<br>
+                        5. Besseres Error-Handling mit Alert-Meldungen<br>
+                        6. companyId wird automatisch beim User-Erstellen zugewiesen</strong>
+                    </div>
+                    <div class="meta">
+                        <span class="badge completed">✅ ERLEDIGT</span>
+                        <span>⚛️ Frontend</span>
+                        <span>⏱️ Fix: 1 Std</span>
+                        <span class="timestamp" data-timestamp=""></span>
+                    </div>
+                </li>
             </ul>
         </div>
 
