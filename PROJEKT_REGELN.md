@@ -71,11 +71,16 @@
 **REGEL:** Drei Rollen mit unterschiedlichen Berechtigungen
 
 **1. SysOp (System-Operator)**
-- **Höchste Rechte** im gesamten System
+- **Höchste Rechte** im gesamten System - OBERSTE INSTANZ
 - Kann ALLE User sehen und verwalten (inkl. Admins)
 - Kann Firmen anlegen, bearbeiten, löschen
 - Kann User mit Rollen "admin" und "qa_tester" anlegen
 - Kann KEINE weiteren SysOps anlegen (nur "jre" existiert)
+- **Voller Zugriff auf Gefahrenbereich:**
+  - ✅ Datenbank leeren (behält nur jre + ID2)
+  - ✅ DB optimieren
+  - ✅ Testdaten generieren
+  - ✅ Massendaten generieren
 - Zugriff auf alle Systemfunktionen
 - **User:** Jörg Renelt (jre) bei Firma ID2.de
 
