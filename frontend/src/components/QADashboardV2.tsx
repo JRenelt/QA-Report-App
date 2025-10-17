@@ -1487,7 +1487,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   <option value="">Bitte Projekt auswählen</option>
                 )}
                 {(() => {
-                  const userProjects = user?.role === 'admin' 
+                  const userProjects = (user?.role === 'admin' || user?.role === 'sysop')
                     ? projects.filter((p: any) => p.companyId === selectedCompanyId)
                     : projects.filter((p: any) => p.companyId === currentUserCompany?.id);
                   
