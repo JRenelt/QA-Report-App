@@ -301,8 +301,26 @@ const UserManagement: React.FC<UserManagementProps> = ({
         </div>
 
         {/* Toolbar */}
-        <div className="p-4 border-b border-gray-700 flex items-center justify-between">
+        <div className="p-4 border-b border-gray-700 space-y-4">
+          {/* Firmen-Auswahl */}
           <div className="flex items-center space-x-4">
+            <label className="text-sm font-medium text-gray-300 min-w-[80px]">Firma:</label>
+            <select
+              value={selectedCompanyId}
+              onChange={(e) => setSelectedCompanyId(e.target.value)}
+              className="flex-1 px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm focus:border-cyan-500 focus:outline-none"
+            >
+              <option value="">Alle Firmen</option>
+              {companies.map(company => (
+                <option key={company.id} value={company.id}>
+                  {company.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          {/* Suche & Button */}
+          <div className="flex items-center justify-between">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
@@ -310,20 +328,20 @@ const UserManagement: React.FC<UserManagementProps> = ({
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Benutzer suchen..."
-                className="pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm focus:border-cyan-500 focus:outline-none"
+                className="pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm focus:border-cyan-500 focus:outline-none w-80"
               />
             </div>
+            {/* Create Button - Nur für Admin */}
+            {isAdmin && (
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="flex items-center space-x-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white text-sm font-medium transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Benutzer hinzufügen</span>
+              </button>
+            )}
           </div>
-          {/* Create Button - Nur für Admin */}
-          {isAdmin && (
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="flex items-center space-x-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white text-sm font-medium transition-colors"
-            >
-              <Plus className="h-4 w-4" />
-              <span>Benutzer hinzufügen</span>
-            </button>
-          )}
         </div>
 
         {/* User List */}
