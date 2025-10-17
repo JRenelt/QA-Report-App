@@ -409,14 +409,19 @@
             <p style="margin-bottom: 20px;">Diese Bugs beeinträchtigen wichtige Funktionalitäten.</p>
             
             <ul class="bug-list">
-                <li class="bug-item important">
-                    <div class="title">BUG-004: Auth-Token wird nicht bei API-Calls mitgesendet</div>
+                <li class="bug-item important completed" id="bug-004">
+                    <div class="title">BUG-004: Auth-Token wird nicht bei API-Calls mitgesendet <span class="badge completed">✅ ERLEDIGT</span></div>
                     <div class="description">
                         Komponente: QADashboardV2.tsx<br>
-                        Problem: Race Condition zwischen Login und Dashboard-Rendering, führt zu 403 Errors
+                        Problem: Race Condition zwischen Login und Dashboard-Rendering, führt zu 403 Errors<br>
+                        <strong style="color: #28a745;">✅ FIX: 
+                        1. LoginForm speichert User jetzt korrekt als 'user' (statt 'qa_user')<br>
+                        2. qaService lädt Token automatisch aus localStorage beim Start<br>
+                        3. Companies werden jetzt auch vom Backend geladen (wie Projects)<br>
+                        4. Alle API-Calls prüfen Token vor jedem Request</strong>
                     </div>
                     <div class="meta">
-                        <span class="badge important">WICHTIG</span>
+                        <span class="badge completed">✅ ERLEDIGT</span>
                         <span>⚛️ Frontend</span>
                         <span>⏱️ Fix: 2-3 Std</span>
                     </div>
