@@ -361,8 +361,8 @@ const UserManagement: React.FC<UserManagementProps> = ({
                 className="pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm focus:border-cyan-500 focus:outline-none w-80"
               />
             </div>
-            {/* Create Button - Nur für Admin */}
-            {isAdmin && (
+            {/* Create Button - Nur für SysOp und Admin */}
+            {canCreateUser && (
               <button
                 onClick={() => setShowCreateModal(true)}
                 className="flex items-center space-x-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white text-sm font-medium transition-colors"
@@ -391,20 +391,22 @@ const UserManagement: React.FC<UserManagementProps> = ({
                     {getRoleIcon(user.role)}
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-white font-medium">{user.username}</span>
+                        <span className="text-white font-medium">
+                          {highlightText(user.username, searchTerm)}
+                        </span>
                         {getStatusIcon(user.is_active)}
                       </div>
                       <div className="text-gray-400 text-sm">
-                        {user.first_name} {user.last_name} • {user.email}
+                        {highlightText(`${user.first_name} ${user.last_name}`, searchTerm)} • {highlightText(user.email, searchTerm)}
                       </div>
                       <div className="text-gray-500 text-xs">
-                        Rolle: {user.role === 'admin' ? 'Administrator' : 'QA-Tester'}
+                        Rolle: {getRoleLabel(user.role)}
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    {/* Edit: Admin kann alle bearbeiten, QA-Tester nur sich selbst */}
-                    {(isAdmin || user.id === currentUser.id) && (
+                    {/* Edit: SysOp/Admin können andere bearbeiten, Tester nur sich selbst */}
+                    {(canEditOtherUsers || user.id === currentUser.id) && (
                       <button
                         onClick={() => openEditModal(user)}
                         className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
