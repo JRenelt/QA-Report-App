@@ -64,12 +64,8 @@ const UserManagement: React.FC<UserManagementProps> = ({
         const data = await response.json();
         setCompanies(data);
         
-        // Default: Firma des eingeloggten Users
-        if (currentUser?.companyId) {
-          setSelectedCompanyId(currentUser.companyId);
-        } else if (data.length > 0) {
-          setSelectedCompanyId(data[0].id);
-        }
+        // Default: Alle Firmen anzeigen (leerer String)
+        setSelectedCompanyId('');
       } else {
         console.error('Fehler beim Laden der Firmen');
       }
