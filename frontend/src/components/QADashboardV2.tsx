@@ -398,7 +398,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
   // Initialize company selection (nur Company, NICHT Projekt)
   React.useEffect(() => {
-    if (user?.role === 'admin' && !selectedCompanyId && availableCompanies.length > 0) {
+    if ((user?.role === 'admin' || user?.role === 'sysop') && !selectedCompanyId && availableCompanies.length > 0) {
       setSelectedCompanyId(availableCompanies[0].id);
       // KEIN Auto-Select für Projekt - Benutzer muss manuell wählen
       const companyProjects = projects.filter((p: any) => p.companyId === availableCompanies[0].id);
