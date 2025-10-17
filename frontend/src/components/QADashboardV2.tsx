@@ -222,9 +222,45 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         console.error('Fehler beim Laden der Companies:', e);
       }
     }
-    // Fallback: Nur ID2
-    return [{ id: 'ID2', name: 'ID2 GmbH' }];
+    // Fallback: Leeres Array - Companies werden vom Backend geladen
+    return [];
   });
+  
+  // Initial Backend Load - Companies vom Backend holen wenn localStorage leer ist
+  useEffect(() => {
+    const loadCompaniesFromBackend = async () => {
+      const saved = localStorage.getItem('qa_companies');
+      if (!saved || JSON.parse(saved).length === 0) {
+        console.log('⚠️ LocalStorage leer - lade Companies aus Backend...');
+        try {
+          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://report-qa-portal.preview.emergentagent.com';
+          const authToken = localStorage.getItem('authToken');
+          
+          if (!authToken) {
+            console.log('⚠️ Kein authToken - kann Companies nicht laden');
+            return;
+          }
+          
+          const response = await fetch(`${backendUrl}/api/companies/`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+          });
+          
+          if (response.ok) {
+            const backendCompanies = await response.json();
+            console.log(`✅ ${backendCompanies.length} Companies aus Backend geladen`);
+            localStorage.setItem('qa_companies', JSON.stringify(backendCompanies));
+            setAvailableCompanies(backendCompanies);
+          } else {
+            console.error('❌ Backend-Fehler beim Laden der Companies:', response.status);
+          }
+        } catch (error) {
+          console.error('❌ Fehler beim Laden der Companies aus Backend:', error);
+        }
+      }
+    };
+    
+    loadCompaniesFromBackend();
+  }, []); // Nur beim ersten Laden
   
   // Companies aus localStorage aktualisieren (Polling)
   React.useEffect(() => {
