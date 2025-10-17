@@ -135,18 +135,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
               {t.username}
             </label>
             <div className="relative">
-              <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
-                darkMode ? 'text-gray-400' : 'text-qa-gray-400'
-              }`} />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                className={`w-full pl-10 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-opacity-50 ${
-                  darkMode 
-                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-cyan-500 focus:border-cyan-500' 
-                    : 'input-field'
-                }`}
+                className="w-full pl-10 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-opacity-50 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-cyan-500 focus:border-cyan-500"
                 placeholder={t.username}
                 required
               />
@@ -154,35 +148,23 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
           </div>
 
           <div>
-            <label className={`block text-sm font-medium mb-2 ${
-              darkMode ? 'text-gray-200' : 'text-qa-gray-700'
-            }`}>
+            <label className="block text-sm font-medium mb-2 text-gray-200">
               {t.password}
             </label>
             <div className="relative">
-              <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
-                darkMode ? 'text-gray-400' : 'text-qa-gray-400'
-              }`} />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className={`w-full pl-10 pr-10 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-opacity-50 ${
-                  darkMode 
-                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-cyan-500 focus:border-cyan-500' 
-                    : 'input-field'
-                }`}
+                className="w-full pl-10 pr-10 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-opacity-50 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-cyan-500 focus:border-cyan-500"
                 placeholder={t.password}
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className={`absolute right-3 top-1/2 transform -translate-y-1/2 ${
-                  darkMode 
-                    ? 'text-gray-400 hover:text-gray-200' 
-                    : 'text-qa-gray-400 hover:text-qa-gray-600'
-                }`}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -192,14 +174,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
-              loading 
-                ? 'opacity-50 cursor-not-allowed' 
-                : ''
-            } ${
-              darkMode
-                ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
-                : 'bg-qa-primary-600 hover:bg-qa-primary-700 text-white'
+            className={`w-full py-2 px-4 rounded-lg font-medium transition-colors bg-cyan-600 hover:bg-cyan-700 text-white ${
+              loading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
             {loading ? (
@@ -214,7 +190,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
         </form>
 
         <div className="mt-6 text-center">
-          <a href="#" className="text-sm text-qa-primary-600 hover:text-qa-primary-500">
+          <a href="#" className="text-sm text-cyan-400 hover:text-cyan-300">
             {t.forgotPassword}
           </a>
         </div>
