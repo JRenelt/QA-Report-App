@@ -827,16 +827,14 @@ metadata:
 test_plan:
   current_focus:
     - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch blocks some API calls)"
-    - "SysOp Companies API Permissions - ❌ CRITICAL BUG (SysOp gets 0 companies, should get 6 like Admin)"
     - "Company Management Data Loading - ❌ FAILED (0 companies loaded due to Mixed Content Error)"
     - "German Company CRUD Operations - ❌ INCOMPLETE (Cannot test create/edit/delete without data)"
     - "QA-Tester Role Testing - ❌ INCOMPLETE (Modal interaction issues prevent testing)"
     - "Template Test-ID Format - ❌ INCOMPLETE (depends on Company Management data)"
   stuck_tasks: 
     - "Mixed Content Error Fix - CRITICAL: Some API calls use HTTP while frontend is HTTPS, causing browser security policy violations. Affects company data loading and project API calls."
-    - "SysOp Companies API Permissions - CRITICAL: Backend bug in companies.py line 19 - only checks for 'admin' role but should also include 'sysop' role. SysOp should have same access as Admin per auth.py line 104."
     - "German Company Management Testing - BLOCKED: UI works but 0 companies loaded from backend due to Mixed Content Error. Cannot test CRUD operations without data."
-    - "German Role-Based Permissions Testing - PARTIAL: Admin permissions work correctly, but SysOp and QA-Tester roles cannot be fully tested due to authentication and modal issues."
+    - "German Role-Based Permissions Testing - PARTIAL: Admin permissions work correctly, but QA-Tester roles cannot be fully tested due to modal issues."
   test_all: false
   test_priority: "high_first"
 
