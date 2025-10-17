@@ -707,7 +707,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     
     // Wenn kein Projekt ausgewählt, berücksichtige die Projektliste
     if (!selectedProjectId && projects.length > 0) {
-      const userProjects = user?.role === 'admin' 
+      const userProjects = (user?.role === 'admin' || user?.role === 'sysop')
         ? projects.filter((p: any) => p.companyId === selectedCompanyId)
         : projects.filter((p: any) => p.companyId === currentUserCompany?.id);
       
