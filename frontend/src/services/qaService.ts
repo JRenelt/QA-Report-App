@@ -37,11 +37,29 @@ export interface UserSettings {
 class QAService {
   private authToken: string = '';
 
+  constructor() {
+    // Token aus localStorage beim Initialisieren laden
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      this.authToken = token;
+    }
+  }
+
   setAuthToken(token: string) {
     this.authToken = token;
+    console.log('[QAService] Auth token set:', token ? 'Token gesetzt' : 'Kein Token');
   }
 
   private async request(endpoint: string, options: RequestInit = {}) {
+    // Token aus localStorage holen falls noch nicht gesetzt
+    if (!this.authToken) {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        this.authToken = token;
+        console.log('[QAService] Auth token loaded from localStorage');
+      }
+    }
+
     const url = `${API_BASE}/api${endpoint}`;
     const headers = {
       'Content-Type': 'application/json',
@@ -49,12 +67,19 @@ class QAService {
       ...options.headers,
     };
 
+    console.log(`[QAService] Request to ${url}`, {
+      method: options.method || 'GET',
+      hasAuthToken: !!this.authToken
+    });
+
     const response = await fetch(url, {
       ...options,
       headers,
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[QAService] API Error ${response.status}:`, errorText);
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
 
