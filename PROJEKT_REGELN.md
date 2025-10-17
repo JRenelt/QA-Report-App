@@ -63,6 +63,15 @@
 - Papierkorb-Symbol bei ID2 ausblenden
 - ID2 muss immer in localStorage vorhanden sein
 
+**REGEL:** Admin-User "Jörg Renelt" DARF NIEMALS gelöscht werden
+- **Username:** `jre`
+- **Firma:** ID2.de
+- **Rolle:** Admin
+- **Wichtig:** Dieser User ist der System-Administrator und muss immer existieren
+- Bei "Datenbank leeren": User "jre" MUSS erhalten bleiben
+- Papierkorb-Symbol bei diesem User ausblenden
+- Kein Löschen über UI oder Backend möglich
+
 ### Firmen & Projekte
 **REGEL:** Kaskadierendes Löschen
 - Firma löschen → Automatisch alle Projekte der Firma löschen
