@@ -131,7 +131,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium mb-2 text-gray-200">
-            }`}>
               {t.username}
             </label>
             <div className="relative">
