@@ -89,6 +89,12 @@ const UserManagement: React.FC<UserManagementProps> = ({
       if (response.ok) {
         const data = await response.json();
         setUsers(data);
+        console.log(`[UserManagement] ${data.length} User vom Backend geladen`);
+        console.log('[UserManagement] Erste 3 User:', data.slice(0, 3).map((u: any) => ({
+          username: u.username,
+          companyId: u.companyId,
+          role: u.role
+        })));
       } else {
         console.error('Fehler beim Laden der Benutzer');
       }
