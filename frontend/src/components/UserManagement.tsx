@@ -223,6 +223,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
       is_active: true,
       companyId: selectedCompanyId // CompanyId beibehalten
     });
+    setShowPassword(false); // Passwort-Anzeige zurücksetzen
   };
 
   const openEditModal = (user: User) => {
