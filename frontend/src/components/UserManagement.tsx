@@ -246,24 +246,25 @@ const UserManagement: React.FC<UserManagementProps> = ({
   
   const filteredUsers = users
     .filter(user => {
-      // Filter nach ausgewählter Firma
-      if (selectedCompanyId && user.companyId !== selectedCompanyId) {
-        return false;
-      }
-      
+      // ZUERST: Rollenbasierte Sichtbarkeit prüfen
       // SysOp sieht alle User
       if (isSysOp) {
-        return true;
+        // OK, weiter mit Firmen-Filter
+      } else if (isAdmin) {
+        // Admin sieht alle User außer SysOps
+        if (user.role === 'sysop') {
+          return false;
+        }
+      } else if (isTester) {
+        // Tester sieht nur sich selbst
+        if (user.id !== currentUser.id) {
+          return false;
+        }
       }
       
-      // Admin sieht alle User außer SysOps
-      if (isAdmin) {
-        return user.role !== 'sysop';
-      }
-      
-      // Tester sieht nur sich selbst
-      if (isTester) {
-        return user.id === currentUser.id;
+      // DANN: Filter nach ausgewählter Firma (wenn nicht "Alle")
+      if (selectedCompanyId && user.companyId !== selectedCompanyId) {
+        return false;
       }
       
       return true;
