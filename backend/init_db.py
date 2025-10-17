@@ -20,6 +20,49 @@ from models import UserRole, Language
 from datetime import datetime
 import uuid
 
+async def create_sysop_user():
+    """Create SysOp user Jörg Renelt for ID2"""
+    
+    # Check if ID2 company exists
+    id2_company = await companies_collection.find_one({"name": "ID2.de"})
+    if not id2_company:
+        # Create ID2 company first
+        id2_company = {
+            "id": str(uuid.uuid4()),
+            "name": "ID2.de",
+            "description": "System-Firma - DARF NICHT GELÖSCHT WERDEN",
+            "logo_url": None,
+            "created_by": "system",
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        await companies_collection.insert_one(id2_company)
+        print(f"✅ ID2 company created: {id2_company['name']}")
+    
+    # Check if SysOp already exists
+    existing_sysop = await users_collection.find_one({"username": "jre"})
+    if existing_sysop:
+        print("✅ SysOp user 'jre' already exists")
+    else:
+        # Create SysOp user Jörg Renelt
+        sysop_user = {
+            "id": str(uuid.uuid4()),
+            "username": "jre",
+            "email": "joerg.renelt@id2.de",
+            "first_name": "Jörg",
+            "last_name": "Renelt",
+            "hashed_password": get_password_hash("sysop123"),
+            "role": UserRole.sysop.value,
+            "companyId": id2_company["id"],
+            "language_preference": Language.DE.value,
+            "is_active": True,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        
+        await users_collection.insert_one(sysop_user)
+        print(f"✅ SysOp user created: username=jre, password=sysop123")
+
 async def create_admin_user():
     """Create default admin user"""
     
@@ -28,6 +71,9 @@ async def create_admin_user():
     if existing_admin:
         print("✅ Admin user already exists")
     else:
+        # Get ID2 company for admin
+        id2_company = await companies_collection.find_one({"name": "ID2.de"})
+        
         # Create admin user
         admin_user = {
             "id": str(uuid.uuid4()),
@@ -37,6 +83,7 @@ async def create_admin_user():
             "last_name": "Administrator",
             "hashed_password": get_password_hash("admin123"),
             "role": UserRole.admin.value,
+            "companyId": id2_company["id"] if id2_company else None,
             "language_preference": Language.DE.value,
             "is_active": True,
             "created_at": datetime.utcnow(),
