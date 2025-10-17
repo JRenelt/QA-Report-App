@@ -76,11 +76,18 @@
 **REGEL:** Admin-User "Jörg Renelt" DARF NIEMALS gelöscht werden
 - **Username:** `jre`
 - **Firma:** ID2.de
-- **Rolle:** Admin
+- **Rolle:** SysOp (System-Administrator)
 - **Wichtig:** Dieser User ist der System-Administrator und muss immer existieren
 - Bei "Datenbank leeren": User "jre" MUSS erhalten bleiben
 - Papierkorb-Symbol bei diesem User ausblenden
 - Kein Löschen über UI oder Backend möglich
+
+**WARNUNG:** Passwort-Anzeige in Klarschrift (User-Management)
+- Passwörter können temporär im Klartext angezeigt werden (Eye/EyeOff Toggle)
+- Dies ist ein bewusstes Security-Risk auf Wunsch des Users
+- Nur in User-Management Modal verfügbar (Create/Edit)
+- Toggle wird beim Schließen des Modals zurückgesetzt
+- **Hinweis:** In Production-Umgebung sollte dies deaktiviert werden
 
 ### Firmen & Projekte
 **REGEL:** Kaskadierendes Löschen
