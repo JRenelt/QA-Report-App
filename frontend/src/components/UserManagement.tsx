@@ -43,7 +43,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
     email: '',
     first_name: '',
     last_name: '',
-    role: 'qa_tester' as 'admin' | 'qa_tester',
+    role: 'qa_tester' as 'sysop' | 'admin' | 'qa_tester',
     password: '',
     is_active: true,
     companyId: ''
