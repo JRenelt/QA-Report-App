@@ -226,7 +226,8 @@ const UserManagement: React.FC<UserManagementProps> = ({
       last_name: '',
       role: 'qa_tester',
       password: '',
-      is_active: true
+      is_active: true,
+      companyId: selectedCompanyId // CompanyId beibehalten
     });
   };
 
@@ -239,16 +240,22 @@ const UserManagement: React.FC<UserManagementProps> = ({
       last_name: user.last_name,
       role: user.role,
       password: '',
-      is_active: user.is_active
+      is_active: user.is_active,
+      companyId: user.companyId || selectedCompanyId
     });
     setShowEditModal(true);
   };
 
-  // Rollenbasierte Filterung
+  // Rollenbasierte Filterung + Firmen-Filter
   const isAdmin = currentUser?.role === 'admin';
   
   const filteredUsers = users
     .filter(user => {
+      // Filter nach ausgewählter Firma
+      if (selectedCompanyId && user.companyId !== selectedCompanyId) {
+        return false;
+      }
+      
       // Admin sieht alle User, QA-Tester nur User seiner Firma
       if (!isAdmin && currentUser?.companyId) {
         return user.companyId === currentUser.companyId;
