@@ -84,53 +84,37 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center px-4 ${darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-qa-primary-50 to-qa-gray-100'}`}>
-      <div className={`max-w-md w-full rounded-lg shadow-lg p-8 ${darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white'}`}>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gray-900">
+      <div className="max-w-md w-full rounded-lg shadow-lg p-8 bg-gray-800 border border-gray-700">
         <div className="text-center mb-8">
-          <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-qa-primary-100">
-            <User className="h-6 w-6 text-qa-primary-600" />
+          <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-cyan-900">
+            <User className="h-6 w-6 text-cyan-400" />
           </div>
-          <h2 className={`mt-4 text-2xl font-bold ${darkMode ? 'text-white' : 'text-qa-gray-900'}`}>
+          <h2 className="mt-4 text-2xl font-bold text-white">
             {t.login}
           </h2>
-          <p className={`mt-2 text-sm ${darkMode ? 'text-gray-400' : 'text-qa-gray-600'}`}>
+          <p className="mt-2 text-sm text-gray-400">
             QA-Report-App
           </p>
         </div>
 
         {/* Demo Credentials Info */}
-        <div className={`mb-6 p-4 rounded-lg border ${
-          darkMode 
-            ? 'bg-gray-700 border-gray-600' 
-            : 'bg-qa-gray-50 border-qa-gray-200'
-        }`}>
-          <h3 className={`text-sm font-semibold mb-2 ${
-            darkMode ? 'text-gray-200' : 'text-qa-gray-700'
-          }`}>
+        <div className="mb-6 p-4 rounded-lg border bg-gray-700 border-gray-600">
+          <h3 className="text-sm font-semibold mb-2 text-gray-200">
             {t.demoCredentials}
           </h3>
-          <div className={`space-y-1 text-xs ${
-            darkMode ? 'text-gray-300' : 'text-qa-gray-600'
-          }`}>
+          <div className="space-y-1 text-xs text-gray-300">
             <button 
               type="button"
               onClick={() => handleDemoLogin('admin', 'admin123')}
-              className={`block w-full text-left transition-colors ${
-                darkMode 
-                  ? 'hover:text-cyan-400' 
-                  : 'hover:text-qa-primary-600'
-              }`}
+              className="block w-full text-left transition-colors hover:text-cyan-400"
             >
               • {t.adminUser}
             </button>
             <button
               type="button" 
               onClick={() => handleDemoLogin('qa_demo', 'demo123')}
-              className={`block w-full text-left transition-colors ${
-                darkMode 
-                  ? 'hover:text-cyan-400' 
-                  : 'hover:text-qa-primary-600'
-              }`}
+              className="block w-full text-left transition-colors hover:text-cyan-400"
             >
               • {t.qaUser}
             </button>
@@ -138,16 +122,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center">
-            <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
-            <span className="text-sm text-red-700">{error}</span>
+          <div className="mb-4 p-3 bg-red-900 border border-red-700 rounded-lg flex items-center">
+            <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
+            <span className="text-sm text-red-200">{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className={`block text-sm font-medium mb-2 ${
-              darkMode ? 'text-gray-200' : 'text-qa-gray-700'
+            <label className="block text-sm font-medium mb-2 text-gray-200">
             }`}>
               {t.username}
             </label>
