@@ -113,6 +113,25 @@
 - **Zweck:** Diese Seite dient zur System-Analyse und Diagnostik der Applikation
 - **WICHTIG:** User verwendet diesen Kurznamen zur vereinfachten Kommunikation
 
+### Fehler-Management-System
+**REGEL:** Interaktives Fehler-Management-Wiki
+- **URL:** `https://qa-report-app.preview.emergentagent.com/fehler-management.html`
+- **Kurzname:** "fehler-management.html" oder "Fehler-Wiki"
+- **Zweck:** Umfassende Dokumentation aller Frontend/Backend-Fehler, Design-Anomalien und Systemprobleme
+- **Features:**
+  - Vollständige Analyse aller Buttons, Links und API-Endpoints
+  - Design-Anomalien-Tracking
+  - Systemeinstellungen-Prüfung
+  - Interaktives Status-Management (Offen ↔ Erledigt)
+  - Erledigte Items: Grüner "ERLEDIGT"-Badge + Zeitstempel
+  - Hypertext-Navigation zwischen Fehler-Kategorien
+  - Gruppierung nach: Kritisch, Wichtig, Klein, Design, Code-Qualität
+- **Aktualisierung:** 
+  - Automatisch bei neuen Bugs
+  - Manuell durch User über UI-Buttons
+  - Zeitstempel wird bei Status-Änderung gespeichert
+- **WICHTIG:** Alle Fehler müssen reproduzierbar und mit Code-Referenzen dokumentiert sein
+
 ### Lokalisierung
 **REGEL:** Alle UI-Texte auf Deutsch
 - Buttons, Labels, Meldungen
