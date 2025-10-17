@@ -46,6 +46,7 @@ async def create_user(user_data: UserCreate, current_user: User = Depends(requir
         "first_name": user_data.first_name,
         "last_name": user_data.last_name,
         "role": user_data.role,
+        "companyId": user_data.companyId,  # Firma-Zuordnung
         "language_preference": user_data.language_preference,
         "is_active": True,
         "created_at": datetime.utcnow(),
