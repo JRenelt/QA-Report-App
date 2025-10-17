@@ -616,6 +616,30 @@
             </ul>
         </div>
 
+        <div class="section">
+            <h2>📝 Bekannte Fehler-Muster</h2>
+            <p style="margin-bottom: 20px;">Häufig auftretende Fehler mit Kurznamen für schnelle Referenz.</p>
+            
+            <div class="error-list">
+                <div class="error-item design" style="margin-bottom: 20px;">
+                    <div class="title" style="font-size: 1.1em; color: #2c3e50;">
+                        <span>JSX-Syntax-Fragment-Fehler</span>
+                    </div>
+                    <div class="description">
+                        <strong>Kurzname:</strong> <span class="code-ref">JSX-Fragment-Error</span><br>
+                        <strong>Symptom:</strong> TypeScript-Fehler "Unexpected token" mit Zeichen wie <code>}`}></code><br>
+                        <strong>Ursache:</strong> Bei Code-Ersetzungen bleiben versehentlich Syntax-Reste stehen<br>
+                        <strong>Lösung:</strong> 
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>Komplette Zeile/Block prüfen nach Änderungen</li>
+                            <li>TypeScript-Compiler-Fehler sofort checken</li>
+                            <li><code>tail -n 50 /var/log/supervisor/frontend.out.log</code> nach jeder Änderung</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="section" id="code-qualitaet">
             <h2>📝 Code-Qualität & Dokumentation</h2>
             <p style="margin-bottom: 20px;">Code-Kommentare, Dokumentation und Best Practices.</p>
