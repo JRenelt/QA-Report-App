@@ -231,8 +231,18 @@ const UserManagement: React.FC<UserManagementProps> = ({
     setShowEditModal(true);
   };
 
-  // Rollenbasierte Filterung + Firmen-Filter
+  // Rollenbasierte Berechtigungen
+  const isSysOp = currentUser?.role === 'sysop';
   const isAdmin = currentUser?.role === 'admin';
+  const isTester = currentUser?.role === 'qa_tester';
+  
+  // Berechtigungen:
+  // - SysOp: Alle Rechte (CRUD für alle User inkl. Admins, KEINE anderen SysOps)
+  // - Admin: CRUD für User seiner Firma + andere Firmen (KEINE SysOps anlegen)
+  // - Tester: Nur eigenes Profil bearbeiten
+  const canCreateUser = isSysOp || isAdmin;
+  const canEditOtherUsers = isSysOp || isAdmin;
+  const canDeleteUser = isSysOp || isAdmin;
   
   const filteredUsers = users
     .filter(user => {
@@ -241,10 +251,21 @@ const UserManagement: React.FC<UserManagementProps> = ({
         return false;
       }
       
-      // Admin sieht alle User, QA-Tester nur User seiner Firma
-      if (!isAdmin && currentUser?.companyId) {
-        return user.companyId === currentUser.companyId;
+      // SysOp sieht alle User
+      if (isSysOp) {
+        return true;
       }
+      
+      // Admin sieht alle User außer SysOps
+      if (isAdmin) {
+        return user.role !== 'sysop';
+      }
+      
+      // Tester sieht nur sich selbst
+      if (isTester) {
+        return user.id === currentUser.id;
+      }
+      
       return true;
     })
     .filter(user =>
@@ -252,13 +273,37 @@ const UserManagement: React.FC<UserManagementProps> = ({
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
     );
+  
+  // Funktion zur Hervorhebung des Suchtexts (gelbe Markierung)
+  const highlightText = (text: string, search: string) => {
+    if (!search.trim()) return text;
+    
+    const parts = text.split(new RegExp(`(${search})`, 'gi'));
+    return parts.map((part, index) =>
+      part.toLowerCase() === search.toLowerCase() ? (
+        <span key={index} style={{ backgroundColor: '#fbbf24', color: '#000' }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
 
   const getRoleIcon = (role: string) => {
-    return role === 'admin' ? (
-      <Crown className="h-4 w-4 text-yellow-400" />
-    ) : (
-      <UserRound className="h-4 w-4 text-blue-400" />
-    );
+    if (role === 'sysop') {
+      return <Shield className="h-4 w-4 text-red-400" />;
+    } else if (role === 'admin') {
+      return <Crown className="h-4 w-4 text-yellow-400" />;
+    } else {
+      return <UserRound className="h-4 w-4 text-blue-400" />;
+    }
+  };
+  
+  const getRoleLabel = (role: string) => {
+    if (role === 'sysop') return 'SysOp';
+    if (role === 'admin') return 'Admin';
+    return 'Tester';
   };
 
   const getStatusIcon = (isActive: boolean) => {
