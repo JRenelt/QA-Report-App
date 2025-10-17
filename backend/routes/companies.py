@@ -16,8 +16,8 @@ router = APIRouter()
 async def get_companies(current_user: User = Depends(get_current_user)):
     """Get all companies user has access to"""
     
-    if current_user.role == "admin":
-        # Admins see all companies
+    if current_user.role in ["admin", "sysop"]:
+        # Admins and SysOps see all companies
         companies = await companies_collection.find().sort("name", 1).to_list(1000)
     else:
         # Get companies where user is creator or has project access
