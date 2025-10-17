@@ -2387,8 +2387,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         currentUser={user}
       />
 
-      {/* Glossar nur für Admins */}
-      {user?.role === 'admin' && (
+      {/* Glossar nur für Admins und SysOps */}
+      {(user?.role === 'admin' || user?.role === 'sysop') && (
         <GlossaryModal
           isOpen={showGlossary}
           onClose={() => setShowGlossary(false)}
