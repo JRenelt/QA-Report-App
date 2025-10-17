@@ -30,7 +30,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
 
   if (!isOpen) return null;
 
-  const isAdmin = currentUser?.role === 'admin';
+  // SysOp und Admin haben volle Rechte (Gefahrenbereich)
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'sysop';
+  const isSysOp = currentUser?.role === 'sysop';
 
   const handleItemsPerPageChange = (value: string) => {
     setItemsPerPage(value);
