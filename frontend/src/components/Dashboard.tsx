@@ -330,7 +330,7 @@ const Dashboard: React.FC<DashboardProps> = ({ authToken, user, darkMode }) => {
         </div>
 
         <div className="flex items-center space-x-2">
-          {user?.role === 'admin' && (
+          {(user?.role === 'admin' || user?.role === 'sysop') && (
             <button
               onClick={() => setShowGenerateModal(true)}
               className="flex items-center space-x-2 px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white text-sm font-medium"
