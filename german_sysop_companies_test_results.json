@@ -1,0 +1,47 @@
+{
+  "total_tests": 5,
+  "passed": 3,
+  "failed": 2,
+  "success_rate": 60.0,
+  "results": [
+    {
+      "test": "SysOp Login",
+      "success": true,
+      "message": "\u2705 SysOp login SUCCESSFUL - User: jre, Role: sysop",
+      "timestamp": "2025-10-17T11:07:45.441524",
+      "response_data": null
+    },
+    {
+      "test": "Admin Login Comparison",
+      "success": true,
+      "message": "\u2705 Admin login SUCCESSFUL - User: admin_techco, Role: admin",
+      "timestamp": "2025-10-17T11:07:45.713750",
+      "response_data": null
+    },
+    {
+      "test": "Companies API (SysOp)",
+      "success": false,
+      "message": "\u274c Expected 6 companies, found 0 companies",
+      "timestamp": "2025-10-17T11:07:45.763867",
+      "response_data": []
+    },
+    {
+      "test": "Companies API (Admin)",
+      "success": true,
+      "message": "\u2705 Companies API (Admin) SUCCESSFUL - Found 6 companies: ['AutoParts Solutions', 'FinTech Innovations', 'HealthCare Systems', 'ID2.de', 'MediaDesign AG', 'TechCorp GmbH']",
+      "timestamp": "2025-10-17T11:07:45.806137",
+      "response_data": null
+    },
+    {
+      "test": "Curl Commands Verification",
+      "success": false,
+      "message": "\u274c Companies curl command: Expected 6 companies, got 0",
+      "timestamp": "2025-10-17T11:07:46.107036",
+      "response_data": null
+    }
+  ],
+  "german_review_focus": {
+    "sysop_login_resolved": true,
+    "companies_api_resolved": false
+  }
+}
