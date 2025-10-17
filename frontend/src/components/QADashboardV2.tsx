@@ -1212,7 +1212,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   }, [testCases, activeSuite]);
 
   const getUserIcon = () => {
-    if (user?.role === 'admin') {
+    if (user?.role === 'admin' || user?.role === 'sysop') {
       return <Crown className="h-5 w-5 text-yellow-400" />;
     }
     return <User className="h-5 w-5 text-blue-400" />;
