@@ -36,6 +36,12 @@
    - ✅ Root Cause Analysis (RCA) und Lösung dokumentieren
    - ✅ Das Wiki dient als zentrale Fehler-Dokumentation für das gesamte Projekt
 
+6. **UX-Optimierung: Jeder gesparte Mausklick ist gut:**
+   - ✅ Automatisches Laden von Daten nach Backend-Operationen (z.B. DB leeren, Massendaten generieren)
+   - ✅ Vermeidung von manuellen F5-Reloads durch programmatisches Nachladen
+   - ✅ Direkte UI-Updates nach Änderungen ohne User-Interaktion
+   - ✅ Ziel: Nahtlose User Experience mit minimalen manuellen Eingriffen
+
 ### Entwicklungsumgebung
 **REGEL:** User arbeitet mit 3 Browsern für Testing und Entwicklung
 - **Chrome** (primär für Entwicklung und DevTools)
