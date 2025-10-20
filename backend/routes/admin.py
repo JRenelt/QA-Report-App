@@ -180,9 +180,12 @@ async def clear_database(current_user: User = Depends(require_admin)):
         "id": {"$ne": "ID2"}  # Keep ID2 GmbH
     })
     
-    # Keep admin and sysop users, delete others
+    # Keep admin, sysop, and qa_demo users, delete others
     deleted_users = await users_collection.delete_many({
-        "role": {"$nin": ["admin", "sysop"]}
+        "$and": [
+            {"role": {"$nin": ["admin", "sysop"]}},
+            {"username": {"$ne": "qa_demo"}}
+        ]
     })
     
     return {
