@@ -138,18 +138,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     loadTestCasesFromBackend();
   }, [activeSuite, authToken]);
   
-  // Test-Suites und Test-Cases automatisch speichern
-  useEffect(() => {
-    if (!selectedProjectId || testSuites.length === 0) return;
-    const suiteKey = `qa_suites_${selectedProjectId}`;
-    localStorage.setItem(suiteKey, JSON.stringify(testSuites));
-  }, [testSuites, selectedProjectId]);
-  
-  useEffect(() => {
-    if (!selectedProjectId) return;
-    const casesKey = `qa_cases_${selectedProjectId}`;
-    localStorage.setItem(casesKey, JSON.stringify(testCases));
-  }, [testCases, selectedProjectId]);
+  // Polling aktivieren, wenn Backend-URL gesetzt ist
 
   const [activeSuite, setActiveSuite] = useState<string>('1');
   const [newTestName, setNewTestName] = useState('');
