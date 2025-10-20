@@ -329,6 +329,12 @@ class SysOpDBClearTester:
         print("Testing database clearing functionality and SysOp user persistence after fix")
         print("=" * 80)
         
+        # Setup SysOp user first
+        print("🔧 Setting up SysOp user...")
+        if not self.setup_sysop_user():
+            print("❌ Failed to setup SysOp user - aborting tests")
+            return False
+        
         # Test sequence as specified in the German review request
         tests = [
             ("Test 1: SysOp Login (jre/sysop123)", self.test_1_sysop_login),
