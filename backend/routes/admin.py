@@ -296,26 +296,27 @@ async def generate_mass_data(
             await companies_collection.insert_one(company)
             stats["companies"] += 1
             
-            # Create 1 project per company (with 50 test suites)
-            project_id = f"PERF_PROJ_{company_num:03d}"
-            project = {
-                "id": project_id,
-                "company_id": company["id"],  # snake_case für MongoDB
-                "name": f"Performance Test Projekt {company_num}",
-                "description": "Automatisch generiertes Performance-Test-Projekt",
-                "status": "active",
-                "created_by": current_user.id,  # snake_case und user.id statt username
-                "created_at": datetime.utcnow(),
-                "updated_at": datetime.utcnow()
-            }
-            await projects_collection.insert_one(project)
-            stats["projects"] += 1
-            
-            # Generate 50 test suites per project
-            for suite_num in range(1, 51):
-                suite_id = f"SUITE_{company_num:03d}_{suite_num:03d}"
-                suite = {
-                    "id": suite_id,
+            # Create 10 projects per company (statt 1 mit 50 suites)
+            for project_num in range(1, 11):
+                project_id = f"PERF_PROJ_{company_num:03d}_{project_num:03d}"
+                project = {
+                    "id": project_id,
+                    "company_id": company["id"],  # snake_case für MongoDB
+                    "name": f"Performance Test Projekt {company_num}-{project_num}",
+                    "description": "Automatisch generiertes Performance-Test-Projekt",
+                    "status": "active",
+                    "created_by": current_user.id,  # snake_case und user.id statt username
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
+                }
+                await projects_collection.insert_one(project)
+                stats["projects"] += 1
+                
+                # Generate 50 test suites per project
+                for suite_num in range(1, 51):
+                    suite_id = f"SUITE_{company_num:03d}_{project_num:03d}_{suite_num:03d}"
+                    suite = {
+                        "id": suite_id,
                     "project_id": project_id,
                     "name": f"Testbereich {suite_num}",
                     "description": f"Performance Test Suite {suite_num}",
