@@ -15,6 +15,7 @@ router = APIRouter()
 @router.get("/")
 async def get_companies(current_user: User = Depends(get_current_user)):
     """Get all companies user has access to - Returns camelCase for Frontend"""
+    from fastapi.responses import JSONResponse
     
     if current_user.role in ["admin", "sysop"]:
         # Admins and SysOps see all companies
@@ -53,7 +54,7 @@ async def get_companies(current_user: User = Depends(get_current_user)):
             company_dict["logoUrl"] = company_dict.pop("logo_url")
         converted_companies.append(company_dict)
     
-    return converted_companies
+    return JSONResponse(content=converted_companies)
 
 @router.post("/", response_model=Company)
 async def create_company(
