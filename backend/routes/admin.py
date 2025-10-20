@@ -287,13 +287,11 @@ async def generate_mass_data(
             company = {
                 "id": f"PERF_COMP_{company_num:03d}",
                 "name": f"Performance Test Firma {company_num}",
-                "address": f"Teststraße {company_num}",
-                "city": "Hamburg",
-                "postalCode": "22117",
-                "country": "Deutschland",
-                "createdAt": datetime.utcnow().isoformat(),
-                "usersCount": 1,
-                "projectsCount": 1
+                "description": f"Automatisch generierte Performance-Test-Firma {company_num}",
+                "logo_url": None,
+                "created_by": current_user.id,
+                "created_at": datetime.utcnow(),
+                "updated_at": datetime.utcnow()
             }
             await companies_collection.insert_one(company)
             stats["companies"] += 1
