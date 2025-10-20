@@ -33,6 +33,7 @@ class SysOpDBClearTester:
         })
         self.test_results = []
         self.sysop_token = None
+        self.admin_token = None
         
     def log_test(self, test_name, success, message, response_data=None):
         """Log test result"""
