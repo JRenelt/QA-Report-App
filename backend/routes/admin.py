@@ -347,7 +347,7 @@ async def generate_mass_data(
                     test_cases_batch.append(test_case)
                     stats["test_cases"] += 1
                 
-                # Bulk insert test cases for better performance
+                # Bulk insert test cases for this suite
                 if test_cases_batch:
                     await test_cases_collection.insert_many(test_cases_batch)
         
