@@ -83,7 +83,7 @@ async def create_admin_user():
             "last_name": "Administrator",
             "hashed_password": get_password_hash("admin123"),
             "role": UserRole.admin.value,
-            "companyId": id2_company["id"] if id2_company else None,
+            "company_id": id2_company["id"] if id2_company else None,
             "language_preference": Language.DE.value,
             "is_active": True,
             "created_at": datetime.utcnow(),
