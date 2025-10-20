@@ -1184,7 +1184,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   };
 
   const filteredTests = testCases.filter(test => {
-    if (test.suite_id !== activeSuite) return false;
+    if (test.testSuiteId !== activeSuite) return false;
     if (filterStatus === 'all') return true;
     return test.status === filterStatus;
   });
