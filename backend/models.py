@@ -49,7 +49,7 @@ class UserBase(BaseModel):
     last_name: Optional[str] = None
     role: UserRole
     language_preference: Language = Language.DE
-    companyId: Optional[str] = None  # Firma-Zuordnung
+    company_id: Optional[str] = None  # Firma-Zuordnung (snake_case)
 
 class UserCreate(UserBase):
     password: str
@@ -62,7 +62,7 @@ class UserUpdate(BaseModel):
     role: Optional[UserRole] = None
     language_preference: Optional[Language] = None
     is_active: Optional[bool] = None
-    companyId: Optional[str] = None  # Firma-Zuordnung
+    company_id: Optional[str] = None  # Firma-Zuordnung (snake_case)
 
 class User(UserBase):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
