@@ -763,7 +763,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
   // Dynamisch berechnete Test Suite Stats
   const calculateSuiteStats = (suiteId: string) => {
-    const suiteTests = testCases.filter(t => t.suite_id === suiteId);
+    const suiteTests = testCases.filter(t => t.testSuiteId === suiteId);
     return {
       totalTests: suiteTests.length,
       passedTests: suiteTests.filter(t => t.status === 'success').length,
