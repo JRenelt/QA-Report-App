@@ -397,17 +397,27 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const currentUserCompany = availableCompanies.find((c: any) => c.id === (user?.companyId || 'ID2')) || availableCompanies[0];
 
   // Initialize company selection (nur Company, NICHT Projekt)
+  // Verwendet einen Ref um zu tracken, ob die Initialisierung schon durchgeführt wurde
+  const hasInitializedCompany = React.useRef(false);
+  
   React.useEffect(() => {
+    // Nur einmal initialisieren, nicht bei jedem availableCompanies Update
+    if (hasInitializedCompany.current) {
+      return;
+    }
+    
     if ((user?.role === 'admin' || user?.role === 'sysop') && !selectedCompanyId && availableCompanies.length > 0) {
       setSelectedCompanyId(availableCompanies[0].id);
+      hasInitializedCompany.current = true;
       // KEIN Auto-Select für Projekt - Benutzer muss manuell wählen
       const companyProjects = projects.filter((p: any) => p.companyId === availableCompanies[0].id);
       // Nur wenn genau 1 Projekt vorhanden ist, automatisch auswählen
       if (companyProjects.length === 1) {
         setSelectedProjectId(companyProjects[0].id);
       }
-    } else if (user?.role !== 'admin' && currentUserCompany) {
+    } else if (user?.role !== 'admin' && user?.role !== 'sysop' && currentUserCompany && !selectedCompanyId) {
       setSelectedCompanyId(currentUserCompany.id);
+      hasInitializedCompany.current = true;
       const userProjects = projects.filter((p: any) => p.companyId === currentUserCompany.id);
       // Nur wenn genau 1 Projekt vorhanden ist, automatisch auswählen
       if (userProjects.length === 1) {
