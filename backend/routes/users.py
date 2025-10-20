@@ -15,6 +15,7 @@ router = APIRouter()
 @router.get("/")
 async def get_users(current_user: User = Depends(require_admin)):
     """Get all users (Admin only) - Returns camelCase for Frontend"""
+    from fastapi.responses import JSONResponse
     users = await users_collection.find().sort("created_at", -1).to_list(1000)
     
     # Konvertiere snake_case → camelCase für Frontend
@@ -32,7 +33,7 @@ async def get_users(current_user: User = Depends(require_admin)):
             del user_dict["updated_at"]
         converted_users.append(user_dict)
     
-    return converted_users
+    return JSONResponse(content=converted_users)
 
 @router.post("/", response_model=User)
 async def create_user(user_data: UserCreate, current_user: User = Depends(require_admin)):
