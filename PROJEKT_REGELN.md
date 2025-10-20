@@ -6,7 +6,7 @@
 **REGEL:** Kritische Arbeitsabläufe für AI-Agent
 1. **Erledigte Aufgaben:** 
    - ❌ NIEMALS erledigte Aufgaben wieder auf "unerledigt" setzen
-   - ✅ NUR User darf Aufgaben manuell auf "unerledigt" stellen
+   - ✅ NUR "jre" darf Aufgaben manuell auf "unerledigt" stellen
    - ✅ Bei Unsicherheit: User fragen, ob Aufgabe wirklich erledigt ist
 
 2. **Projektregeln anzeigen:**
@@ -28,6 +28,13 @@
    - ✅ Bei API-Fixes: Echte API-Calls testen (nicht nur Code ansehen)
    - ✅ **REGEL:** Erst testen, dann behaupten
    - ✅ Wenn User Screenshot mit Fehler zeigt → sofort zugeben und neu analysieren
+
+5. **Fehler-Management Wiki aktualisieren:**
+   - ✅ Nach JEDER Behebung eines Fehlers das Fehler-Management Wiki (`/app/frontend/public/fehler-management.html`) aktualisieren
+   - ✅ Neue Fehler mit eindeutiger ID (FE-XXX für Frontend, BE-XXX für Backend, BUG-XXX für Bugs) dokumentieren
+   - ✅ Status-Updates für behobene Fehler eintragen
+   - ✅ Root Cause Analysis (RCA) und Lösung dokumentieren
+   - ✅ Das Wiki dient als zentrale Fehler-Dokumentation für das gesamte Projekt
 
 ### Entwicklungsumgebung
 **REGEL:** User arbeitet mit 3 Browsern für Testing und Entwicklung
