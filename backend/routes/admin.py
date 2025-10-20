@@ -302,12 +302,13 @@ async def generate_mass_data(
             project_id = f"PERF_PROJ_{company_num:03d}"
             project = {
                 "id": project_id,
-                "companyId": company["id"],
+                "company_id": company["id"],  # snake_case für MongoDB
                 "name": f"Performance Test Projekt {company_num}",
                 "description": "Automatisch generiertes Performance-Test-Projekt",
                 "status": "active",
-                "createdBy": current_user.username,
-                "createdAt": datetime.utcnow().isoformat()
+                "created_by": current_user.id,  # snake_case und user.id statt username
+                "created_at": datetime.utcnow(),
+                "updated_at": datetime.utcnow()
             }
             await projects_collection.insert_one(project)
             stats["projects"] += 1
