@@ -15,6 +15,7 @@ router = APIRouter()
 @router.get("/")
 async def get_test_cases(test_suite_id: str, current_user: User = Depends(get_current_user)):
     """Get all test cases for a test suite"""
+    from fastapi.responses import JSONResponse
     
     # Verify suite exists
     suite = await test_suites_collection.find_one({"id": test_suite_id})
@@ -47,7 +48,7 @@ async def get_test_cases(test_suite_id: str, current_user: User = Depends(get_cu
             case_dict["sortOrder"] = case_dict.pop("sort_order")
         converted_cases.append(case_dict)
     
-    return converted_cases
+    return JSONResponse(content=converted_cases)
 
 @router.post("/", response_model=TestCase)
 async def create_test_case(
