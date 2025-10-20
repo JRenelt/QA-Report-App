@@ -1858,7 +1858,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                           try {
                             const testData = {
                               test_id: test.test_id,
-                              suite_id: test.suite_id,
+                              testSuiteId: test.testSuiteId,
                               title: test.title,
                               description: test.description || '',
                               status: 'pending' as const,
