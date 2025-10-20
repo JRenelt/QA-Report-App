@@ -138,7 +138,7 @@ async def create_sample_data():
     user_counter = 1
     for company in created_companies:
         # Check if users already exist for this company
-        existing_users_count = await users_collection.count_documents({"companyId": company["id"]})
+        existing_users_count = await users_collection.count_documents({"company_id": company["id"]})
         if existing_users_count >= 2:
             print(f"⚠️  Users for company '{company['name']}' already exist")
             continue
