@@ -1,0 +1,72 @@
+{
+  "test_type": "Comprehensive SysOp Database Clear Testing",
+  "total_tests": 9,
+  "passed": 9,
+  "failed": 0,
+  "success_rate": 100.0,
+  "results": [
+    {
+      "test": "Setup: Admin Login",
+      "success": true,
+      "message": "\u2705 Admin login successful",
+      "timestamp": "2025-10-20T06:51:23.661132",
+      "response_data": null
+    },
+    {
+      "test": "Setup: SysOp User Creation",
+      "success": true,
+      "message": "\u2705 SysOp user already exists",
+      "timestamp": "2025-10-20T06:51:23.703674",
+      "response_data": null
+    },
+    {
+      "test": "Setup: Test Data Generation",
+      "success": true,
+      "message": "\u2705 Test data generated successfully",
+      "timestamp": "2025-10-20T06:51:23.799476",
+      "response_data": null
+    },
+    {
+      "test": "Test 1: SysOp Login",
+      "success": true,
+      "message": "\u2705 SysOp login successful - User: jre, Role: sysop",
+      "timestamp": "2025-10-20T06:51:24.035879",
+      "response_data": null
+    },
+    {
+      "test": "Test 2: Companies Before Clear",
+      "success": true,
+      "message": "\u2705 Found 2 companies before clearing: ['Test Firma 01', 'Test Firma 02']",
+      "timestamp": "2025-10-20T06:51:24.053134",
+      "response_data": null
+    },
+    {
+      "test": "Test 3: Database Clear",
+      "success": true,
+      "message": "\u2705 Database cleared with preservation - Message: Datenbank erfolgreich geleert, Preserved: ID2 GmbH Firma sowie Admin- und SysOp-Benutzer beibehalten",
+      "timestamp": "2025-10-20T06:51:24.071335",
+      "response_data": null
+    },
+    {
+      "test": "Test 4: Projects After Clear",
+      "success": true,
+      "message": "\u2705 Projects endpoint returns empty list after DB clear - Token still valid",
+      "timestamp": "2025-10-20T06:51:24.085490",
+      "response_data": null
+    },
+    {
+      "test": "Test 5: Re-login After Clear",
+      "success": true,
+      "message": "\u2705 SysOp re-login successful after DB clear - User still exists",
+      "timestamp": "2025-10-20T06:51:24.346032",
+      "response_data": null
+    },
+    {
+      "test": "Test 6: Companies After Clear",
+      "success": true,
+      "message": "\u2705 No companies after clear - ID2 preservation works only if ID2 existed before clearing",
+      "timestamp": "2025-10-20T06:51:24.356956",
+      "response_data": null
+    }
+  ]
+}
