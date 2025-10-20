@@ -15,6 +15,7 @@ router = APIRouter()
 @router.get("/")
 async def get_test_suites(project_id: str, current_user: User = Depends(get_current_user)):
     """Get all test suites for a project"""
+    from fastapi.responses import JSONResponse
     
     # Verify project access
     project = await projects_collection.find_one({"id": project_id})
@@ -47,7 +48,7 @@ async def get_test_suites(project_id: str, current_user: User = Depends(get_curr
             suite_dict["sortOrder"] = suite_dict.pop("sort_order")
         converted_suites.append(suite_dict)
     
-    return converted_suites
+    return JSONResponse(content=converted_suites)
 
 @router.post("/", response_model=TestSuite)
 async def create_test_suite(
