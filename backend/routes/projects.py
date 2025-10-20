@@ -16,8 +16,8 @@ router = APIRouter()
 async def get_projects(current_user: User = Depends(get_current_user)):
     """Get all projects user has access to"""
     
-    if current_user.role == "admin":
-        # Admins see all projects
+    if current_user.role in ["admin", "sysop"]:
+        # Admins and SysOps see all projects
         projects = await projects_collection.find().sort("updated_at", -1).to_list(1000)
     else:
         # Get projects where user is creator or has access
