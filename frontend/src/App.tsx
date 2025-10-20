@@ -322,6 +322,12 @@ function App() {
     localStorage.setItem('user', JSON.stringify(userData));
     setAuthToken(token);
     setUser(userData);
+    
+    // Standardmäßig Dark Mode nach Login aktivieren
+    if (!localStorage.getItem('darkMode')) {
+      setDarkMode(true);
+      localStorage.setItem('darkMode', 'true');
+    }
   };
 
   const handleLogout = () => {
