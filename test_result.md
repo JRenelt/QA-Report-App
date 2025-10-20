@@ -503,15 +503,18 @@ backend:
 
   - task: "Test Suite Stats Pre-Calculation (Backend)"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/routes/test_suites.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "main"
           comment: "IMPLEMENTED: Backend GET /api/test-suites/ route now pre-calculates test case statistics for EACH suite (lines 37-48). For every suite, it queries the test_cases collection and calculates: totalTests (count), passedTests (status=success), failedTests (status=error), openTests (pending+warning). These stats are included in the response JSON (totalTests, passedTests, failedTests, openTests). This ensures Frontend can display correct counters for ALL suites, not just the active one. READY FOR TESTING."
+        - working: true
+          agent: "testing"
+          comment: "✅ GERMAN REVIEW TEST PASSED: Test Suite Stats Pre-Calculation working correctly. GET /api/test-suites/?project_id={id} returns all required stats fields (totalTests, passedTests, failedTests, openTests) for EVERY suite. All stats are correctly calculated from test_cases collection. Stats validation passed - totalTests equals sum of passed+failed+open tests. Pre-calculation ensures counters display correctly for ALL suites without needing to select them individually."
 
   - task: "Mass Data Generation 10x10x50x50"
     implemented: true
