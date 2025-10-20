@@ -916,8 +916,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   // PDF Export Funktionen
   const handlePDFExport = (type: 'all' | 'tested') => {
     const testsToExport = type === 'all' 
-      ? testCases.filter(t => t.suite_id === activeSuite)
-      : testCases.filter(t => t.suite_id === activeSuite && t.status !== 'pending');
+      ? testCases.filter(t => t.testSuiteId === activeSuite)
+      : testCases.filter(t => t.testSuiteId === activeSuite && t.status !== 'pending');
     
     const activeSuiteData = testSuites.find(s => s.id === activeSuite);
     const suiteName = activeSuiteData?.name || 'Test-Suite';
@@ -1015,8 +1015,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   // PDF Preview vor Export
   const handlePDFPreview = (type: 'all' | 'tested') => {
     const testsToExport = type === 'all' 
-      ? testCases.filter(t => t.suite_id === activeSuite)
-      : testCases.filter(t => t.suite_id === activeSuite && t.status !== 'pending');
+      ? testCases.filter(t => t.testSuiteId === activeSuite)
+      : testCases.filter(t => t.testSuiteId === activeSuite && t.status !== 'pending');
     
     const activeSuiteData = testSuites.find(s => s.id === activeSuite);
     const suiteName = activeSuiteData?.name || 'Test-Suite';
