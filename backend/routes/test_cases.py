@@ -12,7 +12,7 @@ from auth import get_current_user
 
 router = APIRouter()
 
-@router.get("/", response_model=List[TestCase])
+@router.get("/")
 async def get_test_cases(test_suite_id: str, current_user: User = Depends(get_current_user)):
     """Get all test cases for a test suite"""
     
@@ -28,7 +28,26 @@ async def get_test_cases(test_suite_id: str, current_user: User = Depends(get_cu
         {"test_suite_id": test_suite_id}
     ).sort("sort_order", 1).to_list(1000)
     
-    return [TestCase(**{k: v for k, v in case.items() if k != "_id"}) for case in cases]
+    # Konvertiere snake_case Keys zu camelCase für Frontend
+    converted_cases = []
+    for case in cases:
+        case_dict = {k: v for k, v in case.items() if k != "_id"}
+        # Konvertiere Keys
+        if "test_suite_id" in case_dict:
+            case_dict["testSuiteId"] = case_dict.pop("test_suite_id")
+        if "created_by" in case_dict:
+            case_dict["createdBy"] = case_dict.pop("created_by")
+        if "created_at" in case_dict:
+            case_dict["createdAt"] = case_dict["created_at"].isoformat() if hasattr(case_dict["created_at"], 'isoformat') else case_dict["created_at"]
+            del case_dict["created_at"]
+        if "updated_at" in case_dict:
+            case_dict["updatedAt"] = case_dict["updated_at"].isoformat() if hasattr(case_dict["updated_at"], 'isoformat') else case_dict["updated_at"]
+            del case_dict["updated_at"]
+        if "sort_order" in case_dict:
+            case_dict["sortOrder"] = case_dict.pop("sort_order")
+        converted_cases.append(case_dict)
+    
+    return converted_cases
 
 @router.post("/", response_model=TestCase)
 async def create_test_case(
