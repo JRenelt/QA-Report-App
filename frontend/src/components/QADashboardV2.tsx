@@ -1915,7 +1915,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                         `✅ Bestandene Tests: ${archivedTests.filter(t => t.status === 'success').length}\n` +
                         `📂 Manuell archivierte: ${archivedTests.filter(t => t.note?.includes('[ARCHIVIERT]')).length}\n\n` +
                         `Aktuelle Suite: ${testSuites.find(s => s.id === activeSuite)?.name}\n` +
-                        `Tests in dieser Suite: ${testCases.filter(t => t.suite_id === activeSuite).length}\n\n` +
+                        `Tests in dieser Suite: ${testCases.filter(t => t.testSuiteId === activeSuite).length}\n\n` +
                         `Möchten Sie alle archivierten Tests als Filter anzeigen?`;
                       
                       if (confirm(archiveInfo)) {
