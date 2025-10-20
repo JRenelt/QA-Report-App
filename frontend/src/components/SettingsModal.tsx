@@ -246,12 +246,41 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
       console.log('✅ Masse-Daten erfolgreich generiert!');
       console.log('Stats:', result.stats);
       
-      // Erfolgsmeldung mit Anweisung
-      showMessage('success', `✅ Masse-Daten generiert: ${result.stats.companies} Firmen, ${result.stats.test_cases} Testfälle in ${Math.round(result.duration_seconds)}s. Bitte laden Sie die Seite neu (F5), um die Daten zu sehen.`);
+      // Erfolgsmeldung ohne F5-Hinweis
+      showMessage('success', `✅ Masse-Daten generiert: ${result.stats.companies} Firmen, ${result.stats.test_cases} Testfälle in ${Math.round(result.duration_seconds)}s.`);
       
-      // KEIN automatischer Reload mehr wegen CDN-Cache-Problem
-      // User muss manuell F5 drücken
-      console.log('⚠️ Bitte Seite manuell neu laden (F5) um Daten zu sehen!');
+      // Automatisch Companies und Projects neu laden
+      setTimeout(async () => {
+        try {
+          console.log('🔄 Lade Companies und Projects automatisch neu...');
+          
+          // Companies neu laden
+          const companiesResponse = await fetch(`${backendUrl}/api/companies/`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+          });
+          if (companiesResponse.ok) {
+            const companies = await companiesResponse.json();
+            localStorage.setItem('qa_companies', JSON.stringify(companies));
+            console.log(`✅ ${companies.length} Companies automatisch geladen`);
+          }
+          
+          // Projects neu laden
+          const projectsResponse = await fetch(`${backendUrl}/api/projects/all`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+          });
+          if (projectsResponse.ok) {
+            const projects = await projectsResponse.json();
+            localStorage.setItem('qa_projects', JSON.stringify(projects));
+            console.log(`✅ ${projects.length} Projects automatisch geladen`);
+          }
+          
+          // Seite automatisch neu laden für UI-Update
+          console.log('🔄 Lade Seite automatisch neu...');
+          window.location.reload();
+        } catch (error) {
+          console.error('Fehler beim automatischen Reload:', error);
+        }
+      }, 500); // 500ms Verzögerung damit die Erfolgsmeldung sichtbar ist
     } catch (error) {
       showMessage('error', '❌ Fehler bei der Masse-Daten Generierung');
       console.error('Generate mass data error:', error);
