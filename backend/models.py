@@ -122,13 +122,14 @@ class ProjectCreate(ProjectBase):
 
 class Project(ProjectBase):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    company_id: str
-    created_by: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    company_id: str = Field(..., alias='companyId')
+    created_by: str = Field(..., alias='createdBy')
+    created_at: datetime = Field(default_factory=datetime.utcnow, alias='createdAt')
+    updated_at: datetime = Field(default_factory=datetime.utcnow, alias='updatedAt')
 
     class Config:
         from_attributes = True
+        populate_by_name = True  # Erlaubt sowohl snake_case als auch camelCase
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
