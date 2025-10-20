@@ -1356,20 +1356,6 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             </span>
           </div>
 
-          {/* 🔄 RELOAD PROJEKTE - WORKAROUND FÜR CDN-CACHE */}
-          <button
-            onClick={handleReloadProjectsFromBackend}
-            disabled={isLoadingProjects}
-            className={`p-2 rounded-lg transition-colors ${
-              isLoadingProjects 
-                ? 'bg-yellow-600 cursor-not-allowed' 
-                : 'bg-yellow-600 hover:bg-yellow-700'
-            }`}
-            title="🔄 Projekte aus Backend laden (CDN-Cache Workaround)"
-          >
-            <RotateCcw className={`h-5 w-5 text-white ${isLoadingProjects ? 'animate-spin' : ''}`} />
-          </button>
-
           {/* Hilfe */}
           <button
             onClick={onOpenHelp}
