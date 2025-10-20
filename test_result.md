@@ -501,6 +501,30 @@ backend:
           agent: "testing"
           comment: "🇩🇪 GERMAN REVIEW REQUEST: SysOp Database Clear Testing COMPLETED SUCCESSFULLY! ✅ ALL 5 CRITICAL TESTS PASSED: (1) SysOp Login (jre/sysop123) ✅ HTTP 200 with JWT token, User: jre, Role: sysop (2) Database Clear as SysOp ✅ HTTP 200 with message 'Datenbank erfolgreich geleert' and preservation note 'ID2 GmbH Firma sowie Admin- und SysOp-Benutzer beibehalten' (3) Projects After DB Clear ✅ Empty list returned but JWT token remains VALID (critical requirement) (4) Re-login After DB Clear ✅ SysOp user still exists and can login successfully (5) Companies Retrieval ✅ ID2 preservation logic working correctly (preserves ID2 if it exists, but doesn't create it). CRITICAL SUCCESS: SysOp users are NOT deleted during database clearing and JWT tokens remain valid after clearing operation. The clear-database bug fix is working perfectly - SysOp users persist as expected!"
 
+  - task: "Test Suite Stats Pre-Calculation (Backend)"
+    implemented: true
+    working: "NA"
+    file: "backend/routes/test_suites.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "IMPLEMENTED: Backend GET /api/test-suites/ route now pre-calculates test case statistics for EACH suite (lines 37-48). For every suite, it queries the test_cases collection and calculates: totalTests (count), passedTests (status=success), failedTests (status=error), openTests (pending+warning). These stats are included in the response JSON (totalTests, passedTests, failedTests, openTests). This ensures Frontend can display correct counters for ALL suites, not just the active one. READY FOR TESTING."
+
+  - task: "Mass Data Generation 10x10x50x50"
+    implemented: true
+    working: "NA"
+    file: "backend/routes/admin.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "IMPLEMENTED: Mass data generation scaled to 10x10x50x50 structure (lines 285-350). Generates: 10 companies (range 1-11), each with 10 projects (range 1-11), each project with 50 test suites (range 1-51), each suite with 50 test cases (range 1-51). Total: 10 × 10 × 50 × 50 = 250,000 test cases. Uses correct snake_case fields (company_id, created_by, test_suite_id). READY FOR TESTING to verify all data is accessible and visible."
+
 frontend:
   - task: "Login Dark Mode Kontrast"
     implemented: true
