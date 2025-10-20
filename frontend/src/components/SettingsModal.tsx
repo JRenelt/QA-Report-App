@@ -247,7 +247,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
       console.log('Stats:', result.stats);
       
       // Erfolgsmeldung ohne F5-Hinweis
-      showMessage('success', `✅ Masse-Daten generiert: ${result.stats.companies} Firmen, ${result.stats.test_cases} Testfälle in ${Math.round(result.duration_seconds)}s.`);
+      showMessage('success', `✅ Masse-Daten generiert: ${result.stats.companies} Firmen, ${result.stats.projects} Projekte, ${result.stats.test_cases} Testfälle in ${Math.round(result.duration_seconds)}s.`);
       
       // Automatisch Companies und Projects neu laden
       setTimeout(async () => {
