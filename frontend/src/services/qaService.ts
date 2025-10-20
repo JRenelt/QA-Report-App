@@ -88,7 +88,7 @@ class QAService {
 
   // Test Cases
   async getTestCases(suiteId?: string): Promise<TestCase[]> {
-    const query = suiteId ? `?suite_id=${suiteId}` : '';
+    const query = suiteId ? `?test_suite_id=${suiteId}` : '';
     return this.request(`/test-cases${query}`);
   }
 
@@ -157,7 +157,7 @@ class QAService {
     pending: number;
     skipped: number;
   }> {
-    const query = suiteId ? `?suite_id=${suiteId}` : '';
+    const query = suiteId ? `?test_suite_id=${suiteId}` : '';
     return this.request(`/test-statistics${query}`);
   }
 }
