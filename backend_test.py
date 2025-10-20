@@ -763,7 +763,7 @@ class BackendTester:
                 return False
             
             # Step 2: Verify projects exist in MongoDB
-            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/all", timeout=10)
             if projects_response.status_code == 200:
                 projects = projects_response.json()
                 if len(projects) == 0:
