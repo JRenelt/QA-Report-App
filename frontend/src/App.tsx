@@ -341,34 +341,30 @@ function App() {
     <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
       {/* Login-Seite: PERMANENT Dark Mode, Dashboard: User-wählbar */}
       <div className={`min-h-screen ${!authToken ? 'bg-gray-900' : (darkMode ? 'bg-gray-900' : 'bg-gray-50')} transition-colors duration-200`}>
-        {/* Modals - nur wenn eingeloggt */}
-        {authToken && (
-          <>
-            <SettingsModal
-              isOpen={showSettings}
-              onClose={() => setShowSettings(false)}
-              darkMode={darkMode}
-              toggleDarkMode={toggleDarkMode}
-              authToken={authToken || ''}
-              initialTab={settingsInitialTab}
-              currentUser={user}
-            />
-            <HelpModal
-              isOpen={showHelp}
-              onClose={() => setShowHelp(false)}
-              darkMode={darkMode}
-              currentUser={user}
-              onOpenGlossary={() => setShowGlossary(true)}
-            />
-            {/* Glossar nur für Admins und SysOps */}
-            {(user?.role === 'admin' || user?.role === 'sysop') && (
-              <GlossaryModal
-                isOpen={showGlossary}
-                onClose={() => setShowGlossary(false)}
-                darkMode={darkMode}
-              />
-            )}
-          </>
+        {/* Modals */}
+        <SettingsModal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+          darkMode={darkMode}
+          toggleDarkMode={toggleDarkMode}
+          authToken={authToken || ''}
+          initialTab={settingsInitialTab}
+          currentUser={user}
+        />
+        <HelpModal
+          isOpen={showHelp}
+          onClose={() => setShowHelp(false)}
+          darkMode={darkMode}
+          currentUser={user}
+          onOpenGlossary={() => setShowGlossary(true)}
+        />
+        {/* Glossar nur für Admins und SysOps */}
+        {(user?.role === 'admin' || user?.role === 'sysop') && (
+          <GlossaryModal
+            isOpen={showGlossary}
+            onClose={() => setShowGlossary(false)}
+            darkMode={darkMode}
+          />
         )}
 
         {!authToken ? (
