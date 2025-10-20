@@ -142,9 +142,6 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   
   // Polling aktivieren, wenn Backend-URL gesetzt ist
 
-  const [activeSuite, setActiveSuite] = useState<string>('1');
-  const [newTestName, setNewTestName] = useState('');
-
   const [selectedTest, setSelectedTest] = useState<TestCase | null>(null);
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
