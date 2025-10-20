@@ -317,39 +317,39 @@ async def generate_mass_data(
                     suite_id = f"SUITE_{company_num:03d}_{project_num:03d}_{suite_num:03d}"
                     suite = {
                         "id": suite_id,
-                    "project_id": project_id,
-                    "name": f"Testbereich {suite_num}",
-                    "description": f"Performance Test Suite {suite_num}",
-                    "icon": "file",
-                    "created_by": current_user.id,  # user.id statt username
-                    "created_at": datetime.utcnow(),
-                    "updated_at": datetime.utcnow(),
-                    "sort_order": suite_num
-                }
-                await test_suites_collection.insert_one(suite)
-                stats["test_suites"] += 1
-                
-                # Generate 50 test cases per suite
-                test_cases_batch = []
-                for test_num in range(1, 51):
-                    test_case = {
-                        "id": uuid.uuid4().hex,
-                        "test_id": f"PERF{company_num:03d}{project_num:03d}{suite_num:03d}{test_num:03d}",
-                        "test_suite_id": suite_id,  # Korrigiert: test_suite_id statt suite_id
                         "project_id": project_id,
-                        "title": f"Performance Testfall {test_num}",
-                        "description": f"Automatisch generierter Testfall (Firma {company_num}, Projekt {project_num}, Suite {suite_num}, Test {test_num})",
-                        "status": "pending",
-                        "note": "",
+                        "name": f"Testbereich {suite_num}",
+                        "description": f"Performance Test Suite {suite_num}",
+                        "icon": "file",
+                        "created_by": current_user.id,  # user.id statt username
                         "created_at": datetime.utcnow(),
-                        "updated_at": datetime.utcnow()
+                        "updated_at": datetime.utcnow(),
+                        "sort_order": suite_num
                     }
-                    test_cases_batch.append(test_case)
-                    stats["test_cases"] += 1
-                
-                # Bulk insert test cases for this suite
-                if test_cases_batch:
-                    await test_cases_collection.insert_many(test_cases_batch)
+                    await test_suites_collection.insert_one(suite)
+                    stats["test_suites"] += 1
+                    
+                    # Generate 50 test cases per suite
+                    test_cases_batch = []
+                    for test_num in range(1, 51):
+                        test_case = {
+                            "id": uuid.uuid4().hex,
+                            "test_id": f"PERF{company_num:03d}{project_num:03d}{suite_num:03d}{test_num:03d}",
+                            "test_suite_id": suite_id,  # Korrigiert: test_suite_id statt suite_id
+                            "project_id": project_id,
+                            "title": f"Performance Testfall {test_num}",
+                            "description": f"Automatisch generierter Testfall (Firma {company_num}, Projekt {project_num}, Suite {suite_num}, Test {test_num})",
+                            "status": "pending",
+                            "note": "",
+                            "created_at": datetime.utcnow(),
+                            "updated_at": datetime.utcnow()
+                        }
+                        test_cases_batch.append(test_case)
+                        stats["test_cases"] += 1
+                    
+                    # Bulk insert test cases for this suite
+                    if test_cases_batch:
+                        await test_cases_collection.insert_many(test_cases_batch)
         
         # End time
         end_time = datetime.now()
