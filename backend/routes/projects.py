@@ -15,6 +15,7 @@ router = APIRouter()
 @router.get("/all")
 async def get_projects(current_user: User = Depends(get_current_user)):
     """Get all projects user has access to"""
+    from fastapi.responses import JSONResponse
     
     if current_user.role in ["admin", "sysop"]:
         # Admins and SysOps see all projects
@@ -48,7 +49,7 @@ async def get_projects(current_user: User = Depends(get_current_user)):
             del project_dict["updated_at"]
         converted_projects.append(project_dict)
     
-    return converted_projects
+    return JSONResponse(content=converted_projects)
 
 @router.post("/new", response_model=Project) 
 async def create_project(
