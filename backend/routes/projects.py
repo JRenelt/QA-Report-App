@@ -31,7 +31,22 @@ async def get_projects(current_user: User = Depends(get_current_user)):
             ]
         }).sort("updated_at", -1).to_list(1000)
     
-    return [Project(**{k: v for k, v in project.items() if k != "_id"}) for project in projects]
+    # Konvertiere snake_case Keys zu camelCase für Frontend-Kompatibilität
+    converted_projects = []
+    for project in projects:
+        project_dict = {k: v for k, v in project.items() if k != "_id"}
+        # Konvertiere Keys für Frontend
+        if "company_id" in project_dict:
+            project_dict["companyId"] = project_dict.pop("company_id")
+        if "created_by" in project_dict:
+            project_dict["createdBy"] = project_dict.pop("created_by")
+        if "created_at" in project_dict:
+            project_dict["createdAt"] = project_dict.pop("created_at")
+        if "updated_at" in project_dict:
+            project_dict["updatedAt"] = project_dict.pop("updated_at")
+        converted_projects.append(project_dict)
+    
+    return converted_projects
 
 @router.post("/new", response_model=Project) 
 async def create_project(
