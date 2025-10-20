@@ -287,7 +287,8 @@ function App() {
   const [user, setUser] = useState<any>(null);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('darkMode');
-    return saved === 'true';
+    // Standard: Dark Mode aktiviert (true), nur wenn explizit 'false' gesetzt → Light Mode
+    return saved === 'false' ? false : true;
   });
   const [showSettings, setShowSettings] = useState(false);
   const [settingsInitialTab, setSettingsInitialTab] = useState<'appearance' | 'import-export' | 'advanced'>('appearance');
