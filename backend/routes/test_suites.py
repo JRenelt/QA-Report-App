@@ -33,6 +33,20 @@ async def get_test_suites(project_id: str, current_user: User = Depends(get_curr
     converted_suites = []
     for suite in suites:
         suite_dict = {k: v for k, v in suite.items() if k != "_id"}
+        
+        # Berechne Test Case Counts für diese Suite
+        suite_cases = await test_cases_collection.find({"test_suite_id": suite["id"]}).to_list(1000)
+        total_tests = len(suite_cases)
+        passed_tests = len([c for c in suite_cases if c.get("status") == "success"])
+        failed_tests = len([c for c in suite_cases if c.get("status") == "error"])
+        pending_tests = len([c for c in suite_cases if c.get("status") == "pending"])
+        warning_tests = len([c for c in suite_cases if c.get("status") == "warning"])
+        
+        suite_dict["totalTests"] = total_tests
+        suite_dict["passedTests"] = passed_tests
+        suite_dict["failedTests"] = failed_tests
+        suite_dict["openTests"] = pending_tests + warning_tests
+        
         # Konvertiere Keys
         if "project_id" in suite_dict:
             suite_dict["projectId"] = suite_dict.pop("project_id")
