@@ -12,9 +12,9 @@ from auth import get_current_user, require_qa_or_admin
 
 router = APIRouter()
 
-@router.get("/", response_model=List[Company])
+@router.get("/")
 async def get_companies(current_user: User = Depends(get_current_user)):
-    """Get all companies user has access to"""
+    """Get all companies user has access to - Returns camelCase for Frontend"""
     
     if current_user.role in ["admin", "sysop"]:
         # Admins and SysOps see all companies
