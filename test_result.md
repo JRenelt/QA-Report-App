@@ -489,6 +489,18 @@ backend:
           agent: "testing"
           comment: "✅ BUG BEHOBEN! SysOp Companies Access Fix erfolgreich getestet. ALLE 5 TESTS BESTANDEN: (1) SysOp Login (jre/sysop123) ✅ HTTP 200 mit JWT Token (2) SysOp Companies Access ✅ 6 Firmen erhalten (AutoParts Solutions, FinTech Innovations, HealthCare Systems, ID2.de, MediaDesign AG, TechCorp GmbH) (3) Admin Login ✅ Vergleichstest erfolgreich (4) Admin Companies Access ✅ 6 Firmen erhalten (5) SysOp vs Admin Gleichberechtigung ✅ Beide Rollen haben identischen Zugriff auf alle 6 Firmen. Der Backend-Fix in companies.py funktioniert korrekt - SysOp hat jetzt die gleichen Rechte wie Admin."
 
+  - task: "SysOp Database Clear Functionality"
+    implemented: true
+    working: true
+    file: "backend/routes/admin.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "🇩🇪 GERMAN REVIEW REQUEST: SysOp Database Clear Testing COMPLETED SUCCESSFULLY! ✅ ALL 5 CRITICAL TESTS PASSED: (1) SysOp Login (jre/sysop123) ✅ HTTP 200 with JWT token, User: jre, Role: sysop (2) Database Clear as SysOp ✅ HTTP 200 with message 'Datenbank erfolgreich geleert' and preservation note 'ID2 GmbH Firma sowie Admin- und SysOp-Benutzer beibehalten' (3) Projects After DB Clear ✅ Empty list returned but JWT token remains VALID (critical requirement) (4) Re-login After DB Clear ✅ SysOp user still exists and can login successfully (5) Companies Retrieval ✅ ID2 preservation logic working correctly (preserves ID2 if it exists, but doesn't create it). CRITICAL SUCCESS: SysOp users are NOT deleted during database clearing and JWT tokens remain valid after clearing operation. The clear-database bug fix is working perfectly - SysOp users persist as expected!"
+
 frontend:
   - task: "Login Dark Mode Kontrast"
     implemented: true
