@@ -36,7 +36,24 @@ async def get_companies(current_user: User = Depends(get_current_user)):
             ]
         }).sort("name", 1).to_list(1000)
     
-    return [Company(**{k: v for k, v in company.items() if k != "_id"}) for company in companies]
+    # Konvertiere snake_case → camelCase für Frontend
+    converted_companies = []
+    for company in companies:
+        company_dict = {k: v for k, v in company.items() if k != "_id"}
+        # Konvertiere Keys
+        if "created_by" in company_dict:
+            company_dict["createdBy"] = company_dict.pop("created_by")
+        if "created_at" in company_dict:
+            company_dict["createdAt"] = company_dict["created_at"].isoformat() if hasattr(company_dict["created_at"], 'isoformat') else company_dict["created_at"]
+            del company_dict["created_at"]
+        if "updated_at" in company_dict:
+            company_dict["updatedAt"] = company_dict["updated_at"].isoformat() if hasattr(company_dict["updated_at"], 'isoformat') else company_dict["updated_at"]
+            del company_dict["updated_at"]
+        if "logo_url" in company_dict:
+            company_dict["logoUrl"] = company_dict.pop("logo_url")
+        converted_companies.append(company_dict)
+    
+    return converted_companies
 
 @router.post("/", response_model=Company)
 async def create_company(
