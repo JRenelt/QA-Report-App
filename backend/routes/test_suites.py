@@ -12,7 +12,7 @@ from auth import get_current_user
 
 router = APIRouter()
 
-@router.get("/", response_model=List[TestSuite])
+@router.get("/")
 async def get_test_suites(project_id: str, current_user: User = Depends(get_current_user)):
     """Get all test suites for a project"""
     
@@ -28,7 +28,26 @@ async def get_test_suites(project_id: str, current_user: User = Depends(get_curr
         {"project_id": project_id}
     ).sort("sort_order", 1).to_list(1000)
     
-    return [TestSuite(**{k: v for k, v in suite.items() if k != "_id"}) for suite in suites]
+    # Konvertiere snake_case Keys zu camelCase für Frontend
+    converted_suites = []
+    for suite in suites:
+        suite_dict = {k: v for k, v in suite.items() if k != "_id"}
+        # Konvertiere Keys
+        if "project_id" in suite_dict:
+            suite_dict["projectId"] = suite_dict.pop("project_id")
+        if "created_by" in suite_dict:
+            suite_dict["createdBy"] = suite_dict.pop("created_by")
+        if "created_at" in suite_dict:
+            suite_dict["createdAt"] = suite_dict["created_at"].isoformat() if hasattr(suite_dict["created_at"], 'isoformat') else suite_dict["created_at"]
+            del suite_dict["created_at"]
+        if "updated_at" in suite_dict:
+            suite_dict["updatedAt"] = suite_dict["updated_at"].isoformat() if hasattr(suite_dict["updated_at"], 'isoformat') else suite_dict["updated_at"]
+            del suite_dict["updated_at"]
+        if "sort_order" in suite_dict:
+            suite_dict["sortOrder"] = suite_dict.pop("sort_order")
+        converted_suites.append(suite_dict)
+    
+    return converted_suites
 
 @router.post("/", response_model=TestSuite)
 async def create_test_suite(
