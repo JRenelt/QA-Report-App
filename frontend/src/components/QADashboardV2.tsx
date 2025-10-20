@@ -110,6 +110,34 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     loadTestSuitesFromBackend();
   }, [selectedProjectId, authToken]);
   
+  // Test Cases aus Backend laden wenn Suite gewählt wird
+  useEffect(() => {
+    if (!activeSuite || !authToken) return;
+    
+    const loadTestCasesFromBackend = async () => {
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
+        const response = await fetch(`${backendUrl}/api/test-cases/?test_suite_id=${activeSuite}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        
+        if (response.ok) {
+          const cases = await response.json();
+          console.log(`✅ ${cases.length} Test Cases aus Backend geladen für Suite ${activeSuite}`);
+          setTestCases(cases);
+        } else {
+          console.error('❌ Fehler beim Laden der Test-Cases:', response.status);
+          setTestCases([]);
+        }
+      } catch (error) {
+        console.error('❌ Fehler beim Laden der Test-Cases:', error);
+        setTestCases([]);
+      }
+    };
+    
+    loadTestCasesFromBackend();
+  }, [activeSuite, authToken]);
+  
   // Test-Suites und Test-Cases automatisch speichern
   useEffect(() => {
     if (!selectedProjectId || testSuites.length === 0) return;
