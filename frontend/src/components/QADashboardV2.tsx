@@ -36,7 +36,7 @@ interface TestSuite {
 interface TestCase {
   id: string;
   test_id: string;
-  suite_id: string;
+  testSuiteId: string;
   title: string;
   description: string;
   status: 'success' | 'error' | 'warning' | 'pending' | 'skipped';
