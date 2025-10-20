@@ -671,6 +671,55 @@
                     </div>
                 </li>
                 
+                <li class="error-item critical completed" id="error-bug-012" data-status="completed">
+                    <div class="title">
+                        <span>BUG-012: Test Cases werden nicht angezeigt (snake_case/camelCase Mismatch)</span>
+                        <button class="status-toggle completed" onclick="toggleStatus('error-bug-012')">Erledigt ✓</button>
+                    </div>
+                    <div class="description">
+                        <strong>Problem:</strong> Test Cases werden aus Backend geladen (Console: "✅ 50 Test Cases"), aber Pagination zeigt "0 von 0 Tests"<br>
+                        <strong>Root Cause:</strong> Frontend filtert nach `test.suite_id` (snake_case), aber Backend gibt `testSuiteId` (camelCase) zurück<br>
+                        <strong>Betroffene Stellen:</strong><br>
+                        - QADashboardV2.tsx: filteredTests, calculateSuiteStats, Export-Logic (18 Stellen)<br>
+                        - qaService.ts: TestCase Interface, Query-Parameter<br>
+                        <strong>Lösung:</strong> Alle snake_case Referenzen zu camelCase konvertiert<br>
+                        - Interface: `suite_id` → `testSuiteId`<br>
+                        - Filter: `test.suite_id` → `test.testSuiteId`<br>
+                        - Query: `?suite_id=` → `?test_suite_id=`<br>
+                        <strong>Status:</strong> ✅ BEHOBEN - 50 Test Cases pro Suite sichtbar
+                    </div>
+                    <div class="meta">
+                        <span class="badge critical">KRITISCH</span>
+                        <span>🔧 snake_case/camelCase Inkonsistenz</span>
+                        <span>⏱️ Fix: 45 Min</span>
+                        <span class="timestamp" data-timestamp="" style="color: #28a745; font-weight: bold;">Erledigt am: 2025-10-20</span>
+                    </div>
+                </li>
+                
+                <li class="error-item critical completed" id="error-bug-013" data-status="completed">
+                    <div class="title">
+                        <span>BUG-013: Backend GET-Endpoints geben 0 Results zurück nach Key-Konvertierung</span>
+                        <button class="status-toggle completed" onclick="toggleStatus('error-bug-013')">Erledigt ✓</button>
+                    </div>
+                    <div class="description">
+                        <strong>Problem:</strong> Nach snake_case→camelCase Konvertierung geben alle GET-Endpoints leere Arrays zurück (0 Companies, 0 Projects, 0 Test Suites/Cases) trotz voller Datenbank<br>
+                        <strong>Root Cause:</strong> FastAPI validiert automatisch alle Responses gegen Pydantic Models, auch OHNE explizites `response_model`. Key-Konvertierung verursachte Pydantic-Validierungsfehler (Field required: 'created_by')<br>
+                        <strong>Lösung:</strong> Explizite JSONResponse in allen GET-Endpoints:<br>
+                        - `from fastapi.responses import JSONResponse`<br>
+                        - `return JSONResponse(content=converted_data)`<br>
+                        <strong>Betroffene Dateien:</strong><br>
+                        - routes/companies.py, routes/projects.py, routes/users.py<br>
+                        - routes/test_suites.py, routes/test_cases.py<br>
+                        <strong>Status:</strong> ✅ BEHOBEN - Alle Endpoints geben korrekte Daten zurück
+                    </div>
+                    <div class="meta">
+                        <span class="badge critical">KRITISCH</span>
+                        <span>🔧 Backend Pydantic Validation</span>
+                        <span>⏱️ Fix: 30 Min (mit troubleshoot_agent)</span>
+                        <span class="timestamp" data-timestamp="" style="color: #28a745; font-weight: bold;">Erledigt am: 2025-10-20</span>
+                    </div>
+                </li>
+                
                 <li class="error-item design" id="error-cq-001" data-status="open">
                     <div class="title">
                         <span>CQ-001: Deutsche Code-Kommentare teilweise inkonsistent</span>
