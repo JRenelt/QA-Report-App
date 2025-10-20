@@ -144,6 +144,32 @@ const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose, darkMode
         'UUIDs sind JSON-kompatibel und vermeiden Serialisierungs-Fehler'
       ],
       relatedTerms: ['Backend', 'MongoDB', 'Datenbank']
+    },
+    {
+      id: 'snake-case',
+      term: 'snake_case',
+      category: 'Technische Konzepte',
+      definition: 'Schreibweise für Variablennamen, bei der Wörter durch Unterstriche getrennt werden und alle Buchstaben kleingeschrieben sind. Wird standardmäßig in Python und Datenbanken verwendet.',
+      examples: [
+        'user_name (statt userName)',
+        'project_id (statt projectId)',
+        'created_at (statt createdAt)',
+        'test_suite_id (statt testSuiteId)'
+      ],
+      relatedTerms: ['camelCase', 'Backend', 'MongoDB']
+    },
+    {
+      id: 'camel-case',
+      term: 'camelCase',
+      category: 'Technische Konzepte',
+      definition: 'Schreibweise für Variablennamen, bei der das erste Wort kleingeschrieben wird und jedes weitere Wort mit einem Großbuchstaben beginnt. Wird standardmäßig in JavaScript/TypeScript und Frontend verwendet.',
+      examples: [
+        'userName (statt user_name)',
+        'projectId (statt project_id)',
+        'createdAt (statt created_at)',
+        'testSuiteId (statt test_suite_id)'
+      ],
+      relatedTerms: ['snake_case', 'Frontend', 'JavaScript']
     }
   ];
 
