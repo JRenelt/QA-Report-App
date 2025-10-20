@@ -282,8 +282,8 @@ async def generate_mass_data(
             "test_cases": 0
         }
         
-        # Generate 50 companies
-        for company_num in range(1, 51):
+        # Generate 10 companies (statt 50)
+        for company_num in range(1, 11):
             company = {
                 "id": f"PERF_COMP_{company_num:03d}",
                 "name": f"Performance Test Firma {company_num}",
