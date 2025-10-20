@@ -854,6 +854,18 @@ frontend:
           agent: "testing"
           comment: "🇩🇪 GERMAN ROLE-BASED PERMISSIONS TEST RESULTS: ✅ ADMIN PERMISSIONS (admin_techco): Can access both User and Company Management modals, sees 'Benutzer hinzufügen' button, has edit/delete permissions ✅ SYSOP PROTECTION: Admin correctly cannot see SysOp user 'jre' in user list ✅ USER VISIBILITY: Admin sees 6 users (filtered correctly, no SysOp users visible) ✅ MANAGEMENT BUTTONS: Factory and Users icons visible and clickable for admin role ❌ SYSOP LOGIN: jre/sysop123 credentials fail with 401 error, cannot test SysOp permissions ❌ QA-TESTER LOGIN: Could not complete tester role testing due to modal interaction issues. PARTIAL SUCCESS: Admin role permissions working correctly, SysOp authentication needs fixing."
 
+  - task: "Test Suite Counter Display (Frontend)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/QADashboardV2.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "IMPLEMENTED: calculateSuiteStats function (lines 765-788) now checks if suite has pre-calculated stats from backend (suite.totalTests, suite.passedTests, suite.failedTests, suite.openTests). If available, uses those values. Otherwise falls back to calculating from loaded testCases. This ensures counters display correctly for ALL suites without needing to select them individually. Previously counters only worked for active suite because only active suite's test cases were loaded. READY FOR TESTING."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
