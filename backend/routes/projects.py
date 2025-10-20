@@ -90,7 +90,7 @@ async def get_project(project_id: str, current_user: User = Depends(get_current_
         )
     
     # Check access
-    if current_user.role != "admin" and project["created_by"] != current_user.id:
+    if current_user.role not in ["admin", "sysop"] and project["created_by"] != current_user.id:
         user_access = await project_users_collection.find_one({
             "project_id": project_id,
             "user_id": current_user.id
