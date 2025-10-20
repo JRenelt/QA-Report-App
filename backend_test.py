@@ -1073,7 +1073,7 @@ class BackendTester:
                 return False
             
             # Test 2: Verify projects count
-            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/all", timeout=10)
             if projects_response.status_code != 200:
                 self.log_test("Mass Data Accessibility", False, 
                             f"Cannot access projects: HTTP {projects_response.status_code}")
