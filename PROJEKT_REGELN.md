@@ -46,7 +46,7 @@
 **REGEL:** Einheitliche Begriffe für Testing und Debugging
 - **CE** (Cache entleeren): Standard-Browser-Cache-Refresh mit `STRG+Shift+R` (Hard Reload)
 - **CCE** (Cache über Console entleeren): 
-  - F12 → Application Tab → Local Storage → https://projekt.preview.emergentagent.com
+  - F12 → Application Tab → Local Storage → https://mass-data-scale.preview.emergentagent.com
   - Kompletten localStorage löschen für harten Reset
 - **CM** (Consolen Meldung): Browser Console Log Messages (F12 → Console)
 - **RCA** (Root Cause Analysis): Systematische Fehlerursachen-Analyse
@@ -190,7 +190,7 @@
 1. F12 drücken (Entwickler-Tools öffnen)
 2. **Application Tab** wählen
 3. Links: **"Lokaler Speicher"** erweitern
-4. Auf `https://qa-report-fixer.preview.emergentagent.com` klicken
+4. Auf `https://mass-data-scale.preview.emergentagent.com` klicken
 5. Alle Keys/Einträge auf der rechten Seite auswählen
 6. **Delete-Taste** drücken oder Button "Websitedaten löschen" verwenden
 7. Optional: **"Service Workers"** → Alle "Unregister" klicken
@@ -218,14 +218,14 @@
 
 ### Systemanalyse-Seite
 **REGEL:** Referenz zur System-Analyse-Seite
-- **URL:** `https://qa-report-fixer.preview.emergentagent.com/system-analyse.html`
+- **URL:** `https://mass-data-scale.preview.emergentagent.com/system-analyse.html`
 - **Kurzname:** Wenn User von dieser Seite spricht, wird sie zukünftig "systemanalyse.html" genannt
 - **Zweck:** Diese Seite dient zur System-Analyse und Diagnostik der Applikation
 - **WICHTIG:** User verwendet diesen Kurznamen zur vereinfachten Kommunikation
 
 ### Fehler-Management-System
 **REGEL:** Interaktives Fehler-Management-Wiki
-- **URL:** `https://qa-report-fixer.preview.emergentagent.com/fehler-management.html`
+- **URL:** `https://mass-data-scale.preview.emergentagent.com/fehler-management.html`
 - **Kurzname:** "fehler-management.html" oder "Fehler-Wiki"
 - **Datei:** `/app/frontend/public/fehler-management.html`
 - **Zweck:** Umfassende Dokumentation aller Frontend/Backend-Fehler, Design-Anomalien und Systemprobleme

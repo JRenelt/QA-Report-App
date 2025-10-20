@@ -30,7 +30,7 @@ Deutschsprachige QA-Management-Anwendung für Test-Berichte und Projekt-Verwaltu
 
 ## 🔗 Links
 
-- Template-Download: https://qa-report-fixer.preview.emergentagent.com/test-import-template-v2.json
+- Template-Download: https://mass-data-scale.preview.emergentagent.com/test-import-template-v2.json
 - API-Docs: `/api/docs`
 
 ---

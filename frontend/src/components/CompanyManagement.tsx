@@ -47,7 +47,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
   const loadCompanies = async () => {
     try {
       setLoading(true);
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
       const response = await fetch(`${backendUrl}/api/companies/`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,

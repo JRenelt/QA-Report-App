@@ -85,7 +85,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     // Test-Suites aus Backend laden
     const loadTestSuitesFromBackend = async () => {
       try {
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
         const response = await fetch(`${backendUrl}/api/test-suites/?project_id=${selectedProjectId}`, {
           headers: { 'Authorization': `Bearer ${authToken}` }
         });
@@ -118,7 +118,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     
     const loadTestCasesFromBackend = async () => {
       try {
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
         const response = await fetch(`${backendUrl}/api/test-cases/?test_suite_id=${activeSuite}`, {
           headers: { 'Authorization': `Bearer ${authToken}` }
         });
@@ -229,7 +229,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       if (!saved || JSON.parse(saved).length === 0) {
         console.log('⚠️ LocalStorage leer - lade Companies aus Backend...');
         try {
-          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
+          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
           const authToken = localStorage.getItem('authToken');
           
           if (!authToken) {
@@ -302,7 +302,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     setIsLoadingProjects(true);
     console.log('🔄 MANUELLER RELOAD - Lade Projekte aus Backend...');
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
       const token = localStorage.getItem('authToken');
       
       if (!token) {
@@ -340,7 +340,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       if (!saved || JSON.parse(saved).length === 0) {
         console.log('⚠️ LocalStorage leer - lade Projekte aus Backend...');
         try {
-          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
+          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
           const authToken = localStorage.getItem('authToken');
           
           if (!authToken) {

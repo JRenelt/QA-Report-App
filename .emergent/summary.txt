@@ -1,82 +1,72 @@
 <analysis>
-The AI engineer has been actively developing the QA-Report-App, addressing several critical bugs and implementing new features requested by the user. Initially, three critical backend bugs (PDF-Report, GET /api/projects, GET /api/companies) were identified and successfully resolved. A significant portion of the work involved improving user and company management, including implementing role-based access (SysOp, Admin, QA-Tester) and enhancing UI elements like login page dark mode and password visibility toggles. A persistent Mixed Content error (frontend HTTPS, API HTTP) due to CloudFront CDN caching has been a recurring blocker, identified as an infrastructure problem beyond direct code fixes. Most recently, the AI engineer improved the Error Management Wiki and adjusted project rules. The current state is that the SysOp login is critically failing with a 401 error, and company management is not displaying data, leading to a blocked workflow.
+The AI engineer's work involved an iterative debugging and feature implementation process for the QA-Report-App. Initially, the focus was on resolving critical 401 SysOp login failures and data loading issues for companies, which stemmed from missing database entries and incorrect role-based access checks. A significant, recurring challenge throughout the trajectory was the inconsistent use of  in the backend (database, Python code) and  in the frontend (React/TypeScript). This required extensive refactoring across API routes, Pydantic models, and frontend components to ensure proper data serialization and deserialization. Persistent CDN caching issues further complicated frontend debugging, often leading to outdated code being served. The troubleshoot_agent was crucial in identifying that test suites were only loading from  instead of the backend. The latest work addresses test case counter accuracy and scales mass data generation.
 </analysis>
 
 <product_requirements>
-The QA-Report-App is a German-localized full-stack application (FastAPI/MongoDB backend, React/TypeScript frontend) designed for QA reporting, featuring PDF report generation, Excel/CSV import/export, and Admin/QA-Tester roles. Key features include: UI/UX with fixed headers/footers, dark mode, multi-tab settings, dynamic sidebar for project selection, improved login contrast, and a comprehensive error management wiki. Data management encompasses Company & Project Management with template support and dynamic data loading synchronized with . Role-based access restricts features like Gefahrenbereich and mass data generation to Admin/SysOp. Database operations include clearing and optimizing the DB, and mass data generation for performance. Test IDs are derived from test case titles. Documentation features persistent project rules and a glossary/wiki. The system also now has a SysOp role with ultimate control.
+The QA-Report-App is a German-localized full-stack application for QA reporting, supporting PDF generation, Excel/CSV import/export, and various user roles (SysOp, Admin, QA-Tester). It features a dark-mode UI with fixed elements, multi-tab settings, and a dynamic sidebar. Data management includes Company & Project Management with template support and dynamic data loading. Role-based access controls features like Gefahrenbereich. The application also provides an error management wiki, project rules, and glossary. Key recent requirements included: ensuring SysOp user login works, company data loads correctly, SysOp has full admin access to management features (User, Company, Help, Glossary), automatic Dark Mode after login, consistent Light Mode, resolving pre-login 401 errors (identified as cosmetic/cache-related), ensuring mass-generated data (10 companies, 10 projects each, 50 suites each, 50 test cases each) is fully visible, and test case counters work for all test suites without requiring selection.
 </product_requirements>
 
 <key_technical_concepts>
 -   **Backend**: FastAPI, MongoDB (pymongo), JWT Authentication (python-jose, bcrypt).
--   **Frontend**: React.js, TypeScript, Tailwind CSS, Local Storage, React Router DOM.
+-   **Frontend**: React.js, TypeScript, Tailwind CSS, Local Storage.
 -   **Deployment**: Supervisor, Kubernetes Ingress, CloudFront CDN.
--   **Data Handling**: JSON/CSV import/export, UUIDs.
--   **Architecture**: Full-stack, client-server model, German localization.
+-   **Data Handling**: JSON/CSV import/export, UUIDs, Pydantic.
+-   **Architecture**: Full-stack, client-server model, German localization, / consistency.
 </key_technical_concepts>
 
 <code_architecture>
 
-**File Changes Summary:**
--   ****:
-    -   Added  to  enum for new role.
-    -   Added  field to the  Pydantic model. This was crucial for correctly associating users with companies and was a root cause for a previous filtering issue.
--   ****:
-    -   Modified  decorator to allow both admin and sysop roles, granting SysOp full administrative permissions.
--   ****:
-    -   Completely rewritten to populate the database with a  user, multiple companies, and associated users (Admin and QA-Tester roles). Ensures a rich test environment and consistent  for all users.
--   ****:
-    -   Fixed  by correctly importing  for HTTP response codes.
--   ****:
-    -   Updated the user creation (POST) endpoint to correctly save the  for new users.
--   ****:
-    -   Created to document bugs found in the system, with the ability to mark them as ERLEDIGT.
--   ****:
-    -   Created as a comprehensive, interactive error management wiki. Button Als erledigt markieren changed to Erledigen with a red background. Statistic cards and navigation buttons were fused into a single row.
--   ****:
-    -   Created as an HTML version of the  for browser access.
--   ****:
-    -   Adjusted conditional styling for the main container, header, and footer to enforce a full dark mode on the login page ().
--   ****:
-    -   Added  to fetch companies dynamically, ensuring consistent data loading.
--   ****:
-    -   Corrected  storage key from  to  in .
-    -   Modified styling to enforce a permanent dark mode for the login form elements.
-    -   Fixed a critical JSX syntax error that prevented compilation.
--   ****:
-    -   Updated permission check for Gefahrenbereich to include both admin and sysop roles.
--   ****:
-    -   Implemented company dropdown filter, allowing selection of Alle Firmen (All Companies) as default.
-    -   Added search filter with yellow highlighting for matching user names/emails.
-    -   Adjusted role-based logic for displaying/editing/deleting users and for role selection in create/edit modals (restricting sysop creation).
-    -   Implemented a password visibility toggle (Eye/EyeOff icon) for the password field in create/edit user modals.
-    -   Resolved duplicate modal rendering.
--   ****:
-    -   Modified to load companies from the backend using  instead of only .
--   ****:
-    -   Updated with new AI agent rules (not reverting completed tasks, showing rules after changes, checking frontend compilation).
-    -   Added a rule protecting the jre SysOp user from deletion.
-    -   Documented the JSX-Fragment-Error.
-    -   Documented the creation of the error management wiki.
-    -   Added explicit role definitions for SysOp, Admin, and QA-Tester.
-    -   Added a security note regarding the temporary password visibility toggle.
-    -   Added notes on user filtering logic.
--   ****:
-    -   Modified to dynamically retrieve the  from  before each API call to prevent race conditions.
+-   ****: Defines Pydantic models for database and API.  model's  changed to  for  consistency.
+-   ****: Handles JWT authentication.  decorator updated to include  role.
+-   ****: Script for populating initial database data. Updated to correctly create  user, and ensure  is used instead of  when creating users and companies.
+-   ****: Contains admin-specific functionalities.
+    -    now preserves  users along with  users.
+    -    corrected to use  fields (, , ) and adjusted to generate  data structure.
+-   ****: Manages company-related API endpoints. GET routes were refactored to remove  and explicitly return  with  keys converted to  for frontend compatibility ( to ). Role checks updated to include .
+-   ****: Manages project-related API endpoints. Similar to companies, GET routes now return  with  keys converted to  ( to ,  to ). Role checks updated to include .
+-   ****: Manages user-related API endpoints. POST endpoint corrected to use . GET routes return  with  keys converted to .
+-   ****: Manages test suite API endpoints. GET routes now return  with  keys converted to  ( to ). Crucially, this route now calculates and includes , , , and  for each suite directly from the database before sending to the frontend.
+-   ****: Manages test case API endpoints. GET routes now return  with  keys converted to  ( to ).
+-   ****: The error management wiki. Updated with new bug entries for  (company selection reset) and  (pagination displaying 0 tests).
+-   ****: HTML version of project rules. Corrected text regarding user permissions for task status changes.
+-   ****: Main application component. Configured  to activate by default after login and persist, adjusting styling for full dark mode on the login page.
+-   ****: The main dashboard component.
+    -    checks updated to include  for various features.
+    -   Removed the CDN-cache workaround button.
+    -   Fixed  dependency for company selection to prevent resetting to the first company.
+    -   Refactored Test Suite and Test Case loading to fetch directly from backend () instead of .
+    -   Removed  save logic for test suites and cases.
+    -   Corrected variable declarations (, ) to resolve compilation errors.
+    -   Updated pagination and filtering logic to use  fields (, ).
+    -   Adjusted  to use pre-calculated  etc. provided by the backend for correct display of test case counters for all suites.
+-   ****: Help documentation modal. Role check updated to include .
+-   ****: Company CRUD interface. Role checks updated to include .
+-   ****: Settings and admin functions. Updated mass data generation success message and added .
+-   ****: Glossary modal. Added definitions for  and .
+-   ****: Frontend service for API interactions. Corrected  to  and  to  for consistency when sending data to the backend.
+-   ****: Project rules. Updated with AI agent rules, SysOp protection, error management wiki, role definitions, and new definitions for CE, CCE, CM, and a rule about admitting errors.
 </code_architecture>
 
 <pending_tasks>
 -   **PDF Report Structure:** Rework the test report preview ().
 -   **PDF/CSV Export Dialogs:** Implement Save as dialogs with explicit file naming.
--   **Test Data Load Function:** Implement the Load Test Data function.
--   **Dark/Bright Mode UI Anpassungen:** Address remaining UI elements not adapting correctly (Light Mode consistency).
+-   **Test Data Load Function:** Implement the general Load Test Data function.
+-   **Dark/Bright Mode UI Anpassungen:** Address remaining Light Mode consistency issues.
 -   **User/Company Management Enhancements:** Admin needs CRUD for all users/companies, ability to block. QA-Tester needs restricted profile editing.
--   **Glossary Update:** Add Dashboard, Modal, Settings-Modal to the glossary.
+-   **Mixed Content Error (FE-001/BUG-010):** Awaiting CloudFront CDN support for resolution.
 </pending_tasks>
 
 <current_work>
-The AI engineer's immediate work is focused on resolving critical application functionality issues. The most pressing problem is a **401 Incorrect username or password error** preventing the SysOp user (jre with password sysop123) from logging in, as confirmed by both direct login attempts and the testing agent. This authentication failure consequently blocks the ability to properly test and interact with other backend-dependent features, such as the company management, which currently displays 0 companies despite recent fixes to load data from the backend. The underlying cause of the login failure needs to be debugged, potentially involving database issues with the password hash or a misconfiguration in the authentication flow. Concurrently, the **Mixed Content error (FE-001/BUG-010)** persists, where the frontend (HTTPS) attempts insecure HTTP API calls, identified as a CloudFront CDN caching problem beyond current code control and requiring support intervention. The  and the  wiki have been extensively updated to document new rules, roles, and bug fixes, providing a clear audit trail.
+The AI engineer is currently addressing two related issues: ensuring test case counters are visible for all test suites and scaling mass data generation. The user reported that while test cases were now present, their associated counters only displayed when a specific test suite was selected, showing 0 Tests otherwise. This was traced to the  component, where the  function was incorrectly calculating statistics based only on the currently active suite's test cases.
+
+To fix this, the AI engineer made the following changes:
+1.  **Frontend ():** Modified  to now rely on pre-calculated , , , and  properties that are expected to be available directly on each  object from the backend. This eliminates the client-side recalculation, which was causing the 0 Tests issue for inactive suites.
+2.  **Backend ():** The GET route for test suites () was updated. It now calculates the , , , and  for each test suite by querying the  collection and includes these aggregated statistics within each  object returned to the frontend.
+3.  **Backend ():** The  function was adjusted to create mass data in a  structure, meaning 10 companies, each with 10 projects, each project having 50 test suites, and each test suite containing 50 test cases, as per the user's latest request.
+
+The current state is that the code changes for both the counter display and mass data generation scaling are implemented. The next step is to verify these changes in the frontend.
 </current_work>
 
 <optional_next_step>
-Immediately debug and resolve the 401 login error for the SysOp user jre.
+Verify that the  mass data is fully visible and test case counters are correctly displayed for all suites in the frontend.
 </optional_next_step>
