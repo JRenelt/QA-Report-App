@@ -51,6 +51,67 @@ class SysOpDBClearTester:
         if response_data and not success:
             print(f"   Response: {json.dumps(response_data, indent=2)}")
     
+    def setup_sysop_user(self):
+        """Setup: Login as admin and create SysOp user if it doesn't exist"""
+        try:
+            # Login as admin first
+            admin_response = self.session.post(
+                f"{API_BASE}/auth/login",
+                json=ADMIN_CREDENTIALS,
+                timeout=10
+            )
+            
+            if admin_response.status_code != 200:
+                self.log_test("Setup: Admin Login", False, 
+                            f"❌ Admin login failed: HTTP {admin_response.status_code}")
+                return False
+            
+            admin_data = admin_response.json()
+            self.admin_token = admin_data.get("access_token")
+            
+            # Set admin token for user creation
+            admin_session = requests.Session()
+            admin_session.headers.update({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': f'Bearer {self.admin_token}'
+            })
+            
+            # Try to create SysOp user
+            sysop_user_data = {
+                "username": "jre",
+                "email": "jre@sysop.com",
+                "password": "sysop123",
+                "first_name": "SysOp",
+                "last_name": "User",
+                "role": "sysop",
+                "companyId": None,
+                "language_preference": "DE"
+            }
+            
+            create_response = admin_session.post(
+                f"{API_BASE}/users/",
+                json=sysop_user_data,
+                timeout=10
+            )
+            
+            if create_response.status_code in [200, 201]:
+                self.log_test("Setup: SysOp User Creation", True, 
+                            "✅ SysOp user created successfully")
+                return True
+            elif create_response.status_code == 400 and "already exists" in create_response.text:
+                self.log_test("Setup: SysOp User Creation", True, 
+                            "✅ SysOp user already exists")
+                return True
+            else:
+                self.log_test("Setup: SysOp User Creation", False, 
+                            f"❌ Failed to create SysOp user: HTTP {create_response.status_code}: {create_response.text}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Setup: SysOp User Creation", False, f"❌ Request failed: {str(e)}")
+            return False
+
     def test_1_sysop_login(self):
         """Test 1: SysOp Login (jre/sysop123) - should return HTTP 200 with JWT token"""
         try:
