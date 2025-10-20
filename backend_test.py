@@ -445,7 +445,7 @@ class BackendTester:
         
         try:
             # First get a project ID and then a test suite ID
-            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/all", timeout=10)
             
             if projects_response.status_code == 200:
                 projects = projects_response.json()
