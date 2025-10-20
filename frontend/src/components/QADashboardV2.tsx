@@ -78,57 +78,37 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   
   // Test-Suites und Test-Cases projektspezifisch laden
   useEffect(() => {
-    if (!selectedProjectId) return;
+    if (!selectedProjectId || !authToken) return;
     
-    // localStorage Key für projektspezifische Daten
-    const suiteKey = `qa_suites_${selectedProjectId}`;
-    const casesKey = `qa_cases_${selectedProjectId}`;
-    
-    // Test-Suites laden
-    const savedSuites = localStorage.getItem(suiteKey);
-    if (savedSuites) {
+    // Test-Suites aus Backend laden
+    const loadTestSuitesFromBackend = async () => {
       try {
-        setTestSuites(JSON.parse(savedSuites));
-        console.log(`Test-Suites geladen für Projekt ${selectedProjectId}`);
-      } catch (e) {
-        console.error('Fehler beim Laden der Test-Suites:', e);
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.preview.emergentagent.com';
+        const response = await fetch(`${backendUrl}/api/test-suites/?project_id=${selectedProjectId}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        
+        if (response.ok) {
+          const suites = await response.json();
+          console.log(`✅ ${suites.length} Test Suites aus Backend geladen für Projekt ${selectedProjectId}`);
+          setTestSuites(suites);
+          
+          // Erste Suite aktivieren
+          if (suites.length > 0) {
+            setActiveSuite(suites[0].id);
+          }
+        } else {
+          console.error('❌ Fehler beim Laden der Test-Suites:', response.status);
+          setTestSuites([]);
+        }
+      } catch (error) {
+        console.error('❌ Fehler beim Laden der Test-Suites:', error);
+        setTestSuites([]);
       }
-    } else {
-      // Fallback: Standard Test-Suites für neues Projekt
-      const defaultSuites = [
-        { id: '1', name: 'Allgemeines Design', icon: 'palette', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '2', name: 'Testfall Kopfzeile', icon: 'menu', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '3', name: 'Navigation Bereich', icon: 'navigation', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '4', name: 'Suchfeld Bereich', icon: 'search', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '5', name: 'Sidebar Bereich', icon: 'sidebar', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '6', name: 'Hauptinhalt Bereich', icon: 'file', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '7', name: 'Footer Bereich', icon: 'footer', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '8', name: 'Dialoge und Modale', icon: 'dialog', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '9', name: 'Formular Eingaben', icon: 'form', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '10', name: 'Loading und Feedback', icon: 'loading', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-        { id: '11', name: 'Responsive Design', icon: 'responsive', totalTests: 0, passedTests: 0, failedTests: 0, openTests: 0 },
-      ];
-      setTestSuites(defaultSuites);
-      localStorage.setItem(suiteKey, JSON.stringify(defaultSuites));
-    }
+    };
     
-    // Test-Cases laden
-    const savedCases = localStorage.getItem(casesKey);
-    if (savedCases) {
-      try {
-        setTestCases(JSON.parse(savedCases));
-        console.log(`Test-Cases geladen für Projekt ${selectedProjectId}`);
-      } catch (e) {
-        console.error('Fehler beim Laden der Test-Cases:', e);
-      }
-    } else {
-      // Leere Test-Cases für neues Projekt
-      setTestCases([]);
-    }
-    
-    // Erste Test-Suite aktivieren
-    setActiveSuite('1');
-  }, [selectedProjectId]);
+    loadTestSuitesFromBackend();
+  }, [selectedProjectId, authToken]);
   
   // Test-Suites und Test-Cases automatisch speichern
   useEffect(() => {
