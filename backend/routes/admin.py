@@ -334,11 +334,11 @@ async def generate_mass_data(
                 for test_num in range(1, 51):
                     test_case = {
                         "id": uuid.uuid4().hex,
-                        "test_id": f"PERF{company_num:03d}{suite_num:03d}{test_num:03d}",
+                        "test_id": f"PERF{company_num:03d}{project_num:03d}{suite_num:03d}{test_num:03d}",
                         "test_suite_id": suite_id,  # Korrigiert: test_suite_id statt suite_id
                         "project_id": project_id,
                         "title": f"Performance Testfall {test_num}",
-                        "description": f"Automatisch generierter Testfall für Performance-Tests (Company {company_num}, Suite {suite_num}, Test {test_num})",
+                        "description": f"Automatisch generierter Testfall (Firma {company_num}, Projekt {project_num}, Suite {suite_num}, Test {test_num})",
                         "status": "pending",
                         "note": "",
                         "created_at": datetime.utcnow(),
