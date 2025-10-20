@@ -20,6 +20,15 @@
    - ✅ User SOFORT informieren wenn Frontend nicht kompiliert
    - ✅ Fehler NICHT ignorieren - Frontend muss immer zugänglich sein
 
+4. **KRITISCH: Ergebnis-Verifikation vor Abschluss:**
+   - ❌ NIEMALS behaupten, dass etwas funktioniert, ohne es zu verifizieren
+   - ✅ IMMER das gewünschte Ergebnis prüfen, bevor man sagt "funktioniert"
+   - ✅ Bei Login-Fixes: Echten Login-Test durchführen (nicht nur Backend-Test)
+   - ✅ Bei UI-Änderungen: Screenshot machen und visuell überprüfen
+   - ✅ Bei API-Fixes: Echte API-Calls testen (nicht nur Code ansehen)
+   - ✅ **REGEL:** Erst testen, dann behaupten
+   - ✅ Wenn User Screenshot mit Fehler zeigt → sofort zugeben und neu analysieren
+
 ### Entwicklungsumgebung
 **REGEL:** User arbeitet mit 3 Browsern für Testing und Entwicklung
 - **Chrome** (primär für Entwicklung und DevTools)
