@@ -42,6 +42,17 @@
    - ✅ Direkte UI-Updates nach Änderungen ohne User-Interaktion
    - ✅ Ziel: Nahtlose User Experience mit minimalen manuellen Eingriffen
 
+### Abkürzungen und Terminologie
+**REGEL:** Einheitliche Begriffe für Testing und Debugging
+- **CE** (Cache entleeren): Standard-Browser-Cache-Refresh mit `STRG+Shift+R` (Hard Reload)
+- **CCE** (Cache über Console entleeren): 
+  - F12 → Application Tab → Local Storage → https://projekt.preview.emergentagent.com
+  - Kompletten localStorage löschen für harten Reset
+- **CM** (Consolen Meldung): Browser Console Log Messages (F12 → Console)
+- **RCA** (Root Cause Analysis): Systematische Fehlerursachen-Analyse
+- **snake_case**: Python/DB-Standard (z.B. `company_id`, `created_at`)
+- **camelCase**: JavaScript/Frontend-Standard (z.B. `companyId`, `createdAt`)
+
 ### Entwicklungsumgebung
 **REGEL:** User arbeitet mit 3 Browsern für Testing und Entwicklung
 - **Chrome** (primär für Entwicklung und DevTools)
