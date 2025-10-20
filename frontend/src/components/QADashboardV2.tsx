@@ -835,7 +835,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       const newTest: TestCase = {
         id: createdTest.id,
         test_id: createdTest.test_id,
-        suite_id: activeSuite,
+        testSuiteId: activeSuite,
         title: testName,
         description: `Beschreiben Sie den ${testName}`, // Hilfreicher Default-Text
         status: 'pending'
@@ -893,7 +893,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       const newTest: TestCase = {
         id: `test-${Date.now()}`,
         test_id: `${suitePrefix}${String(nextNumber).padStart(4, '0')}`,
-        suite_id: activeSuite,
+        testSuiteId: activeSuite,
         title: testName,
         description: `Beschreiben Sie den ${testName}`, // Hilfreicher Default-Text
         status: 'pending'
