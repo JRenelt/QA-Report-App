@@ -49,7 +49,7 @@ async def create_project(
             detail="Company not found"
         )
     
-    if current_user.role != "admin" and company["created_by"] != current_user.id:
+    if current_user.role not in ["admin", "sysop"] and company["created_by"] != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No access to this company"
