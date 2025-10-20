@@ -20,7 +20,8 @@ from datetime import datetime
 BACKEND_URL = "https://qa-report-fixer.preview.emergentagent.com"
 API_BASE = f"{BACKEND_URL}/api"
 
-# SysOp credentials as specified in the German review request
+# Credentials
+ADMIN_CREDENTIALS = {"username": "admin", "password": "admin123"}
 SYSOP_CREDENTIALS = {"username": "jre", "password": "sysop123"}
 
 class SysOpDBClearTester:
