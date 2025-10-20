@@ -12,11 +12,27 @@ from auth import get_current_user, require_admin, get_password_hash
 
 router = APIRouter()
 
-@router.get("/", response_model=List[User])
+@router.get("/")
 async def get_users(current_user: User = Depends(require_admin)):
-    """Get all users (Admin only)"""
+    """Get all users (Admin only) - Returns camelCase for Frontend"""
     users = await users_collection.find().sort("created_at", -1).to_list(1000)
-    return [User(**{k: v for k, v in user.items() if k != "_id"}) for user in users]
+    
+    # Konvertiere snake_case → camelCase für Frontend
+    converted_users = []
+    for user in users:
+        user_dict = {k: v for k, v in user.items() if k != "_id"}
+        # Konvertiere Keys
+        if "company_id" in user_dict:
+            user_dict["companyId"] = user_dict.pop("company_id")
+        if "created_at" in user_dict:
+            user_dict["createdAt"] = user_dict["created_at"].isoformat() if hasattr(user_dict["created_at"], 'isoformat') else user_dict["created_at"]
+            del user_dict["created_at"]
+        if "updated_at" in user_dict:
+            user_dict["updatedAt"] = user_dict["updated_at"].isoformat() if hasattr(user_dict["updated_at"], 'isoformat') else user_dict["updated_at"]
+            del user_dict["updated_at"]
+        converted_users.append(user_dict)
+    
+    return converted_users
 
 @router.post("/", response_model=User)
 async def create_user(user_data: UserCreate, current_user: User = Depends(require_admin)):
