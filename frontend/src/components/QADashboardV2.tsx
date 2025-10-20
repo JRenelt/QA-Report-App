@@ -315,7 +315,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         return;
       }
       
-      const response = await fetch(`${backendUrl}/api/projects`, {
+      const response = await fetch(`${backendUrl}/api/projects/all`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -352,7 +352,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             return;
           }
           
-          const response = await fetch(`${backendUrl}/api/projects`, {
+          const response = await fetch(`${backendUrl}/api/projects/all`, {
             headers: { 'Authorization': `Bearer ${authToken}` }
           });
           

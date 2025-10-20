@@ -88,7 +88,7 @@ const Dashboard: React.FC<DashboardProps> = ({ authToken, user, darkMode }) => {
 
   const loadProjects = async () => {
     try {
-      const response = await apiRequest('/projects/');
+      const response = await apiRequest('/projects/all');
       if (response.ok) {
         const data = await response.json();
         setProjects(data);

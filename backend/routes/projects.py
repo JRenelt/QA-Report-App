@@ -12,7 +12,7 @@ from auth import get_current_user, require_qa_or_admin
 
 router = APIRouter()
 
-@router.get("/", response_model=List[Project])
+@router.get("/all", response_model=List[Project])
 async def get_projects(current_user: User = Depends(get_current_user)):
     """Get all projects user has access to"""
     
@@ -33,7 +33,7 @@ async def get_projects(current_user: User = Depends(get_current_user)):
     
     return [Project(**{k: v for k, v in project.items() if k != "_id"}) for project in projects]
 
-@router.post("/", response_model=Project) 
+@router.post("/new", response_model=Project) 
 async def create_project(
     project_data: ProjectCreate,
     current_user: User = Depends(require_qa_or_admin)

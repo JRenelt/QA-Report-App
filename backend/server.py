@@ -11,6 +11,7 @@ from contextlib import asynccontextmanager
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from fastapi import FastAPI, Request
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
@@ -39,7 +40,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Global NoCache Middleware - KRITISCH für Browser-Cache-Probleme
+# Global No Cache Middleware - KRITISCH für Browser-Cache-Probleme
 @app.middleware("http")
 async def add_nocache_headers(request: Request, call_next):
     response = await call_next(request)
@@ -47,6 +48,7 @@ async def add_nocache_headers(request: Request, call_next):
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
+
 
 # Create router with /api prefix
 api_router = APIRouter(prefix="/api")
