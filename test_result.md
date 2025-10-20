@@ -874,6 +874,9 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Test Suite Stats Pre-Calculation (Backend) - 🆕 NEEDS TESTING (Pre-calculate totalTests, passedTests, failedTests, openTests for each suite)"
+    - "Mass Data Generation 10x10x50x50 - 🆕 NEEDS TESTING (10 companies × 10 projects × 50 suites × 50 cases = 250,000 test cases)"
+    - "Test Suite Counter Display (Frontend) - 🆕 NEEDS TESTING (Display counters for ALL suites, not just active one)"
     - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch blocks some API calls)"
     - "Company Management Data Loading - ❌ FAILED (0 companies loaded due to Mixed Content Error)"
     - "German Company CRUD Operations - ❌ INCOMPLETE (Cannot test create/edit/delete without data)"
