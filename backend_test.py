@@ -906,6 +906,277 @@ class BackendTester:
         except requests.exceptions.RequestException as e:
             self.log_test("Mass Data Auth Required", False, f"Request failed: {str(e)}")
             return False
+
+    # GERMAN REVIEW REQUEST: TEST SUITE STATS PRE-CALCULATION
+    def test_suite_stats_precalculation(self):
+        """Test that test suite stats are pre-calculated in backend response"""
+        if not self.auth_token:
+            self.log_test("Test Suite Stats Pre-Calculation", False, "No auth token available")
+            return False
+        
+        try:
+            # First get a project to test with
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
+            
+            if projects_response.status_code != 200:
+                self.log_test("Test Suite Stats Pre-Calculation", False, 
+                            f"Cannot access projects: HTTP {projects_response.status_code}")
+                return False
+            
+            projects = projects_response.json()
+            if not projects or len(projects) == 0:
+                self.log_test("Test Suite Stats Pre-Calculation", False, 
+                            "No projects available to test suite stats")
+                return False
+            
+            project_id = projects[0]["id"]
+            
+            # Get test suites for this project
+            response = self.session.get(f"{API_BASE}/test-suites/?project_id={project_id}", timeout=10)
+            
+            if response.status_code != 200:
+                self.log_test("Test Suite Stats Pre-Calculation", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return False
+            
+            suites = response.json()
+            
+            if not suites or len(suites) == 0:
+                self.log_test("Test Suite Stats Pre-Calculation", False, 
+                            "No test suites found to verify stats")
+                return False
+            
+            # Check that EVERY suite has the required stats fields
+            required_stats_fields = ["totalTests", "passedTests", "failedTests", "openTests"]
+            missing_stats = []
+            
+            for suite in suites:
+                suite_name = suite.get("name", "Unknown Suite")
+                for field in required_stats_fields:
+                    if field not in suite:
+                        missing_stats.append(f"Suite '{suite_name}' missing field '{field}'")
+                    elif not isinstance(suite[field], int):
+                        missing_stats.append(f"Suite '{suite_name}' field '{field}' is not integer: {type(suite[field])}")
+            
+            if missing_stats:
+                self.log_test("Test Suite Stats Pre-Calculation", False, 
+                            f"❌ Missing or invalid stats fields: {'; '.join(missing_stats)}")
+                return False
+            
+            # Verify stats make sense (totalTests should equal sum of others)
+            stats_errors = []
+            for suite in suites:
+                suite_name = suite.get("name", "Unknown Suite")
+                total = suite["totalTests"]
+                passed = suite["passedTests"]
+                failed = suite["failedTests"]
+                open_tests = suite["openTests"]
+                
+                calculated_total = passed + failed + open_tests
+                if total != calculated_total:
+                    stats_errors.append(f"Suite '{suite_name}': totalTests={total} but passed+failed+open={calculated_total}")
+            
+            if stats_errors:
+                self.log_test("Test Suite Stats Pre-Calculation", False, 
+                            f"❌ Stats calculation errors: {'; '.join(stats_errors)}")
+                return False
+            
+            self.log_test("Test Suite Stats Pre-Calculation", True, 
+                        f"✅ All {len(suites)} suites have correct pre-calculated stats (totalTests, passedTests, failedTests, openTests)")
+            return True
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Test Suite Stats Pre-Calculation", False, f"Request failed: {str(e)}")
+            return False
+
+    # GERMAN REVIEW REQUEST: MASS DATA GENERATION 10x10x50x50
+    def test_mass_data_generation_10x10x50x50(self):
+        """Test mass data generation creates 10x10x50x50 structure (250,000 test cases)"""
+        if not self.auth_token:
+            self.log_test("Mass Data Generation 10x10x50x50", False, "No auth token available")
+            return False
+        
+        try:
+            # Step 1: Clear database first
+            clear_response = self.session.delete(f"{API_BASE}/admin/clear-database", timeout=30)
+            if clear_response.status_code != 200:
+                self.log_test("Mass Data Generation 10x10x50x50", False, 
+                            f"Failed to clear database: HTTP {clear_response.status_code}")
+                return False
+            
+            # Step 2: Generate mass data
+            mass_data_payload = {"hasLocalStorageProjects": False}
+            response = self.session.post(f"{API_BASE}/admin/generate-mass-data", 
+                                       json=mass_data_payload, timeout=120)  # Longer timeout for mass data
+            
+            if response.status_code != 200:
+                self.log_test("Mass Data Generation 10x10x50x50", False, 
+                            f"Mass data generation failed: HTTP {response.status_code}: {response.text}")
+                return False
+            
+            data = response.json()
+            stats = data.get('stats', {})
+            
+            # Verify expected counts
+            expected_companies = 10
+            expected_projects = 100  # 10 companies × 10 projects each
+            expected_suites = 5000   # 100 projects × 50 suites each
+            expected_cases = 250000  # 5000 suites × 50 cases each
+            
+            companies = stats.get('companies', 0)
+            projects = stats.get('projects', 0)
+            test_suites = stats.get('test_suites', 0)
+            test_cases = stats.get('test_cases', 0)
+            
+            errors = []
+            if companies != expected_companies:
+                errors.append(f"Companies: expected {expected_companies}, got {companies}")
+            if projects != expected_projects:
+                errors.append(f"Projects: expected {expected_projects}, got {projects}")
+            if test_suites != expected_suites:
+                errors.append(f"Test Suites: expected {expected_suites}, got {test_suites}")
+            if test_cases != expected_cases:
+                errors.append(f"Test Cases: expected {expected_cases}, got {test_cases}")
+            
+            if errors:
+                self.log_test("Mass Data Generation 10x10x50x50", False, 
+                            f"❌ Incorrect data counts: {'; '.join(errors)}")
+                return False
+            
+            self.log_test("Mass Data Generation 10x10x50x50", True, 
+                        f"✅ Mass data generated correctly: {companies} companies, {projects} projects, {test_suites} suites, {test_cases} test cases")
+            return True
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Mass Data Generation 10x10x50x50", False, f"Request failed: {str(e)}")
+            return False
+
+    # GERMAN REVIEW REQUEST: VERIFY MASS DATA ACCESSIBILITY
+    def test_mass_data_accessibility(self):
+        """Verify that mass data is accessible via API endpoints"""
+        if not self.auth_token:
+            self.log_test("Mass Data Accessibility", False, "No auth token available")
+            return False
+        
+        try:
+            # Test 1: Verify companies count
+            companies_response = self.session.get(f"{API_BASE}/companies/", timeout=10)
+            if companies_response.status_code != 200:
+                self.log_test("Mass Data Accessibility", False, 
+                            f"Cannot access companies: HTTP {companies_response.status_code}")
+                return False
+            
+            companies = companies_response.json()
+            if len(companies) != 10:
+                self.log_test("Mass Data Accessibility", False, 
+                            f"Expected 10 companies, got {len(companies)}")
+                return False
+            
+            # Test 2: Verify projects count
+            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
+            if projects_response.status_code != 200:
+                self.log_test("Mass Data Accessibility", False, 
+                            f"Cannot access projects: HTTP {projects_response.status_code}")
+                return False
+            
+            projects = projects_response.json()
+            if len(projects) != 100:
+                self.log_test("Mass Data Accessibility", False, 
+                            f"Expected 100 projects, got {len(projects)}")
+                return False
+            
+            # Test 3: Verify test suites for first project (should be 50)
+            first_project_id = "PERF_PROJ_001_001"  # Known ID from mass data generation
+            suites_response = self.session.get(f"{API_BASE}/test-suites/?project_id={first_project_id}", timeout=10)
+            if suites_response.status_code != 200:
+                self.log_test("Mass Data Accessibility", False, 
+                            f"Cannot access test suites for project {first_project_id}: HTTP {suites_response.status_code}")
+                return False
+            
+            suites = suites_response.json()
+            if len(suites) != 50:
+                self.log_test("Mass Data Accessibility", False, 
+                            f"Expected 50 test suites for project {first_project_id}, got {len(suites)}")
+                return False
+            
+            # Test 4: Verify test cases for first suite (should be 50)
+            first_suite_id = "SUITE_001_001_001"  # Known ID from mass data generation
+            cases_response = self.session.get(f"{API_BASE}/test-cases/?test_suite_id={first_suite_id}", timeout=10)
+            if cases_response.status_code != 200:
+                self.log_test("Mass Data Accessibility", False, 
+                            f"Cannot access test cases for suite {first_suite_id}: HTTP {cases_response.status_code}")
+                return False
+            
+            cases = cases_response.json()
+            if len(cases) != 50:
+                self.log_test("Mass Data Accessibility", False, 
+                            f"Expected 50 test cases for suite {first_suite_id}, got {len(cases)}")
+                return False
+            
+            self.log_test("Mass Data Accessibility", True, 
+                        f"✅ Mass data accessible: 10 companies, 100 projects, 50 suites per project, 50 cases per suite")
+            return True
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Mass Data Accessibility", False, f"Request failed: {str(e)}")
+            return False
+
+    # GERMAN REVIEW REQUEST: INTEGRATION TEST - STATS FOR MASS DATA
+    def test_mass_data_stats_integration(self):
+        """Integration test: Verify stats work correctly with mass data"""
+        if not self.auth_token:
+            self.log_test("Mass Data Stats Integration", False, "No auth token available")
+            return False
+        
+        try:
+            # Get test suites for the first project with mass data
+            first_project_id = "PERF_PROJ_001_001"
+            response = self.session.get(f"{API_BASE}/test-suites/?project_id={first_project_id}", timeout=15)
+            
+            if response.status_code != 200:
+                self.log_test("Mass Data Stats Integration", False, 
+                            f"Cannot access test suites: HTTP {response.status_code}")
+                return False
+            
+            suites = response.json()
+            
+            if len(suites) != 50:
+                self.log_test("Mass Data Stats Integration", False, 
+                            f"Expected 50 suites, got {len(suites)}")
+                return False
+            
+            # Verify ALL suites have correct stats for new data
+            stats_errors = []
+            for suite in suites:
+                suite_name = suite.get("name", "Unknown")
+                
+                # For new mass data, all test cases should be in "pending" status
+                expected_total = 50
+                expected_passed = 0
+                expected_failed = 0
+                expected_open = 50  # All new cases are "pending"
+                
+                if suite.get("totalTests") != expected_total:
+                    stats_errors.append(f"Suite '{suite_name}': totalTests={suite.get('totalTests')}, expected {expected_total}")
+                if suite.get("passedTests") != expected_passed:
+                    stats_errors.append(f"Suite '{suite_name}': passedTests={suite.get('passedTests')}, expected {expected_passed}")
+                if suite.get("failedTests") != expected_failed:
+                    stats_errors.append(f"Suite '{suite_name}': failedTests={suite.get('failedTests')}, expected {expected_failed}")
+                if suite.get("openTests") != expected_open:
+                    stats_errors.append(f"Suite '{suite_name}': openTests={suite.get('openTests')}, expected {expected_open}")
+            
+            if stats_errors:
+                self.log_test("Mass Data Stats Integration", False, 
+                            f"❌ Stats errors in mass data: {'; '.join(stats_errors[:5])}...")  # Show first 5 errors
+                return False
+            
+            self.log_test("Mass Data Stats Integration", True, 
+                        f"✅ All 50 suites have correct stats: totalTests=50, passedTests=0, failedTests=0, openTests=50")
+            return True
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Mass Data Stats Integration", False, f"Request failed: {str(e)}")
+            return False
     
     def run_all_tests(self):
         """Run all backend tests"""
