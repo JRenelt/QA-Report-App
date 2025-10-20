@@ -155,10 +155,10 @@ async def delete_project(project_id: str, current_user: User = Depends(require_q
         )
     
     # Check permissions
-    if current_user.role != "admin" and project["created_by"] != current_user.id:
+    if current_user.role not in ["admin", "sysop"] and project["created_by"] != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only project creator or admin can delete"
+            detail="Only project creator, admin or sysop can delete"
         )
     
     # Delete project and associated data
