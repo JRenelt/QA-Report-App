@@ -1151,7 +1151,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
   // CSV Export Funktion
   const handleCSVExport = () => {
-    const testsToExport = testCases.filter(t => t.suite_id === activeSuite);
+    const testsToExport = testCases.filter(t => t.testSuiteId === activeSuite);
     const activeSuiteData = testSuites.find(s => s.id === activeSuite);
     const suiteName = activeSuiteData?.name || 'Test-Suite';
     
