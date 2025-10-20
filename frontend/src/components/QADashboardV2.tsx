@@ -810,7 +810,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     
     try {
       // Sichere ID-Generierung
-      const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
+      const suiteTests = testCases.filter(t => t.testSuiteId === activeSuite);
       const nextNumber = suiteTests.length + 1;
       const activeSuiteData = testSuites.find(s => s.id === activeSuite);
       const suitePrefix = activeSuiteData ? activeSuiteData.name.substring(0, 2).toUpperCase() : 'AD';
@@ -885,7 +885,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       }
       
       // Fallback: Lokale Erstellung wenn Backend-Integration fehlschlägt
-      const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
+      const suiteTests = testCases.filter(t => t.testSuiteId === activeSuite);
       const nextNumber = suiteTests.length + 1;
       const activeSuiteData = testSuites.find(s => s.id === activeSuite);
       const suitePrefix = activeSuiteData ? activeSuiteData.name.substring(0, 2).toUpperCase() : 'AD';
