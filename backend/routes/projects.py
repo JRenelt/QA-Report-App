@@ -12,7 +12,7 @@ from auth import get_current_user, require_qa_or_admin
 
 router = APIRouter()
 
-@router.get("/all", response_model=List[Project])
+@router.get("/all")
 async def get_projects(current_user: User = Depends(get_current_user)):
     """Get all projects user has access to"""
     
@@ -41,9 +41,11 @@ async def get_projects(current_user: User = Depends(get_current_user)):
         if "created_by" in project_dict:
             project_dict["createdBy"] = project_dict.pop("created_by")
         if "created_at" in project_dict:
-            project_dict["createdAt"] = project_dict.pop("created_at")
+            project_dict["createdAt"] = project_dict["created_at"].isoformat() if hasattr(project_dict["created_at"], 'isoformat') else project_dict["created_at"]
+            del project_dict["created_at"]
         if "updated_at" in project_dict:
-            project_dict["updatedAt"] = project_dict.pop("updated_at")
+            project_dict["updatedAt"] = project_dict["updated_at"].isoformat() if hasattr(project_dict["updated_at"], 'isoformat') else project_dict["updated_at"]
+            del project_dict["updated_at"]
         converted_projects.append(project_dict)
     
     return converted_projects
