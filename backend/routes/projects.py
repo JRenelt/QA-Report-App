@@ -120,10 +120,10 @@ async def update_project(
         )
     
     # Check permissions
-    if current_user.role != "admin" and project["created_by"] != current_user.id:
+    if current_user.role not in ["admin", "sysop"] and project["created_by"] != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only project creator or admin can update"
+            detail="Only project creator, admin or sysop can update"
         )
     
     update_data = {
