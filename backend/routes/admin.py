@@ -193,7 +193,7 @@ async def clear_database(current_user: User = Depends(require_admin)):
         "deleted_projects": deleted_projects.deleted_count,
         "deleted_companies": deleted_companies.deleted_count,
         "deleted_users": deleted_users.deleted_count,
-        "preserved": "ID2 GmbH Firma sowie Admin- und SysOp-Benutzer beibehalten"
+        "preserved": "ID2 GmbH Firma sowie Admin-, SysOp- und QA-Demo-Benutzer beibehalten"
     }
 
 
