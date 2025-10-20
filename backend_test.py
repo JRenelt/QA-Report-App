@@ -916,7 +916,7 @@ class BackendTester:
         
         try:
             # First get a project to test with
-            projects_response = self.session.get(f"{API_BASE}/projects/", timeout=10)
+            projects_response = self.session.get(f"{API_BASE}/projects/all", timeout=10)
             
             if projects_response.status_code != 200:
                 self.log_test("Test Suite Stats Pre-Calculation", False, 
