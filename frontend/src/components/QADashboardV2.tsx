@@ -1206,7 +1206,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const currentSuite = testSuites.find(s => s.id === activeSuite);
 
   const statusCounts = React.useMemo(() => {
-    const suiteTests = testCases.filter(t => t.suite_id === activeSuite);
+    const suiteTests = testCases.filter(t => t.testSuiteId === activeSuite);
     return {
       all: suiteTests.length,
       success: suiteTests.filter(t => t.status === 'success').length,
