@@ -1181,21 +1181,27 @@ class BackendTester:
     def run_all_tests(self):
         """Run all backend tests"""
         print("🧪 Starting QA-Report-App Backend Tests")
-        print("🇩🇪 GERMAN TEST REQUEST: Masse-Daten Safety Check Testing")
-        print("=" * 60)
+        print("🇩🇪 GERMAN REVIEW REQUEST: Test Suite Counter Fix & Mass Data Scaling")
+        print("=" * 80)
         
         # Critical tests as specified in the German review request
         tests = [
             # Basic authentication and health
             ("Health Check", self.test_health_check),
             ("Admin Login", self.test_login_admin),
+            
+            # GERMAN REVIEW REQUEST: HIGH PRIORITY TESTS
+            ("🇩🇪 Test Suite Stats Pre-Calculation", self.test_suite_stats_precalculation),
+            ("🇩🇪 Mass Data Generation 10x10x50x50", self.test_mass_data_generation_10x10x50x50),
+            ("🇩🇪 Mass Data Accessibility Verification", self.test_mass_data_accessibility),
+            ("🇩🇪 Integration Test: Stats for Mass Data", self.test_mass_data_stats_integration),
+            
+            # Additional backend verification tests
             ("QA Demo Login", self.test_login_qa_demo),
             ("Invalid Credentials", self.test_invalid_credentials),
             ("Missing Fields", self.test_missing_fields),
             ("JWT Token Validation", self.test_jwt_token_validation),
             ("Authenticated Endpoint", self.test_authenticated_endpoint),
-            
-            # German review request specific tests
             ("Generate Test Data", self.test_generate_test_data),
             ("Companies API", self.test_companies_api),
             ("Projects API", self.test_projects_api),
@@ -1206,7 +1212,7 @@ class BackendTester:
             ("Users List API", self.test_users_list_api),
             ("Users Create API", self.test_users_create_api),
             
-            # GERMAN TEST REQUEST: MASSE-DATEN SAFETY CHECK SCENARIOS
+            # PREVIOUS MASS DATA SAFETY CHECK SCENARIOS
             ("Clear Database", self.test_clear_database),
             ("🇩🇪 SCENARIO A: No Projects - Generation ALLOWED", self.test_mass_data_scenario_a_no_projects_allowed),
             ("🇩🇪 SCENARIO B: MongoDB Projects - Generation DENIED", self.test_mass_data_scenario_b_mongodb_projects_denied),
