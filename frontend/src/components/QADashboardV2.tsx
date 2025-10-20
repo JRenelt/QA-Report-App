@@ -75,7 +75,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   // State declarations
   const [testSuites, setTestSuites] = useState<TestSuite[]>([]);
   const [testCases, setTestCases] = useState<TestCase[]>([]);
-  const [activeSuite, setActiveSuite] = useState<string>('1');
+  const [activeSuite, setActiveSuite] = useState<string>('');
   const [newTestName, setNewTestName] = useState('');
   
   // Test-Suites und Test-Cases projektspezifisch laden
