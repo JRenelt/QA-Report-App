@@ -651,6 +651,26 @@
             <p style="margin-bottom: 20px;">Code-Kommentare, Dokumentation und Best Practices.</p>
             
             <ul class="error-list">
+                <li class="error-item important completed" id="error-bug-011" data-status="completed">
+                    <div class="title">
+                        <span>BUG-011: Firmenauswahl springt zurück zu "Testfirma 1"</span>
+                        <button class="status-toggle completed" onclick="toggleStatus('error-bug-011')">Erledigt ✓</button>
+                    </div>
+                    <div class="description">
+                        <strong>Problem:</strong> Beim Auswählen einer anderen Firma springt die Auswahl automatisch zurück zur ersten Firma<br>
+                        <strong>Root Cause:</strong> useEffect in QADashboardV2.tsx läuft bei jedem availableCompanies Update und überschreibt selectedCompanyId<br>
+                        <strong>Lösung:</strong> React.useRef verwendet um zu tracken ob Initialisierung bereits erfolgt ist. useEffect läuft nur noch einmal beim Mount, nicht bei jedem Update<br>
+                        <strong>Betroffene Dateien:</strong> /app/frontend/src/components/QADashboardV2.tsx (Zeile 399-428)<br>
+                        <strong>Status:</strong> ✅ BEHOBEN - Firmenauswahl bleibt erhalten
+                    </div>
+                    <div class="meta">
+                        <span class="badge important">BUG</span>
+                        <span>🔧 Frontend State Management</span>
+                        <span>⏱️ Fix: 15 Min</span>
+                        <span class="timestamp" data-timestamp="" style="color: #28a745; font-weight: bold;">Erledigt am: 2025-10-20</span>
+                    </div>
+                </li>
+                
                 <li class="error-item design" id="error-cq-001" data-status="open">
                     <div class="title">
                         <span>CQ-001: Deutsche Code-Kommentare teilweise inkonsistent</span>
