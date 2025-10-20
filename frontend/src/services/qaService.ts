@@ -5,7 +5,7 @@ const API_BASE = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-fixer.p
 export interface TestCase {
   id: string;
   test_id: string;
-  suite_id: string;
+  testSuiteId: string;
   title: string;
   description: string;
   status: 'success' | 'error' | 'warning' | 'pending' | 'skipped';
