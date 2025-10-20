@@ -320,12 +320,10 @@ async def generate_mass_data(
                     "name": f"Testbereich {suite_num}",
                     "description": f"Performance Test Suite {suite_num}",
                     "icon": "file",
-                    "created_by": current_user.username,
-                    "created_at": datetime.utcnow().isoformat(),
-                    "totalTests": 50,
-                    "passedTests": 0,
-                    "failedTests": 0,
-                    "openTests": 50
+                    "created_by": current_user.id,  # user.id statt username
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow(),
+                    "sort_order": suite_num
                 }
                 await test_suites_collection.insert_one(suite)
                 stats["test_suites"] += 1
