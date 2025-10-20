@@ -416,6 +416,63 @@
             </ul>
         </div>
 
+        <h2 id="abbreviations">📚 Abkürzungen und Terminologie</h2>
+        <div class="rule-box">
+            <h3>REGEL: Einheitliche Begriffe für Testing und Debugging</h3>
+            
+            <h4>🔄 CE (Cache entleeren)</h4>
+            <p><strong>Definition:</strong> Standard-Browser-Cache-Refresh mit Hard Reload</p>
+            <ul>
+                <li><strong>Windows/Linux:</strong> <code>STRG + Shift + R</code></li>
+                <li><strong>Mac:</strong> <code>CMD + Shift + R</code></li>
+                <li><strong>Verwendung:</strong> Lädt die Seite neu und umgeht dabei den Browser-Cache</li>
+                <li><strong>Wann verwenden:</strong> Nach Frontend-Änderungen, wenn alte Version sichtbar ist</li>
+            </ul>
+
+            <h4>🗑️ CCE (Cache über Console entleeren)</h4>
+            <p><strong>Definition:</strong> Vollständiges Löschen des localStorage über Browser DevTools</p>
+            <ol>
+                <li><strong>F12</strong> öffnen (Browser DevTools)</li>
+                <li><strong>Application Tab</strong> auswählen</li>
+                <li><strong>Local Storage</strong> → Domain auswählen (<code>https://mass-data-scale.preview.emergentagent.com</code>)</li>
+                <li>Alle Einträge löschen oder "Clear All" Button verwenden</li>
+                <li>Seite neu laden (F5)</li>
+            </ol>
+            <p><strong>Verwendung:</strong> Bei Datenproblemen, nach Strukturänderungen, für kompletten Reset</p>
+
+            <h4>🖥️ CM (Consolen Meldung)</h4>
+            <p><strong>Definition:</strong> Browser Console Log Messages</p>
+            <ul>
+                <li><strong>Zugriff:</strong> <code>F12</code> → <strong>Console Tab</strong></li>
+                <li><strong>Fehler (rot):</strong> JavaScript-Fehler, API-Fehler (401, 404, 500)</li>
+                <li><strong>Warnungen (gelb):</strong> Deprecated Code, Performance-Hinweise</li>
+                <li><strong>Info (blau):</strong> Debug-Meldungen, API-Calls, Statusmeldungen</li>
+                <li><strong>Verwendung:</strong> Zur Fehleranalyse, Debugging, API-Überwachung</li>
+            </ul>
+
+            <h4>🔍 RCA (Root Cause Analysis)</h4>
+            <p><strong>Definition:</strong> Systematische Fehlerursachen-Analyse</p>
+            <ul>
+                <li>Schritt-für-Schritt Untersuchung eines Problems</li>
+                <li>Identifizierung der Grundursache, nicht nur der Symptome</li>
+                <li>Verwendung: Bei komplexen oder wiederkehrenden Fehlern</li>
+            </ul>
+
+            <h4>🐍 snake_case</h4>
+            <p><strong>Definition:</strong> Schreibweise mit Unterstrichen zwischen Wörtern</p>
+            <ul>
+                <li><strong>Beispiele:</strong> <code>company_id</code>, <code>created_at</code>, <code>test_suite_id</code></li>
+                <li><strong>Verwendung:</strong> Python/Backend-Code, MongoDB Datenbank</li>
+            </ul>
+
+            <h4>🐫 camelCase</h4>
+            <p><strong>Definition:</strong> Schreibweise mit Großbuchstaben für neue Wörter</p>
+            <ul>
+                <li><strong>Beispiele:</strong> <code>companyId</code>, <code>createdAt</code>, <code>testSuiteId</code></li>
+                <li><strong>Verwendung:</strong> JavaScript/TypeScript, Frontend-Code, JSON-API-Responses</li>
+            </ul>
+        </div>
+
         <h2 id="links">🔗 Wichtige Links</h2>
         <div class="rule-box">
             <ul>
