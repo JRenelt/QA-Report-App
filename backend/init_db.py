@@ -170,7 +170,7 @@ async def create_sample_data():
             "last_name": company['name'].split()[0],
             "hashed_password": get_password_hash("test123"),
             "role": UserRole.qa_tester.value,
-            "companyId": company["id"],
+            "company_id": company["id"],
             "language_preference": Language.DE.value,
             "is_active": True,
             "created_at": datetime.utcnow(),
