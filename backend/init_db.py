@@ -53,7 +53,7 @@ async def create_sysop_user():
             "last_name": "Renelt",
             "hashed_password": get_password_hash("sysop123"),
             "role": UserRole.sysop.value,
-            "companyId": id2_company["id"],
+            "company_id": id2_company["id"],
             "language_preference": Language.DE.value,
             "is_active": True,
             "created_at": datetime.utcnow(),
