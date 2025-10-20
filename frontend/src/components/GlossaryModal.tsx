@@ -170,6 +170,46 @@ const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose, darkMode
         'testSuiteId (statt test_suite_id)'
       ],
       relatedTerms: ['snake_case', 'Frontend', 'JavaScript']
+    },
+    {
+      id: 'ce-cache-entleeren',
+      term: 'CE (Cache entleeren)',
+      category: 'Testing & Debugging',
+      definition: 'Standard-Browser-Cache-Refresh mit STRG+Shift+R (Hard Reload). Lädt die Seite neu und umgeht dabei den Browser-Cache, um sicherzustellen, dass die neuesten Dateien vom Server geladen werden.',
+      examples: [
+        'Windows/Linux: STRG+Shift+R',
+        'Mac: CMD+Shift+R',
+        'Verwendung: Nach Frontend-Änderungen wenn alte Version sichtbar ist'
+      ],
+      relatedTerms: ['CCE', 'CDN', 'CloudFront']
+    },
+    {
+      id: 'cce-console-cache',
+      term: 'CCE (Cache über Console entleeren)',
+      category: 'Testing & Debugging',
+      definition: 'Vollständiges Löschen des localStorage über Browser DevTools. F12 → Application Tab → Local Storage → https://mass-data-scale.preview.emergentagent.com → Kompletten localStorage löschen für harten Reset.',
+      examples: [
+        'F12 öffnen (Browser DevTools)',
+        'Application Tab auswählen',
+        'Local Storage → Domain auswählen',
+        'Alle Einträge löschen oder Storage leeren',
+        'Verwendung: Bei Datenproblemen oder nach Strukturänderungen'
+      ],
+      relatedTerms: ['CE', 'localStorage', 'Debugging']
+    },
+    {
+      id: 'cm-console-meldung',
+      term: 'CM (Consolen Meldung)',
+      category: 'Testing & Debugging',
+      definition: 'Browser Console Log Messages. Zugriff über F12 → Console Tab. Zeigt Fehlermeldungen, Warnungen, Debug-Informationen und API-Aufrufe der Anwendung.',
+      examples: [
+        'F12 → Console Tab',
+        'Fehler (rot): JavaScript-Fehler, API-Fehler',
+        'Warnungen (gelb): Deprecated Code, Performance-Hinweise',
+        'Info (blau): Debug-Meldungen, API-Calls',
+        'Verwendung: Zur Fehleranalyse und Debugging'
+      ],
+      relatedTerms: ['Debugging', 'Fehleranalyse', 'DevTools']
     }
   ];
 
