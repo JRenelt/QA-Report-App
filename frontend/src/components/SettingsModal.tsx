@@ -114,11 +114,41 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
         console.log('✅ Testdaten erfolgreich generiert!');
         console.log('Data:', data);
         
-        // Erfolgsmeldung mit Anweisung
-        showMessage('success', `✅ Testdaten erstellt: ${data.companies} Firmen, ${data.testCases} Testfälle. Bitte laden Sie die Seite neu (F5), um die Daten zu sehen.`);
+        // Erfolgsmeldung
+        showMessage('success', `✅ Testdaten erstellt: ${data.companies} Firmen, ${data.testCases} Testfälle.`);
         
-        // KEIN automatischer Reload mehr wegen CDN-Cache-Problem
-        console.log('⚠️ Bitte Seite manuell neu laden (F5) um Daten zu sehen!');
+        // Automatisch Companies und Projects neu laden (wie bei Mass-Data)
+        setTimeout(async () => {
+          try {
+            console.log('🔄 Lade Companies und Projects automatisch neu...');
+            
+            // Companies neu laden
+            const companiesResponse = await fetch(`${backendUrl}/api/companies/`, {
+              headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (companiesResponse.ok) {
+              const companies = await companiesResponse.json();
+              localStorage.setItem('qa_companies', JSON.stringify(companies));
+              console.log(`✅ ${companies.length} Companies automatisch geladen`);
+            }
+            
+            // Projects neu laden
+            const projectsResponse = await fetch(`${backendUrl}/api/projects/`, {
+              headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (projectsResponse.ok) {
+              const projects = await projectsResponse.json();
+              localStorage.setItem('qa_projects', JSON.stringify(projects));
+              console.log(`✅ ${projects.length} Projects automatisch geladen`);
+            }
+            
+            // Seite automatisch neu laden für UI-Update
+            console.log('🔄 Lade Seite automatisch neu...');
+            window.location.reload();
+          } catch (error) {
+            console.error('Fehler beim automatischen Reload:', error);
+          }
+        }, 500); // 500ms Verzögerung damit die Erfolgsmeldung sichtbar ist
       } else {
         const errorText = await response.text();
         console.error('Backend-Fehler:', response.status, errorText);
