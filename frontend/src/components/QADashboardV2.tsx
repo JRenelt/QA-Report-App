@@ -2313,16 +2313,33 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   // Update im Backend speichern (KRITISCH für Persistenz)
                   try {
                     const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
+                    
+                    // Konvertiere camelCase zu snake_case für Backend
+                    const backendPayload = {
+                      id: selectedTest.id,
+                      test_suite_id: selectedTest.testSuiteId,
+                      project_id: selectedTest.projectId,
+                      test_id: selectedTest.test_id,
+                      title: selectedTest.title,
+                      description: selectedTest.description,
+                      status: selectedTest.status,
+                      note: editNote,
+                      priority: selectedTest.priority,
+                      expected_result: selectedTest.expected_result,
+                      sort_order: selectedTest.sortOrder || 0,
+                      is_predefined: selectedTest.is_predefined,
+                      created_by: selectedTest.createdBy,
+                      created_at: selectedTest.createdAt,
+                      updated_at: new Date().toISOString()
+                    };
+                    
                     const response = await fetch(`${backendUrl}/api/test-cases/${selectedTest.id}`, {
                       method: 'PUT',
                       headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${authToken}`
                       },
-                      body: JSON.stringify({
-                        ...selectedTest,
-                        note: editNote
-                      })
+                      body: JSON.stringify(backendPayload)
                     });
                     
                     if (!response.ok) {
