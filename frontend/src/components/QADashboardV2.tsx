@@ -763,20 +763,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
   // Dynamisch berechnete Test Suite Stats
   const calculateSuiteStats = (suiteId: string) => {
-    // Zuerst versuchen, Stats aus dem Suite-Objekt selbst zu holen
-    const suite = testSuites.find(s => s.id === suiteId);
-    if (suite && typeof suite.totalTests === 'number') {
-      // Suite hat bereits Stats vom Backend
-      return {
-        totalTests: suite.totalTests || 0,
-        passedTests: suite.passedTests || 0,
-        failedTests: suite.failedTests || 0,
-        openTests: suite.openTests || 0,
-        skippedTests: 0,
-      };
-    }
-    
-    // Fallback: Berechne aus testCases (nur für aktiven Suite korrekt)
+    // IMMER aus aktuellen testCases berechnen, damit Status-Änderungen sofort reflektiert werden
     const suiteTests = testCases.filter(t => t.testSuiteId === suiteId);
     return {
       totalTests: suiteTests.length,
