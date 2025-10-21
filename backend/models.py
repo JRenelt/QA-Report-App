@@ -168,6 +168,17 @@ class TestCaseBase(BaseModel):
 class TestCaseCreate(TestCaseBase):
     test_suite_id: str
 
+class TestCaseUpdate(BaseModel):
+    """Model for updating test case - allows partial updates"""
+    test_id: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[str] = None  # WICHTIG für Status-Updates
+    note: Optional[str] = None  # WICHTIG für Notizen
+    priority: Optional[int] = None
+    expected_result: Optional[str] = None
+    sort_order: Optional[int] = None
+
 class TestCase(TestCaseBase):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     test_suite_id: str
