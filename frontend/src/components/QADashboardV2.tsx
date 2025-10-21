@@ -941,89 +941,49 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
-  // PDF Export Funktionen
-  const handlePDFExport = (type: 'all' | 'tested') => {
-    const testsToExport = type === 'all' 
-      ? testCases.filter(t => t.testSuiteId === activeSuite)
-      : testCases.filter(t => t.testSuiteId === activeSuite && t.status !== 'pending');
-    
-    const activeSuiteData = testSuites.find(s => s.id === activeSuite);
-    const suiteName = activeSuiteData?.name || 'Test-Suite';
-    
-    // HTML für PDF generieren
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <title>QA-Bericht ${type === 'all' ? '(Alle Tests)' : '(Getestete Tests)'}</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            h1 { color: #1f2937; border-bottom: 2px solid #06b6d4; padding-bottom: 10px; }
-            h2 { color: #374151; margin-top: 30px; }
-            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-            th, td { border: 1px solid #d1d5db; padding: 8px; text-align: left; }
-            th { background-color: #f3f4f6; font-weight: bold; }
-            .status-success { background-color: #dcfce7; color: #166534; }
-            .status-error { background-color: #fef2f2; color: #991b1b; }
-            .status-warning { background-color: #fef3c7; color: #92400e; }
-            .status-pending { background-color: #f3f4f6; color: #374151; }
-            .status-skipped { background-color: #dbeafe; color: #1d4ed8; }
-            .footer { margin-top: 30px; font-size: 12px; color: #6b7280; }
-          </style>
-        </head>
-        <body>
-          <h1>QA-Bericht: ${suiteName}</h1>
-          <p><strong>Erstellt am:</strong> ${new Date().toLocaleDateString('de-DE')}</p>
-          <p><strong>Art:</strong> ${type === 'all' ? 'Alle Tests' : 'Nur getestete Tests'}</p>
-          <p><strong>Anzahl Tests:</strong> ${testsToExport.length}</p>
-          
-          <h2>Test-Übersicht</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Test-ID</th>
-                <th>Titel</th>
-                <th>Beschreibung</th>
-                <th>Status</th>
-                <th>Notiz</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${testsToExport.map(test => `
-                <tr>
-                  <td>${test.test_id}</td>
-                  <td>${test.title}</td>
-                  <td>${test.description || '-'}</td>
-                  <td class="status-${test.status}">
-                    ${test.status === 'success' ? 'Bestanden' : 
-                      test.status === 'error' ? 'Fehlgeschlagen' :
-                      test.status === 'warning' ? 'In Arbeit' :
-                      test.status === 'skipped' ? 'Übersprungen' : 'Unbearbeitet'}
-                  </td>
-                  <td>${test.note || '-'}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-          
-          <div class="footer">
-            <p>QA-Report-App - Generiert am ${new Date().toLocaleString('de-DE')}</p>
-          </div>
-        </body>
-      </html>
-    `;
-    
-    // Neues Fenster für Print-Vorschau öffnen
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(htmlContent);
-      printWindow.document.close();
+  // PDF Export Funktionen - nutzt modernen Backend-Endpoint
+  const handlePDFExport = async (type: 'all' | 'tested') => {
+    if (!selectedProjectId || !authToken) {
+      alert('❌ Kein Projekt ausgewählt oder nicht angemeldet');
+      return;
+    }
+
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://test-result-dash.preview.emergentagent.com';
+      const testedOnly = type === 'tested';
       
-      // Nach dem Laden direkt drucken
-      printWindow.onload = () => {
-        printWindow.print();
-      };
+      const response = await fetch(
+        `${backendUrl}/api/pdf-reports/generate/${selectedProjectId}?tested_only=${testedOnly}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      // PDF herunterladen
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      const reportType = type === 'all' ? 'alle' : 'getestet';
+      const filename = `QA_Bericht_${reportType}_${new Date().toISOString().split('T')[0]}.pdf`;
+      link.download = filename;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      console.log(`✅ PDF-Bericht (${reportType}) erfolgreich heruntergeladen`);
+    } catch (error) {
+      console.error('PDF Export Fehler:', error);
+      alert(`❌ Fehler beim PDF-Export: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
     }
   };
 
