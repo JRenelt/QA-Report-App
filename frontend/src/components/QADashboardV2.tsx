@@ -2332,18 +2332,18 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     const backendPayload = {
                       id: selectedTest.id,
                       test_suite_id: selectedTest.testSuiteId,
-                      project_id: selectedTest.projectId,
+                      project_id: selectedTest.projectId || '',
                       test_id: selectedTest.test_id,
                       title: selectedTest.title,
                       description: selectedTest.description,
                       status: selectedTest.status,
                       note: editNote,
-                      priority: selectedTest.priority,
-                      expected_result: selectedTest.expected_result,
+                      priority: selectedTest.priority || 3,
+                      expected_result: selectedTest.expected_result || '',
                       sort_order: selectedTest.sortOrder || 0,
-                      is_predefined: selectedTest.is_predefined,
-                      created_by: selectedTest.createdBy,
-                      created_at: selectedTest.createdAt,
+                      is_predefined: selectedTest.is_predefined || false,
+                      created_by: selectedTest.createdBy || '',
+                      created_at: selectedTest.createdAt || new Date().toISOString(),
                       updated_at: new Date().toISOString()
                     };
                     
