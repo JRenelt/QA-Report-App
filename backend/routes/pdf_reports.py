@@ -107,7 +107,6 @@ async def generate_pdf_report(
     # Get company
     company = await companies_collection.find_one({"id": project["company_id"]})
     company_name = company["name"] if company else "N/A"
-    company_logo = company.get("logo_url") if company else None
     
     # Translations
     trans = {
