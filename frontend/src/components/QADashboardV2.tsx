@@ -1534,12 +1534,33 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       <div className="flex-1 min-w-0 text-base text-gray-300 truncate">
                         {suite.name}
                       </div>
-                      <div className="flex items-center">
-                        <CustomTooltip text={`${stats.openTests} noch zu testende Aufgaben in diesem Bereich`}>
-                          <span className="bg-cyan-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-base font-bold">
-                            {stats.openTests}
-                          </span>
-                        </CustomTooltip>
+                      <div className="flex items-center space-x-2">
+                        {/* Roter Badge für fehlgeschlagene Tests - nur wenn > 0 */}
+                        {stats.failedTests > 0 && (
+                          <CustomTooltip text={`${stats.failedTests} fehlgeschlagene Tests in diesem Bereich`}>
+                            <span className="bg-red-500 text-white rounded-full px-2 py-1 flex items-center justify-center text-sm font-bold min-w-[28px]">
+                              {stats.failedTests}
+                            </span>
+                          </CustomTooltip>
+                        )}
+                        
+                        {/* Blauer Badge für offene Tests - nur wenn > 0 */}
+                        {stats.openTests > 0 && (
+                          <CustomTooltip text={`${stats.openTests} offene Tests in diesem Bereich`}>
+                            <span className="bg-cyan-500 text-white rounded-full px-2 py-1 flex items-center justify-center text-sm font-bold min-w-[28px]">
+                              {stats.openTests}
+                            </span>
+                          </CustomTooltip>
+                        )}
+                        
+                        {/* Grüner Haken wenn alle Tests erfolgreich und keine offenen */}
+                        {stats.failedTests === 0 && stats.openTests === 0 && stats.passedTests > 0 && (
+                          <CustomTooltip text={`Alle ${stats.passedTests} Tests erfolgreich`}>
+                            <span className="text-green-500 flex items-center justify-center">
+                              <Check className="h-5 w-5" />
+                            </span>
+                          </CustomTooltip>
+                        )}
                       </div>
                     </button>
                   );
