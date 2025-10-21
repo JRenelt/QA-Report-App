@@ -164,6 +164,35 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [editTitle, setEditTitle] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   
+  // Keyboard Shortcuts für Pagination
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // STRG + Pfeil Links = Eine Seite zurück
+      if (e.ctrlKey && e.key === 'ArrowLeft' && !e.altKey) {
+        e.preventDefault();
+        setCurrentPage(prev => Math.max(1, prev - 1));
+      }
+      // STRG + Pfeil Rechts = Eine Seite weiter
+      else if (e.ctrlKey && e.key === 'ArrowRight' && !e.altKey) {
+        e.preventDefault();
+        setCurrentPage(prev => Math.min(totalPages, prev + 1));
+      }
+      // STRG + ALT + Pfeil Links = An den Anfang
+      else if (e.ctrlKey && e.altKey && e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setCurrentPage(1);
+      }
+      // STRG + ALT + Pfeil Rechts = Ans Ende
+      else if (e.ctrlKey && e.altKey && e.key === 'ArrowRight') {
+        e.preventDefault();
+        setCurrentPage(totalPages);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [totalPages]); // totalPages als Abhängigkeit
+  
   // Ref für Beschreibungsfeld - Auto-Focus + Text-Selection
   const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
   
