@@ -283,9 +283,6 @@ async def generate_pdf_report(
     story.append(Paragraph(t["test_details"], heading_style))
     story.append(Spacer(1, 0.2 * inch))
     
-    # Create suite lookup
-    suite_lookup = {s["id"]: s["name"] for s in suites}
-    
     # Group cases by suite
     for suite in suites:
         suite_cases = [c for c in cases if c["test_suite_id"] == suite["id"]]
