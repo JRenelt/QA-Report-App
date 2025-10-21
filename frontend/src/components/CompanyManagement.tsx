@@ -4,13 +4,11 @@ import { Building2, Plus, Edit, Trash2, Users, FolderOpen, X, Save, Download, Fi
 interface Company {
   id: string;
   name: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  country: string;
+  description?: string;
+  logoUrl?: string;
+  createdBy?: string;
   createdAt: string;
-  usersCount: number;
-  projectsCount: number;
+  updatedAt?: string;
 }
 
 interface Project {
