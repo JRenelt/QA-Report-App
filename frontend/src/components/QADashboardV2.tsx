@@ -1593,6 +1593,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       onClick={() => setActiveSuite(suite.id)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded text-left transition-all hover:bg-gray-700 ${
                         isActive ? 'bg-gray-700' : ''
+                      } ${
+                        // Roter Rahmen wenn Tests fehlgeschlagen
+                        stats.failedTests > 0 ? 'border-2 border-red-500' : ''
                       }`}
                     >
                       <FileText className="h-5 w-5 flex-shrink-0 text-gray-400" />
