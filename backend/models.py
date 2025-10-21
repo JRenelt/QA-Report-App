@@ -159,6 +159,8 @@ class TestCaseBase(BaseModel):
     test_id: str  # AD0001, HB0002, etc.
     name: str
     description: Optional[str] = None
+    status: Optional[str] = "pending"  # success, error, warning, pending, skipped
+    note: Optional[str] = None
     priority: int = 3
     expected_result: Optional[str] = None
     sort_order: int = 0
@@ -169,9 +171,11 @@ class TestCaseCreate(TestCaseBase):
 class TestCase(TestCaseBase):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     test_suite_id: str
+    project_id: Optional[str] = None  # Wichtig für Filterung
     is_predefined: bool = False
     created_by: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
