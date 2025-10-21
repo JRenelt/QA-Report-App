@@ -370,12 +370,10 @@ async def get_report_summary(
     return {
         "total_tests": total_tests,
         "tested": tested_count,
-        "untested": status_counts["untested"],
+        "pending": status_counts["pending"],
         "success": status_counts["success"],
         "error": status_counts["error"],
         "warning": status_counts["warning"],
         "skipped": status_counts["skipped"],
-        "pass_rate": round(pass_rate, 2),
-        "total_executions": len(results),
-        "last_execution": max([r["execution_date"] for r in results]) if results else None
+        "pass_rate": round(pass_rate, 2)
     }
