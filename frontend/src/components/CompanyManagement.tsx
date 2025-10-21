@@ -427,12 +427,6 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
           console.log(`Test-Suites gespeichert für Projekt ${newProject.id}:`, importedTestSuites.length);
           console.log(`Test-Cases gespeichert für Projekt ${newProject.id}:`, importedTestCases.length);
           
-          // Update company project count
-          setCompanies(companies.map(c => 
-            c.id === targetCompanyId 
-              ? { ...c, projectsCount: c.projectsCount + 1 }
-              : c
-          ));
           
           // Testfälle verarbeiten
           let totalTests = 0;
