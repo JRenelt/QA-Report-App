@@ -1564,32 +1564,32 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 testSuites.map((suite) => {
                   const stats = calculateSuiteStats(suite.id);
                   const isActive = suite.id === activeSuite;
+                  const isAllSuccess = stats.failedTests === 0 && stats.openTests === 0 && stats.passedTests > 0;
+                  const hasFailed = stats.failedTests > 0;
                   
-                  // Debug logging für grünen Hintergrund
-                  if (stats.failedTests === 0 && stats.openTests === 0 && stats.totalTests > 0) {
-                    console.log(`Suite ${suite.name}: Sollte grün sein - Total:${stats.totalTests}, Failed:${stats.failedTests}, Open:${stats.openTests}`);
-                  }
-
                   return (
                     <button
                       key={suite.id}
                       onClick={() => setActiveSuite(suite.id)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded text-left transition-all ${
                         // Priorität 1: Grüner Hintergrund wenn ALLE Tests erfolgreich
-                        (stats.failedTests === 0 && stats.openTests === 0 && stats.passedTests > 0) 
+                        isAllSuccess
                           ? 'bg-green-700 hover:bg-green-600' 
                           : ''
                       } ${
                         // Priorität 2: Roter Rahmen wenn Tests fehlgeschlagen  
-                        stats.failedTests > 0 
+                        hasFailed
                           ? 'border-2 border-red-500' 
                           : ''
                       } ${
-                        // Priorität 3: Graue Auswahl wenn aktiv
-                        (isActive && stats.failedTests === 0 && !(stats.openTests === 0 && stats.passedTests > 0))
+                        // Priorität 3: Graue Auswahl wenn aktiv (NUR wenn nicht grün)
+                        (isActive && !isAllSuccess && !hasFailed)
                           ? 'bg-gray-700'
                           : ''
-                      } hover:bg-gray-700`}
+                      } ${
+                        // Hover: Nur wenn nicht grün
+                        !isAllSuccess ? 'hover:bg-gray-700' : ''
+                      }`}
                     >
                       <FileText className="h-5 w-5 flex-shrink-0 text-gray-400" />
                       <div className="flex-1 min-w-0 text-base text-gray-300 truncate">
