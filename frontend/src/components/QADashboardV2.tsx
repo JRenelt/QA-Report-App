@@ -1517,10 +1517,32 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 onChange={(e) => {
                   setSelectedProjectId(e.target.value);
                 }}
-                className={`w-full text-base rounded border px-3 py-2.5 ${
-                  darkMode 
-                    ? 'bg-gray-700 border-gray-600 text-gray-300' 
-                    : 'bg-white border-gray-300 text-gray-700'
+                className={`w-full text-base rounded px-3 py-2.5 transition-all ${
+                  (() => {
+                    // Berechne Projekt-Status für Styling
+                    const projectTests = testCases; // Alle Tests des Projekts
+                    const failedCount = projectTests.filter(t => t.status === 'error').length;
+                    const openCount = projectTests.filter(t => t.status === 'pending' || t.status === 'warning').length;
+                    const successCount = projectTests.filter(t => t.status === 'success').length;
+                    const totalCount = projectTests.length;
+                    
+                    // Roter Rahmen wenn Tests fehlgeschlagen
+                    if (failedCount > 0) {
+                      return darkMode 
+                        ? 'bg-gray-700 border-2 border-red-500 text-gray-300' 
+                        : 'bg-white border-2 border-red-500 text-gray-700';
+                    }
+                    // Grüner Hintergrund wenn alle Tests erfolgreich
+                    if (totalCount > 0 && openCount === 0 && successCount === totalCount) {
+                      return darkMode 
+                        ? 'bg-green-900 border-2 border-green-500 text-green-100' 
+                        : 'bg-green-100 border-2 border-green-500 text-green-900';
+                    }
+                    // Standard-Styling
+                    return darkMode 
+                      ? 'bg-gray-700 border border-gray-600 text-gray-300' 
+                      : 'bg-white border border-gray-300 text-gray-700';
+                  })()
                 }`}
               >
                 {/* Platzhalter wenn kein Projekt ausgewählt */}
