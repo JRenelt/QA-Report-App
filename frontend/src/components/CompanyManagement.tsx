@@ -700,7 +700,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                   <option value="">Alle Projekte anzeigen</option>
                   {companies.map(company => (
                     <option key={company.id} value={company.id}>
-                      {company.name} ({company.projectsCount} Projekte)
+                      {company.name}
                     </option>
                   ))}
                 </select>
