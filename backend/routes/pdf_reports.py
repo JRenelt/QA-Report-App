@@ -381,6 +381,7 @@ async def generate_pdf_report(
         for case in suite_cases:
             case_status = case.get("status", "pending")
             case_note = case.get("note", "")
+            case_name = case.get("name") or case.get("title", "N/A")  # Support both fields
             
             # Status mit Farbe
             status_color = {
@@ -396,7 +397,7 @@ async def generate_pdf_report(
             
             detail_data.append([
                 Paragraph(case.get("test_id", "N/A"), body_style),
-                Paragraph(case["name"][:50] + "..." if len(case["name"]) > 50 else case["name"], body_style),
+                Paragraph(case_name[:50] + "..." if len(case_name) > 50 else case_name, body_style),
                 Paragraph(f"<font color='{status_color}'><b>{case_status.upper()}</b></font>", body_style),
                 Paragraph(short_note, body_style)
             ])
