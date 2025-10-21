@@ -7,7 +7,7 @@ from typing import List
 from datetime import datetime
 import uuid
 from database import test_cases_collection, test_suites_collection, test_results_collection
-from models import User, TestCase, TestCaseCreate
+from models import User, TestCase, TestCaseCreate, TestCaseUpdate
 from auth import get_current_user
 
 router = APIRouter()
