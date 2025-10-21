@@ -1649,7 +1649,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             {/* Filter-Hinweis zentriert wenn Filter aktiv */}
             {filterStatus !== 'all' && (
               <div className="flex-1 flex items-center justify-center mx-4">
-                <div className="px-4 py-2 bg-cyan-900 bg-opacity-30 border border-cyan-700 rounded flex items-center space-x-2 text-sm text-cyan-200">
+                <div className="px-4 py-2 bg-red-900 bg-opacity-50 border-2 border-red-500 rounded flex items-center space-x-2 text-sm text-red-100">
                   <FunnelX className="h-4 w-4" />
                   <span>
                     <strong>AKTIV:</strong> Filter auf "{
@@ -1662,7 +1662,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   </span>
                   <button
                     onClick={() => setFilterStatus('all')}
-                    className="ml-2 text-cyan-400 hover:text-cyan-200"
+                    className="ml-2 text-red-200 hover:text-red-100"
                   >
                     <X className="h-4 w-4" />
                   </button>
