@@ -44,8 +44,8 @@
 
 ### Abkürzungen und Terminologie
 **REGEL:** Einheitliche Begriffe für Testing und Debugging
-- **CE** (Cache entleeren): Standard-Browser-Cache-Refresh mit `STRG+Shift+R` (Hard Reload)
-- **CCE** (Cache über Console entleeren): 
+- **CC** (Clear Cache): Standard-Browser-Cache-Refresh mit `STRG+Shift+R` (Hard Reload)
+- **CCC** (Console Clear Cache): 
   - F12 → Application Tab → Local Storage → https://mass-data-scale.preview.emergentagent.com
   - Kompletten localStorage löschen für harten Reset
 - **CM** (Consolen Meldung): Browser Console Log Messages (F12 → Console)
