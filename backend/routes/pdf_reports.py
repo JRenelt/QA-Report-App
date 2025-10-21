@@ -202,7 +202,7 @@ async def generate_pdf_report(
     # Project Information
     project_info = [
         [t["project"], project["name"]],
-        [t["company"], company["name"] if company else "N/A"],
+        [t["company"], company_name],
         [t["date"], datetime.utcnow().strftime("%Y-%m-%d %H:%M")],
         [t["tester"], f"{current_user.first_name} {current_user.last_name}" if current_user.first_name else current_user.username]
     ]
