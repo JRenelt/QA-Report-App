@@ -235,13 +235,6 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     localStorage.setItem(suiteKey, JSON.stringify(defaultTestSuites));
     localStorage.setItem(casesKey, JSON.stringify([]));
     console.log(`Standard Test-Suites erstellt für neues Projekt ${project.id}`);
-    
-    // Update company project count
-    setCompanies(companies.map(c => 
-      c.id === project.companyId 
-        ? { ...c, projectsCount: c.projectsCount + 1 }
-        : c
-    ));
 
     setNewProject({ companyId: '', name: '', description: '', notes: '', status: 'active' });
     setShowProjectForm(false);
