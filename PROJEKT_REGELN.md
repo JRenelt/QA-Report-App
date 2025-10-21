@@ -49,6 +49,9 @@
   - F12 → Application Tab → Local Storage → https://mass-data-scale.preview.emergentagent.com
   - Kompletten localStorage löschen für harten Reset
 - **CM** (Consolen Meldung): Browser Console Log Messages (F12 → Console)
+- **SM** (System Meldung): Erfolgs- oder Fehlermeldungen der Anwendung (z.B. "✅ Testdaten erstellt", "❌ Fehler beim Erstellen")
+- **PDF1** (QA-Bericht): PDF-Bericht mit ALLEN Testfällen aus dem gewählten Bereich
+- **PDF2** (QA-Bericht getestet): PDF-Bericht NUR mit getesteten Testfällen (Status: success/error/warning, NICHT pending/skipped)
 - **RCA** (Root Cause Analysis): Systematische Fehlerursachen-Analyse
 - **snake_case**: Python/DB-Standard (z.B. `company_id`, `created_at`)
 - **camelCase**: JavaScript/Frontend-Standard (z.B. `companyId`, `createdAt`)
