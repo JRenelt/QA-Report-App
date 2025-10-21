@@ -175,7 +175,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       // STRG + Pfeil Rechts = Eine Seite weiter
       else if (e.ctrlKey && e.key === 'ArrowRight' && !e.altKey) {
         e.preventDefault();
-        setCurrentPage(prev => Math.min(totalPages, prev + 1));
+        setCurrentPage(prev => {
+          const maxPages = Math.ceil(filteredTests.length / itemsPerPage);
+          return Math.min(maxPages, prev + 1);
+        });
       }
       // STRG + ALT + Pfeil Links = An den Anfang
       else if (e.ctrlKey && e.altKey && e.key === 'ArrowLeft') {
@@ -185,13 +188,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       // STRG + ALT + Pfeil Rechts = Ans Ende
       else if (e.ctrlKey && e.altKey && e.key === 'ArrowRight') {
         e.preventDefault();
-        setCurrentPage(totalPages);
+        const maxPages = Math.ceil(filteredTests.length / itemsPerPage);
+        setCurrentPage(maxPages);
       }
     };
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [totalPages]); // totalPages als Abhängigkeit
+  }, [filteredTests.length, itemsPerPage]); // Abhängigkeiten: filteredTests und itemsPerPage
   
   // Ref für Beschreibungsfeld - Auto-Focus + Text-Selection
   const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
