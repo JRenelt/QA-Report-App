@@ -123,11 +123,17 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   
   // Test Cases aus Backend laden wenn PROJEKT gewählt wird (ALLE Cases des Projekts)
   useEffect(() => {
-    if (!selectedProjectId || !authToken) return;
+    // KRITISCH: Keine API-Calls ohne Auth-Token
+    if (!selectedProjectId || !authToken) {
+      console.log('⏳ Warte auf Auth-Token und Projekt-Auswahl für Test-Cases...');
+      return;
+    }
     
     const loadAllTestCasesFromBackend = async () => {
       try {
         const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
+        console.log(`🔄 Lade ALLE Test-Cases für Projekt ${selectedProjectId}...`);
+        
         // Lade ALLE Test-Cases des Projekts (nicht nur aktive Suite)
         const response = await fetch(`${backendUrl}/api/test-cases/?project_id=${selectedProjectId}`, {
           headers: { 'Authorization': `Bearer ${authToken}` }
@@ -137,6 +143,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           const cases = await response.json();
           console.log(`✅ ${cases.length} Test Cases aus Backend geladen für Projekt ${selectedProjectId}`);
           setTestCases(cases);
+        } else if (response.status === 401) {
+          console.error('❌ 401 Unauthorized - Auth-Token ungültig oder abgelaufen');
+          setTestCases([]);
         } else {
           console.error('❌ Fehler beim Laden der Test-Cases:', response.status);
           setTestCases([]);
