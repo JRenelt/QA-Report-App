@@ -156,34 +156,43 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
 
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://test-result-dash.preview.emergentagent.com';
-      const response = await fetch(`${backendUrl}/api/companies/`, {
-        method: 'POST',
+      
+      // UPDATE oder CREATE?
+      const isUpdate = editingCompany !== null;
+      const url = isUpdate 
+        ? `${backendUrl}/api/companies/${editingCompany.id}`
+        : `${backendUrl}/api/companies/`;
+      const method = isUpdate ? 'PUT' : 'POST';
+      
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Authorization': `Bearer ${authToken}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           name: newCompany.name,
-          description: newCompany.description,
+          description: newCompany.description || null,
           logo_url: newCompany.logoUrl || null
         })
       });
 
       if (response.ok) {
-        const createdCompany = await response.json();
-        console.log('✅ Firma erstellt:', createdCompany);
+        const savedCompany = await response.json();
+        console.log(`✅ Firma ${isUpdate ? 'aktualisiert' : 'erstellt'}:`, savedCompany);
         await loadCompanies(); // Neu laden
         setNewCompany({ name: '', description: '', logoUrl: '' });
+        setEditingCompany(null);
         setShowCompanyForm(false);
-        alert(`✅ Firma "${newCompany.name}" erfolgreich erstellt.`);
+        alert(`✅ Firma "${newCompany.name}" erfolgreich ${isUpdate ? 'aktualisiert' : 'erstellt'}.`);
       } else {
         const error = await response.json();
-        console.error('❌ Fehler beim Erstellen der Firma:', error);
-        alert(`❌ Fehler beim Erstellen der Firma: ${error.detail || 'Unbekannter Fehler'}`);
+        console.error(`❌ Fehler beim ${isUpdate ? 'Aktualisieren' : 'Erstellen'} der Firma:`, error);
+        alert(`❌ Fehler: ${error.detail || 'Unbekannter Fehler'}`);
       }
     } catch (error) {
-      console.error('❌ Fehler beim Erstellen der Firma:', error);
-      alert(`❌ Fehler beim Erstellen der Firma: ${error}`);
+      console.error('❌ Fehler:', error);
+      alert(`❌ Fehler: ${error}`);
     }
   };
 
