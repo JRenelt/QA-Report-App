@@ -252,15 +252,16 @@ async def generate_pdf_report(
     pass_rate = (status_counts["success"] / tested_count * 100) if tested_count > 0 else 0
     
     # Summary Section
-    story.append(Paragraph(t["summary"], heading_style))
+    story.append(Paragraph(t["executive_summary"], heading_style))
     
     summary_data = [
         [t["total_tests"], str(total_tests)],
+        [t["tested"], str(tested_count)],
         [t["success"], str(status_counts["success"])],
         [t["error"], str(status_counts["error"])],
         [t["warning"], str(status_counts["warning"])],
         [t["skipped"], str(status_counts["skipped"])],
-        [t["untested"], str(status_counts["untested"])],
+        [t["pending"], str(status_counts["pending"])],
         [t["pass_rate"], f"{pass_rate:.1f}%"]
     ]
     
