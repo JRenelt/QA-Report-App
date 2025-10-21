@@ -2110,9 +2110,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     Export
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="QA-Bericht für alle Tests mit Vorschau">
+                <CustomTooltip text="QA-Bericht für alle Tests - Moderner PDF-Report">
                   <button 
-                    onClick={() => handlePDFPreview('all')}
+                    onClick={() => handlePDFExport('all')}
                     className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
                       darkMode 
                         ? 'border-green-400 text-green-400 hover:bg-green-400 hover:bg-opacity-20' 
@@ -2122,9 +2122,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     QA-Bericht
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="QA-Bericht nur für getestete Tests mit Vorschau">
+                <CustomTooltip text="QA-Bericht nur für getestete Tests - Moderner PDF-Report">
                   <button 
-                    onClick={() => handlePDFPreview('tested')}
+                    onClick={() => handlePDFExport('tested')}
                     className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
                       darkMode 
                         ? 'border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:bg-opacity-20' 
