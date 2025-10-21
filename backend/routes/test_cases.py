@@ -131,9 +131,12 @@ async def update_test_case(
         "test_id": case_data.test_id,
         "name": case_data.name,
         "description": case_data.description,
+        "status": case_data.status if hasattr(case_data, 'status') else "pending",
+        "note": case_data.note if hasattr(case_data, 'note') else "",
         "priority": case_data.priority,
         "expected_result": case_data.expected_result,
-        "sort_order": case_data.sort_order
+        "sort_order": case_data.sort_order,
+        "updated_at": datetime.utcnow()
     }
     
     result = await test_cases_collection.find_one_and_update(
