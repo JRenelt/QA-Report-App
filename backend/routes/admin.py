@@ -124,15 +124,19 @@ async def generate_test_data(
                 test_case = {
                     "id": str(uuid.uuid4()),
                     "test_suite_id": suite["id"],
+                    "project_id": project_id,  # WICHTIG: project_id hinzufügen
                     "test_id": f"T{suite_idx+1:02d}{test_idx+1:03d}",
-                    "name": f"Testfall {test_idx+1}: {suite_data['name']}",
+                    "title": f"Testfall {test_idx+1}",  # title statt name
                     "description": f"Automatisch generierter Testfall",
+                    "status": "pending",  # WICHTIG: status hinzufügen für Badge-Berechnung
+                    "note": "",  # leere note
                     "priority": random.randint(1, 5),
                     "expected_result": "Test sollte erfolgreich durchlaufen",
                     "sort_order": test_idx,
                     "is_predefined": True,
                     "created_by": current_user.id,
-                    "created_at": datetime.utcnow()
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
                 }
                 await test_cases_collection.insert_one(test_case)
                 total_test_cases += 1
