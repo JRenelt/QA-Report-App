@@ -19,7 +19,7 @@ from datetime import datetime
 import uuid
 
 # Backend URL from environment
-BACKEND_URL = "https://mass-data-scale.preview.emergentagent.com"
+BACKEND_URL = "https://test-result-dash.preview.emergentagent.com"
 API_BASE = f"{BACKEND_URL}/api"
 
 # Credentials

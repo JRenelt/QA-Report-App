@@ -23,7 +23,7 @@ Die QA-Report-App ist eine professionelle Qualitätssicherungs-Anwendung für Te
 ### Login und Zugang
 **Hauptartikel:** [Authentifizierung](#authentifizierung)
 
-- **URL**: [https://qa-report-hub.preview.emergentagt.com/](https://mass-data-scale.preview.emergentagent.com/)
+- **URL**: [https://qa-report-hub.preview.emergentagt.com/](https://test-result-dash.preview.emergentagent.com/)
 - **[Administrator](#administrator)**: `admin` / `admin123`  
 - **[QA-Tester](#qa-tester)**: Accounts werden über das [Benutzermanagement](#benutzermanagement) erstellt
 
