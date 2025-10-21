@@ -1813,7 +1813,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       </div>
 
                       {test.note && (
-                        <div className="bg-blue-900 bg-opacity-30 border border-blue-700 rounded p-2 text-sm text-blue-200 mb-2">
+                        <div className="bg-blue-900 bg-opacity-30 border border-blue-700 rounded p-2 text-sm text-blue-200 mb-2 whitespace-pre-wrap">
                           <MessageSquare className="inline h-3 w-3 mr-1" />
                           {test.note}
                         </div>
