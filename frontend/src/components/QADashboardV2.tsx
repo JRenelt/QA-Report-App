@@ -1765,20 +1765,39 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                               // Update im Backend speichern
                               try {
                                 const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
+                                
+                                // Konvertiere camelCase zu snake_case für Backend
+                                const backendPayload = {
+                                  id: test.id,
+                                  test_suite_id: test.testSuiteId,
+                                  project_id: test.projectId,
+                                  test_id: test.test_id,
+                                  title: test.title,
+                                  description: test.description,
+                                  status: 'error',
+                                  note: test.note || '',
+                                  priority: test.priority,
+                                  expected_result: test.expected_result,
+                                  sort_order: test.sortOrder || 0,
+                                  is_predefined: test.is_predefined,
+                                  created_by: test.createdBy,
+                                  created_at: test.createdAt,
+                                  updated_at: new Date().toISOString()
+                                };
+                                
                                 const response = await fetch(`${backendUrl}/api/test-cases/${test.id}`, {
                                   method: 'PUT',
                                   headers: {
                                     'Content-Type': 'application/json',
                                     'Authorization': `Bearer ${authToken}`
                                   },
-                                  body: JSON.stringify({
-                                    ...test,
-                                    status: 'error'
-                                  })
+                                  body: JSON.stringify(backendPayload)
                                 });
                                 
                                 if (!response.ok) {
                                   console.error('❌ Fehler beim Speichern des Test-Status im Backend');
+                                } else {
+                                  console.log('✅ Test-Status erfolgreich gespeichert');
                                 }
                               } catch (error) {
                                 console.error('❌ Fehler beim Speichern:', error);
