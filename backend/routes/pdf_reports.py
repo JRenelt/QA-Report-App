@@ -271,11 +271,19 @@ async def generate_pdf_report(
     )
     
     # === HEADER SECTION ===
-    # Logo
+    # Logo - Note: ReportLab Image doesn't support SVG, only PNG/JPG
+    logo_added = False
     try:
         if company_logo_url:
-            if company_logo_url.startswith('data:image'):
-                # Base64 image - Split and decode properly
+            # Check if it's a PNG/JPG URL
+            if company_logo_url.startswith('http') and (company_logo_url.endswith('.png') or company_logo_url.endswith('.jpg') or company_logo_url.endswith('.jpeg')):
+                logo = Image(company_logo_url, width=2*inch, height=0.8*inch)
+                logo.hAlign = 'CENTER'
+                story.append(logo)
+                story.append(Spacer(1, 0.3*inch))
+                logo_added = True
+            # Check if it's a base64 PNG/JPG
+            elif company_logo_url.startswith('data:image/png') or company_logo_url.startswith('data:image/jpeg') or company_logo_url.startswith('data:image/jpg'):
                 if ',' in company_logo_url:
                     header, encoded = company_logo_url.split(',', 1)
                     image_data = base64.b64decode(encoded)
@@ -284,24 +292,23 @@ async def generate_pdf_report(
                     logo.hAlign = 'CENTER'
                     story.append(logo)
                     story.append(Spacer(1, 0.3*inch))
-                else:
-                    # Invalid format - skip logo
-                    story.append(Spacer(1, 0.2*inch))
-            elif company_logo_url.startswith('http'):
-                # URL image
-                logo = Image(company_logo_url, width=2*inch, height=0.8*inch)
-                logo.hAlign = 'CENTER'
-                story.append(logo)
+                    logo_added = True
+            # Skip SVG logos (not supported by ReportLab)
+            elif 'svg' in company_logo_url.lower():
+                print(f"SVG Logo übersprungen (nicht unterstützt von ReportLab)")
+                # Add company name as text header instead
+                company_header = Paragraph(
+                    f"<b>{company_name}</b>",
+                    ParagraphStyle('CompanyHeader', parent=styles['Heading2'], fontSize=18, alignment=TA_CENTER, textColor=colors.HexColor('#2C3E50'))
+                )
+                story.append(company_header)
                 story.append(Spacer(1, 0.3*inch))
-            else:
-                # Unknown format - skip logo
-                story.append(Spacer(1, 0.2*inch))
-        else:
-            # No logo - skip
-            story.append(Spacer(1, 0.2*inch))
+                logo_added = True
     except Exception as e:
-        print(f"Logo konnte nicht geladen werden: {e}")
-        # Continue without logo
+        print(f"Logo-Fehler: {e}")
+    
+    # If no logo was added, add spacer
+    if not logo_added:
         story.append(Spacer(1, 0.2*inch))
     
     # Title
