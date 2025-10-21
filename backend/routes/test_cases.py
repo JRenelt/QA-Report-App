@@ -50,6 +50,8 @@ async def get_test_cases(
         # Konvertiere Keys
         if "test_suite_id" in case_dict:
             case_dict["testSuiteId"] = case_dict.pop("test_suite_id")
+        if "project_id" in case_dict:
+            case_dict["projectId"] = case_dict.pop("project_id")
         if "created_by" in case_dict:
             case_dict["createdBy"] = case_dict.pop("created_by")
         if "created_at" in case_dict:
