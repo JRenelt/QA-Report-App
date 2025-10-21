@@ -13,21 +13,35 @@ from auth import get_current_user
 router = APIRouter()
 
 @router.get("/")
-async def get_test_cases(test_suite_id: str, current_user: User = Depends(get_current_user)):
-    """Get all test cases for a test suite"""
+async def get_test_cases(
+    test_suite_id: str = None, 
+    project_id: str = None,
+    current_user: User = Depends(get_current_user)
+):
+    """Get all test cases for a test suite OR all test cases for a project"""
     from fastapi.responses import JSONResponse
     
-    # Verify suite exists
-    suite = await test_suites_collection.find_one({"id": test_suite_id})
-    if not suite:
+    # Build query filter
+    query_filter = {}
+    if test_suite_id:
+        # Verify suite exists
+        suite = await test_suites_collection.find_one({"id": test_suite_id})
+        if not suite:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Test suite not found"
+            )
+        query_filter["test_suite_id"] = test_suite_id
+    elif project_id:
+        # Get all test cases for project
+        query_filter["project_id"] = project_id
+    else:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Test suite not found"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Either test_suite_id or project_id must be provided"
         )
     
-    cases = await test_cases_collection.find(
-        {"test_suite_id": test_suite_id}
-    ).sort("sort_order", 1).to_list(1000)
+    cases = await test_cases_collection.find(query_filter).sort("sort_order", 1).to_list(10000)
     
     # Konvertiere snake_case Keys zu camelCase für Frontend
     converted_cases = []
