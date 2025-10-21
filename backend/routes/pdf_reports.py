@@ -298,21 +298,17 @@ async def generate_pdf_report(
         story.append(Spacer(1, 0.1 * inch))
         
         # Test cases table
-        detail_data = [[t["test_id"], t["test_name"], t["status"], t["notes"][:50] + "..." if len(t.get("notes", "")) > 50 else t.get("notes", "")]]
+        detail_data = [[t["test_id"], t["test_name"], t["status"], t["note"]]]
         
         for case in suite_cases:
-            result = latest_results.get(case["id"])
-            status_text = result["status"] if result else t["untested"]
-            notes_text = result.get("notes", "")[:50] + "..." if result and len(result.get("notes", "")) > 50 else result.get("notes", "") if result else ""
-            
-            # Color code status
-            status_display = status_text
+            case_status = case.get("status", "pending")
+            case_notes = case.get("notes", "")[:50] + "..." if len(case.get("notes", "")) > 50 else case.get("notes", "")
             
             detail_data.append([
-                case["test_id"],
+                case.get("test_id", ""),
                 case["name"][:40] + "..." if len(case["name"]) > 40 else case["name"],
-                status_display,
-                notes_text
+                case_status,
+                case_notes
             ])
         
         detail_table = Table(detail_data, colWidths=[1*inch, 2.5*inch, 1*inch, 1.5*inch])
