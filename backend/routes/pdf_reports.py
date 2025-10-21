@@ -36,6 +36,52 @@ router = APIRouter()
 # Default ID2 Logo for white background
 DEFAULT_LOGO_URL = "https://customer-assets.emergentagent.com/job_test-result-dash/artifacts/fc0bo5xn_image.png"
 
+def calculate_conclusion(status_counts: dict, total_tests: int, tested_count: int) -> tuple:
+    """
+    Berechnet intelligentes Fazit basierend auf Testergebnissen
+    Returns: (fazit_titel, fazit_text, empfehlung, farbe)
+    """
+    if tested_count == 0:
+        return (
+            "⚠️ KEINE TESTS DURCHGEFÜHRT",
+            "Es wurden keine Tests durchgeführt. Das System wurde nicht getestet.",
+            "Das Testing muss vollständig durchgeführt werden, bevor eine Freigabe erfolgen kann.",
+            colors.HexColor('#FF9800')  # Orange
+        )
+    
+    success_rate = (status_counts["success"] / tested_count * 100) if tested_count > 0 else 0
+    failed_tests = status_counts["error"]
+    warning_tests = status_counts["warning"]
+    
+    if success_rate == 100 and failed_tests == 0:
+        return (
+            "✅ SYSTEM BEREIT FÜR FREIGABE",
+            f"Alle {tested_count} durchgeführten Tests waren erfolgreich. Das System funktioniert einwandfrei.",
+            "Das System kann für die Produktionsumgebung freigegeben werden.",
+            colors.HexColor('#4CAF50')  # Grün
+        )
+    elif success_rate >= 95 and failed_tests == 0:
+        return (
+            "✓ ÜBERWIEGEND POSITIV",
+            f"{status_counts['success']} von {tested_count} Tests erfolgreich ({success_rate:.1f}%). {warning_tests} Warnung(en) vorhanden.",
+            "Kleinere Optimierungen empfohlen. Warnungen sollten vor Freigabe geprüft werden.",
+            colors.HexColor('#8BC34A')  # Hellgrün
+        )
+    elif success_rate >= 80:
+        return (
+            "⚠️ NACHBESSERUNGEN ERFORDERLICH",
+            f"{status_counts['success']} von {tested_count} Tests erfolgreich ({success_rate:.1f}%). {failed_tests} Fehler, {warning_tests} Warnung(en).",
+            "Fehler müssen behoben und erneut getestet werden. Freigabe noch nicht empfohlen.",
+            colors.HexColor('#FF9800')  # Orange
+        )
+    else:
+        return (
+            "❌ KRITISCHE FEHLER",
+            f"Nur {status_counts['success']} von {tested_count} Tests erfolgreich ({success_rate:.1f}%). {failed_tests} kritische Fehler gefunden.",
+            "Umfangreiches Re-Testing erforderlich. System NICHT freigabefähig.",
+            colors.HexColor('#F44336')  # Rot
+        )
+
 @router.get("/generate/{project_id}")
 async def generate_pdf_report(
     project_id: str,
