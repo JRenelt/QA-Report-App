@@ -796,7 +796,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       totalTests: suiteTests.length,
       passedTests: suiteTests.filter(t => t.status === 'success').length,
       failedTests: suiteTests.filter(t => t.status === 'error').length,
-      openTests: suiteTests.filter(t => t.status === 'pending' || t.status === 'warning').length,
+      openTests: suiteTests.filter(t => t.status === 'pending' || t.status === 'warning' || t.status === 'skipped').length,
       skippedTests: suiteTests.filter(t => t.status === 'skipped').length,
     };
   };
