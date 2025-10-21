@@ -665,12 +665,14 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                       )}
                     </div>
                   </div>
+                  {/* Firma Details */}
                   <div className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                    <div>{company.address}</div>
-                    <div>{company.postalCode} {company.city}</div>
-                    <div className="mt-2 flex space-x-4">
-                      <span><Users className="h-3 w-3 inline mr-1" />{company.usersCount} User</span>
-                      <span><FolderOpen className="h-3 w-3 inline mr-1" />{company.projectsCount} Projekte</span>
+                    <div className="mt-2">
+                      <span className={`text-xs px-2 py-1 rounded ${
+                        darkMode ? 'bg-gray-600 text-gray-200' : 'bg-gray-200 text-gray-700'
+                      }`}>
+                        ID: {company.id}
+                      </span>
                     </div>
                   </div>
                 </div>
