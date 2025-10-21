@@ -295,7 +295,7 @@ async def generate_pdf_report(
                     logo_added = True
             # Skip SVG logos (not supported by ReportLab)
             elif 'svg' in company_logo_url.lower():
-                print(f"SVG Logo übersprungen (nicht unterstützt von ReportLab)")
+                print("SVG Logo übersprungen (nicht unterstützt von ReportLab)")
                 # Add company name as text header instead
                 company_header = Paragraph(
                     f"<b>{company_name}</b>",
