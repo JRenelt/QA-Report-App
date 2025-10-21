@@ -115,10 +115,10 @@ async def get_test_case(case_id: str, current_user: User = Depends(get_current_u
 @router.put("/{case_id}", response_model=TestCase)
 async def update_test_case(
     case_id: str,
-    case_data: TestCaseCreate,
+    case_data: TestCaseUpdate,
     current_user: User = Depends(get_current_user)
 ):
-    """Update test case"""
+    """Update test case - allows partial updates"""
     
     case = await test_cases_collection.find_one({"id": case_id})
     if not case:
@@ -127,17 +127,25 @@ async def update_test_case(
             detail="Test case not found"
         )
     
-    update_data = {
-        "test_id": case_data.test_id,
-        "name": case_data.name,
-        "description": case_data.description,
-        "status": case_data.status if hasattr(case_data, 'status') else "pending",
-        "note": case_data.note if hasattr(case_data, 'note') else "",
-        "priority": case_data.priority,
-        "expected_result": case_data.expected_result,
-        "sort_order": case_data.sort_order,
-        "updated_at": datetime.utcnow()
-    }
+    # Nur Felder updaten die tatsächlich gesendet wurden
+    update_data = {"updated_at": datetime.utcnow()}
+    
+    if case_data.test_id is not None:
+        update_data["test_id"] = case_data.test_id
+    if case_data.name is not None:
+        update_data["name"] = case_data.name
+    if case_data.description is not None:
+        update_data["description"] = case_data.description
+    if case_data.status is not None:
+        update_data["status"] = case_data.status
+    if case_data.note is not None:
+        update_data["note"] = case_data.note
+    if case_data.priority is not None:
+        update_data["priority"] = case_data.priority
+    if case_data.expected_result is not None:
+        update_data["expected_result"] = case_data.expected_result
+    if case_data.sort_order is not None:
+        update_data["sort_order"] = case_data.sort_order
     
     result = await test_cases_collection.find_one_and_update(
         {"id": case_id},
