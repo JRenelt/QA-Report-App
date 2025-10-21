@@ -1564,6 +1564,11 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 testSuites.map((suite) => {
                   const stats = calculateSuiteStats(suite.id);
                   const isActive = suite.id === activeSuite;
+                  
+                  // Debug logging für grünen Hintergrund
+                  if (stats.failedTests === 0 && stats.openTests === 0 && stats.totalTests > 0) {
+                    console.log(`Suite ${suite.name}: Sollte grün sein - Total:${stats.totalTests}, Failed:${stats.failedTests}, Open:${stats.openTests}`);
+                  }
 
                   return (
                     <button
