@@ -42,6 +42,16 @@
    - ✅ Direkte UI-Updates nach Änderungen ohne User-Interaktion
    - ✅ Ziel: Nahtlose User Experience mit minimalen manuellen Eingriffen
 
+7. **Dokumentations-Pflicht am Ende jeder Aufgabe:**
+   - ✅ Nach JEDER abgeschlossenen Aufgabe MÜSSEN folgende Dokumente aktualisiert werden:
+     - **Handbuch** (README.md oder separate Handbuch-Datei)
+     - **Fehler-Management** (`/app/frontend/public/fehler-management.html`)
+     - **Glossar** (GlossaryModal.tsx oder separate Glossar-Datei)
+     - **Projekt-Regeln** (`PROJEKT_REGELN.md` und `/app/frontend/public/projekt-regeln.html`)
+   - ✅ Neue Features, Bugfixes und Änderungen MÜSSEN dokumentiert sein
+   - ✅ Version und Datum aktualisieren
+   - ✅ Keine Aufgabe ist komplett ohne Dokumentations-Update
+
 ### Abkürzungen und Terminologie
 **REGEL:** Einheitliche Begriffe für Testing und Debugging
 - **CC** (Clear Cache): Standard-Browser-Cache-Refresh mit `STRG+Shift+R` (Hard Reload)
