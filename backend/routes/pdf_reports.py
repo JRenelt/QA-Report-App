@@ -273,19 +273,35 @@ async def generate_pdf_report(
     # === HEADER SECTION ===
     # Logo
     try:
-        if company_logo_url.startswith('data:image'):
-            # Base64 image
-            image_data = base64.b64decode(company_logo_url.split(',')[1])
-            logo_buffer = io.BytesIO(image_data)
-            logo = Image(logo_buffer, width=2*inch, height=0.8*inch)
+        if company_logo_url:
+            if company_logo_url.startswith('data:image'):
+                # Base64 image - Split and decode properly
+                if ',' in company_logo_url:
+                    header, encoded = company_logo_url.split(',', 1)
+                    image_data = base64.b64decode(encoded)
+                    logo_buffer = io.BytesIO(image_data)
+                    logo = Image(logo_buffer, width=2*inch, height=0.8*inch)
+                    logo.hAlign = 'CENTER'
+                    story.append(logo)
+                    story.append(Spacer(1, 0.3*inch))
+                else:
+                    # Invalid format - skip logo
+                    story.append(Spacer(1, 0.2*inch))
+            elif company_logo_url.startswith('http'):
+                # URL image
+                logo = Image(company_logo_url, width=2*inch, height=0.8*inch)
+                logo.hAlign = 'CENTER'
+                story.append(logo)
+                story.append(Spacer(1, 0.3*inch))
+            else:
+                # Unknown format - skip logo
+                story.append(Spacer(1, 0.2*inch))
         else:
-            # URL image
-            logo = Image(company_logo_url, width=2*inch, height=0.8*inch)
-        logo.hAlign = 'CENTER'
-        story.append(logo)
-        story.append(Spacer(1, 0.3*inch))
+            # No logo - skip
+            story.append(Spacer(1, 0.2*inch))
     except Exception as e:
         print(f"Logo konnte nicht geladen werden: {e}")
+        # Continue without logo
         story.append(Spacer(1, 0.2*inch))
     
     # Title
