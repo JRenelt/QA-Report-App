@@ -112,20 +112,21 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     loadTestSuitesFromBackend();
   }, [selectedProjectId, authToken]);
   
-  // Test Cases aus Backend laden wenn Suite gewählt wird
+  // Test Cases aus Backend laden wenn PROJEKT gewählt wird (ALLE Cases des Projekts)
   useEffect(() => {
-    if (!activeSuite || !authToken) return;
+    if (!selectedProjectId || !authToken) return;
     
-    const loadTestCasesFromBackend = async () => {
+    const loadAllTestCasesFromBackend = async () => {
       try {
         const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
-        const response = await fetch(`${backendUrl}/api/test-cases/?test_suite_id=${activeSuite}`, {
+        // Lade ALLE Test-Cases des Projekts (nicht nur aktive Suite)
+        const response = await fetch(`${backendUrl}/api/test-cases/?project_id=${selectedProjectId}`, {
           headers: { 'Authorization': `Bearer ${authToken}` }
         });
         
         if (response.ok) {
           const cases = await response.json();
-          console.log(`✅ ${cases.length} Test Cases aus Backend geladen für Suite ${activeSuite}`);
+          console.log(`✅ ${cases.length} Test Cases aus Backend geladen für Projekt ${selectedProjectId}`);
           setTestCases(cases);
         } else {
           console.error('❌ Fehler beim Laden der Test-Cases:', response.status);
@@ -137,8 +138,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       }
     };
     
-    loadTestCasesFromBackend();
-  }, [activeSuite, authToken]);
+    loadAllTestCasesFromBackend();
+  }, [selectedProjectId, authToken]);  // Abhängigkeit: selectedProjectId statt activeSuite
   
   // Polling aktivieren, wenn Backend-URL gesetzt ist
 
