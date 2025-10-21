@@ -1570,7 +1570,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                       key={suite.id}
                       onClick={() => setActiveSuite(suite.id)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded text-left transition-all hover:bg-gray-700 ${
-                        isActive ? 'bg-gray-700' : ''
+                        // Grüner Hintergrund wenn ALLE Tests erfolgreich
+                        stats.failedTests === 0 && stats.openTests === 0 && stats.totalTests > 0 
+                          ? 'bg-green-700 hover:bg-green-600' 
+                          : isActive ? 'bg-gray-700' : ''
                       } ${
                         // Roter Rahmen wenn Tests fehlgeschlagen
                         stats.failedTests > 0 ? 'border-2 border-red-500' : ''
