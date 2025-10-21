@@ -100,10 +100,8 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [newCompany, setNewCompany] = useState({
     name: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: 'Deutschland'
+    description: '',
+    logoUrl: ''
   });
   const [newProject, setNewProject] = useState<{
     companyId: string;
