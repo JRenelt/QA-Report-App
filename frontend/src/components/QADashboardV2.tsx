@@ -1458,37 +1458,20 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 </h2>
               </div>
               
-              {/* Counter für offene und fehlgeschlagene Tests - nur wenn Projekt ausgewählt */}
+              {/* Counter für offene Tests - nur Zahl ohne Text */}
               {selectedProjectId && (
-                <div className="flex items-center space-x-2">
-                  {/* Orange Counter für offene Tests (5-stellig) */}
-                  <CustomTooltip text="Anzahl der noch zu testenden Testfälle (Offen + Warnung)">
-                    <div className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded text-base font-bold min-w-[80px] text-center">
-                      {(() => {
-                        // Berechne Anzahl offener Tests für aktuelles Projekt
-                        const openTestsCount = testCases.filter(t => 
-                          t.status === 'pending' || t.status === 'warning'
-                        ).length;
-                        // 5-stellig formatieren
-                        return String(openTestsCount).padStart(5, '0');
-                      })()}
-                    </div>
-                  </CustomTooltip>
-                  
-                  {/* Roter Counter für fehlgeschlagene Tests - nur wenn > 0 */}
-                  {(() => {
-                    const failedTestsCount = testCases.filter(t => t.status === 'error').length;
-                    if (failedTestsCount === 0) return null;
-                    
-                    return (
-                      <CustomTooltip text="Anzahl der fehlgeschlagenen Testfälle">
-                        <div className="bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded text-base font-bold min-w-[80px] text-center">
-                          {String(failedTestsCount).padStart(5, '0')}
-                        </div>
-                      </CustomTooltip>
-                    );
-                  })()}
-                </div>
+                <CustomTooltip text="Anzahl der noch zu testenden Testfälle im gesamten Projekt">
+                  <div className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded text-base font-bold min-w-[80px] text-center">
+                    {(() => {
+                      // Berechne Anzahl offener Tests für aktuelles Projekt
+                      const openTestsCount = testCases.filter(t => 
+                        t.status === 'pending' || t.status === 'warning'
+                      ).length;
+                      // 5-stellig formatieren
+                      return String(openTestsCount).padStart(5, '0');
+                    })()}
+                  </div>
+                </CustomTooltip>
               )}
             </div>
             
