@@ -582,16 +582,33 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className={`font-semibold ${
-                      darkMode ? 'text-white' : 'text-gray-900'
-                    } ${activeCompanyId === company.id ? 'text-cyan-400' : ''}`}>
-                      {company.name}
-                      {activeCompanyId === company.id && (
-                        <span className="ml-2 text-xs bg-cyan-500 text-white px-2 py-0.5 rounded">
-                          Aktiv
-                        </span>
+                    <div className="flex items-center space-x-3">
+                      {/* Logo anzeigen falls vorhanden */}
+                      {company.logoUrl && (
+                        <img 
+                          src={company.logoUrl} 
+                          alt={`${company.name} Logo`} 
+                          className="h-10 w-10 object-contain"
+                        />
                       )}
-                    </h4>
+                      <div>
+                        <h4 className={`font-semibold ${
+                          darkMode ? 'text-white' : 'text-gray-900'
+                        } ${activeCompanyId === company.id ? 'text-cyan-400' : ''}`}>
+                          {company.name}
+                          {activeCompanyId === company.id && (
+                            <span className="ml-2 text-xs bg-cyan-500 text-white px-2 py-0.5 rounded">
+                              Aktiv
+                            </span>
+                          )}
+                        </h4>
+                        {company.description && (
+                          <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                            {company.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                     <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
                       <button 
                         onClick={() => {
