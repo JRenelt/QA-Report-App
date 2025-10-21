@@ -639,7 +639,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                                 console.log(`Projekt ${project.id} und zugehörige Testdaten gelöscht`);
                               });
                               
-                              // 4. Projekte aus State und localStorage entfernen
+                              // 3. Projekte aus State und localStorage entfernen
                               const remainingProjects = projects.filter(p => p.companyId !== company.id);
                               setProjects(remainingProjects);
                               localStorage.setItem('qa_projects', JSON.stringify(remainingProjects));
