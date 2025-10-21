@@ -1667,11 +1667,34 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                         
                         <CustomTooltip text="Test als fehlgeschlagen markieren">
                           <button
-                            onClick={() => {
+                            onClick={async () => {
+                              // Update im Frontend
                               const updated = testCases.map(t => 
                                 t.id === test.id ? { ...t, status: 'error' as const } : t
                               );
                               setTestCases(updated);
+                              
+                              // Update im Backend speichern
+                              try {
+                                const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
+                                const response = await fetch(`${backendUrl}/api/test-cases/${test.id}`, {
+                                  method: 'PUT',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${authToken}`
+                                  },
+                                  body: JSON.stringify({
+                                    ...test,
+                                    status: 'error'
+                                  })
+                                });
+                                
+                                if (!response.ok) {
+                                  console.error('❌ Fehler beim Speichern des Test-Status im Backend');
+                                }
+                              } catch (error) {
+                                console.error('❌ Fehler beim Speichern:', error);
+                              }
                             }}
                             className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center ${
                               test.status === 'error' 
