@@ -345,39 +345,26 @@ async def get_report_summary(
     # Get test statistics (same logic as PDF generation)
     suites = await test_suites_collection.find({"project_id": project_id}).to_list(1000)
     suite_ids = [s["id"] for s in suites]
-    cases = await test_cases_collection.find({"test_suite_id": {"$in": suite_ids}}).to_list(10000)
-    case_ids = [c["id"] for c in cases]
+    all_cases = await test_cases_collection.find({"test_suite_id": {"$in": suite_ids}}).to_list(10000)
     
-    result_query = {"test_case_id": {"$in": case_ids}}
-    if session_id:
-        result_query["session_id"] = session_id
-    
-    results = await test_results_collection.find(result_query).to_list(10000)
-    
-    # Calculate statistics
-    total_tests = len(cases)
-    latest_results = {}
-    for result in sorted(results, key=lambda x: x["execution_date"], reverse=True):
-        case_id = result["test_case_id"]
-        if case_id not in latest_results:
-            latest_results[case_id] = result
-    
+    # Calculate statistics based on test case status field
     status_counts = {
         "success": 0,
         "error": 0,
         "warning": 0,
         "skipped": 0,
-        "untested": 0
+        "pending": 0
     }
     
-    for case_id in case_ids:
-        if case_id in latest_results:
-            result_status = latest_results[case_id]["status"]
-            status_counts[result_status] = status_counts.get(result_status, 0) + 1
+    for case in all_cases:
+        case_status = case.get("status", "pending")
+        if case_status in status_counts:
+            status_counts[case_status] += 1
         else:
-            status_counts["untested"] += 1
+            status_counts["pending"] += 1
     
-    tested_count = total_tests - status_counts["untested"]
+    total_tests = len(all_cases)
+    tested_count = status_counts["success"] + status_counts["error"] + status_counts["warning"]
     pass_rate = (status_counts["success"] / tested_count * 100) if tested_count > 0 else 0
     
     return {
