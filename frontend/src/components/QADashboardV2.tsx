@@ -2264,12 +2264,37 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                 Abbrechen
               </button>
               <button 
-                onClick={() => {
+                onClick={async () => {
+                  // Update im Frontend
                   const updated = testCases.map(t => 
                     t.id === selectedTest.id ? { ...t, note: editNote } : t
                   );
                   setTestCases(updated);
                   setShowNoteModal(false);
+                  
+                  // Update im Backend speichern (KRITISCH für Persistenz)
+                  try {
+                    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://mass-data-scale.preview.emergentagent.com';
+                    const response = await fetch(`${backendUrl}/api/test-cases/${selectedTest.id}`, {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                      },
+                      body: JSON.stringify({
+                        ...selectedTest,
+                        note: editNote
+                      })
+                    });
+                    
+                    if (!response.ok) {
+                      console.error('❌ Fehler beim Speichern der Notiz im Backend:', response.status);
+                    } else {
+                      console.log('✅ Notiz erfolgreich im Backend gespeichert');
+                    }
+                  } catch (error) {
+                    console.error('❌ Fehler beim Speichern der Notiz:', error);
+                  }
                 }}
                 className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded text-sm"
               >
