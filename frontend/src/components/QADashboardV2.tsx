@@ -1633,6 +1633,32 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             <h1 className="text-cyan-400 text-xl font-bold">
               {currentSuite?.name}
             </h1>
+            
+            {/* Filter-Hinweis zentriert wenn Filter aktiv */}
+            {filterStatus !== 'all' && (
+              <div className="flex-1 flex items-center justify-center mx-4">
+                <div className="px-4 py-2 bg-cyan-900 bg-opacity-30 border border-cyan-700 rounded flex items-center space-x-2 text-sm text-cyan-200">
+                  <FunnelX className="h-4 w-4" />
+                  <span>
+                    <strong>AKTIV:</strong> Filter auf "{
+                      filterStatus === 'success' ? 'Erfolgreich' :
+                      filterStatus === 'error' ? 'Fehlgeschlagen' :
+                      filterStatus === 'warning' ? 'In Bearbeitung' :
+                      filterStatus === 'pending' ? 'Unbearbeitet' :
+                      filterStatus === 'skipped' ? 'Übersprungen' : ''
+                    }" gesetzt. {filteredTests.length} von {testCases.filter(t => t.testSuiteId === activeSuite).length} Tests angezeigt.
+                  </span>
+                  <button
+                    onClick={() => setFilterStatus('all')}
+                    className="ml-2 text-cyan-400 hover:text-cyan-200"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+            
+            <div className="w-8"></div> {/* Spacer für Balance */}
           </div>
 
           {/* Test Cases List */}
