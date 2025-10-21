@@ -646,7 +646,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                               
                               console.log(`Firma ${company.id} gelöscht: ${companyProjects.length} Projekte entfernt`);
                               
-                              // 5. Active States zurücksetzen wenn nötig
+                              // 4. Active States zurücksetzen wenn nötig
                               if (activeCompanyId === company.id) {
                                 setActiveCompanyId('');
                                 setSelectedCompanyForEdit('');
