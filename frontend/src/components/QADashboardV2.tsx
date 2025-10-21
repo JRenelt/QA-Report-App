@@ -1494,29 +1494,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           <div className="p-6 border-b border-gray-700">
             {/* Projekt-Auswahl Header mit Counter in derselben Zeile */}
             <div className="flex items-center justify-between mb-4">
-              <div className={`flex items-center space-x-3 px-3 py-2 rounded transition-all ${
-                (() => {
-                  // Berechne Projekt-Status für Styling
-                  const projectTests = testCases; // Alle Tests des Projekts
-                  const failedCount = projectTests.filter(t => t.status === 'error').length;
-                  const openCount = projectTests.filter(t => t.status === 'pending' || t.status === 'warning').length;
-                  const successCount = projectTests.filter(t => t.status === 'success').length;
-                  const totalCount = projectTests.length;
-                  
-                  // Roter Rahmen wenn Tests fehlgeschlagen
-                  if (failedCount > 0) {
-                    return 'border-2 border-red-500';
-                  }
-                  // Grüner Hintergrund wenn alle Tests erfolgreich
-                  if (totalCount > 0 && openCount === 0 && successCount === totalCount) {
-                    return darkMode 
-                      ? 'bg-green-900 border-2 border-green-500' 
-                      : 'bg-green-100 border-2 border-green-500';
-                  }
-                  // Kein spezielles Styling
-                  return '';
-                })()
-              }`}>
+              <div className="flex items-center space-x-3">
                 <FolderOpen className="h-6 w-6 text-cyan-400" />
                 <h2 className={`text-lg font-semibold ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
                   Projekt-Auswahl
