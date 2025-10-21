@@ -858,60 +858,118 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
           <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-60">
             <div className={`rounded-lg p-6 w-full max-w-md ${darkMode ? 'bg-[#2C313A]' : 'bg-white'}`}>
               <h3 className={`text-lg font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                Neue Firma erstellen
+                {editingCompany ? 'Firma bearbeiten' : 'Neue Firma erstellen'}
               </h3>
               <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Firmenname"
-                  value={newCompany.name}
-                  onChange={(e) => setNewCompany({...newCompany, name: e.target.value})}
-                  className={`w-full p-2 border rounded ${
-                    darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
-                  }`}
-                />
-                <input
-                  type="text"
-                  placeholder="Straße und Hausnummer"
-                  value={newCompany.address}
-                  onChange={(e) => setNewCompany({...newCompany, address: e.target.value})}
-                  className={`w-full p-2 border rounded ${
-                    darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
-                  }`}
-                />
-                <div className="grid grid-cols-2 gap-2">
+                {/* Firmenname */}
+                <div>
+                  <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Firmenname *
+                  </label>
                   <input
                     type="text"
-                    placeholder="PLZ"
-                    value={newCompany.postalCode}
-                    onChange={(e) => setNewCompany({...newCompany, postalCode: e.target.value})}
-                    className={`w-full p-2 border rounded ${
-                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
-                    }`}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Stadt"
-                    value={newCompany.city}
-                    onChange={(e) => setNewCompany({...newCompany, city: e.target.value})}
+                    placeholder="Firmenname"
+                    value={newCompany.name}
+                    onChange={(e) => setNewCompany({...newCompany, name: e.target.value})}
                     className={`w-full p-2 border rounded ${
                       darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
                     }`}
                   />
                 </div>
+                
+                {/* Beschreibung */}
+                <div>
+                  <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Beschreibung (optional)
+                  </label>
+                  <textarea
+                    placeholder="Firmenbeschreibung..."
+                    value={newCompany.description}
+                    onChange={(e) => setNewCompany({...newCompany, description: e.target.value})}
+                    rows={3}
+                    className={`w-full p-2 border rounded ${
+                      darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                    }`}
+                  />
+                </div>
+
+                {/* Logo Upload */}
+                <div>
+                  <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Firmen-Logo (optional)
+                  </label>
+                  <div className="space-y-2">
+                    {/* Logo Preview */}
+                    {newCompany.logoUrl && (
+                      <div className={`p-3 border rounded ${darkMode ? 'bg-gray-800 border-gray-600' : 'bg-gray-50 border-gray-300'}`}>
+                        <img 
+                          src={newCompany.logoUrl} 
+                          alt="Logo Preview" 
+                          className="h-16 max-w-full object-contain mx-auto"
+                        />
+                        <button
+                          onClick={() => setNewCompany({...newCompany, logoUrl: ''})}
+                          className="mt-2 text-xs text-red-500 hover:text-red-700 block mx-auto"
+                        >
+                          Logo entfernen
+                        </button>
+                      </div>
+                    )}
+                    
+                    {/* File Input */}
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          // Größen-Check (max 2MB)
+                          if (file.size > 2 * 1024 * 1024) {
+                            alert('❌ Logo ist zu groß. Maximale Größe: 2MB');
+                            return;
+                          }
+                          
+                          // Konvertiere zu Base64
+                          const reader = new FileReader();
+                          reader.onload = (event) => {
+                            const base64String = event.target?.result as string;
+                            setNewCompany({...newCompany, logoUrl: base64String});
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      className={`w-full text-sm ${
+                        darkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}
+                    />
+                    <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      Unterstützte Formate: PNG, JPG, SVG (max. 2MB)
+                    </p>
+                  </div>
+                </div>
               </div>
+              
               <div className="flex justify-end space-x-3 mt-6">
                 <button
-                  onClick={() => setShowCompanyForm(false)}
+                  onClick={() => {
+                    setShowCompanyForm(false);
+                    setEditingCompany(null);
+                    setNewCompany({ name: '', description: '', logoUrl: '' });
+                  }}
                   className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
                 >
                   Abbrechen
                 </button>
                 <button
                   onClick={handleCreateCompany}
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded"
+                  disabled={!newCompany.name.trim()}
+                  className={`px-4 py-2 rounded ${
+                    !newCompany.name.trim()
+                      ? 'bg-gray-400 cursor-not-allowed text-gray-600'
+                      : 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                  }`}
                 >
-                  Erstellen
+                  {editingCompany ? 'Aktualisieren' : 'Erstellen'}
                 </button>
               </div>
             </div>
