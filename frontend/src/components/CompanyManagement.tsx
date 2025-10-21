@@ -625,14 +625,14 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                       {company.id !== 'ID2' && (
                         <button 
                           onClick={() => {
-                            if (confirm(`Firma "${company.name}" wirklich löschen?\n\nAlle ${company.projectsCount} Projekte dieser Firma werden ebenfalls gelöscht!`)) {
+                            // Zähle Projekte dieser Firma
+                            const companyProjects = projects.filter(p => p.companyId === company.id);
+                            
+                            if (confirm(`Firma "${company.name}" wirklich löschen?\n\n${companyProjects.length > 0 ? `Alle ${companyProjects.length} Projekte dieser Firma werden ebenfalls gelöscht!` : 'Diese Firma hat keine Projekte.'}`)) {
                               // 1. Firma aus Liste entfernen
                               setCompanies(companies.filter(c => c.id !== company.id));
                               
-                              // 2. Alle Projekte dieser Firma finden und löschen
-                              const companyProjects = projects.filter(p => p.companyId === company.id);
-                              
-                              // 3. Für jedes Projekt: Test-Suites und Test-Cases aus localStorage löschen
+                              // 2. Für jedes Projekt: Test-Suites und Test-Cases aus localStorage löschen
                               companyProjects.forEach(project => {
                                 localStorage.removeItem(`qa_suites_${project.id}`);
                                 localStorage.removeItem(`qa_cases_${project.id}`);
