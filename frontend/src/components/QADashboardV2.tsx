@@ -37,10 +37,18 @@ interface TestCase {
   id: string;
   test_id: string;
   testSuiteId: string;
+  projectId?: string;  // Optional, da nicht immer vorhanden
   title: string;
   description: string;
   status: 'success' | 'error' | 'warning' | 'pending' | 'skipped';
   note?: string;
+  priority?: number;
+  expected_result?: string;
+  sortOrder?: number;
+  is_predefined?: boolean;
+  createdBy?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 const QADashboardV2: React.FC<QADashboardV2Props> = ({ 
