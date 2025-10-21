@@ -142,7 +142,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     ? (selectedCompanyForEdit ? projects.filter(p => p.companyId === selectedCompanyForEdit) : projects)
     : projects.filter(p => p.companyId === userCompanyId);
 
-  const handleCreateCompany = () => {
+  const handleCreateCompany = async () => {
     if (!isAdmin) {
       alert('Nur Administratoren können Firmen erstellen');
       return;
@@ -154,24 +154,37 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
       return;
     }
 
-    const company: Company = {
-      id: `comp-${Date.now()}`,
-      name: newCompany.name,
-      address: newCompany.address,
-      city: newCompany.city,
-      postalCode: newCompany.postalCode,
-      country: newCompany.country,
-      createdAt: new Date().toISOString(),
-      usersCount: 1, // Default QA-Tester
-      projectsCount: 0
-    };
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://test-result-dash.preview.emergentagent.com';
+      const response = await fetch(`${backendUrl}/api/companies/`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: newCompany.name,
+          description: newCompany.description,
+          logo_url: newCompany.logoUrl || null
+        })
+      });
 
-    setCompanies([...companies, company]);
-    setNewCompany({ name: '', address: '', city: '', postalCode: '', country: 'Deutschland' });
-    setShowCompanyForm(false);
-
-    // TODO: Automatisch Default QA-Tester erstellen
-    alert(`Firma erstellt. Default QA-Tester Konto wurde angelegt.`);
+      if (response.ok) {
+        const createdCompany = await response.json();
+        console.log('✅ Firma erstellt:', createdCompany);
+        await loadCompanies(); // Neu laden
+        setNewCompany({ name: '', description: '', logoUrl: '' });
+        setShowCompanyForm(false);
+        alert(`✅ Firma "${newCompany.name}" erfolgreich erstellt.`);
+      } else {
+        const error = await response.json();
+        console.error('❌ Fehler beim Erstellen der Firma:', error);
+        alert(`❌ Fehler beim Erstellen der Firma: ${error.detail || 'Unbekannter Fehler'}`);
+      }
+    } catch (error) {
+      console.error('❌ Fehler beim Erstellen der Firma:', error);
+      alert(`❌ Fehler beim Erstellen der Firma: ${error}`);
+    }
   };
 
   const handleCreateProject = () => {
