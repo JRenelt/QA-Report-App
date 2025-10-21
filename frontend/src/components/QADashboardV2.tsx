@@ -1569,15 +1569,22 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     <button
                       key={suite.id}
                       onClick={() => setActiveSuite(suite.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded text-left transition-all hover:bg-gray-700 ${
-                        // Grüner Hintergrund wenn ALLE Tests erfolgreich
-                        stats.failedTests === 0 && stats.openTests === 0 && stats.totalTests > 0 
+                      className={`w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded text-left transition-all ${
+                        // Priorität 1: Grüner Hintergrund wenn ALLE Tests erfolgreich
+                        (stats.failedTests === 0 && stats.openTests === 0 && stats.passedTests > 0) 
                           ? 'bg-green-700 hover:bg-green-600' 
-                          : isActive ? 'bg-gray-700' : ''
+                          : ''
                       } ${
-                        // Roter Rahmen wenn Tests fehlgeschlagen
-                        stats.failedTests > 0 ? 'border-2 border-red-500' : ''
-                      }`}
+                        // Priorität 2: Roter Rahmen wenn Tests fehlgeschlagen  
+                        stats.failedTests > 0 
+                          ? 'border-2 border-red-500' 
+                          : ''
+                      } ${
+                        // Priorität 3: Graue Auswahl wenn aktiv
+                        (isActive && stats.failedTests === 0 && !(stats.openTests === 0 && stats.passedTests > 0))
+                          ? 'bg-gray-700'
+                          : ''
+                      } hover:bg-gray-700`}
                     >
                       <FileText className="h-5 w-5 flex-shrink-0 text-gray-400" />
                       <div className="flex-1 min-w-0 text-base text-gray-300 truncate">
