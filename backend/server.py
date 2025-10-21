@@ -69,7 +69,7 @@ async def health_check():
     return {
         "status": "healthy",
         "app": "QA-Report-App",
-        "version": os.getenv("APP_VERSION", "1.0.0"),
+        "version": os.getenv("APP_VERSION", "1.0.1"),
         "database": "MongoDB"
     }
 
