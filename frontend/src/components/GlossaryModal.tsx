@@ -172,8 +172,8 @@ const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose, darkMode
       relatedTerms: ['snake_case', 'Frontend', 'JavaScript']
     },
     {
-      id: 'ce-cache-entleeren',
-      term: 'CE (Cache entleeren)',
+      id: 'cc-clear-cache',
+      term: 'CC (Clear Cache)',
       category: 'Testing & Debugging',
       definition: 'Standard-Browser-Cache-Refresh mit STRG+Shift+R (Hard Reload). Lädt die Seite neu und umgeht dabei den Browser-Cache, um sicherzustellen, dass die neuesten Dateien vom Server geladen werden.',
       examples: [
@@ -181,11 +181,11 @@ const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose, darkMode
         'Mac: CMD+Shift+R',
         'Verwendung: Nach Frontend-Änderungen wenn alte Version sichtbar ist'
       ],
-      relatedTerms: ['CCE', 'CDN', 'CloudFront']
+      relatedTerms: ['CCC', 'CDN', 'CloudFront']
     },
     {
-      id: 'cce-console-cache',
-      term: 'CCE (Cache über Console entleeren)',
+      id: 'ccc-console-clear-cache',
+      term: 'CCC (Console Clear Cache)',
       category: 'Testing & Debugging',
       definition: 'Vollständiges Löschen des localStorage über Browser DevTools. F12 → Application Tab → Local Storage → https://mass-data-scale.preview.emergentagent.com → Kompletten localStorage löschen für harten Reset.',
       examples: [
@@ -195,7 +195,7 @@ const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose, darkMode
         'Alle Einträge löschen oder Storage leeren',
         'Verwendung: Bei Datenproblemen oder nach Strukturänderungen'
       ],
-      relatedTerms: ['CE', 'localStorage', 'Debugging']
+      relatedTerms: ['CC', 'localStorage', 'Debugging']
     },
     {
       id: 'cm-console-meldung',
