@@ -1205,6 +1205,35 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     setCurrentPage(1);
   }, [filterStatus, activeSuite]);
 
+  // Keyboard Shortcuts für Pagination
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // STRG + Pfeil Links = Eine Seite zurück
+      if (e.ctrlKey && e.key === 'ArrowLeft' && !e.altKey) {
+        e.preventDefault();
+        setCurrentPage(prev => Math.max(1, prev - 1));
+      }
+      // STRG + Pfeil Rechts = Eine Seite weiter
+      else if (e.ctrlKey && e.key === 'ArrowRight' && !e.altKey) {
+        e.preventDefault();
+        setCurrentPage(prev => Math.min(totalPages, prev + 1));
+      }
+      // STRG + ALT + Pfeil Links = An den Anfang
+      else if (e.ctrlKey && e.altKey && e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setCurrentPage(1);
+      }
+      // STRG + ALT + Pfeil Rechts = Ans Ende
+      else if (e.ctrlKey && e.altKey && e.key === 'ArrowRight') {
+        e.preventDefault();
+        setCurrentPage(totalPages);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [totalPages]); // totalPages als Abhängigkeit (jetzt NACH der Deklaration)
+
   const currentSuite = testSuites.find(s => s.id === activeSuite);
 
   const statusCounts = React.useMemo(() => {
