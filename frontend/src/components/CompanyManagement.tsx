@@ -598,10 +598,8 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                           setEditingCompany(company);
                           setNewCompany({
                             name: company.name,
-                            address: company.address,
-                            city: company.city,
-                            postalCode: company.postalCode,
-                            country: company.country
+                            description: company.description || '',
+                            logoUrl: company.logoUrl || ''
                           });
                           setShowCompanyForm(true);
                         }}
