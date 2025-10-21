@@ -35,7 +35,7 @@ async def generate_test_data(
     """
     
     companies_count = data.get('companies', 15)
-    tests_per_company = data.get('testsPerCompany', 100)
+    tests_per_company = data.get('testsPerCompany', 15)
     
     # Clear existing data (except users)
     await companies_collection.delete_many({})
