@@ -289,5 +289,5 @@
 
 ---
 
-**Letzte Aktualisierung:** 2025-10-14
-**Version:** 1.0
+**Letzte Aktualisierung:** 2025-01-15
+**Version:** 1.0.1
