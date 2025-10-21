@@ -85,11 +85,16 @@ def calculate_conclusion(status_counts: dict, total_tests: int, tested_count: in
 @router.get("/generate/{project_id}")
 async def generate_pdf_report(
     project_id: str,
+    tested_only: bool = False,  # PDF2: nur getestete Testfälle
     session_id: Optional[str] = None,
     language: str = "DE",
     current_user: User = Depends(get_current_user)
 ):
-    """Generate comprehensive PDF test report"""
+    """
+    Generate modern, professional PDF test report
+    tested_only=False: PDF1 (alle Testfälle)
+    tested_only=True: PDF2 (nur getestete Testfälle)
+    """
     
     # Get project
     project = await projects_collection.find_one({"id": project_id})
@@ -101,6 +106,8 @@ async def generate_pdf_report(
     
     # Get company
     company = await companies_collection.find_one({"id": project["company_id"]})
+    company_name = company["name"] if company else "N/A"
+    company_logo = company.get("logo_url") if company else None
     
     # Translations
     trans = {
