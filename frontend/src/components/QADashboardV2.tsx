@@ -1503,12 +1503,12 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               
               {/* Counter für offene Tests - nur Zahl ohne Text */}
               {selectedProjectId && (
-                <CustomTooltip text="Anzahl der noch zu testenden Testfälle im gesamten Projekt">
+                <CustomTooltip text="Anzahl der noch zu testenden Testfälle im gesamten Projekt (Unbearbeitet + In Arbeit + Übersprungen)">
                   <div className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded text-base font-bold min-w-[80px] text-center">
                     {(() => {
                       // Berechne Anzahl offener Tests für aktuelles Projekt
                       const openTestsCount = testCases.filter(t => 
-                        t.status === 'pending' || t.status === 'warning'
+                        t.status === 'pending' || t.status === 'warning' || t.status === 'skipped'
                       ).length;
                       // 5-stellig formatieren
                       return String(openTestsCount).padStart(5, '0');
