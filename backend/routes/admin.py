@@ -140,19 +140,6 @@ async def generate_test_data(
                 }
                 await test_cases_collection.insert_one(test_case)
                 total_test_cases += 1
-                
-                # Generate some test results (50% of cases)
-                if random.random() > 0.5:
-                    result = {
-                        "id": str(uuid.uuid4()),
-                        "test_case_id": test_case["id"],
-                        "status": random.choice(test_statuses),
-                        "notes": f"Automatisch generiertes Testergebnis",
-                        "executed_by": current_user.id,
-                        "execution_date": datetime.utcnow(),
-                        "session_id": None
-                    }
-                    await test_results_collection.insert_one(result)
     
     return {
         "message": "Testdaten erfolgreich generiert",
