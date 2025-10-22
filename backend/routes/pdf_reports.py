@@ -498,7 +498,6 @@ async def generate_pdf_report(
     
     # Return as downloadable file
     # Format: QA-Report_PROJEKTNAME_IDXXXX_TT-MM-YY.pdf
-    report_type_suffix = "_getestet" if tested_only else "_alle"
     project_name_clean = project['name'].replace(" ", "_").replace("/", "-")
     project_id_short = project['id'][:8]  # Erste 8 Zeichen der UUID
     date_german = datetime.utcnow().strftime('%d-%m-%y')  # TT-MM-YY Format
