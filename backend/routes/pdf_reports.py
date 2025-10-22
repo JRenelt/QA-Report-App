@@ -486,9 +486,13 @@ async def generate_pdf_report(
     buffer.seek(0)
     
     # Return as downloadable file
+    # Format: QA-Report_PROJEKTNAME_IDXXXX_TT-MM-YY.pdf
     report_type_suffix = "_getestet" if tested_only else "_alle"
-    filename = f"QA_Bericht_{project['name']}{report_type_suffix}_{datetime.utcnow().strftime('%Y%m%d')}.pdf"
-    filename = filename.replace(" ", "_")  # Leerzeichen entfernen
+    project_name_clean = project['name'].replace(" ", "_").replace("/", "-")
+    project_id_short = project['id'][:8]  # Erste 8 Zeichen der UUID
+    date_german = datetime.utcnow().strftime('%d-%m-%y')  # TT-MM-YY Format
+    
+    filename = f"QA-Report_{project_name_clean}_{project_id_short}_{date_german}.pdf"
     
     return StreamingResponse(
         buffer,
