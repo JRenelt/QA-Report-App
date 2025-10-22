@@ -285,12 +285,12 @@ async def generate_pdf_report(
     )
     
     # Logo + Firma in einer Zeile (minimaler Abstand)
-    logo_firma_row = [[logo_cell, firma_text]]
-    logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 8*inch])
+    logo_firma_row = [[logo_element, firma_text]]
+    logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 7*inch])
     logo_firma_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('LEFTPADDING', (0, 0), (0, 0), 0),
-        ('LEFTPADDING', (1, 0), (1, 0), 8)  # Minimaler Abstand
+        ('LEFTPADDING', (1, 0), (1, 0), 10)
     ]))
     story.append(logo_firma_table)
     story.append(Spacer(1, 0.15*inch))
