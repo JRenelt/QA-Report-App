@@ -423,9 +423,6 @@ async def generate_pdf_report(
     # Professionelle Zahlen-Karten - EINFACH & ZENTRIERT
     # Verwende simple Struktur: Zahl über Beschriftung, beide zentriert
     
-    from reportlab.platypus import Paragraph
-    from reportlab.lib.styles import ParagraphStyle
-    
     def create_number_card(number, label, num_color, label_color, bg_color):
         """Erstelle Zahlen-Karte mit perfekter Zentrierung"""
         # Zwei Zeilen: Zahl oben, Label unten
