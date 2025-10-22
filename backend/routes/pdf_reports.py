@@ -403,8 +403,10 @@ async def generate_pdf_report(
             continue
         
         # Suite header
+        suite_name = suite.get('name', 'Unbenannte Suite')
+        suite_icon = suite.get('icon', '📁')
         suite_header = Paragraph(
-            f"<b>{suite.get('icon', '📁')} {suite['name']}</b> ({len(suite_cases)} Tests)", 
+            f"<b>{suite_icon} {suite_name}</b> ({len(suite_cases)} Tests)", 
             ParagraphStyle('SuiteHeader', parent=styles['Heading3'], fontSize=12, textColor=colors.HexColor('#34495E'))
         )
         story.append(suite_header)
