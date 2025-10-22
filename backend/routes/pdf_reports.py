@@ -347,7 +347,7 @@ async def generate_pdf_report(
         ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BDC3C7'))
     ]))
     story.append(info_table)
-    story.append(Spacer(1, 0.3*inch))
+    story.append(Spacer(1, 0.2*inch))
     
     # === EXECUTIVE SUMMARY - KOMPAKT ===
     story.append(Paragraph(t["executive_summary"], heading_style))
