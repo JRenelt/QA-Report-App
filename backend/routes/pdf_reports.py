@@ -211,14 +211,14 @@ async def generate_pdf_report(
     tested_count = status_counts["success"] + status_counts["error"] + status_counts["warning"]
     # pass_rate berechnen (wird nicht mehr verwendet in neuem Design)
     
-    # Create PDF in memory
+    # Create PDF in memory - mit 1.5cm Randabstand
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
         buffer,
         pagesize=A4,
-        rightMargin=2*cm,
-        leftMargin=2*cm,
-        topMargin=2*cm,
+        rightMargin=1.5*cm,
+        leftMargin=1.5*cm,
+        topMargin=1.5*cm,
         bottomMargin=2*cm
     )
     story = []
