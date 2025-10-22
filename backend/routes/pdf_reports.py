@@ -318,7 +318,12 @@ async def generate_pdf_report(
     # Project Information Box
     info_data = [
         [t["project"] + ":", project["name"]],
+        ["Projekt-ID:", project["id"]],
         [t["company"] + ":", company_name],
+        ["Testumgebung:", project.get("test_environment", "Nicht angegeben")],
+        ["Test-Methodik:", project.get("test_methodology", "Nicht angegeben")],
+        ["Testobjekt:", project.get("test_object", "Nicht angegeben")],
+        ["Ziel des Tests:", project.get("test_goal", "Nicht angegeben")],
         [t["date"] + ":", datetime.utcnow().strftime("%d.%m.%Y %H:%M")],
         [t["tester"] + ":", f"{current_user.first_name} {current_user.last_name}" if current_user.first_name else current_user.username],
         [t["report_type"] + ":", t["tested_only"] if tested_only else t["all_tests"]]
@@ -333,15 +338,15 @@ async def generate_pdf_report(
         ('ALIGN', (1, 0), (1, -1), 'LEFT'),
         ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
         ('FONTNAME', (1, 0), (1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 10),
-        ('TOPPADDING', (0, 0), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
         ('LEFTPADDING', (0, 0), (-1, -1), 12),
         ('RIGHTPADDING', (0, 0), (-1, -1), 12),
         ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BDC3C7'))
     ]))
     story.append(info_table)
-    story.append(Spacer(1, 0.5*inch))
+    story.append(Spacer(1, 0.3*inch))
     
     # === EXECUTIVE SUMMARY ===
     story.append(Paragraph(t["executive_summary"], heading_style))
