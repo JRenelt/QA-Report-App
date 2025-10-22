@@ -464,7 +464,7 @@ async def generate_pdf_report(
     # === CONCLUSION ===
     story.append(PageBreak())
     story.append(Paragraph(t["conclusion"], heading_style))
-    story.append(Spacer(1, 0.2*inch))
+    story.append(Spacer(1, 0.1*inch))
     
     # Fazit Box
     conclusion_data = [
