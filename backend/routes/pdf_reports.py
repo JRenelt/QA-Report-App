@@ -553,6 +553,5 @@ async def get_report_summary(
         "error": status_counts["error"],
         "warning": status_counts["warning"],
         "skipped": status_counts["skipped"],
-        "pending": status_counts["pending"],
-        "pass_rate": round(pass_rate, 2)
+        "pending": status_counts["pending"]
     }
