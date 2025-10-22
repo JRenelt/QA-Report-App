@@ -118,7 +118,11 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     name: '',
     description: '',
     notes: '',
-    status: 'active'
+    status: 'active',
+    testEnvironment: '',
+    testMethodology: '',
+    testObject: '',
+    testGoal: ''
   });
 
   // Admin: Firma zur Bearbeitung/Ansicht auswählen (MUSS vor return stehen!)
