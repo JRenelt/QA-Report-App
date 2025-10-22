@@ -348,38 +348,48 @@ async def generate_pdf_report(
     story.append(info_table)
     story.append(Spacer(1, 0.3*inch))
     
-    # === EXECUTIVE SUMMARY ===
+    # === EXECUTIVE SUMMARY - KOMPAKT ===
     story.append(Paragraph(t["executive_summary"], heading_style))
     story.append(Spacer(1, 0.1*inch))
     
-    # Kompakte Statistics in 3x2 Grid mit größeren Zahlen
-    summary_data = [
-        [
-            Paragraph(f"<b>{t['total_tests']}</b><br/><font size=24 color='#2C3E50'>{total_tests}</font>", body_style),
-            Paragraph(f"<b>{t['tested']}</b><br/><font size=24 color='#3498DB'>{tested_count}</font>", body_style),
-            Paragraph(f"<b>{t['success']}</b><br/><font size=24 color='#4CAF50'>{status_counts['success']}</font>", body_style)
-        ],
-        [
-            Paragraph(f"<b>{t['error']}</b><br/><font size=24 color='#F44336'>{status_counts['error']}</font>", body_style),
-            Paragraph(f"<b>{t['warning']}</b><br/><font size=24 color='#FF9800'>{status_counts['warning']}</font>", body_style),
-            Paragraph(f"<b>{t['pass_rate']}</b><br/><font size=24 color='#2C3E50'>{pass_rate:.1f}%</font>", body_style)
-        ]
-    ]
+    # Zusammenfassender Text
+    untested = status_counts["pending"] + status_counts["skipped"]
+    summary_text = f"{status_counts['success']} von {total_tests} Testfällen bestanden. "
+    if status_counts['error'] > 0:
+        summary_text += f"Es wurden {status_counts['error']} kritische Fehler festgestellt. "
+    if untested > 0:
+        summary_text += f"{untested} Testfälle wurden nicht geprüft."
+    else:
+        summary_text += "Alle Testfälle wurden geprüft."
     
-    summary_table = Table(summary_data, colWidths=[5.3*cm, 5.3*cm, 5.3*cm])
-    summary_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#F8F9FA')),
-        ('TEXTCOLOR', (0, 0), (-1, -1), colors.HexColor('#2C3E50')),
+    summary_para = Paragraph(
+        summary_text,
+        ParagraphStyle('SummaryText', parent=styles['Normal'], fontSize=11, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
+    )
+    story.append(summary_para)
+    story.append(Spacer(1, 0.15*inch))
+    
+    # Große Zahlen-Karten in einer Zeile (5 Spalten)
+    card_data = [[
+        Paragraph(f"<para align=center><font size=32 color='#2C3E50'><b>{total_tests}</b></font><br/><font size=9 color='#7F8C8D'>Gesamt</font></para>", body_style),
+        Paragraph(f"<para align=center><font size=32 color='#4CAF50'><b>{status_counts['success']}</b></font><br/><font size=9 color='#7F8C8D'>✓ Bestanden</font></para>", body_style),
+        Paragraph(f"<para align=center><font size=32 color='#F44336'><b>{status_counts['error']}</b></font><br/><font size=9 color='#7F8C8D'>✗ Fehler</font></para>", body_style),
+        Paragraph(f"<para align=center><font size=32 color='#FF9800'><b>{status_counts['warning']}</b></font><br/><font size=9 color='#7F8C8D'>⚠ Warnung</font></para>", body_style),
+        Paragraph(f"<para align=center><font size=32 color='#9E9E9E'><b>{untested}</b></font><br/><font size=9 color='#7F8C8D'>⏸ Ungeprüft</font></para>", body_style)
+    ]]
+    
+    card_table = Table(card_data, colWidths=[3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm])
+    card_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), colors.white),
+        ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#BDC3C7')),
+        ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#E0E0E0')),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 9),
-        ('TOPPADDING', (0, 0), (-1, -1), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
-        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BDC3C7'))
+        ('TOPPADDING', (0, 0), (-1, -1), 15),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 15)
     ]))
-    story.append(summary_table)
-    story.append(Spacer(1, 0.2*inch))
+    story.append(card_table)
+    story.append(Spacer(1, 0.25*inch))
     
     # === TEST DETAILS ===
     story.append(Paragraph(t["test_details"], heading_style))
