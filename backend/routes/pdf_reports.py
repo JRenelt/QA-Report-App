@@ -483,13 +483,48 @@ async def generate_pdf_report(
         ('LEFTPADDING', (0, 0), (-1, -1), 8),
         ('RIGHTPADDING', (0, 0), (-1, -1), 8)
     ]))
-    story.append(card_table)
+    story.append(cards_table)
     story.append(Spacer(1, 0.3*inch))
     
-    # === NEUE SEITE FÜR TESTFÄLLE ===
+    # === SEITE 2: INHALTSVERZEICHNIS / MENÜ ===
     story.append(PageBreak())
     
-    # === TEST DETAILS - MODERNES BOX-DESIGN ===
+    # Menü-Überschrift
+    menu_title = Paragraph(
+        "<b>INHALTSVERZEICHNIS</b>",
+        ParagraphStyle('MenuTitle', parent=styles['Heading1'], fontSize=18, textColor=colors.HexColor('#2C3E50'), spaceAfter=20)
+    )
+    story.append(menu_title)
+    
+    # Menü-Einträge für jede Test-Suite
+    menu_data = []
+    for idx, suite in enumerate(suites, 1):
+        suite_name = suite.get('name', 'Unbenannte Suite')
+        suite_icon = suite.get('icon', '📁')
+        suite_cases = [c for c in cases if c["test_suite_id"] == suite["id"]]
+        test_count = len(suite_cases)
+        
+        # Menü-Eintrag
+        menu_entry = Paragraph(
+            f"<b>{idx}. {suite_icon} {suite_name}</b> ({test_count} Tests)",
+            ParagraphStyle('MenuItem', parent=styles['Normal'], fontSize=12, textColor=colors.HexColor('#2C3E50'), 
+                         leftIndent=20, spaceAfter=10)
+        )
+        
+        # Als Zeile in Tabelle für bessere Formatierung
+        menu_row = [[menu_entry]]
+        menu_item_table = Table(menu_row, colWidths=[16*cm])
+        menu_item_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#F8F9FA')),
+            ('BOX', (0, 0), (0, 0), 1, colors.HexColor('#BDC3C7')),
+            ('TOPPADDING', (0, 0), (0, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 10),
+            ('LEFTPADDING', (0, 0), (0, 0), 15)
+        ]))
+        story.append(menu_item_table)
+        story.append(Spacer(1, 0.1*inch))
+    
+    # === SEITE 3+: TEST DETAILS - MODERNES BOX-DESIGN ===
     story.append(PageBreak())
     story.append(Paragraph(t["test_details"], heading_style))
     story.append(Spacer(1, 0.15*inch))
