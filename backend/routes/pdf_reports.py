@@ -420,40 +420,45 @@ async def generate_pdf_report(
     story.append(summary_para)
     story.append(Spacer(1, 0.15*inch))
     
-    # Professionelle Zahlen-Karten - WEICHER UMBRUCH
-    card_data = [[
-        Paragraph(
-            f"<para align=center leading=48><font size=36 color='#34495E'><b>{total_tests}</b></font><br/><font size=8 color='#7F8C8D'><b>GESAMT</b></font></para>",
-            body_style
-        ),
-        Paragraph(
-            f"<para align=center leading=48><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=8 color='#27AE60'><b>✓ BESTANDEN</b></font></para>",
-            body_style
-        ),
-        Paragraph(
-            f"<para align=center leading=48><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=8 color='#E74C3C'><b>✗ FEHLER</b></font></para>",
-            body_style
-        ),
-        Paragraph(
-            f"<para align=center leading=48><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=8 color='#F39C12'><b>⚠ WARNUNG</b></font></para>",
-            body_style
-        ),
-        Paragraph(
-            f"<para align=center leading=48><font size=36 color='#95A5A6'><b>{untested}</b></font><br/><font size=8 color='#95A5A6'><b>⏸ OFFEN</b></font></para>",
-            body_style
-        )
-    ]]
+    # Professionelle Zahlen-Karten - EINFACH & ZENTRIERT
+    # Verwende simple Struktur: Zahl über Beschriftung, beide zentriert
     
-    card_table = Table(card_data, colWidths=[1.9*inch, 1.9*inch, 1.9*inch, 1.9*inch, 1.9*inch], rowHeights=[1.2*inch])
+    from reportlab.platypus import Paragraph
+    from reportlab.lib.styles import ParagraphStyle
+    
+    def create_number_card(number, label, num_color, label_color, bg_color):
+        """Erstelle Zahlen-Karte mit perfekter Zentrierung"""
+        # Zwei Zeilen: Zahl oben, Label unten
+        card_content = [
+            [Paragraph(f'<para align=center><font size=40 color="{num_color}"><b>{number}</b></font></para>', body_style)],
+            [Paragraph(f'<para align=center><font size=9 color="{label_color}"><b>{label}</b></font></para>', body_style)]
+        ]
+        inner_table = Table(card_content, colWidths=[1.9*inch], rowHeights=[0.7*inch, 0.4*inch])
+        inner_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, -1), bg_color),
+            ('ALIGN', (0, 0), (0, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (0, 0), 'BOTTOM'),
+            ('VALIGN', (0, 1), (0, 1), 'TOP'),
+            ('TOPPADDING', (0, 0), (0, 0), 5),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 2),
+            ('TOPPADDING', (0, 1), (0, 1), 2),
+            ('BOTTOMPADDING', (0, 1), (0, 1), 5)
+        ]))
+        return inner_table
+    
+    cards = [
+        create_number_card(total_tests, 'GESAMT', '#34495E', '#7F8C8D', colors.HexColor('#ECF0F1')),
+        create_number_card(status_counts['success'], '✓ BESTANDEN', '#27AE60', '#27AE60', colors.HexColor('#D5F4E6')),
+        create_number_card(status_counts['error'], '✗ FEHLER', '#E74C3C', '#E74C3C', colors.HexColor('#FADBD8')),
+        create_number_card(status_counts['warning'], '⚠ WARNUNG', '#F39C12', '#F39C12', colors.HexColor('#FCF3CF')),
+        create_number_card(untested, '⏸ OFFEN', '#95A5A6', '#95A5A6', colors.HexColor('#E8E8E8'))
+    ]
+    
+    card_row = [cards]
+    card_table = Table(card_row, colWidths=[1.9*inch]*5)
     card_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
-        ('BACKGROUND', (1, 0), (1, 0), colors.HexColor('#D5F4E6')),
-        ('BACKGROUND', (2, 0), (2, 0), colors.HexColor('#FADBD8')),
-        ('BACKGROUND', (3, 0), (3, 0), colors.HexColor('#FCF3CF')),
-        ('BACKGROUND', (4, 0), (4, 0), colors.HexColor('#E8E8E8')),
         ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#BDC3C7')),
         ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#D5D8DC')),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')
     ]))
     story.append(card_table)
