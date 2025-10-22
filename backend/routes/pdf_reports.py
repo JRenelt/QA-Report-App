@@ -420,36 +420,31 @@ async def generate_pdf_report(
     story.append(summary_para)
     story.append(Spacer(1, 0.15*inch))
     
-    # Professionelle Zahlen-Karten - PERFEKT ZENTRIERT wie Bild 2
+    # Professionelle Zahlen-Karten - WEICHER UMBRUCH
     card_data = [[
         Paragraph(
-            f"<para align=center spaceBefore=15><font size=36 color='#34495E'><b>{total_tests}</b></font></para>"
-            f"<para align=center spaceBefore=5 spaceAfter=15><font size=8 color='#7F8C8D'><b>GESAMT</b></font></para>",
+            f"<para align=center leading=48><font size=36 color='#34495E'><b>{total_tests}</b></font><br/><font size=8 color='#7F8C8D'><b>GESAMT</b></font></para>",
             body_style
         ),
         Paragraph(
-            f"<para align=center spaceBefore=15><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font></para>"
-            f"<para align=center spaceBefore=5 spaceAfter=15><font size=8 color='#27AE60'><b>✓ BESTANDEN</b></font></para>",
+            f"<para align=center leading=48><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=8 color='#27AE60'><b>✓ BESTANDEN</b></font></para>",
             body_style
         ),
         Paragraph(
-            f"<para align=center spaceBefore=15><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font></para>"
-            f"<para align=center spaceBefore=5 spaceAfter=15><font size=8 color='#E74C3C'><b>✗ FEHLER</b></font></para>",
+            f"<para align=center leading=48><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=8 color='#E74C3C'><b>✗ FEHLER</b></font></para>",
             body_style
         ),
         Paragraph(
-            f"<para align=center spaceBefore=15><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font></para>"
-            f"<para align=center spaceBefore=5 spaceAfter=15><font size=8 color='#F39C12'><b>⚠ WARNUNG</b></font></para>",
+            f"<para align=center leading=48><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=8 color='#F39C12'><b>⚠ WARNUNG</b></font></para>",
             body_style
         ),
         Paragraph(
-            f"<para align=center spaceBefore=15><font size=36 color='#95A5A6'><b>{untested}</b></font></para>"
-            f"<para align=center spaceBefore=5 spaceAfter=15><font size=8 color='#95A5A6'><b>⏸ OFFEN</b></font></para>",
+            f"<para align=center leading=48><font size=36 color='#95A5A6'><b>{untested}</b></font><br/><font size=8 color='#95A5A6'><b>⏸ OFFEN</b></font></para>",
             body_style
         )
     ]]
     
-    card_table = Table(card_data, colWidths=[1.9*inch, 1.9*inch, 1.9*inch, 1.9*inch, 1.9*inch], rowHeights=[1.4*inch])
+    card_table = Table(card_data, colWidths=[1.9*inch, 1.9*inch, 1.9*inch, 1.9*inch, 1.9*inch], rowHeights=[1.2*inch])
     card_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
         ('BACKGROUND', (1, 0), (1, 0), colors.HexColor('#D5F4E6')),
