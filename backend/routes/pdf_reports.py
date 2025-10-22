@@ -429,6 +429,7 @@ async def generate_pdf_report(
     story.append(Spacer(1, 0.25*inch))
     
     # === TEST DETAILS ===
+    story.append(PageBreak())
     story.append(Paragraph(t["test_details"], heading_style))
     story.append(Spacer(1, 0.1*inch))
     
