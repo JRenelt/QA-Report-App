@@ -662,37 +662,6 @@ async def generate_pdf_report(
         
         story.append(Spacer(1, 0.15*inch))
     
-    # === CONCLUSION ===
-    story.append(PageBreak())
-    story.append(Paragraph(t["conclusion"], heading_style))
-    story.append(Spacer(1, 0.1*inch))
-    
-    # Fazit Box
-    conclusion_data = [
-        [Paragraph(f"<b>{fazit_title}</b>", body_style)],
-        [Paragraph(fazit_text, body_style)],
-        [Paragraph(f"<b>{t['recommendation']}:</b> {recommendation}", body_style)]
-    ]
-    
-    conclusion_table = Table(conclusion_data, colWidths=[16*cm])
-    conclusion_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (0, 0), fazit_color),
-        ('BACKGROUND', (0, 1), (0, -1), colors.white),
-        ('TEXTCOLOR', (0, 0), (0, 0), colors.white),
-        ('TEXTCOLOR', (0, 1), (0, -1), colors.HexColor('#2C3E50')),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-        ('FONTNAME', (0, 0), (0, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (0, 0), 12),
-        ('FONTSIZE', (0, 1), (0, -1), 10),
-        ('TOPPADDING', (0, 0), (-1, -1), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
-        ('LEFTPADDING', (0, 0), (-1, -1), 15),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 15),
-        ('GRID', (0, 0), (-1, -1), 1, fazit_color)
-    ]))
-    story.append(conclusion_table)
-    
     # Build PDF
     doc.build(story)
     buffer.seek(0)
