@@ -109,6 +109,10 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     description: string;
     notes: string;
     status: 'active' | 'completed' | 'archived';
+    testEnvironment: string;
+    testMethodology: string;
+    testObject: string;
+    testGoal: string;
   }>({
     companyId: '',
     name: '',
