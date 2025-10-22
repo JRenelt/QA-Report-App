@@ -350,18 +350,19 @@ async def generate_pdf_report(
     
     # === EXECUTIVE SUMMARY ===
     story.append(Paragraph(t["executive_summary"], heading_style))
+    story.append(Spacer(1, 0.1*inch))
     
-    # Statistics in 2-column layout
+    # Kompakte Statistics in 3x2 Grid mit größeren Zahlen
     summary_data = [
         [
-            Paragraph(f"<b>{t['total_tests']}</b><br/><font size=20>{total_tests}</font>", body_style),
-            Paragraph(f"<b>{t['tested']}</b><br/><font size=20>{tested_count}</font>", body_style),
-            Paragraph(f"<b>{t['success']}</b><br/><font size=20 color='#4CAF50'>{status_counts['success']}</font>", body_style)
+            Paragraph(f"<b>{t['total_tests']}</b><br/><font size=24 color='#2C3E50'>{total_tests}</font>", body_style),
+            Paragraph(f"<b>{t['tested']}</b><br/><font size=24 color='#3498DB'>{tested_count}</font>", body_style),
+            Paragraph(f"<b>{t['success']}</b><br/><font size=24 color='#4CAF50'>{status_counts['success']}</font>", body_style)
         ],
         [
-            Paragraph(f"<b>{t['error']}</b><br/><font size=20 color='#F44336'>{status_counts['error']}</font>", body_style),
-            Paragraph(f"<b>{t['warning']}</b><br/><font size=20 color='#FF9800'>{status_counts['warning']}</font>", body_style),
-            Paragraph(f"<b>{t['pass_rate']}</b><br/><font size=20>{pass_rate:.1f}%</font>", body_style)
+            Paragraph(f"<b>{t['error']}</b><br/><font size=24 color='#F44336'>{status_counts['error']}</font>", body_style),
+            Paragraph(f"<b>{t['warning']}</b><br/><font size=24 color='#FF9800'>{status_counts['warning']}</font>", body_style),
+            Paragraph(f"<b>{t['pass_rate']}</b><br/><font size=24 color='#2C3E50'>{pass_rate:.1f}%</font>", body_style)
         ]
     ]
     
@@ -373,12 +374,12 @@ async def generate_pdf_report(
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
         ('FONTSIZE', (0, 0), (-1, -1), 9),
-        ('TOPPADDING', (0, 0), (-1, -1), 15),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 15),
+        ('TOPPADDING', (0, 0), (-1, -1), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
         ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BDC3C7'))
     ]))
     story.append(summary_table)
-    story.append(PageBreak())
+    story.append(Spacer(1, 0.2*inch))
     
     # === TEST DETAILS ===
     story.append(Paragraph(t["test_details"], heading_style))
