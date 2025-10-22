@@ -1039,6 +1039,51 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                   }`}
                   rows={3}
                 />
+                
+                {/* ISO-Test-Konfigurationsfelder */}
+                <div className={`border-t pt-4 mt-4 ${darkMode ? 'border-gray-600' : 'border-gray-300'}`}>
+                  <h4 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Test-Konfiguration (ISO-konform)
+                  </h4>
+                  <div className="space-y-3">
+                    <input
+                      type="text"
+                      placeholder="Testumgebung (z.B. Windows 10, Chrome 140)"
+                      value={newProject.testEnvironment}
+                      onChange={(e) => setNewProject({...newProject, testEnvironment: e.target.value})}
+                      className={`w-full p-2 border rounded text-sm ${
+                        darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                      }`}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Test-Methodik (z.B. Manuell, Automatisiert, Hybrid)"
+                      value={newProject.testMethodology}
+                      onChange={(e) => setNewProject({...newProject, testMethodology: e.target.value})}
+                      className={`w-full p-2 border rounded text-sm ${
+                        darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                      }`}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Testobjekt (z.B. Web-Applikation, API)"
+                      value={newProject.testObject}
+                      onChange={(e) => setNewProject({...newProject, testObject: e.target.value})}
+                      className={`w-full p-2 border rounded text-sm ${
+                        darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                      }`}
+                    />
+                    <textarea
+                      placeholder="Ziel des Tests (z.B. Funktionale Validierung, Performance-Test)"
+                      value={newProject.testGoal}
+                      onChange={(e) => setNewProject({...newProject, testGoal: e.target.value})}
+                      className={`w-full p-2 border rounded text-sm ${
+                        darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'
+                      }`}
+                      rows={2}
+                    />
+                  </div>
+                </div>
               </div>
               <div className="flex justify-end space-x-3 mt-6">
                 <button
