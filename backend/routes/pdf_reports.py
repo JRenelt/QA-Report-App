@@ -250,24 +250,27 @@ async def generate_pdf_report(
     # === HEADER SECTION - NEU GESTALTET ===
     # Logo wird direkt beim Header integriert (Logo + Firma nebeneinander)
     
-    # Header Layout: Logo + Firma NEBENEINANDER
+    # Header Layout: Logo + Firma NEBENEINANDER (Logo als kleines Icon)
     # Erst Titel "QA-Report"
     story.append(Paragraph(
         "<b>QA-Report</b>",
         ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
     ))
     
-    # Logo "P" und Firmenname NEBENEINANDER
+    # Logo "P" als KLEINES ICON-BADGE (türkis mit weißer Schrift) direkt vor Firma
     logo_p = Paragraph(
-        "<para align=center><font size=24 color='#2C3E50'><b>P</b></font></para>",
-        ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=24, alignment=TA_CENTER)
+        "<para align=center><font size=14 color='white'><b>P</b></font></para>",
+        ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=14, alignment=TA_CENTER)
     )
-    logo_cell = Table([[logo_p]], colWidths=[1.5*cm], rowHeights=[1.5*cm])
+    logo_cell = Table([[logo_p]], colWidths=[0.6*inch], rowHeights=[0.6*inch])
     logo_cell.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
-        ('BOX', (0, 0), (0, 0), 2, colors.HexColor('#BDC3C7')),
+        ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#00CED1')),  # Türkis
         ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-        ('VALIGN', (0, 0), (0, 0), 'MIDDLE')
+        ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (0, 0), 0),
+        ('RIGHTPADDING', (0, 0), (0, 0), 0),
+        ('TOPPADDING', (0, 0), (0, 0), 0),
+        ('BOTTOMPADDING', (0, 0), (0, 0), 0)
     ]))
     
     firma_text = Paragraph(
@@ -275,13 +278,13 @@ async def generate_pdf_report(
         ParagraphStyle('CompanyName', parent=styles['Normal'], fontSize=14, textColor=colors.HexColor('#34495E'))
     )
     
-    # Logo + Firma in einer Zeile
+    # Logo + Firma in einer Zeile (minimaler Abstand)
     logo_firma_row = [[logo_cell, firma_text]]
-    logo_firma_table = Table(logo_firma_row, colWidths=[2*cm, 10*cm])
+    logo_firma_table = Table(logo_firma_row, colWidths=[0.7*inch, 8*inch])
     logo_firma_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('LEFTPADDING', (0, 0), (0, 0), 0),
-        ('LEFTPADDING', (1, 0), (1, 0), 15)
+        ('LEFTPADDING', (1, 0), (1, 0), 8)  # Minimaler Abstand
     ]))
     story.append(logo_firma_table)
     story.append(Spacer(1, 0.15*inch))
