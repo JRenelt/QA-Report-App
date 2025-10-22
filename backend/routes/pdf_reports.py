@@ -258,37 +258,26 @@ async def generate_pdf_report(
     ))
     
     # Versuche Platzhalter-Logo zu laden oder verwende "P" Fallback
-    logo_cell = None
+    logo_element = None
     try:
         # Versuche das hochgeladene Logo zu verwenden
         platzhalter_logo_url = "https://customer-assets.emergentagent.com/job_test-result-dash/artifacts/fx7grk71_platzhalter-logo.png"
-        logo_img = Image(platzhalter_logo_url, width=0.5*inch, height=0.5*inch)
-        logo_cell = Table([[logo_img]], colWidths=[0.5*inch], rowHeights=[0.5*inch])
-        logo_cell.setStyle(TableStyle([
-            ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-            ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (0, 0), 0),
-            ('RIGHTPADDING', (0, 0), (0, 0), 0),
-            ('TOPPADDING', (0, 0), (0, 0), 0),
-            ('BOTTOMPADDING', (0, 0), (0, 0), 0)
-        ]))
+        logo_img = Image(platzhalter_logo_url, width=0.5*inch, height=0.5*inch, kind='proportional')
+        logo_element = logo_img
     except Exception as e:
         print(f"Logo konnte nicht geladen werden, verwende 'P' Fallback: {e}")
-        # Fallback: "P" als Text-Logo
+        # Fallback: "P" als Text-Logo in Mini-Tabelle
         logo_p = Paragraph(
-            "<para align=center><font size=14 color='white'><b>P</b></font></para>",
-            ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=14, alignment=TA_CENTER)
+            "<para align=center><font size=12 color='white'><b>P</b></font></para>",
+            ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=12, alignment=TA_CENTER)
         )
-        logo_cell = Table([[logo_p]], colWidths=[0.5*inch], rowHeights=[0.5*inch])
-        logo_cell.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#00CED1')),  # Türkis
+        logo_p_table = Table([[logo_p]], colWidths=[0.5*inch], rowHeights=[0.5*inch])
+        logo_p_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#00CED1')),
             ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-            ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (0, 0), 0),
-            ('RIGHTPADDING', (0, 0), (0, 0), 0),
-            ('TOPPADDING', (0, 0), (0, 0), 0),
-            ('BOTTOMPADDING', (0, 0), (0, 0), 0)
+            ('VALIGN', (0, 0), (0, 0), 'MIDDLE')
         ]))
+        logo_element = logo_p_table
     
     firma_text = Paragraph(
         f"<b>{company_name}</b>",
