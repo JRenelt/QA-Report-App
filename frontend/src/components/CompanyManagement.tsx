@@ -244,7 +244,17 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     localStorage.setItem(casesKey, JSON.stringify([]));
     console.log(`Standard Test-Suites erstellt für neues Projekt ${project.id}`);
 
-    setNewProject({ companyId: '', name: '', description: '', notes: '', status: 'active' });
+    setNewProject({ 
+      companyId: '', 
+      name: '', 
+      description: '', 
+      notes: '', 
+      status: 'active',
+      testEnvironment: '',
+      testMethodology: '',
+      testObject: '',
+      testGoal: ''
+    });
     setShowProjectForm(false);
   };
 
