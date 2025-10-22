@@ -431,10 +431,10 @@ async def generate_pdf_report(
     # === NEUE SEITE FÜR TESTFÄLLE ===
     story.append(PageBreak())
     
-    # === TEST DETAILS ===
+    # === TEST DETAILS - MODERNES BOX-DESIGN ===
     story.append(PageBreak())
     story.append(Paragraph(t["test_details"], heading_style))
-    story.append(Spacer(1, 0.1*inch))
+    story.append(Spacer(1, 0.15*inch))
     
     # Group cases by suite
     for suite in suites:
@@ -442,66 +442,133 @@ async def generate_pdf_report(
         if not suite_cases:
             continue
         
-        # Suite header
+        # Suite header - Blauer Balken
         suite_name = suite.get('name', 'Unbenannte Suite')
         suite_icon = suite.get('icon', '📁')
+        
+        suite_header_text = f"<b>{suite_icon} {suite_name} ({len(suite_cases)} Tests)</b>"
         suite_header = Paragraph(
-            f"<b>{suite_icon} {suite_name}</b> ({len(suite_cases)} Tests)", 
-            ParagraphStyle('SuiteHeader', parent=styles['Heading3'], fontSize=12, textColor=colors.HexColor('#34495E'))
+            suite_header_text,
+            ParagraphStyle('SuiteHeader', parent=styles['Normal'], fontSize=11, textColor=colors.white, 
+                         leftIndent=10, spaceBefore=5, spaceAfter=5)
         )
-        story.append(suite_header)
+        
+        # Blauer Header-Balken als Tabelle
+        suite_header_table = Table([[suite_header]], colWidths=[16*cm])
+        suite_header_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#3498DB')),
+            ('TOPPADDING', (0, 0), (0, 0), 8),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 8),
+            ('LEFTPADDING', (0, 0), (0, 0), 10),
+            ('ROUNDEDCORNERS', [5, 5, 5, 5])
+        ]))
+        story.append(suite_header_table)
         story.append(Spacer(1, 0.1*inch))
         
-        # Test cases table - Spalten-Ansicht
-        detail_data = [[
-            Paragraph(f"<b>{t['test_id']}</b>", body_style),
-            Paragraph(f"<b>{t['test_name']}</b>", body_style),
-            Paragraph(f"<b>{t['status']}</b>", body_style),
-            Paragraph(f"<b>{t['note']}</b>", body_style)
-        ]]
-        
+        # Testfall-Karten (Box-Design)
         for case in suite_cases:
             case_status = case.get("status", "pending")
             case_note = case.get("note", "")
-            case_name = case.get("name") or case.get("title", "N/A")  # Support both fields
+            case_name = case.get("name") or case.get("title", "N/A")
+            case_description = case.get("description", "")
+            case_test_id = case.get("test_id", "N/A")
             
-            # Status mit Farbe
-            status_color = {
-                "success": "#4CAF50",
-                "error": "#F44336",
-                "warning": "#FF9800",
-                "pending": "#9E9E9E",
-                "skipped": "#607D8B"
-            }.get(case_status, "#9E9E9E")
+            # Status-spezifische Farben
+            status_config = {
+                "success": {
+                    "bg": colors.HexColor('#E8F8F5'),
+                    "border": colors.HexColor('#27AE60'),
+                    "badge_bg": colors.HexColor('#27AE60'),
+                    "badge_text": "OK",
+                    "label_color": '#27AE60'
+                },
+                "error": {
+                    "bg": colors.HexColor('#FADBD8'),
+                    "border": colors.HexColor('#E74C3C'),
+                    "badge_bg": colors.HexColor('#E74C3C'),
+                    "badge_text": "FEHLER",
+                    "label_color": '#E74C3C'
+                },
+                "warning": {
+                    "bg": colors.HexColor('#FEF5E7'),
+                    "border": colors.HexColor('#F39C12'),
+                    "badge_bg": colors.HexColor('#F39C12'),
+                    "badge_text": "In Bearbeitung",
+                    "label_color": '#F39C12'
+                },
+                "skipped": {
+                    "bg": colors.HexColor('#F2F3F4'),
+                    "border": colors.HexColor('#95A5A6'),
+                    "badge_bg": colors.HexColor('#95A5A6'),
+                    "badge_text": "Übersprungen",
+                    "label_color": '#95A5A6'
+                },
+                "pending": {
+                    "bg": colors.HexColor('#F8F9F9'),
+                    "border": colors.HexColor('#BDC3C7'),
+                    "badge_bg": colors.HexColor('#BDC3C7'),
+                    "badge_text": "Offen",
+                    "label_color": '#7F8C8D'
+                }
+            }
             
-            # Kurze Notiz (max 60 Zeichen)
-            short_note = case_note[:60] + "..." if len(case_note) > 60 else case_note
+            config = status_config.get(case_status, status_config["pending"])
             
-            detail_data.append([
-                Paragraph(case.get("test_id", "N/A"), body_style),
-                Paragraph(case_name[:50] + "..." if len(case_name) > 50 else case_name, body_style),
-                Paragraph(f"<font color='{status_color}'><b>{case_status.upper()}</b></font>", body_style),
-                Paragraph(short_note, body_style)
-            ])
+            # Linke Seite: Test-ID + Titel + Beschreibung
+            left_content = []
+            left_content.append(Paragraph(
+                f"<font color='#3498DB' size=9><b>{case_test_id}</b></font>",
+                ParagraphStyle('TestID', parent=styles['Normal'], fontSize=9, spaceAfter=3)
+            ))
+            left_content.append(Paragraph(
+                f"<b>{case_name}</b>",
+                ParagraphStyle('TestTitle', parent=styles['Normal'], fontSize=10, spaceAfter=3)
+            ))
+            if case_description:
+                short_desc = case_description[:120] + "..." if len(case_description) > 120 else case_description
+                left_content.append(Paragraph(
+                    f"<font color='#7F8C8D' size=8>{short_desc}</font>",
+                    ParagraphStyle('TestDesc', parent=styles['Normal'], fontSize=8)
+                ))
+            
+            # Rechte Seite: Status-Badge
+            badge_text = f"<font color='white'><b>[{config['badge_text']}]</b></font>"
+            right_content = Paragraph(
+                badge_text,
+                ParagraphStyle('StatusBadge', parent=styles['Normal'], fontSize=9, alignment=TA_CENTER)
+            )
+            
+            # Badge als kleine Tabelle
+            badge_table = Table([[right_content]], colWidths=[3*cm])
+            badge_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (0, 0), config['badge_bg']),
+                ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+                ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+                ('TOPPADDING', (0, 0), (0, 0), 6),
+                ('BOTTOMPADDING', (0, 0), (0, 0), 6),
+                ('LEFTPADDING', (0, 0), (0, 0), 8),
+                ('RIGHTPADDING', (0, 0), (0, 0), 8),
+                ('ROUNDEDCORNERS', [3, 3, 3, 3])
+            ]))
+            
+            # Kombiniere links + rechts
+            card_data = [[left_content, badge_table]]
+            card_table = Table(card_data, colWidths=[12*cm, 4*cm])
+            card_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, -1), config['bg']),
+                ('BOX', (0, 0), (-1, -1), 1.5, config['border']),
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+                ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+                ('TOPPADDING', (0, 0), (-1, -1), 10),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
+                ('LEFTPADDING', (0, 0), (-1, -1), 12),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 12)
+            ]))
+            story.append(card_table)
+            story.append(Spacer(1, 0.08*inch))
         
-        detail_table = Table(detail_data, colWidths=[2.5*cm, 7*cm, 2.5*cm, 4*cm])
-        detail_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#34495E')),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 0), (-1, -1), 7),
-            ('TOPPADDING', (0, 0), (-1, -1), 4),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
-            ('LEFTPADDING', (0, 0), (-1, -1), 6),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#BDC3C7')),
-            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#F8F9FA')])
-        ]))
-        story.append(detail_table)
-        story.append(Spacer(1, 0.2*inch))
+        story.append(Spacer(1, 0.15*inch))
     
     # === CONCLUSION ===
     story.append(PageBreak())
