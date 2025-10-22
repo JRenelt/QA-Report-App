@@ -232,24 +232,6 @@ async def generate_pdf_report(
     styles = getSampleStyleSheet()
     
     # Custom Styles
-    title_style = ParagraphStyle(
-        'CustomTitle',
-        parent=styles['Heading1'],
-        fontSize=28,
-        textColor=colors.HexColor('#2C3E50'),
-        spaceAfter=8,
-        alignment=TA_CENTER,
-        fontName='Helvetica-Bold'
-    )
-    
-    subtitle_style = ParagraphStyle(
-        'CustomSubtitle',
-        parent=styles['Normal'],
-        fontSize=12,
-        textColor=colors.HexColor('#7F8C8D'),
-        spaceAfter=30,
-        alignment=TA_CENTER
-    )
     
     heading_style = ParagraphStyle(
         'CustomHeading',
