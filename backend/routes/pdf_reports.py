@@ -277,7 +277,7 @@ async def generate_pdf_report(
                     logo_added = True
             # SVG logos: Zeige "P" als Text-Logo
             elif 'svg' in company_logo_url.lower():
-                print(f"SVG Logo - verwende Text-Platzhalter 'P'")
+                print("SVG Logo - verwende Text-Platzhalter 'P'")
                 # Text-Logo "P" in einer Box
                 logo_p = Paragraph(
                     "<para align=center><font size=36 color='#2C3E50'><b>P</b></font></para>",
