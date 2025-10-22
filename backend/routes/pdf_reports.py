@@ -209,7 +209,7 @@ async def generate_pdf_report(
     
     total_tests = len(all_cases)
     tested_count = status_counts["success"] + status_counts["error"] + status_counts["warning"]
-    pass_rate = (status_counts["success"] / tested_count * 100) if tested_count > 0 else 0
+    # pass_rate berechnen (wird nicht mehr verwendet in neuem Design)
     
     # Get dynamic conclusion
     fazit_title, fazit_text, recommendation, fazit_color = calculate_conclusion(
@@ -543,7 +543,7 @@ async def get_report_summary(
     
     total_tests = len(all_cases)
     tested_count = status_counts["success"] + status_counts["error"] + status_counts["warning"]
-    pass_rate = (status_counts["success"] / tested_count * 100) if tested_count > 0 else 0
+    # pass_rate berechnen (wird nicht mehr verwendet in neuem Design)
     
     return {
         "total_tests": total_tests,
