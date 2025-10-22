@@ -314,6 +314,7 @@ async def generate_pdf_report(
     # Title
     story.append(Paragraph(t["title"], title_style))
     story.append(Paragraph(t["subtitle"], subtitle_style))
+    story.append(Spacer(1, 0.1*inch))
     
     # Project Information Box
     info_data = [
