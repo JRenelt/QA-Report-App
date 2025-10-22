@@ -402,13 +402,13 @@ async def generate_pdf_report(
     story.append(summary_para)
     story.append(Spacer(1, 0.15*inch))
     
-    # Professionelle Zahlen-Karten in einer Zeile (5 Spalten)
+    # Professionelle Zahlen-Karten in einer Zeile (5 Spalten) - VERTIKAL ZENTRIERT
     card_data = [[
-        Paragraph(f"<para align=center><font size=36 color='#34495E'><b>{total_tests}</b></font><br/><font size=8 color='#7F8C8D'><b>GESAMT</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=8 color='#27AE60'><b>✓ BESTANDEN</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=8 color='#E74C3C'><b>✗ FEHLER</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=8 color='#F39C12'><b>⚠ WARNUNG</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=36 color='#95A5A6'><b>{untested}</b></font><br/><font size=8 color='#95A5A6'><b>⏸ OFFEN</b></font></para>", body_style)
+        Paragraph(f"<para align=center valign=middle><font size=36 color='#34495E'><b>{total_tests}</b></font><br/><font size=8 color='#7F8C8D'><b>GESAMT</b></font></para>", body_style),
+        Paragraph(f"<para align=center valign=middle><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=8 color='#27AE60'><b>✓ BESTANDEN</b></font></para>", body_style),
+        Paragraph(f"<para align=center valign=middle><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=8 color='#E74C3C'><b>✗ FEHLER</b></font></para>", body_style),
+        Paragraph(f"<para align=center valign=middle><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=8 color='#F39C12'><b>⚠ WARNUNG</b></font></para>", body_style),
+        Paragraph(f"<para align=center valign=middle><font size=36 color='#95A5A6'><b>{untested}</b></font><br/><font size=8 color='#95A5A6'><b>⏸ OFFEN</b></font></para>", body_style)
     ]]
     
     card_table = Table(card_data, colWidths=[3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm])
@@ -421,12 +421,15 @@ async def generate_pdf_report(
         ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#BDC3C7')),
         ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#D5D8DC')),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('TOPPADDING', (0, 0), (-1, -1), 18),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 18)
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # VERTIKAL ZENTRIEREN!
+        ('TOPPADDING', (0, 0), (-1, -1), 20),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 20)
     ]))
     story.append(card_table)
-    story.append(Spacer(1, 0.25*inch))
+    story.append(Spacer(1, 0.3*inch))
+    
+    # === NEUE SEITE FÜR TESTFÄLLE ===
+    story.append(PageBreak())
     
     # === TEST DETAILS ===
     story.append(PageBreak())
