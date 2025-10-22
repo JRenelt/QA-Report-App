@@ -116,6 +116,11 @@ class ProjectBase(BaseModel):
     description: Optional[str] = None
     template_type: TemplateType = TemplateType.custom
     status: ProjectStatus = ProjectStatus.active
+    # ISO-ähnliche Test-Konfigurationsfelder
+    test_environment: Optional[str] = None  # Testumgebung (z.B. "Produktionsumgebung", "Staging")
+    test_methodology: Optional[str] = None  # Test-Methodik (z.B. "Manuell", "Automatisiert", "Hybrid")
+    test_object: Optional[str] = None       # Testobjekt (z.B. "Web-Applikation", "API", "Mobile App")
+    test_goal: Optional[str] = None         # Ziel des Tests (z.B. "Funktionale Validierung", "Performance-Test")
 
 class ProjectCreate(ProjectBase):
     company_id: str
