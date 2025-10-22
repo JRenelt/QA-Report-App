@@ -270,17 +270,17 @@ async def generate_pdf_report(
         alignment=TA_JUSTIFY
     )
     
-    # === HEADER SECTION ===
+    # === HEADER SECTION - NEU GESTALTET ===
     # Logo - Note: ReportLab Image doesn't support SVG, only PNG/JPG
     logo_added = False
     try:
         if company_logo_url:
             # Check if it's a PNG/JPG URL
             if company_logo_url.startswith('http') and (company_logo_url.endswith('.png') or company_logo_url.endswith('.jpg') or company_logo_url.endswith('.jpeg')):
-                logo = Image(company_logo_url, width=2*inch, height=0.8*inch)
-                logo.hAlign = 'CENTER'
+                logo = Image(company_logo_url, width=1.5*inch, height=0.6*inch)
+                logo.hAlign = 'LEFT'
                 story.append(logo)
-                story.append(Spacer(1, 0.3*inch))
+                story.append(Spacer(1, 0.1*inch))
                 logo_added = True
             # Check if it's a base64 PNG/JPG
             elif company_logo_url.startswith('data:image/png') or company_logo_url.startswith('data:image/jpeg') or company_logo_url.startswith('data:image/jpg'):
@@ -288,66 +288,116 @@ async def generate_pdf_report(
                     header, encoded = company_logo_url.split(',', 1)
                     image_data = base64.b64decode(encoded)
                     logo_buffer = io.BytesIO(image_data)
-                    logo = Image(logo_buffer, width=2*inch, height=0.8*inch)
-                    logo.hAlign = 'CENTER'
+                    logo = Image(logo_buffer, width=1.5*inch, height=0.6*inch)
+                    logo.hAlign = 'LEFT'
                     story.append(logo)
-                    story.append(Spacer(1, 0.3*inch))
+                    story.append(Spacer(1, 0.1*inch))
                     logo_added = True
-            # Skip SVG logos (not supported by ReportLab)
+            # Skip SVG logos
             elif 'svg' in company_logo_url.lower():
-                print("SVG Logo übersprungen (nicht unterstützt von ReportLab)")
-                # Add company name as text header instead
-                company_header = Paragraph(
-                    f"<b>{company_name}</b>",
-                    ParagraphStyle('CompanyHeader', parent=styles['Heading2'], fontSize=18, alignment=TA_CENTER, textColor=colors.HexColor('#2C3E50'))
-                )
-                story.append(company_header)
-                story.append(Spacer(1, 0.3*inch))
-                logo_added = True
+                print("SVG Logo übersprungen - verwende Firmenname als Text")
     except Exception as e:
         print(f"Logo-Fehler: {e}")
     
-    # If no logo was added, add spacer
-    if not logo_added:
-        story.append(Spacer(1, 0.2*inch))
+    # Header Layout: 2-Spalten (Links: Titel & Info, Rechts: Datum)
+    header_left = []
+    header_left.append(Paragraph(
+        "<b>QA-Report</b>",
+        ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=4)
+    ))
+    header_left.append(Paragraph(
+        f"<b>{company_name}</b>",
+        ParagraphStyle('CompanySubtitle', parent=styles['Normal'], fontSize=12, textColor=colors.HexColor('#34495E'), spaceAfter=8)
+    ))
+    header_left.append(Paragraph(
+        f"<b>Getestet von:</b> {current_user.first_name} {current_user.last_name}" if current_user.first_name else f"<b>Getestet von:</b> {current_user.username}",
+        ParagraphStyle('TesterInfo', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'))
+    ))
+    header_left.append(Paragraph(
+        f"<b>Test Umgebung:</b> {project.get('test_environment', 'Nicht angegeben')}",
+        ParagraphStyle('TestEnv', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'))
+    ))
+    header_left.append(Paragraph(
+        f"<b>Test Methodik:</b> {project.get('test_methodology', 'Nicht angegeben')}",
+        ParagraphStyle('TestMeth', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'))
+    ))
     
-    # Title
-    story.append(Paragraph(t["title"], title_style))
-    story.append(Paragraph(t["subtitle"], subtitle_style))
-    story.append(Spacer(1, 0.1*inch))
+    header_right = []
+    header_right.append(Paragraph(
+        f"<b>Erstellungsdatum</b> | {datetime.utcnow().strftime('%d.%m.%Y')}",
+        ParagraphStyle('DateRight', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'), alignment=TA_RIGHT)
+    ))
     
-    # Project Information Box
-    info_data = [
-        [t["project"] + ":", project["name"]],
-        ["Projekt-ID:", project["id"]],
-        [t["company"] + ":", company_name],
-        ["Testumgebung:", project.get("test_environment", "Nicht angegeben")],
-        ["Test-Methodik:", project.get("test_methodology", "Nicht angegeben")],
-        ["Testobjekt:", project.get("test_object", "Nicht angegeben")],
-        ["Ziel des Tests:", project.get("test_goal", "Nicht angegeben")],
-        [t["date"] + ":", datetime.utcnow().strftime("%d.%m.%Y %H:%M")],
-        [t["tester"] + ":", f"{current_user.first_name} {current_user.last_name}" if current_user.first_name else current_user.username],
-        [t["report_type"] + ":", t["tested_only"] if tested_only else t["all_tests"]]
+    # Header Table (2 columns: left & right aligned)
+    header_data = [[header_left, header_right]]
+    header_table = Table(header_data, colWidths=[10*cm, 6*cm])
+    header_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+        ('ALIGN', (1, 0), (1, 0), 'RIGHT')
+    ]))
+    story.append(header_table)
+    story.append(Spacer(1, 0.2*inch))
+    
+    # Project Info Tables: 2 columns side by side
+    # Left Table
+    left_info_data = [
+        [Paragraph("<b>Projekt</b>", body_style), Paragraph(project["name"], body_style)],
+        [Paragraph("<b>Test objekt</b>", body_style), Paragraph(project.get("test_object", "Nicht angegeben"), body_style)],
+        [Paragraph("<b>Ziel des Testes</b>", body_style), Paragraph(project.get("test_goal", "Nicht angegeben"), body_style)]
     ]
     
-    info_table = Table(info_data, colWidths=[4*cm, 12*cm])
-    info_table.setStyle(TableStyle([
+    left_table = Table(left_info_data, colWidths=[3.5*cm, 6*cm])
+    left_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#ECF0F1')),
         ('BACKGROUND', (1, 0), (1, -1), colors.white),
         ('TEXTCOLOR', (0, 0), (-1, -1), colors.HexColor('#2C3E50')),
-        ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+        ('ALIGN', (0, 0), (0, -1), 'LEFT'),
         ('ALIGN', (1, 0), (1, -1), 'LEFT'),
         ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
-        ('FONTNAME', (1, 0), (1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
         ('TOPPADDING', (0, 0), (-1, -1), 5),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-        ('LEFTPADDING', (0, 0), (-1, -1), 12),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
         ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BDC3C7'))
     ]))
-    story.append(info_table)
-    story.append(Spacer(1, 0.2*inch))
+    
+    # Right Table
+    # Version Format: v1.0.2 [project_id_first_4_chars]
+    project_id_short = project['id'][:4]
+    version_string = f"v1.0.2 {project_id_short}"
+    
+    right_info_data = [
+        [Paragraph("<b>Version</b>", body_style), Paragraph(version_string, body_style)],
+        [Paragraph("<b>Projekt ID</b>", body_style), Paragraph(project['id'][:8], body_style)]
+    ]
+    
+    right_table = Table(right_info_data, colWidths=[2.5*cm, 3.5*cm])
+    right_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#ECF0F1')),
+        ('BACKGROUND', (1, 0), (1, -1), colors.white),
+        ('TEXTCOLOR', (0, 0), (-1, -1), colors.HexColor('#2C3E50')),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BDC3C7'))
+    ]))
+    
+    # Combine both tables side by side
+    combined_info_data = [[left_table, right_table]]
+    combined_table = Table(combined_info_data, colWidths=[9.5*cm, 6.5*cm])
+    combined_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+        ('ALIGN', (1, 0), (1, 0), 'RIGHT')
+    ]))
+    story.append(combined_table)
+    story.append(Spacer(1, 0.3*inch))
     
     # === EXECUTIVE SUMMARY - KOMPAKT & PROFESSIONELL ===
     story.append(Paragraph(t["executive_summary"], heading_style))
