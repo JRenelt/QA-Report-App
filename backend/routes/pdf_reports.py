@@ -468,7 +468,6 @@ async def generate_pdf_report(
         # Testfall-Karten (Box-Design)
         for case in suite_cases:
             case_status = case.get("status", "pending")
-            case_note = case.get("note", "")
             case_name = case.get("name") or case.get("title", "N/A")
             case_description = case.get("description", "")
             case_test_id = case.get("test_id", "N/A")
