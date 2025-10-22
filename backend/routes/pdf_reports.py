@@ -436,18 +436,38 @@ async def generate_pdf_report(
     story.append(summary_para)
     story.append(Spacer(1, 0.15*inch))
     
-    # Professionelle Zahlen-Karten in einer Zeile (5 Spalten) - RICHTIG ZENTRIERT
-    # Einfache Struktur mit fester Höhe und Zentrierung
+    # Professionelle Zahlen-Karten - MIT RICHTIGER ZENTRIERUNG
+    # Verwende leadingSpace für Abstand zwischen Zahl und Label
     
     card_data = [[
-        Paragraph(f"<para align=center><font size=36 color='#34495E'><b>{total_tests}</b></font><br/><br/><font size=8 color='#7F8C8D'><b>GESAMT</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font><br/><br/><font size=8 color='#27AE60'><b>✓ BESTANDEN</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><br/><font size=8 color='#E74C3C'><b>✗ FEHLER</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><br/><font size=8 color='#F39C12'><b>⚠ WARNUNG</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=36 color='#95A5A6'><b>{untested}</b></font><br/><br/><font size=8 color='#95A5A6'><b>⏸ OFFEN</b></font></para>", body_style)
+        Paragraph(
+            f"<para align=center leading=16><font size=36 color='#34495E'><b>{total_tests}</b></font></para>"
+            f"<para align=center spaceBefore=8><font size=8 color='#7F8C8D'><b>GESAMT</b></font></para>",
+            body_style
+        ),
+        Paragraph(
+            f"<para align=center leading=16><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font></para>"
+            f"<para align=center spaceBefore=8><font size=8 color='#27AE60'><b>✓ BESTANDEN</b></font></para>",
+            body_style
+        ),
+        Paragraph(
+            f"<para align=center leading=16><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font></para>"
+            f"<para align=center spaceBefore=8><font size=8 color='#E74C3C'><b>✗ FEHLER</b></font></para>",
+            body_style
+        ),
+        Paragraph(
+            f"<para align=center leading=16><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font></para>"
+            f"<para align=center spaceBefore=8><font size=8 color='#F39C12'><b>⚠ WARNUNG</b></font></para>",
+            body_style
+        ),
+        Paragraph(
+            f"<para align=center leading=16><font size=36 color='#95A5A6'><b>{untested}</b></font></para>"
+            f"<para align=center spaceBefore=8><font size=8 color='#95A5A6'><b>⏸ OFFEN</b></font></para>",
+            body_style
+        )
     ]]
     
-    card_table = Table(card_data, colWidths=[3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm], rowHeights=[2.2*cm])
+    card_table = Table(card_data, colWidths=[3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm], rowHeights=[2.5*cm])
     card_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
         ('BACKGROUND', (1, 0), (1, 0), colors.HexColor('#D5F4E6')),
@@ -458,10 +478,10 @@ async def generate_pdf_report(
         ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#D5D8DC')),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('TOPPADDING', (0, 0), (-1, -1), 25),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 25),
-        ('LEFTPADDING', (0, 0), (-1, -1), 5),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 5)
+        ('TOPPADDING', (0, 0), (-1, -1), 20),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 20),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 8)
     ]))
     story.append(card_table)
     story.append(Spacer(1, 0.3*inch))
