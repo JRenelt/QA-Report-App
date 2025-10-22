@@ -329,7 +329,7 @@ async def generate_pdf_report(
         [Paragraph("<b>Ziel des Testes</b>", body_style), Paragraph(project.get("test_goal", "Nicht angegeben"), body_style)]
     ]
     
-    left_table = Table(left_info_data, colWidths=[3.5*cm, 6*cm])
+    left_table = Table(left_info_data, colWidths=[1.4*inch, 2.4*inch])
     left_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#ECF0F1')),
         ('BACKGROUND', (1, 0), (1, -1), colors.white),
@@ -355,7 +355,7 @@ async def generate_pdf_report(
         [Paragraph("<b>Projekt ID</b>", body_style), Paragraph(project['id'][:8], body_style)]
     ]
     
-    right_table = Table(right_info_data, colWidths=[2.5*cm, 3.5*cm])
+    right_table = Table(right_info_data, colWidths=[1*inch, 1.4*inch])
     right_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#ECF0F1')),
         ('BACKGROUND', (1, 0), (1, -1), colors.white),
@@ -371,8 +371,8 @@ async def generate_pdf_report(
     ]))
     
     # Combine both tables side by side mit MEHR ABSTAND
-    combined_info_data = [[left_table, Spacer(1.5*cm, 0), right_table]]
-    combined_table = Table(combined_info_data, colWidths=[9.5*cm, 1.5*cm, 5*cm])
+    combined_info_data = [[left_table, Spacer(0.6*inch, 0), right_table]]
+    combined_table = Table(combined_info_data, colWidths=[3.8*inch, 0.6*inch, 2.4*inch])
     combined_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP')
     ]))
