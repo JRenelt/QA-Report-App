@@ -211,11 +211,6 @@ async def generate_pdf_report(
     tested_count = status_counts["success"] + status_counts["error"] + status_counts["warning"]
     # pass_rate berechnen (wird nicht mehr verwendet in neuem Design)
     
-    # Get dynamic conclusion
-    fazit_title, fazit_text, recommendation, fazit_color = calculate_conclusion(
-        status_counts, total_tests, tested_count
-    )
-    
     # Create PDF in memory
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
