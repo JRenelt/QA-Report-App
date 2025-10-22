@@ -478,7 +478,7 @@ async def generate_pdf_report(
         ('LEFTPADDING', (0, 0), (-1, -1), 8),
         ('RIGHTPADDING', (0, 0), (-1, -1), 8)
     ]))
-    story.append(cards_table)
+    story.append(card_table)
     story.append(Spacer(1, 0.3*inch))
     
     # === SEITE 2: INHALTSVERZEICHNIS / MENÜ ===
@@ -492,7 +492,6 @@ async def generate_pdf_report(
     story.append(menu_title)
     
     # Menü-Einträge für jede Test-Suite
-    menu_data = []
     for idx, suite in enumerate(suites, 1):
         suite_name = suite.get('name', 'Unbenannte Suite')
         suite_icon = suite.get('icon', '📁')
