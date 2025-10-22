@@ -254,7 +254,6 @@ async def generate_pdf_report(
     
     # === HEADER SECTION - NEU GESTALTET ===
     # Logo - Note: ReportLab Image doesn't support SVG, only PNG/JPG
-    logo_added = False
     try:
         if company_logo_url:
             # Check if it's a PNG/JPG URL
@@ -263,7 +262,6 @@ async def generate_pdf_report(
                 logo.hAlign = 'LEFT'
                 story.append(logo)
                 story.append(Spacer(1, 0.1*inch))
-                logo_added = True
             # Check if it's a base64 PNG/JPG
             elif company_logo_url.startswith('data:image/png') or company_logo_url.startswith('data:image/jpeg') or company_logo_url.startswith('data:image/jpg'):
                 if ',' in company_logo_url:
@@ -274,7 +272,6 @@ async def generate_pdf_report(
                     logo.hAlign = 'LEFT'
                     story.append(logo)
                     story.append(Spacer(1, 0.1*inch))
-                    logo_added = True
             # Skip SVG logos
             elif 'svg' in company_logo_url.lower():
                 print("SVG Logo übersprungen - verwende Firmenname als Text")
