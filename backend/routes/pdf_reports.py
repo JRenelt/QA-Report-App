@@ -309,16 +309,44 @@ async def generate_pdf_report(
         story.append(logo_table)
         story.append(Spacer(1, 0.1*inch))
     
-    # Header Layout: 2-Spalten (Links: Titel & Info, Rechts: Datum)
-    header_left = []
-    header_left.append(Paragraph(
+    # Header Layout: Logo + Firma NEBENEINANDER
+    # Erst Titel "QA-Report"
+    story.append(Paragraph(
         "<b>QA-Report</b>",
-        ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=4)
+        ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
     ))
-    header_left.append(Paragraph(
+    
+    # Logo "P" und Firmenname NEBENEINANDER
+    logo_p = Paragraph(
+        "<para align=center><font size=24 color='#2C3E50'><b>P</b></font></para>",
+        ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=24, alignment=TA_CENTER)
+    )
+    logo_cell = Table([[logo_p]], colWidths=[1.5*cm], rowHeights=[1.5*cm])
+    logo_cell.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
+        ('BOX', (0, 0), (0, 0), 2, colors.HexColor('#BDC3C7')),
+        ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+        ('VALIGN', (0, 0), (0, 0), 'MIDDLE')
+    ]))
+    
+    firma_text = Paragraph(
         f"<b>{company_name}</b>",
-        ParagraphStyle('CompanySubtitle', parent=styles['Normal'], fontSize=12, textColor=colors.HexColor('#34495E'), spaceAfter=8)
-    ))
+        ParagraphStyle('CompanyName', parent=styles['Normal'], fontSize=14, textColor=colors.HexColor('#34495E'))
+    )
+    
+    # Logo + Firma in einer Zeile
+    logo_firma_row = [[logo_cell, firma_text]]
+    logo_firma_table = Table(logo_firma_row, colWidths=[2*cm, 10*cm])
+    logo_firma_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (0, 0), 0),
+        ('LEFTPADDING', (1, 0), (1, 0), 15)
+    ]))
+    story.append(logo_firma_table)
+    story.append(Spacer(1, 0.15*inch))
+    
+    # Info-Zeilen darunter
+    header_left = []
     header_left.append(Paragraph(
         f"<b>Getestet von:</b> {current_user.first_name} {current_user.last_name}" if current_user.first_name else f"<b>Getestet von:</b> {current_user.username}",
         ParagraphStyle('TesterInfo', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'))
