@@ -394,7 +394,7 @@ async def generate_pdf_report(
     
     # === TEST DETAILS ===
     story.append(Paragraph(t["test_details"], heading_style))
-    story.append(Spacer(1, 0.2*inch))
+    story.append(Spacer(1, 0.1*inch))
     
     # Group cases by suite
     for suite in suites:
