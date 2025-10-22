@@ -248,7 +248,7 @@ async def generate_pdf_report(
     )
     
     # === HEADER SECTION - NEU GESTALTET ===
-    # Logo wird direkt beim Header integriert (Logo + Firma nebeneinander)
+    # Logo: Verwende hochgeladenes Platzhalter-Logo oder "P" Fallback
     
     # Header Layout: Logo + Firma NEBENEINANDER (Logo als kleines Icon)
     # Erst Titel "QA-Report"
@@ -257,21 +257,38 @@ async def generate_pdf_report(
         ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
     ))
     
-    # Logo "P" als KLEINES ICON-BADGE (türkis mit weißer Schrift) direkt vor Firma
-    logo_p = Paragraph(
-        "<para align=center><font size=14 color='white'><b>P</b></font></para>",
-        ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=14, alignment=TA_CENTER)
-    )
-    logo_cell = Table([[logo_p]], colWidths=[0.6*inch], rowHeights=[0.6*inch])
-    logo_cell.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#00CED1')),  # Türkis
-        ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-        ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (0, 0), 0),
-        ('RIGHTPADDING', (0, 0), (0, 0), 0),
-        ('TOPPADDING', (0, 0), (0, 0), 0),
-        ('BOTTOMPADDING', (0, 0), (0, 0), 0)
-    ]))
+    # Versuche Platzhalter-Logo zu laden oder verwende "P" Fallback
+    logo_cell = None
+    try:
+        # Versuche das hochgeladene Logo zu verwenden
+        platzhalter_logo_url = "https://customer-assets.emergentagent.com/job_test-result-dash/artifacts/fx7grk71_platzhalter-logo.png"
+        logo_img = Image(platzhalter_logo_url, width=0.5*inch, height=0.5*inch)
+        logo_cell = Table([[logo_img]], colWidths=[0.5*inch], rowHeights=[0.5*inch])
+        logo_cell.setStyle(TableStyle([
+            ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+            ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0),
+            ('RIGHTPADDING', (0, 0), (0, 0), 0),
+            ('TOPPADDING', (0, 0), (0, 0), 0),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 0)
+        ]))
+    except Exception as e:
+        print(f"Logo konnte nicht geladen werden, verwende 'P' Fallback: {e}")
+        # Fallback: "P" als Text-Logo
+        logo_p = Paragraph(
+            "<para align=center><font size=14 color='white'><b>P</b></font></para>",
+            ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=14, alignment=TA_CENTER)
+        )
+        logo_cell = Table([[logo_p]], colWidths=[0.5*inch], rowHeights=[0.5*inch])
+        logo_cell.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#00CED1')),  # Türkis
+            ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+            ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0),
+            ('RIGHTPADDING', (0, 0), (0, 0), 0),
+            ('TOPPADDING', (0, 0), (0, 0), 0),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 0)
+        ]))
     
     firma_text = Paragraph(
         f"<b>{company_name}</b>",
@@ -280,7 +297,7 @@ async def generate_pdf_report(
     
     # Logo + Firma in einer Zeile (minimaler Abstand)
     logo_firma_row = [[logo_cell, firma_text]]
-    logo_firma_table = Table(logo_firma_row, colWidths=[0.7*inch, 8*inch])
+    logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 8*inch])
     logo_firma_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('LEFTPADDING', (0, 0), (0, 0), 0),
