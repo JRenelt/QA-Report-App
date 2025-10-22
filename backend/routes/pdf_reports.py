@@ -349,45 +349,52 @@ async def generate_pdf_report(
     story.append(info_table)
     story.append(Spacer(1, 0.2*inch))
     
-    # === EXECUTIVE SUMMARY - KOMPAKT ===
+    # === EXECUTIVE SUMMARY - KOMPAKT & PROFESSIONELL ===
     story.append(Paragraph(t["executive_summary"], heading_style))
     story.append(Spacer(1, 0.1*inch))
     
-    # Zusammenfassender Text
+    # Kompakter Zusammenfassungstext in einer Zeile
     untested = status_counts["pending"] + status_counts["skipped"]
-    summary_text = f"{status_counts['success']} von {total_tests} Testfällen bestanden. "
-    if status_counts['error'] > 0:
-        summary_text += f"Es wurden {status_counts['error']} kritische Fehler festgestellt. "
-    if untested > 0:
-        summary_text += f"{untested} Testfälle wurden nicht geprüft."
+    
+    # Kurze, prägnante Zusammenfassung
+    if tested_count == 0:
+        summary_text = f"<b>Status:</b> Keine Tests durchgeführt. {total_tests} Testfälle vorhanden, 0 geprüft."
+    elif status_counts['error'] == 0 and status_counts['warning'] == 0 and tested_count == total_tests:
+        summary_text = f"<b>Status:</b> Alle {total_tests} Testfälle erfolgreich bestanden. System bereit für Freigabe."
+    elif status_counts['error'] > 0:
+        summary_text = f"<b>Status:</b> {status_counts['success']} von {tested_count} Tests bestanden. {status_counts['error']} Fehler festgestellt. {untested} ungeprüft."
     else:
-        summary_text += "Alle Testfälle wurden geprüft."
+        summary_text = f"<b>Status:</b> {status_counts['success']} von {tested_count} Tests bestanden. {status_counts['warning']} Warnungen. {untested} ungeprüft."
     
     summary_para = Paragraph(
         summary_text,
-        ParagraphStyle('SummaryText', parent=styles['Normal'], fontSize=11, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
+        ParagraphStyle('SummaryText', parent=styles['Normal'], fontSize=10, textColor=colors.HexColor('#2C3E50'), spaceAfter=6, alignment=TA_LEFT)
     )
     story.append(summary_para)
     story.append(Spacer(1, 0.15*inch))
     
-    # Große Zahlen-Karten in einer Zeile (5 Spalten)
+    # Professionelle Zahlen-Karten in einer Zeile (5 Spalten)
     card_data = [[
-        Paragraph(f"<para align=center><font size=32 color='#2C3E50'><b>{total_tests}</b></font><br/><font size=9 color='#7F8C8D'>Gesamt</font></para>", body_style),
-        Paragraph(f"<para align=center><font size=32 color='#4CAF50'><b>{status_counts['success']}</b></font><br/><font size=9 color='#7F8C8D'>✓ Bestanden</font></para>", body_style),
-        Paragraph(f"<para align=center><font size=32 color='#F44336'><b>{status_counts['error']}</b></font><br/><font size=9 color='#7F8C8D'>✗ Fehler</font></para>", body_style),
-        Paragraph(f"<para align=center><font size=32 color='#FF9800'><b>{status_counts['warning']}</b></font><br/><font size=9 color='#7F8C8D'>⚠ Warnung</font></para>", body_style),
-        Paragraph(f"<para align=center><font size=32 color='#9E9E9E'><b>{untested}</b></font><br/><font size=9 color='#7F8C8D'>⏸ Ungeprüft</font></para>", body_style)
+        Paragraph(f"<para align=center><font size=36 color='#34495E'><b>{total_tests}</b></font><br/><font size=8 color='#7F8C8D'><b>GESAMT</b></font></para>", body_style),
+        Paragraph(f"<para align=center><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=8 color='#27AE60'><b>✓ BESTANDEN</b></font></para>", body_style),
+        Paragraph(f"<para align=center><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=8 color='#E74C3C'><b>✗ FEHLER</b></font></para>", body_style),
+        Paragraph(f"<para align=center><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=8 color='#F39C12'><b>⚠ WARNUNG</b></font></para>", body_style),
+        Paragraph(f"<para align=center><font size=36 color='#95A5A6'><b>{untested}</b></font><br/><font size=8 color='#95A5A6'><b>⏸ OFFEN</b></font></para>", body_style)
     ]]
     
     card_table = Table(card_data, colWidths=[3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm, 3.2*cm])
     card_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), colors.white),
+        ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
+        ('BACKGROUND', (1, 0), (1, 0), colors.HexColor('#D5F4E6')),
+        ('BACKGROUND', (2, 0), (2, 0), colors.HexColor('#FADBD8')),
+        ('BACKGROUND', (3, 0), (3, 0), colors.HexColor('#FCF3CF')),
+        ('BACKGROUND', (4, 0), (4, 0), colors.HexColor('#E8E8E8')),
         ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#BDC3C7')),
-        ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#E0E0E0')),
+        ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#D5D8DC')),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('TOPPADDING', (0, 0), (-1, -1), 15),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 15)
+        ('TOPPADDING', (0, 0), (-1, -1), 18),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 18)
     ]))
     story.append(card_table)
     story.append(Spacer(1, 0.25*inch))
