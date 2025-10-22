@@ -838,7 +838,11 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
                               name: project.name,
                               description: project.description,
                               notes: project.notes,
-                              status: project.status
+                              status: project.status,
+                              testEnvironment: (project as any).testEnvironment || '',
+                              testMethodology: (project as any).testMethodology || '',
+                              testObject: (project as any).testObject || '',
+                              testGoal: (project as any).testGoal || ''
                             });
                             setShowProjectForm(true);
                           }}
