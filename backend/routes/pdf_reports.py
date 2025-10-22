@@ -248,66 +248,7 @@ async def generate_pdf_report(
     )
     
     # === HEADER SECTION - NEU GESTALTET ===
-    # Logo - Falls SVG (nicht unterstützt), zeige "P" als Text-Logo
-    logo_added = False
-    try:
-        if company_logo_url:
-            # Check if it's a PNG/JPG URL
-            if company_logo_url.startswith('http') and (company_logo_url.endswith('.png') or company_logo_url.endswith('.jpg') or company_logo_url.endswith('.jpeg')):
-                logo = Image(company_logo_url, width=1.5*inch, height=0.6*inch)
-                logo.hAlign = 'LEFT'
-                story.append(logo)
-                story.append(Spacer(1, 0.1*inch))
-                logo_added = True
-            # Check if it's a base64 PNG/JPG
-            elif company_logo_url.startswith('data:image/png') or company_logo_url.startswith('data:image/jpeg') or company_logo_url.startswith('data:image/jpg'):
-                if ',' in company_logo_url:
-                    header, encoded = company_logo_url.split(',', 1)
-                    image_data = base64.b64decode(encoded)
-                    logo_buffer = io.BytesIO(image_data)
-                    logo = Image(logo_buffer, width=1.5*inch, height=0.6*inch)
-                    logo.hAlign = 'LEFT'
-                    story.append(logo)
-                    story.append(Spacer(1, 0.1*inch))
-                    logo_added = True
-            # SVG logos: Zeige "P" als Text-Logo
-            elif 'svg' in company_logo_url.lower():
-                print("SVG Logo - verwende Text-Platzhalter 'P'")
-                # Text-Logo "P" in einer Box
-                logo_p = Paragraph(
-                    "<para align=center><font size=36 color='#2C3E50'><b>P</b></font></para>",
-                    ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=36, alignment=TA_CENTER)
-                )
-                logo_table = Table([[logo_p]], colWidths=[2*cm], rowHeights=[2*cm])
-                logo_table.setStyle(TableStyle([
-                    ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
-                    ('BOX', (0, 0), (0, 0), 2, colors.HexColor('#BDC3C7')),
-                    ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-                    ('VALIGN', (0, 0), (0, 0), 'MIDDLE')
-                ]))
-                logo_table.hAlign = 'LEFT'
-                story.append(logo_table)
-                story.append(Spacer(1, 0.1*inch))
-                logo_added = True
-    except Exception as e:
-        print(f"Logo-Fehler: {e}")
-    
-    # Falls kein Logo, zeige "P" als Fallback
-    if not logo_added:
-        logo_p = Paragraph(
-            "<para align=center><font size=36 color='#2C3E50'><b>P</b></font></para>",
-            ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=36, alignment=TA_CENTER)
-        )
-        logo_table = Table([[logo_p]], colWidths=[2*cm], rowHeights=[2*cm])
-        logo_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
-            ('BOX', (0, 0), (0, 0), 2, colors.HexColor('#BDC3C7')),
-            ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-            ('VALIGN', (0, 0), (0, 0), 'MIDDLE')
-        ]))
-        logo_table.hAlign = 'LEFT'
-        story.append(logo_table)
-        story.append(Spacer(1, 0.1*inch))
+    # Logo wird direkt beim Header integriert (Logo + Firma nebeneinander)
     
     # Header Layout: Logo + Firma NEBENEINANDER
     # Erst Titel "QA-Report"
