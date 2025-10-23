@@ -421,6 +421,8 @@ async def generate_pdf_report(
     # WICHTIG: [Zahl] + weicher Umbruch + [Label] als EIN Objekt behandeln und zentrieren
     # Positionierung: ca. 20% höher durch spaceBefore in ParagraphStyle
     
+    print(f"🔍 DEBUG: Executive Summary wird generiert. Total Tests: {total_tests}")
+    
     # Custom Style für Karten mit erhöhtem spaceBefore für 20% höhere Position
     card_style = ParagraphStyle(
         'CardStyle',
@@ -430,6 +432,8 @@ async def generate_pdf_report(
         spaceAfter=0,
         leading=18  # Mehr Abstand zwischen Zahl und Label
     )
+    
+    print("🔍 DEBUG: card_style erstellt mit spaceBefore=12, leading=18")
     
     card_data = [[
         Paragraph(f"<font size=24 color='#34495E'><b>{total_tests}</b></font><br/><font size=7 color='#7F8C8D'><b>GESAMT</b></font>", card_style),
