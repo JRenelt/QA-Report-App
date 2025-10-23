@@ -951,9 +951,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-modernize.preview.emergentagent.com';
       const testedOnly = type === 'tested';
+      const cacheBuster = Date.now(); // Cache-Buster: aktueller Timestamp
       
       const response = await fetch(
-        `${backendUrl}/api/pdf-reports/generate/${selectedProjectId}?tested_only=${testedOnly}`,
+        `${backendUrl}/api/pdf-reports/generate/${selectedProjectId}?tested_only=${testedOnly}&_=${cacheBuster}`,
         {
           headers: {
             'Authorization': `Bearer ${authToken}`
