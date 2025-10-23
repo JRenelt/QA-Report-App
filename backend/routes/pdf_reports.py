@@ -477,13 +477,6 @@ async def generate_pdf_report(
         ParagraphStyle('SummaryText', parent=styles['Normal'], fontSize=10, textColor=colors.HexColor('#2C3E50'), spaceAfter=6, alignment=TA_LEFT)
     )
     story.append(summary_para)
-    
-    # ⚠️ TEST: GROßER ROTER TEXT als BEWEIS dass Code ausgeführt wird
-    story.append(Paragraph(
-        "<font size=28 color='red'><b>🔴 ÄNDERUNGEN WERDEN ANGEWENDET! 🔴</b></font>",
-        ParagraphStyle('TestMsg', parent=body_style, alignment=TA_CENTER, textColor=colors.red)
-    ))
-    
     story.append(Spacer(1, 0.15*inch))
     
     print(f"🔍 DEBUG: Executive Summary wird generiert. Total Tests: {total_tests}")
