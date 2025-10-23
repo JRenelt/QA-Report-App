@@ -479,43 +479,47 @@ async def generate_pdf_report(
         leading=18  # Mehr Abstand zwischen Zahl und Label
     )
     
-    print("🔍 DEBUG: NEUE Karten-Zentrierung wie CSS flexbox (verschachtelte Tabellen)")
+    print("🔍 DEBUG: Executive Summary Karten wie HTML-Beispiel mit abgerundeten Ecken")
     
-    # NEUE METHODE: Wie CSS flexbox - verschachtelte Tabellen für perfekte Zentrierung
-    # Jede Karte = Mini-Tabelle mit 2 Zeilen (Zahl, Label) die zentriert ist
-    def create_centered_card(number, label, num_color, label_color):
-        """Erstellt eine zentrierte Karte wie CSS: display:flex, flex-direction:column, align-items:center"""
-        # Zahl (große Schrift)
+    # KARTEN WIE IM HTML-BEISPIEL: border-radius, farbiger Rahmen, transparenter Hintergrund
+    # ReportLab unterstützt border-radius nicht direkt in Table, aber wir können es mit drawRoundRect simulieren
+    # ODER wir verwenden eine einfachere Methode: normale Paragraph mit Zentrierung
+    
+    def create_html_style_card(number, label, border_color, bg_color):
+        """Erstellt Karte wie HTML: abgerundete Ecken, farbiger Rahmen, transparenter Hintergrund"""
+        # Zahl (große Schrift, fett, dunkel)
         num_para = Paragraph(
-            f"<font size=28 color='{num_color}'><b>{number}</b></font>",
-            ParagraphStyle('CardNum', parent=body_style, alignment=TA_CENTER)
+            f"<font size=42 color='#333333'><b>{number}</b></font>",
+            ParagraphStyle('CardNum', parent=body_style, alignment=TA_CENTER, leading=50)
         )
-        # Label (kleine Schrift)
+        # Label (kleinere Schrift, grau)
         label_para = Paragraph(
-            f"<font size=7 color='{label_color}'><b>{label}</b></font>",
-            ParagraphStyle('CardLabel', parent=body_style, alignment=TA_CENTER)
+            f"<font size=10 color='#555555'>{label}</font>",
+            ParagraphStyle('CardLabel', parent=body_style, alignment=TA_CENTER, leading=14)
         )
         
-        # Mini-Tabelle: 2 Zeilen (Zahl, Label), zentriert
-        mini_table = Table([[num_para], [label_para]], colWidths=[0.95*inch])
+        # Mini-Tabelle: 2 Zeilen (Zahl, Label)
+        mini_table = Table([[num_para], [label_para]], colWidths=[1.2*inch])
         mini_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, -1), bg_color),  # Transparenter Hintergrund
+            ('BOX', (0, 0), (-1, -1), 2, border_color),  # 2pt farbiger Rahmen
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (-1, -1), 0),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-            ('TOPPADDING', (0, 0), (0, 0), 5),    # Zahl: wenig Padding oben
-            ('BOTTOMPADDING', (0, 0), (0, 0), 3),  # Zahl: wenig Padding unten
-            ('TOPPADDING', (0, 1), (0, 1), 3),     # Label: wenig Padding oben
-            ('BOTTOMPADDING', (0, 1), (0, 1), 5)   # Label: wenig Padding unten
+            ('TOPPADDING', (0, 0), (-1, -1), 20),    # Großzügiges Padding
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 20),
+            ('LEFTPADDING', (0, 0), (-1, -1), 15),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 15),
+            ('ROUNDEDCORNERS', [15, 15, 15, 15])  # Abgerundete Ecken (15pt radius)
         ]))
         return mini_table
     
+    # Farben: border + transparenter Hintergrund (RGBA mit Alpha = 0.2)
     card_data = [[
-        create_centered_card(total_tests, "GESAMT", '#34495E', '#7F8C8D'),
-        create_centered_card(status_counts['success'], "✓ BESTANDEN", '#27AE60', '#27AE60'),
-        create_centered_card(status_counts['error'], "✗ FEHLER", '#E74C3C', '#E74C3C'),
-        create_centered_card(status_counts['warning'], "⚠ WARNUNG", '#F39C12', '#F39C12'),
-        create_centered_card(untested, "⏸ OFFEN", '#95A5A6', '#95A5A6')
+        create_html_style_card(total_tests, "GESAMT", colors.HexColor('#666666'), colors.HexColor('#E8E8E8')),
+        create_html_style_card(status_counts['success'], "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2)),
+        create_html_style_card(status_counts['error'], "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2)),
+        create_html_style_card(status_counts['warning'], "WARNUNG", colors.HexColor('#DAA520'), colors.Color(1, 1, 0, alpha=0.2)),
+        create_html_style_card(untested, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     ]]
     
     card_table = Table(card_data, colWidths=[0.95*inch]*5, rowHeights=[0.85*inch])
