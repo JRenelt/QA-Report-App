@@ -409,18 +409,16 @@ async def generate_pdf_report(
     story.append(summary_para)
     story.append(Spacer(1, 0.15*inch))
     
-    # Professionelle Zahlen-Karten - EINE BOX pro Karte
-    # Einfache Struktur ohne verschachtelte Tabellen
-    
+    # Professionelle Zahlen-Karten - 50% KLEINER
     card_data = [[
-        Paragraph(f"<para align=center leading=16><font size=36 color='#34495E'><b>{total_tests}</b></font><br/><font size=9 color='#7F8C8D'><b>GESAMT</b></font></para>", body_style),
-        Paragraph(f"<para align=center leading=16><font size=36 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=9 color='#27AE60'><b>✓ BESTANDEN</b></font></para>", body_style),
-        Paragraph(f"<para align=center leading=16><font size=36 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=9 color='#E74C3C'><b>✗ FEHLER</b></font></para>", body_style),
-        Paragraph(f"<para align=center leading=16><font size=36 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=9 color='#F39C12'><b>■ WARNUNG</b></font></para>", body_style),
-        Paragraph(f"<para align=center leading=16><font size=36 color='#95A5A6'><b>{untested}</b></font><br/><font size=9 color='#95A5A6'><b>■ OFFEN</b></font></para>", body_style)
+        Paragraph(f"<para align=center leading=14><font size=24 color='#34495E'><b>{total_tests}</b></font><br/><font size=7 color='#7F8C8D'><b>GESAMT</b></font></para>", body_style),
+        Paragraph(f"<para align=center leading=14><font size=24 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=7 color='#27AE60'><b>✓ BESTANDEN</b></font></para>", body_style),
+        Paragraph(f"<para align=center leading=14><font size=24 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=7 color='#E74C3C'><b>✗ FEHLER</b></font></para>", body_style),
+        Paragraph(f"<para align=center leading=14><font size=24 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=7 color='#F39C12'><b>⚠ WARNUNG</b></font></para>", body_style),
+        Paragraph(f"<para align=center leading=14><font size=24 color='#95A5A6'><b>{untested}</b></font><br/><font size=7 color='#95A5A6'><b>⏸ OFFEN</b></font></para>", body_style)
     ]]
     
-    card_table = Table(card_data, colWidths=[1.9*inch]*5, rowHeights=[1.3*inch])
+    card_table = Table(card_data, colWidths=[0.95*inch]*5, rowHeights=[0.85*inch])
     card_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
         ('BACKGROUND', (1, 0), (1, 0), colors.HexColor('#D5F4E6')),
@@ -431,11 +429,60 @@ async def generate_pdf_report(
         ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#D5D8DC')),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('TOPPADDING', (0, 0), (-1, -1), 20),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 20)
+        ('TOPPADDING', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 10)
     ]))
     story.append(card_table)
-    story.append(Spacer(1, 0.3*inch))
+    story.append(Spacer(1, 0.2*inch))
+    
+    # === FAZIT UND EMPFEHLUNGEN - UNTER EXECUTIVE SUMMARY ===
+    # Berechne dynamisches Fazit
+    fazit_title, fazit_text, recommendation, fazit_color = calculate_conclusion(
+        status_counts, total_tests, tested_count
+    )
+    
+    # Fazit-Überschrift
+    story.append(Paragraph(
+        "<b>FAZIT UND EMPFEHLUNGEN</b>",
+        ParagraphStyle('FazitTitle', parent=styles['Heading2'], fontSize=12, textColor=colors.HexColor('#2C3E50'), 
+                     spaceBefore=5, spaceAfter=8)
+    ))
+    
+    # Fazit Box
+    conclusion_data = [
+        [Paragraph(f"<b>{fazit_title}</b>", body_style)],
+        [Paragraph(fazit_text, body_style)],
+        [Paragraph(f"<b>Empfehlung:</b> {recommendation}", body_style)]
+    ]
+    
+    conclusion_table = Table(conclusion_data, colWidths=[6.3*inch])
+    conclusion_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), fazit_color),
+        ('BACKGROUND', (0, 1), (0, -1), colors.white),
+        ('TEXTCOLOR', (0, 0), (0, 0), colors.white),
+        ('TEXTCOLOR', (0, 1), (0, -1), colors.HexColor('#2C3E50')),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('FONTNAME', (0, 0), (0, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (0, 0), 10),
+        ('FONTSIZE', (0, 1), (0, -1), 9),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('LEFTPADDING', (0, 0), (-1, -1), 10),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 10),
+        ('BOX', (0, 0), (-1, -1), 1, fazit_color)
+    ]))
+    
+    # Verwende KeepTogether um zu verhindern, dass Fazit über Seiten bricht
+    # Wenn es nicht passt, wird automatisch ein PageBreak gemacht
+    from reportlab.platypus import KeepTogether
+    fazit_block = KeepTogether([
+        Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>",
+                ParagraphStyle('FazitTitle2', parent=styles['Heading2'], fontSize=12, 
+                             textColor=colors.HexColor('#2C3E50'), spaceAfter=8)),
+        conclusion_table
+    ])
+    story.append(fazit_block)
     
     # === SEITE 2: INHALTSVERZEICHNIS / MENÜ ===
     story.append(PageBreak())
