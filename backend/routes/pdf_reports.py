@@ -334,15 +334,17 @@ async def generate_pdf_report(
         ParagraphStyle('CompanyName', parent=styles['Normal'], fontSize=14, textColor=colors.HexColor('#34495E'))
     )
     
-    # Logo + Firma in einer Zeile - GANZ LINKS bei 1,5cm (KEIN zusätzliches Padding)
+    # Logo + Firma in einer Zeile - GANZ LINKS bei 1,5cm Margin (ABSOLUT KEIN Padding!)
     logo_firma_row = [[logo_element, firma_text]]
-    logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 5*inch])
+    logo_firma_table = Table(logo_firma_row, colWidths=[0.55*inch, 5*inch])
     logo_firma_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # ✅ KEIN Padding - Logo startet bei 1,5cm
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-        ('LEFTPADDING', (1, 0), (1, 0), 8)  # Nur 8pt zwischen Logo und Firma
-        # ✅ ROTER RAHMEN ENTFERNT
+        ('LEFTPADDING', (0, 0), (0, 0), 0),  # Logo-Zelle: ABSOLUT KEIN Padding links
+        ('RIGHTPADDING', (0, 0), (0, 0), 0),  # Logo-Zelle: KEIN Padding rechts
+        ('LEFTPADDING', (1, 0), (1, 0), 6),   # Firma-Zelle: nur 6pt Abstand zum Logo
+        ('RIGHTPADDING', (1, 0), (1, 0), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
     ]))
     story.append(logo_firma_table)
     story.append(Spacer(1, 0.15*inch))
