@@ -755,20 +755,8 @@ async def generate_pdf_report(
         
         story.append(Spacer(1, 0.15*inch))
     
-    # Build PDF - ERSTER DURCHLAUF um Seitenzahl zu zählen
-    doc.build(story, onFirstPage=add_page_footer, onLaterPages=add_page_footer)
-    
-    # ZWEITER DURCHLAUF mit korrekter Gesamt-Seitenzahl
-    buffer.seek(0)
-    buffer.truncate(0)
-    doc = SimpleDocTemplate(
-        buffer,
-        pagesize=A4,
-        rightMargin=1.5*cm,
-        leftMargin=1.5*cm,
-        topMargin=1.5*cm,
-        bottomMargin=2*cm
-    )
+    # Build PDF mit Footer (nur ein Durchlauf)
+    # Für "Seite X von Y" verwenden wir einen Workaround mit NumberedCanvas
     doc.build(story, onFirstPage=add_page_footer_final, onLaterPages=add_page_footer_final)
     buffer.seek(0)
     
