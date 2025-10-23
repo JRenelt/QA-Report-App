@@ -442,15 +442,43 @@ async def generate_pdf_report(
         leading=18  # Mehr Abstand zwischen Zahl und Label
     )
     
-    print("🔍 DEBUG: ZURÜCK ZUM ORIGINAL-CODE - Executive Summary Karten")
+    print("🔍 DEBUG: NEUE Karten-Zentrierung wie CSS flexbox (verschachtelte Tabellen)")
     
-    # ORIGINAL METHODE mit PARA-Tag für korrekte Zentrierung
+    # NEUE METHODE: Wie CSS flexbox - verschachtelte Tabellen für perfekte Zentrierung
+    # Jede Karte = Mini-Tabelle mit 2 Zeilen (Zahl, Label) die zentriert ist
+    def create_centered_card(number, label, num_color, label_color):
+        """Erstellt eine zentrierte Karte wie CSS: display:flex, flex-direction:column, align-items:center"""
+        # Zahl (große Schrift)
+        num_para = Paragraph(
+            f"<font size=28 color='{num_color}'><b>{number}</b></font>",
+            ParagraphStyle('CardNum', parent=body_style, alignment=TA_CENTER)
+        )
+        # Label (kleine Schrift)
+        label_para = Paragraph(
+            f"<font size=7 color='{label_color}'><b>{label}</b></font>",
+            ParagraphStyle('CardLabel', parent=body_style, alignment=TA_CENTER)
+        )
+        
+        # Mini-Tabelle: 2 Zeilen (Zahl, Label), zentriert
+        mini_table = Table([[num_para], [label_para]], colWidths=[0.95*inch])
+        mini_table.setStyle(TableStyle([
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (0, 0), 5),    # Zahl: wenig Padding oben
+            ('BOTTOMPADDING', (0, 0), (0, 0), 3),  # Zahl: wenig Padding unten
+            ('TOPPADDING', (0, 1), (0, 1), 3),     # Label: wenig Padding oben
+            ('BOTTOMPADDING', (0, 1), (0, 1), 5)   # Label: wenig Padding unten
+        ]))
+        return mini_table
+    
     card_data = [[
-        Paragraph(f"<para align=center><font size=24 color='#34495E'><b>{total_tests}</b></font><br/><font size=7 color='#7F8C8D'><b>GESAMT</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=24 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=7 color='#27AE60'><b>✓ BESTANDEN</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=24 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=7 color='#E74C3C'><b>✗ FEHLER</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=24 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=7 color='#F39C12'><b>⚠ WARNUNG</b></font></para>", body_style),
-        Paragraph(f"<para align=center><font size=24 color='#95A5A6'><b>{untested}</b></font><br/><font size=7 color='#95A5A6'><b>⏸ OFFEN</b></font></para>", body_style)
+        create_centered_card(total_tests, "GESAMT", '#34495E', '#7F8C8D'),
+        create_centered_card(status_counts['success'], "✓ BESTANDEN", '#27AE60', '#27AE60'),
+        create_centered_card(status_counts['error'], "✗ FEHLER", '#E74C3C', '#E74C3C'),
+        create_centered_card(status_counts['warning'], "⚠ WARNUNG", '#F39C12', '#F39C12'),
+        create_centered_card(untested, "⏸ OFFEN", '#95A5A6', '#95A5A6')
     ]]
     
     card_table = Table(card_data, colWidths=[0.95*inch]*5, rowHeights=[0.85*inch])
