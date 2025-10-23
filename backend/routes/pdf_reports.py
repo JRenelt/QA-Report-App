@@ -758,9 +758,8 @@ async def generate_pdf_report(
         
         story.append(Spacer(1, 0.15*inch))
     
-    # Build PDF mit Footer (nur ein Durchlauf)
-    # Für "Seite X von Y" verwenden wir einen Workaround mit NumberedCanvas
-    doc.build(story, onFirstPage=add_page_footer_final, onLaterPages=add_page_footer_final)
+    # Build PDF mit NumberedCanvas für "Seite X von Y"
+    doc.build(story, canvasmaker=NumberedCanvas)
     buffer.seek(0)
     
     # Return as downloadable file
