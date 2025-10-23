@@ -457,9 +457,9 @@ async def generate_pdf_report(
         ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#BDC3C7')),
         ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#D5D8DC')),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # MIDDLE für korrekte Zentrierung mit spaceBefore
-        ('TOPPADDING', (0, 0), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 8)
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),  # TOP + erhöhtes TOPPADDING = 20% höhere Position
+        ('TOPPADDING', (0, 0), (-1, -1), 18),  # 18 statt 8 = ca. 20% höher (von 0.85inch = ca. 61pt)
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 5)
     ]))
     story.append(card_table)
     story.append(Spacer(1, 0.2*inch))
