@@ -300,6 +300,13 @@ async def generate_pdf_report(
         ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
     ))
     
+    # TITEL "QA-Report" - GANZ NACH LINKS (bei 1,5cm Margin)
+    story.append(Paragraph(
+        "<b>QA-Report</b>",
+        ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, 
+                      textColor=colors.HexColor('#2C3E50'), spaceAfter=10, leftIndent=0)
+    ))
+    
     # Logo laden - KLEIN und proportional, NICHT überlappend
     logo_element = None
     try:
@@ -331,15 +338,15 @@ async def generate_pdf_report(
         ParagraphStyle('CompanyName', parent=styles['Normal'], fontSize=14, textColor=colors.HexColor('#34495E'))
     )
     
-    # Logo + Firma in einer Zeile - Logo KLEIN, Firma daneben, ALLES NACH LINKS (kein Padding)
+    # Logo + Firma in einer Zeile - GANZ LINKS bei 1,5cm (KEIN zusätzliches Padding)
     logo_firma_row = [[logo_element, firma_text]]
     logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 5*inch])
     logo_firma_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # ✅ Kein Padding - direkt am Rand
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # ✅ KEIN Padding - Logo startet bei 1,5cm
         ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-        ('LEFTPADDING', (1, 0), (1, 0), 8),  # Nur 8pt zwischen Logo und Firma
-        ('BOX', (0, 0), (0, 0), 2, colors.red)  # ⚠️ TEMPORÄRER ROTER RAHMEN UM LOGO ZUR PRÜFUNG
+        ('LEFTPADDING', (1, 0), (1, 0), 8)  # Nur 8pt zwischen Logo und Firma
+        # ✅ ROTER RAHMEN ENTFERNT
     ]))
     story.append(logo_firma_table)
     story.append(Spacer(1, 0.15*inch))
