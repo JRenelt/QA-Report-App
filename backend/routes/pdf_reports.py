@@ -291,15 +291,17 @@ async def generate_pdf_report(
     )
     
     # === HEADER SECTION - NEU GESTALTET ===
-    # Logo: BEWEIS-TEST - Lade ID2-Logo (ÜBERGROSSE VERSION als Beweis)
-    
-    # Header Layout: Logo + Firma NEBENEINANDER (Logo als kleines Icon)
-    # TITEL "QA-Report" - GANZ NACH LINKS (bei 1,5cm Margin)
-    story.append(Paragraph(
-        "<b>QA-Report</b>",
-        ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, 
-                      textColor=colors.HexColor('#2C3E50'), spaceAfter=10, leftIndent=0)
-    ))
+    # TITEL "QA-Report" - GANZ NACH LINKS bei 1,5cm (leftIndent=0, kein extra Padding)
+    title_style = ParagraphStyle(
+        'ReportTitle',
+        parent=styles['Heading1'],
+        fontSize=22,
+        textColor=colors.HexColor('#2C3E50'),
+        spaceAfter=8,
+        leftIndent=0,
+        spaceBefore=0
+    )
+    story.append(Paragraph("<b>QA-Report</b>", title_style))
     
     # Logo laden - KLEIN und proportional, NICHT überlappend
     logo_element = None
