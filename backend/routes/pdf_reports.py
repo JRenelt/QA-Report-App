@@ -321,12 +321,16 @@ async def generate_pdf_report(
     ))
     
     # Header Table (2 columns: left & right aligned)
+    # Nutzbare Breite: A4 (21cm) - 2x 1.5cm Margin = 18cm
+    # Symmetrische Aufteilung für besseres Layout
     header_data = [[header_left, header_right]]
-    header_table = Table(header_data, colWidths=[10*cm, 6*cm])
+    header_table = Table(header_data, colWidths=[9*cm, 9*cm])  # Symmetrische Aufteilung
     header_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('ALIGN', (0, 0), (0, 0), 'LEFT'),
-        ('ALIGN', (1, 0), (1, 0), 'RIGHT')
+        ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # Kein zusätzliches Padding
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0)
     ]))
     story.append(header_table)
     story.append(Spacer(1, 0.2*inch))
