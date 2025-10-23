@@ -218,40 +218,43 @@ async def generate_pdf_report(
     # Create PDF in memory - mit 1.5cm Randabstand
     buffer = io.BytesIO()
     
-    # Footer-Funktion für Seitenzahlen und Copyright
-    # WICHTIG: Für "Seite X von Y" müssen wir das PDF zweimal durchlaufen (two-pass)
-    # Erstmal speichern wir die Seitenzahl in einer globalen Variable
-    page_count_holder = {'count': 0}
+    # Footer-Funktion mit "Seite X von Y" - verwenden wir NumberedCanvas
+    from reportlab.pdfgen.canvas import Canvas
     
-    def add_page_footer(canvas, doc):
-        """Fügt Fusszeile auf jeder Seite hinzu: Copyright links, Seitenzahl rechts"""
-        canvas.saveState()
-        # Copyright links
-        canvas.setFont('Helvetica', 8)
-        canvas.setFillColor(colors.HexColor('#7F8C8D'))
-        canvas.drawString(1.5*cm, 1.2*cm, "© 2025 • Jörg Renelt • Hamburg")
+    class NumberedCanvas(Canvas):
+        """Custom Canvas für Seitenzahlen mit 'von Y'"""
+        def __init__(self, *args, **kwargs):
+            Canvas.__init__(self, *args, **kwargs)
+            self._saved_page_states = []
         
-        # Seitenzahl rechts - "Seite X von Y"
-        page_num = canvas.getPageNumber()
-        # Aktualisiere die maximale Seitenzahl
-        if page_num > page_count_holder['count']:
-            page_count_holder['count'] = page_num
-        canvas.drawRightString(A4[0] - 1.5*cm, 1.2*cm, f"Seite {page_num}")
-        canvas.restoreState()
+        def showPage(self):
+            self._saved_page_states.append(dict(self.__dict__))
+            self._startPage()
+        
+        def save(self):
+            """Überschreibe save() um Seitenzahlen zu aktualisieren"""
+            num_pages = len(self._saved_page_states)
+            for state in self._saved_page_states:
+                self.__dict__.update(state)
+                self.draw_page_number(num_pages)
+                Canvas.showPage(self)
+            Canvas.save(self)
+        
+        def draw_page_number(self, page_count):
+            """Zeichne Fusszeile mit Seitenzahl"""
+            self.saveState()
+            self.setFont('Helvetica', 8)
+            self.setFillColor(colors.HexColor('#7F8C8D'))
+            # Copyright links
+            self.drawString(1.5*cm, 1.2*cm, "© 2025 • Jörg Renelt • Hamburg")
+            # Seitenzahl rechts
+            page_num = self.getPageNumber()
+            self.drawRightString(A4[0] - 1.5*cm, 1.2*cm, f"Seite {page_num} von {page_count}")
+            self.restoreState()
     
     def add_page_footer_final(canvas, doc):
-        """Fügt finale Fusszeile mit korrekter Gesamt-Seitenzahl hinzu"""
-        canvas.saveState()
-        # Copyright links
-        canvas.setFont('Helvetica', 8)
-        canvas.setFillColor(colors.HexColor('#7F8C8D'))
-        canvas.drawString(1.5*cm, 1.2*cm, "© 2025 • Jörg Renelt • Hamburg")
-        
-        # Seitenzahl rechts - "Seite X von Y"
-        page_num = canvas.getPageNumber()
-        total_pages = page_count_holder['count']
-        canvas.drawRightString(A4[0] - 1.5*cm, 1.2*cm, f"Seite {page_num} von {total_pages}")
-        canvas.restoreState()
+        """Dummy-Footer-Funktion (NumberedCanvas macht die eigentliche Arbeit)"""
+        pass
     
     doc = SimpleDocTemplate(
         buffer,
