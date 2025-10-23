@@ -941,51 +941,9 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
-  // PDF Export Funktionen - nutzt modernen Backend-Endpoint
+  // PDF Export Funktionen - ENTFERNT - Wird neu implementiert
   const handlePDFExport = async (type: 'all' | 'tested') => {
-    if (!selectedProjectId || !authToken) {
-      alert('❌ Kein Projekt ausgewählt oder nicht angemeldet');
-      return;
-    }
-
-    try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-modernize.preview.emergentagent.com';
-      const testedOnly = type === 'tested';
-      const cacheBuster = Date.now(); // Cache-Buster: aktueller Timestamp
-      
-      const response = await fetch(
-        `${backendUrl}/api/pdf-reports/generate/${selectedProjectId}?tested_only=${testedOnly}&_=${cacheBuster}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      // PDF herunterladen
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      
-      const reportType = type === 'all' ? 'alle' : 'getestet';
-      const filename = `QA_Bericht_${reportType}_${new Date().toISOString().split('T')[0]}.pdf`;
-      link.download = filename;
-      
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-
-      console.log(`✅ PDF-Bericht (${reportType}) erfolgreich heruntergeladen`);
-    } catch (error) {
-      console.error('PDF Export Fehler:', error);
-      alert(`❌ Fehler beim PDF-Export: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
-    }
+    alert('📋 PDF-Export wird neu implementiert. Funktion temporär deaktiviert.');
   };
 
   // Reset Tests mit Sicherheitsabfrage
