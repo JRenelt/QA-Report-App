@@ -666,12 +666,13 @@ async def generate_pdf_report(
     buffer.seek(0)
     
     # Return as downloadable file
-    # Format: QA-Report_PROJEKTNAME_IDXXXX_TT-MM-YY.pdf
+    # Format: QA-Report_PROJEKTNAME_IDXXXX_TT-MM-YY_HHMMSS.pdf (mit Timestamp für Cache-Buster)
     project_name_clean = project['name'].replace(" ", "_").replace("/", "-")
     project_id_short = project['id'][:8]  # Erste 8 Zeichen der UUID
     date_german = datetime.utcnow().strftime('%d-%m-%y')  # TT-MM-YY Format
+    timestamp = datetime.utcnow().strftime('%H%M%S')  # HHMMSS für Cache-Buster
     
-    filename = f"QA-Report_{project_name_clean}_{project_id_short}_{date_german}.pdf"
+    filename = f"QA-Report_{project_name_clean}_{project_id_short}_{date_german}_{timestamp}.pdf"
     
     return StreamingResponse(
         buffer,
