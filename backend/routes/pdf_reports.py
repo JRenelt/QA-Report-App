@@ -252,7 +252,7 @@ async def generate_pdf_report(
     )
     
     # === HEADER SECTION - NEU GESTALTET ===
-    # Logo: Verwende hochgeladenes Platzhalter-Logo oder "P" Fallback
+    # Logo: BEWEIS-TEST - Lade ID2-Logo (ÜBERGROSSE VERSION als Beweis)
     
     # Header Layout: Logo + Firma NEBENEINANDER (Logo als kleines Icon)
     # Erst Titel "QA-Report"
@@ -261,15 +261,17 @@ async def generate_pdf_report(
         ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
     ))
     
-    # Versuche Platzhalter-Logo zu laden oder verwende "P" Fallback
+    # BEWEIS: Lade ID2-Logo in ÜBERGRÖSSE
     logo_element = None
     try:
-        # Versuche das hochgeladene Logo zu verwenden
-        platzhalter_logo_url = "https://customer-assets.emergentagent.com/job_test-result-dash/artifacts/fx7grk71_platzhalter-logo.png"
-        logo_img = Image(platzhalter_logo_url, width=0.5*inch, height=0.5*inch, kind='proportional')
+        # ID2-Logo URL (aus DEFAULT_LOGO_URL)
+        id2_logo_url = "https://customer-assets.emergentagent.com/job_test-result-dash/artifacts/fc0bo5xn_image.png"
+        print(f"🔍 DEBUG: BEWEIS - Lade ID2-Logo in ÜBERGRÖSSE (2x2 inch) von: {id2_logo_url}")
+        logo_img = Image(id2_logo_url, width=2*inch, height=2*inch, kind='proportional')  # ÜBERGROSS als Beweis!
         logo_element = logo_img
+        print("✅ DEBUG: ID2-Logo erfolgreich geladen - SOLLTE SICHTBAR SEIN!")
     except Exception as e:
-        print(f"Logo konnte nicht geladen werden, verwende 'P' Fallback: {e}")
+        print(f"❌ Logo konnte nicht geladen werden: {e}")
         # Fallback: "P" als Text-Logo in Mini-Tabelle
         logo_p = Paragraph(
             "<para align=center><font size=12 color='white'><b>P</b></font></para>",
