@@ -537,20 +537,19 @@ async def generate_pdf_report(
         create_html_style_card(untested, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     ]]
     
-    # Outer Table: 5 Karten nebeneinander - VERTIKAL mit ABSTAND (nicht klebend!)
-    # Nutzbare Breite: 18cm = 7.087 inch
-    # 5 Karten à 1.1 inch = 5.5 inch, bleiben 1.587 inch für 6 Abstände (vor 1., zwischen 4x, nach 5.)
-    # Pro Abstand: 0.26 inch = sichtbarer Abstand zwischen den Karten
-    # Karten: VERTIKAL = schmal (1.1 inch) x HOCH (2.2 inch)
-    card_table = Table(card_data, colWidths=[1.1*inch]*5, rowHeights=[2.2*inch])
+    # Outer Table: 5 Karten nebeneinander - VERTIKAL mit SICHTBAREM ABSTAND!
+    # Nutzbare Breite: 18cm = 7.087 inch  
+    # 5 Karten à 1.0 inch = 5.0 inch, bleiben 2.087 inch für Abstände
+    # 4 Abstände zwischen 5 Karten = 0.52 inch pro Abstand (DEUTLICH SICHTBAR!)
+    # Karten: VERTIKAL = schmal (1.0 inch) x HOCH (2.0 inch)
+    card_table = Table(card_data, colWidths=[1.0*inch]*5, rowHeights=[2.0*inch])
     card_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0.13*inch),   # Halber Abstand links = 0.13
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0.13*inch),  # Halber Abstand rechts = 0.13 → gesamt 0.26 inch
+        ('LEFTPADDING', (0, 0), (-1, -1), 0.26*inch),   # Halber Abstand = 0.26 inch
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0.26*inch),  # Halber Abstand = 0.26 inch → gesamt 0.52 inch!
         ('TOPPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
-        # KEIN GRID, KEIN BOX - Karten haben eigene Rahmen
     ]))
     story.append(card_table)
     story.append(Spacer(1, 0.2*inch))
