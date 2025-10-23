@@ -536,14 +536,16 @@ async def generate_pdf_report(
         create_html_style_card(untested, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     ]]
     
-    # Outer Table: 5 Karten nebeneinander - QUADRATISCH
-    # Karten: 1.35 inch breit, Höhe sollte ähnlich sein für quadratische Form
-    card_table = Table(card_data, colWidths=[1.4*inch]*5, rowHeights=[1.45*inch])  # QUADRATISCH
+    # Outer Table: 5 Karten nebeneinander - QUADRATISCH und 100% Breite
+    # Nutzbare Breite: 18cm = 7.087 inch
+    # 5 Karten à 1.33 inch = 6.65 inch, bleiben 0.437 inch für 4 Abstände = 0.109 inch pro Abstand
+    # Karten: 1.33 x 1.33 inch = WIRKLICH QUADRATISCH
+    card_table = Table(card_data, colWidths=[1.33*inch]*5, rowHeights=[1.33*inch])  # ✅ QUADRATISCH
     card_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 3),   # Minimaler Abstand zwischen Karten
-        ('RIGHTPADDING', (0, 0), (-1, -1), 3),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0.055*inch),   # Halber Abstand links
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0.055*inch),  # Halber Abstand rechts = 0.11 inch gesamt
         ('TOPPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
     ]))
