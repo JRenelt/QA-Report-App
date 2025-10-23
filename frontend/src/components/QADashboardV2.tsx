@@ -941,9 +941,46 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
-  // PDF Export Funktionen - ENTFERNT - Wird neu implementiert
+  // PDF Export Funktionen - NEU IMPLEMENTIERT - Phase 1
   const handlePDFExport = async (type: 'all' | 'tested') => {
-    alert('📋 PDF-Export wird neu implementiert. Funktion temporär deaktiviert.');
+    if (!selectedProjectId || !authToken) {
+      alert('❌ Kein Projekt ausgewählt oder nicht angemeldet');
+      return;
+    }
+
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-modernize.preview.emergentagent.com';
+      
+      const response = await fetch(
+        `${backendUrl}/api/pdf-reports/generate/${selectedProjectId}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      // PDF herunterladen
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `QA-Report_Phase1_${new Date().toISOString().split('T')[0]}.pdf`;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      console.log(`✅ Phase 1 PDF erfolgreich heruntergeladen`);
+    } catch (error) {
+      console.error('PDF Export Fehler:', error);
+      alert(`❌ Fehler beim PDF-Export: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
+    }
   };
 
   // Reset Tests mit Sicherheitsabfrage
