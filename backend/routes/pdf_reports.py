@@ -446,17 +446,7 @@ async def generate_pdf_report(
     story.append(Spacer(1, 0.2*inch))
     
     # === FAZIT UND EMPFEHLUNGEN - UNTER EXECUTIVE SUMMARY ===
-    # Berechne dynamisches Fazit
-    fazit_title, fazit_text, recommendation, fazit_color = calculate_conclusion(
-        status_counts, total_tests, tested_count
-    )
-    
-    # Fazit-Überschrift
-    story.append(Paragraph(
-        "<b>FAZIT UND EMPFEHLUNGEN</b>",
-        ParagraphStyle('FazitTitle', parent=styles['Heading2'], fontSize=12, textColor=colors.HexColor('#2C3E50'), 
-                     spaceBefore=5, spaceAfter=8)
-    ))
+    # Berechne dynamisches Fazit (wurde bereits in Zeile 214 berechnet, aber hier nochmal zur Sicherheit)
     
     # Fazit Box - 90% der Seitenbreite
     # Seitenbreite: A4 = 21cm, abzüglich 2x 1.5cm Margin = 18cm nutzbar
