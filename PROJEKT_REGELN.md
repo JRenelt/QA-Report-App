@@ -2,6 +2,12 @@
 
 ## 🎯 Wichtige Projekt-Regeln
 
+### Deutscher USER
+**REGEL:** Muttersprache Deutsch
+- ✅ Alle Kommunikation mit dem User auf Deutsch
+- ✅ User ist deutscher Muttersprachler
+- ✅ Alle Antworten, Erklärungen und Dokumentation auf Deutsch verfassen
+
 ### AI-Agent Arbeitsregeln
 **REGEL:** Kritische Arbeitsabläufe für AI-Agent
 1. **Erledigte Aufgaben:** 
