@@ -533,16 +533,16 @@ async def generate_pdf_report(
         create_html_style_card(untested, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     ]]
     
-    # Outer Table: 5 Karten nebeneinander, KEIN Hintergrund, KEIN Grid (Karten haben eigene Rahmen)
-    card_table = Table(card_data, colWidths=[1.3*inch]*5, rowHeights=[1.8*inch])  # Größer für padding
+    # Outer Table: 5 Karten nebeneinander - QUADRATISCH
+    # Karten: 1.35 inch breit, Höhe sollte ähnlich sein für quadratische Form
+    card_table = Table(card_data, colWidths=[1.4*inch]*5, rowHeights=[1.45*inch])  # QUADRATISCH
     card_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 5),   # Kleiner Abstand zwischen Karten
-        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+        ('LEFTPADDING', (0, 0), (-1, -1), 3),   # Minimaler Abstand zwischen Karten
+        ('RIGHTPADDING', (0, 0), (-1, -1), 3),
         ('TOPPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
-        # KEIN BOX, KEIN GRID, KEIN BACKGROUND - Karten haben eigene Styles
     ]))
     story.append(card_table)
     story.append(Spacer(1, 0.2*inch))
