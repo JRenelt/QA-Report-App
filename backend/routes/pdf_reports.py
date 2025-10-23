@@ -344,19 +344,27 @@ async def generate_pdf_report(
     story.append(logo_firma_table)
     story.append(Spacer(1, 0.15*inch))
     
-    # Info-Zeilen darunter - AUCH NACH LINKS
+    # Info-Zeilen darunter - GANZ NACH LINKS (leftIndent negativ für mehr links)
+    info_style_left = ParagraphStyle(
+        'InfoLeft',
+        parent=styles['Normal'],
+        fontSize=9,
+        textColor=colors.HexColor('#2C3E50'),
+        leftIndent=-4  # NEGATIV = noch weiter nach links
+    )
+    
     header_left = []
     header_left.append(Paragraph(
         f"<b>Getestet von:</b> {current_user.first_name} {current_user.last_name}" if current_user.first_name else f"<b>Getestet von:</b> {current_user.username}",
-        ParagraphStyle('TesterInfo', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'))
+        info_style_left
     ))
     header_left.append(Paragraph(
         f"<b>Test Umgebung:</b> {project.get('test_environment', 'Nicht angegeben')}",
-        ParagraphStyle('TestEnv', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'))
+        info_style_left
     ))
     header_left.append(Paragraph(
         f"<b>Test Methodik:</b> {project.get('test_methodology', 'Nicht angegeben')}",
-        ParagraphStyle('TestMeth', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'))
+        info_style_left
     ))
     
     header_right = []
@@ -365,15 +373,15 @@ async def generate_pdf_report(
         ParagraphStyle('DateRight', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'), alignment=TA_RIGHT)
     ))
     
-    # Header Table - KEIN PADDING, volle Breite nutzen
+    # Header Table - VOLLE nutzbare Breite (18cm)
     header_data = [[header_left, header_right]]
-    header_table = Table(header_data, colWidths=[9*cm, 9*cm])
+    header_table = Table(header_data, colWidths=[11*cm, 7*cm])  # Links breiter, rechts schmaler
     header_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('ALIGN', (0, 0), (0, 0), 'LEFT'),
         ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # ✅ Kein Padding
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0)  # ✅ Kein Padding
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0)
     ]))
     story.append(header_table)
     story.append(Spacer(1, 0.2*inch))
