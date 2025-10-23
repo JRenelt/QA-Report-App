@@ -30,7 +30,7 @@ Deutschsprachige QA-Management-Anwendung für Test-Berichte und Projekt-Verwaltu
 
 ## 🔗 Links
 
-- Template-Download: https://test-result-dash.preview.emergentagent.com/test-import-template-v2.json
+- Template-Download: https://qa-report-modernize.preview.emergentagent.com/test-import-template-v2.json
 - API-Docs: `/api/docs`
 
 ---
