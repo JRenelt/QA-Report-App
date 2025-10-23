@@ -540,16 +540,16 @@ async def generate_pdf_report(
         create_html_style_card(untested, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     ]]
     
-    # Outer Table: 5 Karten nebeneinander - QUADRATISCH und 100% Breite
+    # Outer Table: 5 Karten nebeneinander - VERTIKAL (hoch und schmal) wie BILD 3
     # Nutzbare Breite: 18cm = 7.087 inch
-    # 5 Karten à 1.33 inch = 6.65 inch, bleiben 0.437 inch für 4 Abstände = 0.109 inch pro Abstand
-    # Karten: 1.33 x 1.33 inch = WIRKLICH QUADRATISCH
-    card_table = Table(card_data, colWidths=[1.33*inch]*5, rowHeights=[1.33*inch])  # ✅ QUADRATISCH
+    # 5 Karten à 1.05 inch = 5.25 inch, bleiben 1.837 inch für 4 Abstände = 0.46 inch pro Abstand
+    # Karten: VERTIKAL = schmal (1.05 inch) x HOCH (2.2 inch) - ca. 2:1 Verhältnis
+    card_table = Table(card_data, colWidths=[1.05*inch]*5, rowHeights=[2.2*inch])  # ✅ VERTIKAL: schmal x hoch
     card_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0.055*inch),   # Halber Abstand links
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0.055*inch),  # Halber Abstand rechts = 0.11 inch gesamt
+        ('LEFTPADDING', (0, 0), (-1, -1), 0.23*inch),   # Halber Abstand links
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0.23*inch),  # Halber Abstand rechts = 0.46 inch gesamt
         ('TOPPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
     ]))
