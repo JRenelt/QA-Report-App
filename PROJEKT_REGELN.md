@@ -52,6 +52,12 @@
    - ✅ Version und Datum aktualisieren
    - ✅ Keine Aufgabe ist komplett ohne Dokumentations-Update
 
+8. **PDF-Export / Logo-Format:**
+   - ❌ **SVG-Logos werden NICHT unterstützt** (ReportLab-Limitation)
+   - ✅ **NUR PNG oder JPG** für Firmen-Logos verwenden
+   - ✅ Bei SVG-Upload: User informieren und PNG/JPG-Alternative vorschlagen
+   - ✅ Fallback: Text-basiertes Platzhalter-Logo verwenden
+
 ### Abkürzungen und Terminologie
 **REGEL:** Einheitliche Begriffe für Testing und Debugging
 - **CC** (Clear Cache): Standard-Browser-Cache-Refresh mit `STRG+Shift+R` (Hard Reload)
