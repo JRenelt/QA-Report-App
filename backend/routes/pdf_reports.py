@@ -494,7 +494,7 @@ async def generate_pdf_report(
         leading=18  # Mehr Abstand zwischen Zahl und Label
     )
     
-    print("🔍 DEBUG: Executive Summary Karten wie HTML-Beispiel mit abgerundeten Ecken")
+    print("🔍 DEBUG: Executive Summary Karten VERTIKAL wie in Bild 3")
     
     # KARTEN WIE IM HTML-BEISPIEL: border-radius, farbiger Rahmen, transparenter Hintergrund
     # ReportLab unterstützt border-radius nicht direkt in Table, aber wir können es mit drawRoundRect simulieren
