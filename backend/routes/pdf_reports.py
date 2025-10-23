@@ -454,14 +454,16 @@ async def generate_pdf_report(
                      spaceBefore=5, spaceAfter=8)
     ))
     
-    # Fazit Box
+    # Fazit Box - 90% der Seitenbreite
+    # Seitenbreite: A4 = 21cm, abzüglich 2x 1.5cm Margin = 18cm nutzbar
+    # 90% von 18cm = 16.2cm
     conclusion_data = [
         [Paragraph(f"<b>{fazit_title}</b>", body_style)],
         [Paragraph(fazit_text, body_style)],
         [Paragraph(f"<b>Empfehlung:</b> {recommendation}", body_style)]
     ]
     
-    conclusion_table = Table(conclusion_data, colWidths=[6.3*inch])
+    conclusion_table = Table(conclusion_data, colWidths=[16.2*cm])  # 90% der nutzbaren Breite
     conclusion_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, 0), fazit_color),
         ('BACKGROUND', (0, 1), (0, -1), colors.white),
