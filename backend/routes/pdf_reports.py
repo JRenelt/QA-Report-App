@@ -475,9 +475,12 @@ async def generate_pdf_report(
     story.append(summary_para)
     story.append(Spacer(1, 0.15*inch))
     
-    # Professionelle Zahlen-Karten - 50% KLEINER
-    # WICHTIG: [Zahl] + weicher Umbruch + [Label] als EIN Objekt behandeln und zentrieren
-    # Positionierung: ca. 20% höher durch spaceBefore in ParagraphStyle
+    # ✅ STATUSZEILE VOR DEN KARTEN (wurde vorher vergessen!)
+    status_text = f"Status: {tested_count} von {total_tests} Tests bestanden. {status_counts['error']} Fehler festgestellt. {untested} ungeprüft."
+    story.append(Paragraph(
+        status_text,
+        ParagraphStyle('StatusLine', parent=body_style, fontSize=9, textColor=colors.HexColor('#555555'), spaceAfter=12)
+    ))
     
     print(f"🔍 DEBUG: Executive Summary wird generiert. Total Tests: {total_tests}")
     
