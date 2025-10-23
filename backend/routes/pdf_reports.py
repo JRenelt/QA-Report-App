@@ -292,19 +292,19 @@ async def generate_pdf_report(
         ParagraphStyle('CompanyName', parent=styles['Normal'], fontSize=14, textColor=colors.HexColor('#34495E'))
     )
     
-    # Logo + Firma in einer Zeile - Logo KLEIN, Firma daneben
+    # Logo + Firma in einer Zeile - Logo KLEIN, Firma daneben, ALLES NACH LINKS (kein Padding)
     logo_firma_row = [[logo_element, firma_text]]
-    logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 5*inch])  # Weniger Breite für Logo
+    logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 5*inch])
     logo_firma_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # Kein Padding links
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0),  # Kein Padding rechts
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # ✅ Kein Padding - direkt am Rand
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
         ('LEFTPADDING', (1, 0), (1, 0), 8)  # Nur 8pt zwischen Logo und Firma
     ]))
     story.append(logo_firma_table)
     story.append(Spacer(1, 0.15*inch))
     
-    # Info-Zeilen darunter
+    # Info-Zeilen darunter - AUCH NACH LINKS
     header_left = []
     header_left.append(Paragraph(
         f"<b>Getestet von:</b> {current_user.first_name} {current_user.last_name}" if current_user.first_name else f"<b>Getestet von:</b> {current_user.username}",
@@ -325,17 +325,15 @@ async def generate_pdf_report(
         ParagraphStyle('DateRight', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'), alignment=TA_RIGHT)
     ))
     
-    # Header Table (2 columns: left & right aligned)
-    # Nutzbare Breite: A4 (21cm) - 2x 1.5cm Margin = 18cm
-    # Symmetrische Aufteilung für besseres Layout
+    # Header Table - KEIN PADDING, volle Breite nutzen
     header_data = [[header_left, header_right]]
-    header_table = Table(header_data, colWidths=[9*cm, 9*cm])  # Symmetrische Aufteilung
+    header_table = Table(header_data, colWidths=[9*cm, 9*cm])
     header_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('ALIGN', (0, 0), (0, 0), 'LEFT'),
         ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # Kein zusätzliches Padding
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0)
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # ✅ Kein Padding
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0)  # ✅ Kein Padding
     ]))
     story.append(header_table)
     story.append(Spacer(1, 0.2*inch))
