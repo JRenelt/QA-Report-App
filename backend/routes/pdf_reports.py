@@ -261,27 +261,28 @@ async def generate_pdf_report(
         ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
     ))
     
-    # BEWEIS: Lade ID2-Logo in ÜBERGRÖSSE
+    # Logo laden (normale Größe)
     logo_element = None
     try:
-        # ID2-Logo URL (aus DEFAULT_LOGO_URL)
-        id2_logo_url = "https://customer-assets.emergentagent.com/job_test-result-dash/artifacts/fc0bo5xn_image.png"
-        print(f"🔍 DEBUG: BEWEIS - Lade ID2-Logo in ÜBERGRÖSSE (2x2 inch) von: {id2_logo_url}")
-        logo_img = Image(id2_logo_url, width=2*inch, height=2*inch, kind='proportional')  # ÜBERGROSS als Beweis!
+        # Verwende Company-Logo wenn vorhanden, sonst ID2-Default
+        logo_url = company_logo_url
+        print(f"🔍 DEBUG: Lade Logo von: {logo_url}")
+        logo_img = Image(logo_url, width=0.8*inch, height=0.8*inch, kind='proportional')
         logo_element = logo_img
-        print("✅ DEBUG: ID2-Logo erfolgreich geladen - SOLLTE SICHTBAR SEIN!")
+        print("✅ DEBUG: Logo erfolgreich geladen")
     except Exception as e:
         print(f"❌ Logo konnte nicht geladen werden: {e}")
-        # Fallback: "P" als Text-Logo in Mini-Tabelle
+        # Fallback: Text-Logo
         logo_p = Paragraph(
-            "<para align=center><font size=12 color='white'><b>P</b></font></para>",
-            ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=12, alignment=TA_CENTER)
+            "<para align=center><font size=12 color='white'><b>LOGO</b></font></para>",
+            ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER)
         )
-        logo_p_table = Table([[logo_p]], colWidths=[0.5*inch], rowHeights=[0.5*inch])
+        logo_p_table = Table([[logo_p]], colWidths=[0.8*inch], rowHeights=[0.8*inch])
         logo_p_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#00CED1')),
+            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#E8E8E8')),
             ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-            ('VALIGN', (0, 0), (0, 0), 'MIDDLE')
+            ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+            ('BOX', (0, 0), (0, 0), 1, colors.HexColor('#CCCCCC'))
         ]))
         logo_element = logo_p_table
     
