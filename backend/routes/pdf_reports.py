@@ -435,12 +435,30 @@ async def generate_pdf_report(
     
     print("🔍 DEBUG: card_style erstellt mit spaceBefore=12, leading=18")
     
+    # NEUE METHODE: Erstelle für jede Karte eine Mini-Tabelle mit Spacer oben für 20% höhere Position
+    def create_card_content(number, label, num_color, label_color):
+        """Erstellt Karten-Inhalt mit Spacer für 20% höhere Position"""
+        spacer_height = 0.15*inch  # 20% der Card-Höhe (0.85*inch) = ca. 0.17inch
+        num_para = Paragraph(f"<font size=24 color='{num_color}'><b>{number}</b></font>", 
+                            ParagraphStyle('Num', parent=body_style, alignment=TA_CENTER))
+        label_para = Paragraph(f"<font size=7 color='{label_color}'><b>{label}</b></font>", 
+                              ParagraphStyle('Label', parent=body_style, alignment=TA_CENTER, leading=10))
+        
+        # Mini-Tabelle: Spacer + Nummer + Label
+        mini_table = Table([[Spacer(1, spacer_height)], [num_para], [label_para]], 
+                          colWidths=[0.95*inch])
+        mini_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (0, 0), 'TOP'),
+            ('VALIGN', (0, 1), (0, 2), 'MIDDLE')
+        ]))
+        return mini_table
+    
     card_data = [[
-        Paragraph(f"<font size=24 color='#34495E'><b>{total_tests}</b></font><br/><font size=7 color='#7F8C8D'><b>GESAMT</b></font>", card_style),
-        Paragraph(f"<font size=24 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=7 color='#27AE60'><b>✓ BESTANDEN</b></font>", card_style),
-        Paragraph(f"<font size=24 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=7 color='#E74C3C'><b>✗ FEHLER</b></font>", card_style),
-        Paragraph(f"<font size=24 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=7 color='#F39C12'><b>⚠ WARNUNG</b></font>", card_style),
-        Paragraph(f"<font size=24 color='#95A5A6'><b>{untested}</b></font><br/><font size=7 color='#95A5A6'><b>⏸ OFFEN</b></font>", card_style)
+        create_card_content(total_tests, "GESAMT", '#34495E', '#7F8C8D'),
+        create_card_content(status_counts['success'], "✓ BESTANDEN", '#27AE60', '#27AE60'),
+        create_card_content(status_counts['error'], "✗ FEHLER", '#E74C3C', '#E74C3C'),
+        create_card_content(status_counts['warning'], "⚠ WARNUNG", '#F39C12', '#F39C12'),
+        create_card_content(untested, "⏸ OFFEN", '#95A5A6', '#95A5A6')
     ]]
     
     card_table = Table(card_data, colWidths=[0.95*inch]*5, rowHeights=[0.85*inch])
