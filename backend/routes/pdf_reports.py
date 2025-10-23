@@ -419,13 +419,24 @@ async def generate_pdf_report(
     
     # Professionelle Zahlen-Karten - 50% KLEINER
     # WICHTIG: [Zahl] + weicher Umbruch + [Label] als EIN Objekt behandeln und zentrieren
-    # Positionierung: ca. 20% höher in der Karte durch erhöhtes TOPPADDING
+    # Positionierung: ca. 20% höher durch spaceBefore in ParagraphStyle
+    
+    # Custom Style für Karten mit erhöhtem spaceBefore für 20% höhere Position
+    card_style = ParagraphStyle(
+        'CardStyle',
+        parent=body_style,
+        alignment=TA_CENTER,
+        spaceBefore=12,  # 20% höher: verschiebt den Inhalt nach unten
+        spaceAfter=0,
+        leading=18  # Mehr Abstand zwischen Zahl und Label
+    )
+    
     card_data = [[
-        Paragraph(f"<para align=center leading=16><font size=24 color='#34495E'><b>{total_tests}</b></font><br/><font size=7 color='#7F8C8D'><b>GESAMT</b></font></para>", body_style),
-        Paragraph(f"<para align=center leading=16><font size=24 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=7 color='#27AE60'><b>✓ BESTANDEN</b></font></para>", body_style),
-        Paragraph(f"<para align=center leading=16><font size=24 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=7 color='#E74C3C'><b>✗ FEHLER</b></font></para>", body_style),
-        Paragraph(f"<para align=center leading=16><font size=24 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=7 color='#F39C12'><b>⚠ WARNUNG</b></font></para>", body_style),
-        Paragraph(f"<para align=center leading=16><font size=24 color='#95A5A6'><b>{untested}</b></font><br/><font size=7 color='#95A5A6'><b>⏸ OFFEN</b></font></para>", body_style)
+        Paragraph(f"<font size=24 color='#34495E'><b>{total_tests}</b></font><br/><font size=7 color='#7F8C8D'><b>GESAMT</b></font>", card_style),
+        Paragraph(f"<font size=24 color='#27AE60'><b>{status_counts['success']}</b></font><br/><font size=7 color='#27AE60'><b>✓ BESTANDEN</b></font>", card_style),
+        Paragraph(f"<font size=24 color='#E74C3C'><b>{status_counts['error']}</b></font><br/><font size=7 color='#E74C3C'><b>✗ FEHLER</b></font>", card_style),
+        Paragraph(f"<font size=24 color='#F39C12'><b>{status_counts['warning']}</b></font><br/><font size=7 color='#F39C12'><b>⚠ WARNUNG</b></font>", card_style),
+        Paragraph(f"<font size=24 color='#95A5A6'><b>{untested}</b></font><br/><font size=7 color='#95A5A6'><b>⏸ OFFEN</b></font>", card_style)
     ]]
     
     card_table = Table(card_data, colWidths=[0.95*inch]*5, rowHeights=[0.85*inch])
@@ -438,9 +449,9 @@ async def generate_pdf_report(
         ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#BDC3C7')),
         ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#D5D8DC')),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, -1), 'TOP'),  # TOP statt MIDDLE für 20% höhere Position
-        ('TOPPADDING', (0, 0), (-1, -1), 17),  # 17 statt 10 = ca. 20% höher (70% mehr Padding oben)
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5)   # Reduziert für Balance
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # MIDDLE für korrekte Zentrierung mit spaceBefore
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8)
     ]))
     story.append(card_table)
     story.append(Spacer(1, 0.2*inch))
