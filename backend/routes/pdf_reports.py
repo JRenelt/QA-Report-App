@@ -1,35 +1,14 @@
 """
-PDF Report Generation Routes - Modern Professional Design
-Supports Company Logo, Executive Summary, Dynamic Conclusions
+PDF Report Generation Routes - BEREINIGT
+Wird neu implementiert
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import StreamingResponse
-from typing import Optional
-from datetime import datetime
-import io
-import base64
-import urllib.request
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch, cm
-from reportlab.platypus import (
-    SimpleDocTemplate, Table, TableStyle, Paragraph, 
-    Spacer, PageBreak, Image
-)
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
-
-from database import (
-    projects_collection, 
-    test_suites_collection, 
-    test_cases_collection,
-    companies_collection
-)
-from models import User
-from auth import get_current_user
+from fastapi import APIRouter
 
 router = APIRouter()
+
+# ALLE PDF-FUNKTIONEN WURDEN ENTFERNT
+# Wir beginnen von vorne mit einer professionellen Implementierung
 
 # Default ID2 Logo for white background
 DEFAULT_LOGO_URL = "https://customer-assets.emergentagent.com/job_test-result-dash/artifacts/fc0bo5xn_image.png"
