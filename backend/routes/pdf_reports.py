@@ -315,7 +315,8 @@ async def generate_pdf_report(
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('LEFTPADDING', (0, 0), (-1, -1), 0),  # ✅ Kein Padding - direkt am Rand
         ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-        ('LEFTPADDING', (1, 0), (1, 0), 8)  # Nur 8pt zwischen Logo und Firma
+        ('LEFTPADDING', (1, 0), (1, 0), 8),  # Nur 8pt zwischen Logo und Firma
+        ('BOX', (0, 0), (0, 0), 2, colors.red)  # ⚠️ TEMPORÄRER ROTER RAHMEN UM LOGO ZUR PRÜFUNG
     ]))
     story.append(logo_firma_table)
     story.append(Spacer(1, 0.15*inch))
