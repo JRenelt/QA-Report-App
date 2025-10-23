@@ -217,6 +217,22 @@ async def generate_pdf_report(
     
     # Create PDF in memory - mit 1.5cm Randabstand
     buffer = io.BytesIO()
+    
+    # Footer-Funktion für Seitenzahlen und Copyright
+    def add_page_footer(canvas, doc):
+        """Fügt Fusszeile auf jeder Seite hinzu: Copyright links, Seitenzahl rechts"""
+        canvas.saveState()
+        # Copyright links
+        canvas.setFont('Helvetica', 8)
+        canvas.setFillColor(colors.HexColor('#7F8C8D'))
+        canvas.drawString(1.5*cm, 1.2*cm, "© 2025 • Jörg Renelt • Hamburg")
+        
+        # Seitenzahl rechts
+        page_num = canvas.getPageNumber()
+        total_pages = doc.page  # Wird beim Build aktualisiert
+        canvas.drawRightString(A4[0] - 1.5*cm, 1.2*cm, f"Seite {page_num}")
+        canvas.restoreState()
+    
     doc = SimpleDocTemplate(
         buffer,
         pagesize=A4,
