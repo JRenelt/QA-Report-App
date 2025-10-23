@@ -588,14 +588,25 @@ async def generate_pdf_report(
     ]))
     
     # Verwende KeepTogether um zu verhindern, dass Fazit über Seiten bricht
-    # Wenn es nicht passt, wird automatisch ein PageBreak gemacht
     from reportlab.platypus import KeepTogether
-    fazit_block = KeepTogether([
-        Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>",
-                ParagraphStyle('FazitTitle2', parent=styles['Heading2'], fontSize=12, 
-                             textColor=colors.HexColor('#2C3E50'), spaceAfter=8)),
-        conclusion_table
-    ])
+    
+    # Überschrift für Fazit
+    fazit_title_para = Paragraph(
+        "<b>FAZIT UND EMPFEHLUNGEN</b>",
+        ParagraphStyle('FazitTitle2', parent=styles['Heading2'], fontSize=12, 
+                     textColor=colors.HexColor('#2C3E50'), spaceAfter=8, leftIndent=0)
+    )
+    
+    # ✅ FAZIT-BOX IN ZENTRIERENDE TABLE EINBETTEN für 90% Breite
+    # Nutzbare Breite: 18cm, davon 90% = 16.2cm in der Mitte, 10% = 1.8cm verteilt (0.9cm links + 0.9cm rechts)
+    fazit_wrapper = Table([[conclusion_table]], colWidths=[16.2*cm])
+    fazit_wrapper.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+        ('LEFTPADDING', (0, 0), (0, 0), 0),
+        ('RIGHTPADDING', (0, 0), (0, 0), 0)
+    ]))
+    
+    fazit_block = KeepTogether([fazit_title_para, fazit_wrapper])
     story.append(fazit_block)
     
     # === SEITE 2: INHALTSVERZEICHNIS / MENÜ ===
