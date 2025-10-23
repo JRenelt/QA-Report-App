@@ -511,8 +511,8 @@ async def generate_pdf_report(
         )
         
         # Mini-Tabelle: 2 Zeilen (Zahl oben, Label unten) - VERTIKAL = schmal und HOCH
-        # Breite: 1.1 inch (entsprechend der Outer Table)
-        mini_table = Table([[num_para], [label_para]], colWidths=[1.1*inch])  # SCHMAL
+        # Breite: 1.0 inch (entsprechend der Outer Table)
+        mini_table = Table([[num_para], [label_para]], colWidths=[1.0*inch])  # SCHMAL
         mini_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, -1), bg_color),
             ('BOX', (0, 0), (-1, -1), 2, border_color),  # 2pt farbiger Rahmen
