@@ -735,8 +735,8 @@ async def generate_pdf_report(
         
         story.append(Spacer(1, 0.15*inch))
     
-    # Build PDF
-    doc.build(story)
+    # Build PDF mit Footer-Funktion
+    doc.build(story, onFirstPage=add_page_footer, onLaterPages=add_page_footer)
     buffer.seek(0)
     
     # Return as downloadable file
