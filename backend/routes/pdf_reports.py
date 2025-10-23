@@ -501,31 +501,32 @@ async def generate_pdf_report(
     # ODER wir verwenden eine einfachere Methode: normale Paragraph mit Zentrierung
     
     def create_html_style_card(number, label, border_color, bg_color):
-        """Erstellt QUADRATISCHE Karte: abgerundete Ecken, farbiger Rahmen, transparenter Hintergrund"""
-        # Zahl (40pt, fett, dunkel)
+        """Erstellt VERTIKALE Karte (HOCH): abgerundete Ecken, farbiger Rahmen, transparenter Hintergrund - wie BILD 3"""
+        # Zahl (30pt, fett, dunkel) - KLEINER für vertikales Layout
         num_para = Paragraph(
-            f"<font size=40 color='#333333'><b>{number}</b></font>",
-            ParagraphStyle('CardNum', parent=body_style, alignment=TA_CENTER, leading=48)
+            f"<font size=30 color='#333333'><b>{number}</b></font>",
+            ParagraphStyle('CardNum', parent=body_style, alignment=TA_CENTER, leading=36)
         )
-        # Label (kleinere Schrift, grau) - mit <br/> für weichen Umbruch
+        # Label (kleinere Schrift, grau)
         label_para = Paragraph(
-            f"<font size=9 color='#555555'><br/>{label}</font>",
-            ParagraphStyle('CardLabel', parent=body_style, alignment=TA_CENTER, leading=12)
+            f"<font size=8 color='#555555'>{label}</font>",
+            ParagraphStyle('CardLabel', parent=body_style, alignment=TA_CENTER, leading=10, spaceBefore=5)
         )
         
-        # Mini-Tabelle: 2 Zeilen (Zahl, Label)
-        # Nutzbare Breite: 18cm = 7.087 inch
-        # 5 Karten mit gleichmäßigen Abständen: (7.087 - 4*0.1) / 5 = 1.337 inch pro Karte
-        mini_table = Table([[num_para], [label_para]], colWidths=[1.33*inch])
+        # Mini-Tabelle: 2 Zeilen (Zahl oben, Label unten) - VERTIKAL = schmal und HOCH
+        # Breite: schmaler (ca. 1 inch), Höhe: höher (wird durch Outer Table gesteuert)
+        mini_table = Table([[num_para], [label_para]], colWidths=[1.05*inch])  # SCHMAL
         mini_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, -1), bg_color),
             ('BOX', (0, 0), (-1, -1), 2, border_color),  # 2pt farbiger Rahmen
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (-1, -1), 15),    # Balanced für quadratisch
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 15),
-            ('LEFTPADDING', (0, 0), (-1, -1), 8),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+            ('TOPPADDING', (0, 0), (0, 0), 25),    # Zahl: viel Abstand oben
+            ('BOTTOMPADDING', (0, 0), (0, 0), 8),   # Zahl: weniger unten
+            ('TOPPADDING', (0, 1), (0, 1), 8),      # Label: wenig oben
+            ('BOTTOMPADDING', (0, 1), (0, 1), 25),  # Label: viel Abstand unten
+            ('LEFTPADDING', (0, 0), (-1, -1), 5),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 5),
             ('ROUNDEDCORNERS', [15, 15, 15, 15])  # Abgerundete Ecken
         ]))
         return mini_table
