@@ -261,28 +261,29 @@ async def generate_pdf_report(
         ParagraphStyle('ReportTitle', parent=styles['Heading1'], fontSize=22, textColor=colors.HexColor('#2C3E50'), spaceAfter=10)
     ))
     
-    # Logo laden (normale Größe)
+    # Logo laden - KLEIN und proportional, NICHT überlappend
     logo_element = None
     try:
         # Verwende Company-Logo wenn vorhanden, sonst ID2-Default
         logo_url = company_logo_url
         print(f"🔍 DEBUG: Lade Logo von: {logo_url}")
-        logo_img = Image(logo_url, width=0.8*inch, height=0.8*inch, kind='proportional')
+        # KLEINERES Logo: 0.5x0.5 inch statt 0.8x0.8
+        logo_img = Image(logo_url, width=0.5*inch, height=0.5*inch, kind='proportional')
         logo_element = logo_img
-        print("✅ DEBUG: Logo erfolgreich geladen")
+        print("✅ DEBUG: Logo erfolgreich geladen (0.5x0.5 inch)")
     except Exception as e:
         print(f"❌ Logo konnte nicht geladen werden: {e}")
         # Fallback: Text-Logo
         logo_p = Paragraph(
-            "<para align=center><font size=12 color='white'><b>LOGO</b></font></para>",
-            ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER)
+            "<para align=center><font size=10 color='#666666'><b>LOGO</b></font></para>",
+            ParagraphStyle('LogoP', parent=styles['Normal'], fontSize=8, alignment=TA_CENTER)
         )
-        logo_p_table = Table([[logo_p]], colWidths=[0.8*inch], rowHeights=[0.8*inch])
+        logo_p_table = Table([[logo_p]], colWidths=[0.5*inch], rowHeights=[0.5*inch])
         logo_p_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#E8E8E8')),
+            ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#F5F5F5')),
             ('ALIGN', (0, 0), (0, 0), 'CENTER'),
             ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
-            ('BOX', (0, 0), (0, 0), 1, colors.HexColor('#CCCCCC'))
+            ('BOX', (0, 0), (0, 0), 1, colors.HexColor('#DDDDDD'))
         ]))
         logo_element = logo_p_table
     
@@ -291,13 +292,14 @@ async def generate_pdf_report(
         ParagraphStyle('CompanyName', parent=styles['Normal'], fontSize=14, textColor=colors.HexColor('#34495E'))
     )
     
-    # Logo + Firma in einer Zeile (minimaler Abstand)
+    # Logo + Firma in einer Zeile - Logo KLEIN, Firma daneben
     logo_firma_row = [[logo_element, firma_text]]
-    logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 7*inch])
+    logo_firma_table = Table(logo_firma_row, colWidths=[0.6*inch, 5*inch])  # Weniger Breite für Logo
     logo_firma_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (0, 0), 0),
-        ('LEFTPADDING', (1, 0), (1, 0), 10)
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),  # Kein Padding links
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),  # Kein Padding rechts
+        ('LEFTPADDING', (1, 0), (1, 0), 8)  # Nur 8pt zwischen Logo und Firma
     ]))
     story.append(logo_firma_table)
     story.append(Spacer(1, 0.15*inch))
