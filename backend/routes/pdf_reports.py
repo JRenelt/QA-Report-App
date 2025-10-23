@@ -522,21 +522,16 @@ async def generate_pdf_report(
         create_html_style_card(untested, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     ]]
     
-    card_table = Table(card_data, colWidths=[0.95*inch]*5, rowHeights=[0.85*inch])
+    # Outer Table: 5 Karten nebeneinander, KEIN Hintergrund, KEIN Grid (Karten haben eigene Rahmen)
+    card_table = Table(card_data, colWidths=[1.3*inch]*5, rowHeights=[1.8*inch])  # Größer für padding
     card_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (0, 0), colors.HexColor('#ECF0F1')),
-        ('BACKGROUND', (1, 0), (1, 0), colors.HexColor('#D5F4E6')),
-        ('BACKGROUND', (2, 0), (2, 0), colors.HexColor('#FADBD8')),
-        ('BACKGROUND', (3, 0), (3, 0), colors.HexColor('#FCF3CF')),
-        ('BACKGROUND', (4, 0), (4, 0), colors.HexColor('#E8E8E8')),
-        ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#BDC3C7')),
-        ('INNERGRID', (0, 0), (-1, -1), 1, colors.HexColor('#D5D8DC')),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # MIDDLE für vertikale Zentrierung
-        ('LEFTPADDING', (0, 0), (-1, -1), 0),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 5),   # Kleiner Abstand zwischen Karten
+        ('RIGHTPADDING', (0, 0), (-1, -1), 5),
         ('TOPPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
+        # KEIN BOX, KEIN GRID, KEIN BACKGROUND - Karten haben eigene Styles
     ]))
     story.append(card_table)
     story.append(Spacer(1, 0.2*inch))
