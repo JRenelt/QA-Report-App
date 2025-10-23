@@ -387,11 +387,17 @@ async def generate_pdf_report(
         ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#BDC3C7'))
     ]))
     
-    # Combine both tables side by side mit MEHR ABSTAND
-    combined_info_data = [[left_table, Spacer(0.6*inch, 0), right_table]]
-    combined_table = Table(combined_info_data, colWidths=[3.8*inch, 0.6*inch, 2.4*inch])
+    # Combine both tables side by side - Linke Tabelle links, rechte Tabelle RECHTS
+    # Nutzbare Breite: 18cm = 7.09 inch
+    # Linke Tabelle: 3.8 inch, Spacer flexibel, Rechte Tabelle: 2.4 inch
+    combined_info_data = [[left_table, '', right_table]]
+    combined_table = Table(combined_info_data, colWidths=[3.8*inch, None, 2.4*inch])  # None = flexible Spacer
     combined_table.setStyle(TableStyle([
-        ('VALIGN', (0, 0), (-1, -1), 'TOP')
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('ALIGN', (0, 0), (0, 0), 'LEFT'),   # Linke Tabelle links
+        ('ALIGN', (2, 0), (2, 0), 'RIGHT'),  # Rechte Tabelle rechts
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),   # ✅ Kein Padding
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0)   # ✅ Kein Padding
     ]))
     story.append(combined_table)
     story.append(Spacer(1, 0.3*inch))
