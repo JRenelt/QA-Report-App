@@ -62,7 +62,7 @@ async def create_company(company_data: CompanyCreateV2, current_user: dict = Dep
     """
     Create new company (nur SysOp)
     """
-    if current_user["role"] != "sysop":
+    if current_user.role != "sysop":
         raise HTTPException(status_code=403, detail="Nur SysOp kann Firmen anlegen")
     
     db = await get_database()
