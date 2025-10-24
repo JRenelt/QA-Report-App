@@ -44,7 +44,16 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    logo_url: ''
+    logo_url: '',
+    // Adresse
+    street: '',
+    postal_code: '',
+    city: '',
+    country: 'Deutschland',
+    // Ansprechpartner
+    contact_person_name: '',
+    contact_person_email: '',
+    contact_person_phone: ''
   });
 
   // Load companies on mount
