@@ -51,7 +51,7 @@ async def get_company(company_id: str, current_user: dict = Depends(get_current_
         raise HTTPException(status_code=404, detail="Firma nicht gefunden")
     
     # Permission Check
-    if current_user["role"] != "sysop" and current_user["company_id"] != company_id:
+    if current_user.role != "sysop" and current_user.company_id != company_id:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     company.pop("_id", None)
