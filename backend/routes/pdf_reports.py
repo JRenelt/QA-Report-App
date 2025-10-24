@@ -366,8 +366,30 @@ async def generate_pdf_report(
     
     story.append(Paragraph("✅ Phase 5: Fazit und Empfehlungen + Footer implementiert!", styles['Normal']))
     
-    # PDF generieren
-    doc.build(story)
+    # PDF generieren mit Custom Footer
+    def add_footer(canvas, doc):
+        """Fügt Footer auf jeder Seite hinzu"""
+        canvas.saveState()
+        
+        # Footer-Text Style
+        footer_left = "© 2025 • Jörg Renelt • Hamburg"
+        footer_right = f"Seite {doc.page} von {doc.page_count if hasattr(doc, 'page_count') else doc.page}"
+        
+        # Footer Position (1cm vom unteren Rand)
+        y_position = 1.0 * cm
+        
+        # Linker Text
+        canvas.setFont('Helvetica', 8)
+        canvas.setFillColor(colors.HexColor('#666666'))
+        canvas.drawString(GLOBAL_MARGINS['left'], y_position, footer_left)
+        
+        # Rechter Text
+        text_width = canvas.stringWidth(footer_right, 'Helvetica', 8)
+        canvas.drawString(A4[0] - GLOBAL_MARGINS['right'] - text_width, y_position, footer_right)
+        
+        canvas.restoreState()
+    
+    doc.build(story, onFirstPage=add_footer, onLaterPages=add_footer)
     buffer.seek(0)
     
     # Filename
