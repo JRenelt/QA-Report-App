@@ -315,7 +315,7 @@ async def generate_pdf_report(
     ]))
     
     story.append(cards_table)
-    story.append(Spacer(1, 0.5*cm))
+    story.append(Spacer(1, 0.8*cm))  # ERHÖHT auf 0.8cm für klare Trennung
     
     # Test-Text für Phase 4
     story.append(Paragraph("✅ Phase 4: Executive Summary mit 5 Karten (Badge-Höhe 3x reduziert: 12.5% der Original-Höhe, 1cm Spacing)!", styles['Normal']))
