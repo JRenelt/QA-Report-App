@@ -280,13 +280,15 @@ async def generate_pdf_report(
         ]))
         return card_table
     
-    # 5 Karten erstellen (Farben aus Analyse + Farbraum)
+    # 5 Karten erstellen - Design wie Bild-Analyse
+    # Karte 1: GESAMT - Weißer Hintergrund, schwarzer Rahmen, schwarze Schrift
+    # Karte 2-5: Farbige Hintergründe (pastellig), passende Rahmen, schwarze Zahlen
     cards_data = [[
-        create_card(total_tests, "GESAMT", colors.HexColor('#999999'), colors.HexColor('#F5F5F5')),
-        create_card(success_count, "BESTANDEN", colors.HexColor('#27AE60'), colors.HexColor('#D5F4E6')),
-        create_card(error_count, "FEHLER", colors.HexColor('#E74C3C'), colors.HexColor('#FADBD8')),
-        create_card(warning_count, "WARNUNG", colors.HexColor('#F39C12'), colors.HexColor('#FCF3CF')),
-        create_card(pending_count, "OFFEN", colors.HexColor('#95A5A6'), colors.HexColor('#E8E8E8'))
+        create_card(total_tests, "GESAMT", colors.black, colors.white),  # Weiß mit schwarzem Rahmen
+        create_card(success_count, "BESTANDEN", colors.HexColor('#27AE60'), colors.HexColor('#D5F4E6')),  # Hellgrün
+        create_card(error_count, "FEHLER", colors.HexColor('#E74C3C'), colors.HexColor('#FADBD8')),  # Hellrot
+        create_card(warning_count, "WARNUNG", colors.HexColor('#F39C12'), colors.HexColor('#FCF3CF')),  # Hellgelb
+        create_card(pending_count, "OFFEN", colors.HexColor('#95A5A6'), colors.HexColor('#E8E8E8'))  # Hellgrau
     ]]
     
     # Outer Table: 5 Karten nebeneinander mit Abständen
