@@ -108,14 +108,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
           <div className="space-y-1 text-xs text-gray-300">
             <button 
               type="button"
-              onClick={() => handleDemoLogin('admin', 'admin123')}
+              onClick={() => handleDemoLogin('JR', '3r7k03nI9')}
+              className="block w-full text-left transition-colors hover:text-cyan-400"
+            >
+              • {t.sysopUser}
+            </button>
+            <button 
+              type="button"
+              onClick={() => handleDemoLogin('AR', 'admin123')}
               className="block w-full text-left transition-colors hover:text-cyan-400"
             >
               • {t.adminUser}
             </button>
             <button
               type="button" 
-              onClick={() => handleDemoLogin('qa_demo', 'demo123')}
+              onClick={() => handleDemoLogin('AT', 'tester123')}
               className="block w-full text-left transition-colors hover:text-cyan-400"
             >
               • {t.qaUser}
