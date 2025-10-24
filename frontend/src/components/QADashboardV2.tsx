@@ -234,6 +234,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   });
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showCompanyManagement, setShowCompanyManagement] = useState(false);
+  const [showProjectManagement, setShowProjectManagement] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
 
