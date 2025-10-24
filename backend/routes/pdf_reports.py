@@ -307,11 +307,64 @@ async def generate_pdf_report(
     # Mit KeepTogether gruppieren
     badges_block = KeepTogether([cards_container])
     story.append(badges_block)
-    story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand nach Badges
+    story.append(Spacer(1, 1.0*cm))
     
-    # === BLOCK 3: Phase-Text (separate Struktur) ===
-    # === BLOCK 3: Phase-Text (separate Struktur) ===
-    story.append(Paragraph("✅ Phase 4: Executive Summary - Badges 50% kleiner in Höhe, Text +3pt größer!", styles['Normal']))
+    # === FAZIT UND EMPFEHLUNGEN (volle Breite) ===
+    
+    # Überschrift "FAZIT UND EMPFEHLUNGEN"
+    fazit_title_style = ParagraphStyle(
+        'FazitTitle',
+        parent=styles['Heading2'],
+        fontSize=14,
+        textColor=colors.HexColor('#5771B2'),  # Primärfarbe
+        leftIndent=0,
+        spaceBefore=0,
+        spaceAfter=10,
+        fontName='Helvetica-Bold'
+    )
+    story.append(Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>", fazit_title_style))
+    
+    # Orange Box mit Fazit-Inhalt
+    fazit_content_style = ParagraphStyle(
+        'FazitContent',
+        parent=styles['Normal'],
+        fontSize=10,
+        textColor=colors.HexColor('#2C3E50'),
+        leftIndent=0,
+        alignment=TA_LEFT,
+        leading=14
+    )
+    
+    fazit_text = f"""
+    <b>Zusammenfassung:</b><br/>
+    Von {total_tests} durchgeführten Tests wurden {success_count} erfolgreich bestanden. 
+    Es wurden {error_count} Fehler identifiziert, die einer weiteren Analyse bedürfen. 
+    {pending_count} Tests sind noch offen und müssen abgeschlossen werden.<br/><br/>
+    <b>Empfehlung:</b><br/>
+    Die identifizierten Fehler sollten priorisiert und zeitnah behoben werden. 
+    Eine Re-Evaluation der fehlgeschlagenen Tests wird nach der Fehlerbehebung empfohlen.
+    """
+    
+    fazit_para = Paragraph(fazit_text, fazit_content_style)
+    
+    # Fazit-Box: Orange Rahmen, leicht transparenter Hintergrund, volle Breite
+    fazit_table = Table([[fazit_para]], colWidths=[18*cm])  # 18cm = volle nutzbare Breite
+    fazit_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), colors.Color(1, 0.65, 0, alpha=0.1)),  # Orange transparent
+        ('BOX', (0, 0), (0, 0), 2, colors.Color(1, 0.55, 0)),  # Orange Rahmen
+        ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+        ('VALIGN', (0, 0), (0, 0), 'TOP'),
+        ('TOPPADDING', (0, 0), (0, 0), 0.4*cm),
+        ('BOTTOMPADDING', (0, 0), (0, 0), 0.4*cm),
+        ('LEFTPADDING', (0, 0), (0, 0), 0.5*cm),
+        ('RIGHTPADDING', (0, 0), (0, 0), 0.5*cm),
+        ('ROUNDEDCORNERS', [10, 10, 10, 10])
+    ]))
+    
+    story.append(fazit_table)
+    story.append(Spacer(1, 1.0*cm))
+    
+    story.append(Paragraph("✅ Phase 5: Fazit und Empfehlungen + Footer implementiert!", styles['Normal']))
     
     # PDF generieren
     doc.build(story)
