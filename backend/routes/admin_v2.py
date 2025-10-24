@@ -18,7 +18,7 @@ import json
 import csv
 import io
 
-router = APIRouter(prefix="/api/admin-v2", tags=["admin-v2"])
+router = APIRouter(prefix="/admin-v2", tags=["admin-v2"])
 
 # =============================================================================
 # IMPORT FUNKTIONEN
