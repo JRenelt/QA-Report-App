@@ -8,6 +8,7 @@ import {
 import UserManagement from './UserManagement';
 import CompanyManagement from './CompanyManagement';
 import GlossaryModal from './GlossaryModal';
+import ProfileModal from './ProfileModal';
 import qaService from '../services/qaService';
 
 interface QADashboardV2Props {
