@@ -291,7 +291,7 @@ async def generate_pdf_report(
     cards_table = Table(
         cards_data, 
         colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm],  # Spacer = 1cm
-        rowHeights=[1.125*cm]  # 50% von 2.25cm = 1.125cm
+        rowHeights=[0.56*cm]  # 50% von 1.125cm = 0.56cm (dritte Reduktion)
     )
     cards_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
