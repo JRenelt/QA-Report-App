@@ -28,8 +28,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
       loginError: 'Anmeldung fehlgeschlagen',
       invalidCredentials: 'Ungültige Anmeldedaten',
       demoCredentials: 'Demo-Zugangsdaten:',
-      adminUser: 'Admin: admin / admin123',
-      qaUser: 'QA-Tester: qa_demo / demo123'
+      sysopUser: 'SysOp: JR / 3r7k03nI9',
+      adminUser: 'Admin: AR / admin123',
+      qaUser: 'QA-Tester: AT / tester123'
     },
     en: {
       login: 'Login',
@@ -40,8 +41,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, language = 'de', darkMod
       loginError: 'Login failed',
       invalidCredentials: 'Invalid credentials',
       demoCredentials: 'Demo Credentials:',
-      adminUser: 'Admin: admin / admin123',
-      qaUser: 'QA Tester: qa_demo / demo123'
+      sysopUser: 'SysOp: JR / 3r7k03nI9',
+      adminUser: 'Admin: AR / admin123',
+      qaUser: 'QA Tester: AT / tester123'
     }
   };
 
