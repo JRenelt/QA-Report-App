@@ -306,7 +306,7 @@ async def generate_pdf_report(
     story.append(Spacer(1, 0.5*cm))
     
     # Test-Text für Phase 4
-    story.append(Paragraph("✅ Phase 4: Executive Summary mit 5 Karten implementiert!", styles['Normal']))
+    story.append(Paragraph("✅ Phase 4: Executive Summary mit 5 Karten (Badge-Höhe 3x reduziert: 12.5% der Original-Höhe, 1cm Spacing)!", styles['Normal']))
     
     # PDF generieren
     doc.build(story)
