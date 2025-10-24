@@ -312,7 +312,7 @@ async def generate_pdf_report(
     
     # === BLOCK 3: Phase-Text (separate Struktur) ===
     # === BLOCK 3: Phase-Text (separate Struktur) ===
-    story.append(Paragraph("✅ Phase 4: Executive Summary - Badges als separate Strukturen ohne Verschachtelung!", styles['Normal']))
+    story.append(Paragraph("✅ Phase 4: Executive Summary - QUADRATISCHE Badges (2.9cm x 2.9cm)!", styles['Normal']))
     
     # PDF generieren
     doc.build(story)
