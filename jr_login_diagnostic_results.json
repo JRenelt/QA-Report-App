@@ -1,0 +1,65 @@
+[
+  {
+    "test": "Admin Login Baseline",
+    "success": true,
+    "message": "Admin login successful - User: admin, Role: admin",
+    "timestamp": "2025-10-24T10:31:33.937877",
+    "response_data": null
+  },
+  {
+    "test": "JR Login (Uppercase)",
+    "success": true,
+    "message": "JR login successful - User: JR, Role: sysop",
+    "timestamp": "2025-10-24T10:31:34.171152",
+    "response_data": null
+  },
+  {
+    "test": "JR Login (Lowercase)",
+    "success": false,
+    "message": "HTTP 401: {\"detail\":\"Incorrect username or password\"}",
+    "timestamp": "2025-10-24T10:31:34.179570",
+    "response_data": null
+  },
+  {
+    "test": "Curl JR Login (Uppercase)",
+    "success": true,
+    "message": "Curl login successful:\n{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNTQyNTM2OC0yYmNmLTQxNjctYjVlNC1hNmMzYjY4NTQ2ODkiLCJleHAiOjE3NjEzMDM2OTR9.0q701WAGTzkWptcwa6h-js85lAichEup5j1vB_NEriA\",\"token_type\":\"bearer\",\"user\":{\"username\":\"JR\",\"email\":\"j.renelt@id2.de\",\"first_name\":\"J\u00f6rg\",\"last_name\":\"Renelt\",\"role\":\"sysop\",\"language_preference\":\"DE\",\"company_id\":\"b4e294e6-c184-4936-ac78-8480162d2907\",\"id\":\"a5425368-2bcf-4167-b5e4-a6c3b6854689\",\"is_active\":true,\"created_at\":\"2025-10-24T10:09:11.756073\",\"updated_at\":\"2025-10-24T10:09:11.756081\"}}\nHTTP_CODE:200\n",
+    "timestamp": "2025-10-24T10:31:34.448524",
+    "response_data": null
+  },
+  {
+    "test": "Curl JR Login (Lowercase)",
+    "success": false,
+    "message": "Curl login failed:\n{\"detail\":\"Incorrect username or password\"}\nHTTP_CODE:401\n",
+    "timestamp": "2025-10-24T10:31:34.495158",
+    "response_data": null
+  },
+  {
+    "test": "MongoDB users_v2 Check",
+    "success": true,
+    "message": "MongoDB query successful. Output:\n[\n  {\n    _id: ObjectId('68fb504752646a14560302c9'),\n    username: 'JR',\n    role: 'sysop',\n    is_active: true,\n    is_blocked: false\n  },\n  {\n    _id: ObjectId('68fb504752646a14560302cb'),\n    username: 'AR',\n    role: 'admin',\n    is_active: true,\n    is_blocked: false\n  },\n  {\n    _id: ObjectId('68fb504852646a14560302cc'),\n    username: 'AT',\n    role: 'qa_tester',\n    is_active: true,\n    is_blocked: false\n  }\n]\n",
+    "timestamp": "2025-10-24T10:31:34.856718",
+    "response_data": null
+  },
+  {
+    "test": "JR User Exists in MongoDB",
+    "success": true,
+    "message": "JR user found in users_v2 collection",
+    "timestamp": "2025-10-24T10:31:34.856745",
+    "response_data": null
+  },
+  {
+    "test": "MongoDB All Users Check",
+    "success": true,
+    "message": "MongoDB collections checked:\nV2 Collection:\n=== USERS_V2 COLLECTION ===\nUsername: JR, Active: true, Blocked: false, Role: sysop\nUsername: AR, Active: true, Blocked: false, Role: admin\nUsername: AT, Active: true, Blocked: false, Role: qa_tester\n\n\nOld Collection:\n=== USERS COLLECTION (OLD) ===\nUsername: SysOP, Active: true, Role: admin\nUsername: admin_techco, Active: true, Role: admin\nUsername: admin_mediad, Active: true, Role: admin\nUsername: admin_autopa, Active: true, Role: admin\nUsername: admin_health, Active: true, Role: admin\nUsername: admin_fintec, Active: true, Role: admin\nUsername: admin, Active: true, Role: admin\nUsername: jre, Active: true, Role: sysop\nUsername: qa_demo, Active: true, Role: qa_tester\n",
+    "timestamp": "2025-10-24T10:31:35.571569",
+    "response_data": null
+  },
+  {
+    "test": "Backend Error Logs",
+    "success": true,
+    "message": "Backend error logs (last 50 lines):\nINFO:     Application shutdown complete.\nINFO:     Finished server process [3129]\nINFO:     Started server process [3319]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\n(trapped) error reading bcrypt version\nTraceback (most recent call last):\n  File \"/root/.venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py\", line 620, in _load_backend_mixin\n    version = _bcrypt.__about__.__version__\n              ^^^^^^^^^^^^^^^^^\nAttributeError: module 'bcrypt' has no attribute '__about__'\nWARNING:  WatchFiles detected changes in 'routes/admin_v2.py'. Reloading...\nINFO:     Shutting down\nINFO:     Waiting for application shutdown.\nINFO:     Application shutdown complete.\nINFO:     Finished server process [3319]\nINFO:     Started server process [3434]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\n(trapped) error reading bcrypt version\nTraceback (most recent call last):\n  File \"/root/.venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py\", line 620, in _load_backend_mixin\n    version = _bcrypt.__about__.__version__\n              ^^^^^^^^^^^^^^^^^\nAttributeError: module 'bcrypt' has no attribute '__about__'\nWARNING:  WatchFiles detected changes in 'routes/admin_v2.py'. Reloading...\nINFO:     Shutting down\nINFO:     Waiting for application shutdown.\nINFO:     Application shutdown complete.\nINFO:     Finished server process [3434]\nINFO:     Started server process [3481]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Shutting down\nINFO:     Waiting for application shutdown.\nINFO:     Application shutdown complete.\nINFO:     Finished server process [3481]\nINFO:     Stopping reloader process [3127]\nINFO:     Will watch for changes in these directories: ['/app/backend']\nINFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)\nINFO:     Started reloader process [3500] using WatchFiles\nINFO:     Started server process [3502]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\n(trapped) error reading bcrypt version\nTraceback (most recent call last):\n  File \"/root/.venv/lib/python3.11/site-packages/passlib/handlers/bcrypt.py\", line 620, in _load_backend_mixin\n    version = _bcrypt.__about__.__version__\n              ^^^^^^^^^^^^^^^^^\nAttributeError: module 'bcrypt' has no attribute '__about__'\n",
+    "timestamp": "2025-10-24T10:31:35.574960",
+    "response_data": null
+  }
+]
