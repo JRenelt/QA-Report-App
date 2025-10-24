@@ -1,105 +1,105 @@
 {
   "total_tests": 14,
-  "passed": 0,
-  "failed": 14,
-  "success_rate": 0.0,
+  "passed": 3,
+  "failed": 11,
+  "success_rate": 21.428571428571427,
   "results": [
     {
       "test": "SysOp Login",
-      "success": false,
-      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
-      "timestamp": "2025-10-24T10:12:17.991550",
+      "success": true,
+      "message": "Login successful - User: JR, Role: sysop",
+      "timestamp": "2025-10-24T10:16:12.552775",
       "response_data": null
     },
     {
       "test": "Admin Login",
-      "success": false,
-      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
-      "timestamp": "2025-10-24T10:12:17.999771",
+      "success": true,
+      "message": "Login successful - User: AR, Role: admin",
+      "timestamp": "2025-10-24T10:16:12.784838",
       "response_data": null
     },
     {
       "test": "QA-Tester Login",
-      "success": false,
-      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
-      "timestamp": "2025-10-24T10:12:18.007619",
+      "success": true,
+      "message": "Login successful - User: AT, Role: qa_tester",
+      "timestamp": "2025-10-24T10:16:13.022481",
       "response_data": null
     },
     {
       "test": "SysOp Companies V2 Access",
       "success": false,
-      "message": "No auth token for SysOp",
-      "timestamp": "2025-10-24T10:12:18.007656",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.060590",
       "response_data": null
     },
     {
       "test": "SysOp Users V2 Access",
       "success": false,
-      "message": "No auth token for SysOp",
-      "timestamp": "2025-10-24T10:12:18.007662",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.096961",
       "response_data": null
     },
     {
       "test": "SysOp Projects V2 Access",
       "success": false,
-      "message": "No auth token for SysOp",
-      "timestamp": "2025-10-24T10:12:18.007667",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.134738",
       "response_data": null
     },
     {
       "test": "Admin Companies V2 Access",
       "success": false,
-      "message": "No auth token for Admin",
-      "timestamp": "2025-10-24T10:12:18.007670",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.210729",
       "response_data": null
     },
     {
       "test": "Admin Users V2 Access",
       "success": false,
-      "message": "No auth token for Admin",
-      "timestamp": "2025-10-24T10:12:18.007677",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.248537",
       "response_data": null
     },
     {
       "test": "Admin Projects V2 Access",
       "success": false,
-      "message": "No auth token for Admin",
-      "timestamp": "2025-10-24T10:12:18.007682",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.282234",
       "response_data": null
     },
     {
       "test": "QA-Tester Companies V2 Access",
       "success": false,
-      "message": "No auth token for QA-Tester",
-      "timestamp": "2025-10-24T10:12:18.007685",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.322096",
       "response_data": null
     },
     {
       "test": "QA-Tester Users V2 Access",
       "success": false,
-      "message": "No auth token for QA-Tester",
-      "timestamp": "2025-10-24T10:12:18.007691",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.358533",
       "response_data": null
     },
     {
       "test": "QA-Tester Projects V2 Access",
       "success": false,
-      "message": "No auth token for QA-Tester",
-      "timestamp": "2025-10-24T10:12:18.007694",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.391461",
       "response_data": null
     },
     {
       "test": "Admin Generate Test Data V2",
       "success": false,
-      "message": "No auth token for Admin",
-      "timestamp": "2025-10-24T10:12:18.007699",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.429715",
       "response_data": null
     },
     {
       "test": "Admin Projects V2 After Generation",
       "success": false,
-      "message": "No auth token for Admin",
-      "timestamp": "2025-10-24T10:12:18.007703",
+      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
+      "timestamp": "2025-10-24T10:16:13.506239",
       "response_data": null
     }
   ]
