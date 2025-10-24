@@ -339,6 +339,8 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
     return matchesSearch && matchesCompany;
   });
 
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className={`w-full max-w-6xl rounded-lg shadow-xl max-h-[90vh] overflow-hidden flex flex-col ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
