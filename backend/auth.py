@@ -1,5 +1,6 @@
 """
 JWT Authentication System - MongoDB Version
+Support for both old and V2 user collections
 """
 
 import os
@@ -9,7 +10,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from database import users_collection
+from database import users_collection, db
 from models import User, UserInDB
 
 # Security setup
@@ -43,15 +44,29 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 async def get_user_by_username(username: str) -> Optional[dict]:
-    """Get user from database by username"""
-    user = await users_collection.find_one({"username": username, "is_active": True})
+    """Get user from database by username - checks both old and V2 collections"""
+    # First try V2 collection
+    users_v2_collection = db["users_v2"]
+    user = await users_v2_collection.find_one({"username": username, "is_active": True, "is_blocked": False})
+    
+    # If not found in V2, try old collection
+    if not user:
+        user = await users_collection.find_one({"username": username, "is_active": True})
+    
     if user:
         user["_id"] = str(user["_id"])  # Convert ObjectId to string
     return user
 
 async def get_user_by_id(user_id: str) -> Optional[dict]:
-    """Get user from database by ID"""
-    user = await users_collection.find_one({"id": user_id, "is_active": True})
+    """Get user from database by ID - checks both old and V2 collections"""
+    # First try V2 collection
+    users_v2_collection = db["users_v2"]
+    user = await users_v2_collection.find_one({"id": user_id, "is_active": True, "is_blocked": False})
+    
+    # If not found in V2, try old collection
+    if not user:
+        user = await users_collection.find_one({"id": user_id, "is_active": True})
+    
     if user:
         user["_id"] = str(user["_id"])  # Convert ObjectId to string
     return user
