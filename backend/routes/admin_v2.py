@@ -149,7 +149,7 @@ async def import_projects(
         
         # Generate project_id
         sequence_number = await projects_collection.count_documents({"company_id": project_data["company_id"]}) + 1
-        project_id_str = f"{company['short_code']}{current_user['first_name'][0]}{current_user['last_name'][0]}{datetime.utcnow().strftime('%H%M%S')}{str(sequence_number).zfill(3)}"
+        project_id_str = f"{company['short_code']}{current_user.first_name[0]}{current_user.last_name[0]}{datetime.utcnow().strftime('%H%M%S')}{str(sequence_number).zfill(3)}"
         
         new_project = {
             "id": str(uuid.uuid4()),
