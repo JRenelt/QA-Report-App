@@ -180,7 +180,7 @@ async def block_company(company_id: str, current_user: dict = Depends(get_curren
     """
     Block/Unblock company und alle zugehörigen User (nur SysOp)
     """
-    if current_user["role"] != "sysop":
+    if current_user.role != "sysop":
         raise HTTPException(status_code=403, detail="Nur SysOp kann Firmen sperren")
     
     db = await get_database()
