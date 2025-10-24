@@ -260,29 +260,32 @@ async def generate_pdf_report(
     # === 5 KARTEN (vertikal, abgerundete Ecken) ===
     
     def create_card(number, label, border_color, bg_color):
-        """Erstellt Karte: NOCHMAL 50% kleiner = 12.5% der Original-Höhe (dritte Reduktion)"""
-        # Zahl (nochmal 50% kleiner: 10pt statt 20pt)
-        num_para = Paragraph(
-            f"<font size=10 color='#333333'><b>{number}</b></font>",
-            ParagraphStyle('CardNum', parent=styles['Normal'], alignment=TA_CENTER, leading=12)
-        )
-        # Label (nochmal 50% kleiner: 6pt statt 8pt)
-        label_para = Paragraph(
-            f"<font size=6 color='#555555'>{label}</font>",
-            ParagraphStyle('CardLabel', parent=styles['Normal'], alignment=TA_CENTER, leading=7, spaceBefore=0.025*cm)
+        """Erstellt Karte: KOMPAKTE Version mit minimaler Höhe"""
+        # Zahl und Label KOMBINIERT in einem Paragraph für minimale Höhe
+        combined_text = f"<b><font size=10 color='#333333'>{number}</font></b><br/><font size=6 color='#555555'>{label}</font>"
+        combined_para = Paragraph(
+            combined_text,
+            ParagraphStyle(
+                'CardContent', 
+                parent=styles['Normal'], 
+                alignment=TA_CENTER, 
+                leading=8,  # Minimal für kompakte Darstellung
+                spaceBefore=0,
+                spaceAfter=0
+            )
         )
         
-        # Mini-Tabelle: Zahl und Label untereinander
-        card_table = Table([[num_para], [label_para]], colWidths=[2.9*cm])
+        # Mini-Tabelle mit MINIMALEM Padding
+        card_table = Table([[combined_para]], colWidths=[2.9*cm])
         card_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, -1), bg_color),
             ('BOX', (0, 0), (-1, -1), 2, border_color),  # 2pt Rahmen
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (-1, -1), 0.13*cm),    # 50% von 0.265cm = 0.13cm
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 0.13*cm),
-            ('LEFTPADDING', (0, 0), (-1, -1), 0),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 0.15*cm),    # Minimal
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0.15*cm),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0.1*cm),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0.1*cm),
             ('ROUNDEDCORNERS', [15, 15, 15, 15])  # border-radius: 15px
         ]))
         return card_table
