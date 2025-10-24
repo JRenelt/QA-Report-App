@@ -13,7 +13,7 @@ from models_v2 import CompanyV2, CompanyCreateV2, CompanyUpdateV2
 import uuid
 from datetime import datetime
 
-router = APIRouter(prefix="/api/companies-v2", tags=["companies-v2"])
+router = APIRouter(prefix="/companies-v2", tags=["companies-v2"])
 
 @router.get("/", response_model=List[CompanyV2])
 async def get_companies(current_user: dict = Depends(get_current_user)):
