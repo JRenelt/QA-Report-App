@@ -2520,6 +2520,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           darkMode={darkMode || false}
         />
       )}
+
+      {/* Profil-Modal für alle User */}
+      <ProfileModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+        user={user}
+        darkMode={darkMode || false}
+      />
     </div>
   );
 
