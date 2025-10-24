@@ -8,9 +8,9 @@ Project Management V2 - Komplett überarbeitet
 
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
-from backend.auth import get_current_user
-from backend.database import get_database
-from backend.models_v2 import (
+from auth import get_current_user
+from database import get_database
+from models_v2 import (
     ProjectV2, ProjectCreateV2, ProjectUpdateV2, QATesterAssignment, ProjectStatus
 )
 import uuid
