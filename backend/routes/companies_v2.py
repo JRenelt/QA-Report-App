@@ -26,13 +26,13 @@ async def get_companies(current_user: dict = Depends(get_current_user)):
     db = await get_database()
     companies_collection = db["companies_v2"]
     
-    if current_user["role"] == "sysop":
+    if current_user.role == "sysop":
         # SysOp sieht ALLE Firmen
         companies = await companies_collection.find().to_list(length=None)
     else:
         # Admin & QA-Tester sehen nur eigene Firma
         companies = await companies_collection.find({
-            "id": current_user["company_id"]
+            "id": current_user.company_id
         }).to_list(length=None)
     
     for company in companies:
