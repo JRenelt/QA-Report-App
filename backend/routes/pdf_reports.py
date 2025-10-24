@@ -309,11 +309,7 @@ async def generate_pdf_report(
     story.append(badges_block)
     story.append(Spacer(1, 1.0*cm))
     
-    # === FAZIT UND EMPFEHLUNGEN (volle Breite) - MIT KeepTogether ===
-    # Wenn zu lang für Seite 1 → automatisch auf Seite 2 verschoben
-    
-    fazit_elements = []
-    
+    # === FAZIT UND EMPFEHLUNGEN (volle Breite) ===
     # Überschrift "FAZIT UND EMPFEHLUNGEN"
     fazit_title_style = ParagraphStyle(
         'FazitTitle',
@@ -325,7 +321,7 @@ async def generate_pdf_report(
         spaceAfter=10,
         fontName='Helvetica-Bold'
     )
-    fazit_elements.append(Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>", fazit_title_style))
+    story.append(Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>", fazit_title_style))
     
     # Orange Box mit Fazit-Inhalt
     fazit_content_style = ParagraphStyle(
@@ -399,28 +395,9 @@ async def generate_pdf_report(
     Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.<br/>
     """
     
-    fazit_para = Paragraph(fazit_text, fazit_content_style)
-    
-    # Fazit-Box: Orange Rahmen, leicht transparenter Hintergrund, volle Breite
-    fazit_table = Table([[fazit_para]], colWidths=[18*cm])  # 18cm = volle nutzbare Breite
-    fazit_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (0, 0), colors.Color(1, 0.65, 0, alpha=0.1)),  # Orange transparent
-        ('BOX', (0, 0), (0, 0), 2, colors.Color(1, 0.55, 0)),  # Orange Rahmen
-        ('ALIGN', (0, 0), (0, 0), 'LEFT'),
-        ('VALIGN', (0, 0), (0, 0), 'TOP'),
-        ('TOPPADDING', (0, 0), (0, 0), 0.4*cm),
-        ('BOTTOMPADDING', (0, 0), (0, 0), 0.4*cm),
-        ('LEFTPADDING', (0, 0), (0, 0), 0.5*cm),
-        ('RIGHTPADDING', (0, 0), (0, 0), 0.5*cm),
-        ('ROUNDEDCORNERS', [10, 10, 10, 10])
-    ]))
-    
-    fazit_elements.append(fazit_table)
-    fazit_elements.append(Spacer(1, 1.0*cm))
-    
-    # KeepTogether: Wenn zu lang → gesamtes Fazit auf nächste Seite
-    fazit_block = KeepTogether(fazit_elements)
-    story.append(fazit_block)
+    # WICHTIG: Fazit-Paragraph OHNE Table-Wrapping für automatischen Seitenumbruch
+    story.append(Paragraph(fazit_text, fazit_content_style))
+    story.append(Spacer(1, 1.0*cm))
     
     # === PAGE BREAK: Neue Seite für Inhaltsverzeichnis ===
     story.append(PageBreak())
