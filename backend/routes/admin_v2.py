@@ -85,7 +85,7 @@ async def import_users(
     
     for user_data in import_data.users:
         # Permission Check für Admin
-        if current_user.role == "admin" and user_data["company_id"] != current_user["company_id"]:
+        if current_user.role == "admin" and user_data["company_id"] != current_user.company_id:
             continue
         
         # Check if user already exists
@@ -139,7 +139,7 @@ async def import_projects(
     
     for project_data in import_data.projects:
         # Permission Check für Admin
-        if current_user.role == "admin" and project_data["company_id"] != current_user["company_id"]:
+        if current_user.role == "admin" and project_data["company_id"] != current_user.company_id:
             continue
         
         # Get company
@@ -276,7 +276,7 @@ async def generate_test_data(
     
     elif current_user.role == "admin":
         # Admin: 2 Projekte mit 10 und 15 Testfällen
-        company_id = current_user["company_id"]
+        company_id = current_user.company_id
         company = await companies_collection.find_one({"id": company_id})
         if not company:
             raise HTTPException(status_code=404, detail="Firma nicht gefunden")
@@ -328,7 +328,7 @@ async def generate_test_data(
     
     elif current_user.role == "qa_tester":
         # QA-Tester: Optional 1 Projekt mit 10 Testfällen
-        company_id = current_user["company_id"]
+        company_id = current_user.company_id
         company = await companies_collection.find_one({"id": company_id})
         if not company:
             raise HTTPException(status_code=404, detail="Firma nicht gefunden")

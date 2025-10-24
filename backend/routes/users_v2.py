@@ -63,7 +63,7 @@ async def get_user(user_id: str, current_user: dict = Depends(get_current_user))
     if current_user.role == "qa_tester" and user["id"] != current_user.id:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
-    if current_user.role == "admin" and user["company_id"] != current_user["company_id"]:
+    if current_user.role == "admin" and user["company_id"] != current_user.company_id:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     user.pop("hashed_password", None)
@@ -87,7 +87,7 @@ async def create_user(user_data: UserCreateV2, current_user: dict = Depends(get_
     
     if current_user.role == "admin":
         # Admin kann nur User seiner Firma erstellen
-        if user_data.company_id != current_user["company_id"]:
+        if user_data.company_id != current_user.company_id:
             raise HTTPException(status_code=403, detail="Keine Berechtigung für diese Firma")
         # Admin kann keine SysOps erstellen
         if user_data.role == UserRoleV2.sysop:
@@ -152,7 +152,7 @@ async def update_user(
         allowed_fields = {"username", "first_name", "last_name", "email", "tel"}
         update_fields = {k: v for k, v in user_update.dict(exclude_unset=True).items() if k in allowed_fields}
     elif current_user.role == "admin":
-        if user["company_id"] != current_user["company_id"]:
+        if user["company_id"] != current_user.company_id:
             raise HTTPException(status_code=403, detail="Admin kann nur User seiner Firma bearbeiten")
         # Admin darf keine SysOps bearbeiten
         if user["role"] == "sysop":
@@ -199,7 +199,7 @@ async def delete_user(user_id: str, current_user: dict = Depends(get_current_use
         raise HTTPException(status_code=403, detail="Dieser User kann nicht gelöscht werden")
     
     if current_user.role == "admin":
-        if user["company_id"] != current_user["company_id"]:
+        if user["company_id"] != current_user.company_id:
             raise HTTPException(status_code=403, detail="Admin kann nur User seiner Firma löschen")
         if user["role"] == "sysop":
             raise HTTPException(status_code=403, detail="Admin kann keine SysOps löschen")
@@ -226,7 +226,7 @@ async def block_user(user_id: str, current_user: dict = Depends(get_current_user
         raise HTTPException(status_code=404, detail="User nicht gefunden")
     
     if current_user.role == "admin":
-        if user["company_id"] != current_user["company_id"]:
+        if user["company_id"] != current_user.company_id:
             raise HTTPException(status_code=403, detail="Keine Berechtigung")
         if user["role"] == "sysop":
             raise HTTPException(status_code=403, detail="Admin kann SysOps nicht sperren")

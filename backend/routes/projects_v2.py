@@ -58,7 +58,7 @@ async def get_projects(
             query["company_id"] = company_id
     elif current_user.role == "admin":
         # Admin: Nur eigene Firma
-        query["company_id"] = current_user["company_id"]
+        query["company_id"] = current_user.company_id
     else:
         # QA-Tester: Nur zugewiesene Projekte
         query["assigned_testers.user_id"] = current_user.id
@@ -94,7 +94,7 @@ async def get_project(project_id: str, current_user: dict = Depends(get_current_
             raise HTTPException(status_code=403, detail="Keine Berechtigung für dieses Projekt")
     elif current_user.role == "admin":
         # Admin: Nur eigene Firma
-        if project["company_id"] != current_user["company_id"]:
+        if project["company_id"] != current_user.company_id:
             raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     project.pop("_id", None)
@@ -113,7 +113,7 @@ async def create_project(project_data: ProjectCreateV2, current_user: dict = Dep
     companies_collection = db["companies_v2"]
     
     # Permission Check für Admin
-    if current_user.role == "admin" and project_data.company_id != current_user["company_id"]:
+    if current_user.role == "admin" and project_data.company_id != current_user.company_id:
         raise HTTPException(status_code=403, detail="Admin kann nur Projekte für eigene Firma anlegen")
     
     # Get company info
@@ -185,7 +185,7 @@ async def update_project(
             raise HTTPException(status_code=400, detail="QA-Tester können nur 'notes' bearbeiten")
     elif current_user.role == "admin":
         # Admin: Nur eigene Firma
-        if project["company_id"] != current_user["company_id"]:
+        if project["company_id"] != current_user.company_id:
             raise HTTPException(status_code=403, detail="Keine Berechtigung")
         update_fields = project_update.dict(exclude_unset=True)
     else:
@@ -220,7 +220,7 @@ async def delete_project(project_id: str, current_user: dict = Depends(get_curre
         raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
     
     # Permission Check
-    if current_user.role == "admin" and project["company_id"] != current_user["company_id"]:
+    if current_user.role == "admin" and project["company_id"] != current_user.company_id:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     # Delete associated test cases
@@ -251,7 +251,7 @@ async def assign_tester_to_project(
         raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
     
     # Permission Check
-    if current_user.role == "admin" and project["company_id"] != current_user["company_id"]:
+    if current_user.role == "admin" and project["company_id"] != current_user.company_id:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     # Get user
@@ -299,7 +299,7 @@ async def remove_tester_from_project(
         raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
     
     # Permission Check
-    if current_user.role == "admin" and project["company_id"] != current_user["company_id"]:
+    if current_user.role == "admin" and project["company_id"] != current_user.company_id:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     # Remove assignment
