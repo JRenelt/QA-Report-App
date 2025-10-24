@@ -1326,10 +1326,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             </button>
           )}
 
-          {/* User Management (nur für Admins und SysOps) */}
-          {(user?.role === 'admin' || user?.role === 'sysop') && (
+          {/* Management Buttons basierend auf Rolle */}
+          {user?.role === 'sysop' && (
             <>
-              <CustomTooltip text="Firmen- & Projektverwaltung">
+              <CustomTooltip text="Firmenverwaltung">
                 <button
                   onClick={() => setShowCompanyManagement(true)}
                   className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
@@ -1343,6 +1343,35 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
                 >
                   <Users className="h-5 w-5 text-gray-300" />
+                </button>
+              </CustomTooltip>
+              <CustomTooltip text="Projektverwaltung">
+                <button
+                  onClick={() => setShowProjectManagement(true)}
+                  className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <FolderKanban className="h-5 w-5 text-gray-300" />
+                </button>
+              </CustomTooltip>
+            </>
+          )}
+
+          {user?.role === 'admin' && (
+            <>
+              <CustomTooltip text="Benutzerverwaltung">
+                <button
+                  onClick={() => setShowUserManagement(true)}
+                  className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <Users className="h-5 w-5 text-gray-300" />
+                </button>
+              </CustomTooltip>
+              <CustomTooltip text="Projektverwaltung">
+                <button
+                  onClick={() => setShowProjectManagement(true)}
+                  className="p-2 bg-[#1E222B] hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <FolderKanban className="h-5 w-5 text-gray-300" />
                 </button>
               </CustomTooltip>
             </>
