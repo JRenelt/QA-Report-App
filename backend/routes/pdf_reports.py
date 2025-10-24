@@ -258,7 +258,15 @@ async def generate_pdf_report(
     
     # === BLOCK 1: Status-Text (separate Struktur) ===
     status_text_style = ParagraphStyle('StatusText', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#555555'))
-    status_text = f"Status: {success_count} von {total_tests} Tests bestanden. {error_count} Fehler festgestellt. {pending_count} ungeprüft."
+    
+    if type == "tested":
+        # Nur getestete Tests
+        tested_count = success_count + error_count + warning_count
+        status_text = f"Status: {tested_count} Tests durchgeführt. {success_count} bestanden, {error_count} Fehler, {warning_count} Warnungen."
+    else:
+        # Alle Tests
+        status_text = f"Status: {success_count} von {total_tests} Tests bestanden. {error_count} Fehler festgestellt. {pending_count} ungeprüft."
+    
     story.append(Paragraph(status_text, status_text_style))
     story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand (1.2cm statt 0.8cm)
     
@@ -287,19 +295,37 @@ async def generate_pdf_report(
         ]))
         return card_table
     
-    # 5 Karten erstellen
-    card1 = create_simple_card(str(total_tests), "GESAMT", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
-    card2 = create_simple_card(str(success_count), "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2))
-    card3 = create_simple_card(str(error_count), "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2))
-    card4 = create_simple_card(str(warning_count), "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2))
-    card5 = create_simple_card(str(pending_count), "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
+    # Karten erstellen basierend auf Type
+    if type == "tested":
+        # 4 Karten: GETESTET, BESTANDEN, FEHLER, WARNUNG (ohne OFFEN)
+        tested_count = success_count + error_count + warning_count
+        card1 = create_simple_card(str(tested_count), "GETESTET", colors.HexColor('#5771B2'), colors.Color(0.34, 0.44, 0.70, alpha=0.2))
+        card2 = create_simple_card(str(success_count), "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2))
+        card3 = create_simple_card(str(error_count), "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2))
+        card4 = create_simple_card(str(warning_count), "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2))
+        
+        # Container mit 4 Karten
+        cards_data = [[card1, '', card2, '', card3, '', card4]]
+        cards_container = Table(
+            cards_data, 
+            colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm]
+        )
+    else:
+        # 5 Karten: GESAMT, BESTANDEN, FEHLER, WARNUNG, OFFEN
+        card1 = create_simple_card(str(total_tests), "GESAMT", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
+        card2 = create_simple_card(str(success_count), "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2))
+        card3 = create_simple_card(str(error_count), "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2))
+        card4 = create_simple_card(str(warning_count), "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2))
+        card5 = create_simple_card(str(pending_count), "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
+        
+        # Container mit 5 Karten
+        cards_data = [[card1, '', card2, '', card3, '', card4, '', card5]]
+        cards_container = Table(
+            cards_data, 
+            colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm]
+        )
     
     # Container Table OHNE feste Row Heights - nur VALIGN=TOP für korrekte Positionierung
-    cards_data = [[card1, '', card2, '', card3, '', card4, '', card5]]
-    cards_container = Table(
-        cards_data, 
-        colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm]
-    )
     cards_container.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),  # WICHTIG: TOP verhindert Überlappung
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
