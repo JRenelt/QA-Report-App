@@ -350,6 +350,9 @@ backend:
         - working: true
           agent: "testing"
           comment: "PDF Reports generation working correctly. GET /api/pdf-reports/generate/{project_id} successfully generates and returns PDF reports with proper Content-Type: application/pdf."
+        - working: true
+          agent: "testing"
+          comment: "🇩🇪 GERMAN REVIEW: PDF Generation with New Badge Sizes TESTED SUCCESSFULLY! ✅ ALL REQUIREMENTS MET: (1) Admin Login (admin/admin123) ✅ HTTP 200 with JWT token (2) Projects Retrieved ✅ Found 15 projects from GET /api/projects/all (3) PDF Generation ✅ HTTP 200 with Content-Type: application/pdf, Size: 22,266 bytes (4) File Download ✅ Content-Disposition: attachment header present (5) New Badge Specifications ✅ Applied correctly - Font sizes: Number 10pt (reduced from 20pt), Label 6pt (reduced from 8pt), Padding: 0.13cm (reduced from 0.265cm), Row Height: 0.56cm (reduced from 1.125cm), Spacing: 1cm unchanged. CRITICAL BUG FIXED: SVG logo_url handling - ReportLab doesn't support SVG data URLs, now falls back to default PNG logo. PDF generation working for multiple projects. Badge height successfully reduced by 50% as requested."
 
   - task: "CSV/Excel Export"
     implemented: true
