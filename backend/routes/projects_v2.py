@@ -61,7 +61,7 @@ async def get_projects(
         query["company_id"] = current_user["company_id"]
     else:
         # QA-Tester: Nur zugewiesene Projekte
-        query["assigned_testers.user_id"] = current_user["id"]
+        query["assigned_testers.user_id"] = current_user.id
     
     # Filter: Keine gesperrten Projekte für QA-Tester
     if current_user.role == "qa_tester":
@@ -90,7 +90,7 @@ async def get_project(project_id: str, current_user: dict = Depends(get_current_
     if current_user.role == "qa_tester":
         # QA-Tester: Nur zugewiesene Projekte
         assigned_user_ids = [t["user_id"] for t in project.get("assigned_testers", [])]
-        if current_user["id"] not in assigned_user_ids:
+        if current_user.id not in assigned_user_ids:
             raise HTTPException(status_code=403, detail="Keine Berechtigung für dieses Projekt")
     elif current_user.role == "admin":
         # Admin: Nur eigene Firma
@@ -141,7 +141,7 @@ async def create_project(project_data: ProjectCreateV2, current_user: dict = Dep
         "status": ProjectStatus.active.value,
         "is_blocked": False,
         "assigned_testers": [],
-        "created_by": current_user["id"],
+        "created_by": current_user.id,
         "created_at": datetime.utcnow().isoformat(),
         "updated_at": datetime.utcnow().isoformat()
     }
@@ -174,7 +174,7 @@ async def update_project(
     if current_user.role == "qa_tester":
         # QA-Tester: Nur zugewiesene Projekte & nur 'notes' änderbar
         assigned_user_ids = [t["user_id"] for t in project.get("assigned_testers", [])]
-        if current_user["id"] not in assigned_user_ids:
+        if current_user.id not in assigned_user_ids:
             raise HTTPException(status_code=403, detail="Keine Berechtigung")
         
         # Nur 'notes' erlaubt

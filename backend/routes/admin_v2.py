@@ -54,7 +54,7 @@ async def import_companies(
             "short_code": company_data.get("short_code", company_data["name"][:2].upper()),
             "is_blocked": False,
             "is_deletable": True,
-            "created_by": current_user["id"],
+            "created_by": current_user.id,
             "created_at": datetime.utcnow().isoformat(),
             "updated_at": datetime.utcnow().isoformat()
         }
@@ -162,7 +162,7 @@ async def import_projects(
             "status": "active",
             "is_blocked": False,
             "assigned_testers": [],
-            "created_by": current_user["id"],
+            "created_by": current_user.id,
             "created_at": datetime.utcnow().isoformat(),
             "updated_at": datetime.utcnow().isoformat()
         }
@@ -220,7 +220,7 @@ async def generate_test_data(
                     "short_code": short_code,
                     "is_blocked": False,
                     "is_deletable": True,
-                    "created_by": current_user["id"],
+                    "created_by": current_user.id,
                     "created_at": datetime.utcnow().isoformat(),
                     "updated_at": datetime.utcnow().isoformat()
                 }
@@ -245,7 +245,7 @@ async def generate_test_data(
                     "status": "active",
                     "is_blocked": False,
                     "assigned_testers": [],
-                    "created_by": current_user["id"],
+                    "created_by": current_user.id,
                     "created_at": datetime.utcnow().isoformat(),
                     "updated_at": datetime.utcnow().isoformat()
                 }
@@ -267,7 +267,7 @@ async def generate_test_data(
                         "priority": 3,
                         "expected_result": "",
                         "project_id": new_project["id"],
-                        "created_by": current_user["id"],
+                        "created_by": current_user.id,
                         "created_at": datetime.utcnow().isoformat(),
                         "updated_at": datetime.utcnow().isoformat()
                     }
@@ -298,7 +298,7 @@ async def generate_test_data(
                 "status": "active",
                 "is_blocked": False,
                 "assigned_testers": [],
-                "created_by": current_user["id"],
+                "created_by": current_user.id,
                 "created_at": datetime.utcnow().isoformat(),
                 "updated_at": datetime.utcnow().isoformat()
             }
@@ -319,7 +319,7 @@ async def generate_test_data(
                     "priority": 3,
                     "expected_result": "",
                     "project_id": new_project["id"],
-                    "created_by": current_user["id"],
+                    "created_by": current_user.id,
                     "created_at": datetime.utcnow().isoformat(),
                     "updated_at": datetime.utcnow().isoformat()
                 }
@@ -347,11 +347,11 @@ async def generate_test_data(
             "status": "active",
             "is_blocked": False,
             "assigned_testers": [{
-                "user_id": current_user["id"],
+                "user_id": current_user.id,
                 "username": current_user["username"],
                 "assigned_at": datetime.utcnow().isoformat()
             }],
-            "created_by": current_user["id"],
+            "created_by": current_user.id,
             "created_at": datetime.utcnow().isoformat(),
             "updated_at": datetime.utcnow().isoformat()
         }
@@ -372,7 +372,7 @@ async def generate_test_data(
                 "priority": 3,
                 "expected_result": "",
                 "project_id": new_project["id"],
-                "created_by": current_user["id"],
+                "created_by": current_user.id,
                 "created_at": datetime.utcnow().isoformat(),
                 "updated_at": datetime.utcnow().isoformat()
             }

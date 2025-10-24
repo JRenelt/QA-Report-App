@@ -60,7 +60,7 @@ async def get_user(user_id: str, current_user: dict = Depends(get_current_user))
         raise HTTPException(status_code=404, detail="User nicht gefunden")
     
     # Permission Check
-    if current_user.role == "qa_tester" and user["id"] != current_user["id"]:
+    if current_user.role == "qa_tester" and user["id"] != current_user.id:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     if current_user.role == "admin" and user["company_id"] != current_user["company_id"]:
@@ -146,7 +146,7 @@ async def update_user(
     
     # Permission Check
     if current_user.role == "qa_tester":
-        if user["id"] != current_user["id"]:
+        if user["id"] != current_user.id:
             raise HTTPException(status_code=403, detail="QA-Tester können nur ihr eigenes Profil bearbeiten")
         # QA-Tester darf nur bestimmte Felder ändern
         allowed_fields = {"username", "first_name", "last_name", "email", "tel"}
