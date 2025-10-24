@@ -2504,11 +2504,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         currentUser={user}
       />
 
-      <CompanyManagement
+      <CompanyManagementV2
         isOpen={showCompanyManagement}
         onClose={() => setShowCompanyManagement(false)}
         darkMode={darkMode || false}
-        authToken={authToken}
         currentUser={user}
       />
 
