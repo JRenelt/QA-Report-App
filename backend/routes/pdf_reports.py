@@ -309,7 +309,10 @@ async def generate_pdf_report(
     story.append(badges_block)
     story.append(Spacer(1, 1.0*cm))
     
-    # === FAZIT UND EMPFEHLUNGEN (volle Breite) ===
+    # === FAZIT UND EMPFEHLUNGEN (volle Breite) - MIT KeepTogether ===
+    # Wenn zu lang für Seite 1 → automatisch auf Seite 2 verschoben
+    
+    fazit_elements = []
     
     # Überschrift "FAZIT UND EMPFEHLUNGEN"
     fazit_title_style = ParagraphStyle(
@@ -322,7 +325,7 @@ async def generate_pdf_report(
         spaceAfter=10,
         fontName='Helvetica-Bold'
     )
-    story.append(Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>", fazit_title_style))
+    fazit_elements.append(Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>", fazit_title_style))
     
     # Orange Box mit Fazit-Inhalt
     fazit_content_style = ParagraphStyle(
