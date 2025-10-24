@@ -257,26 +257,27 @@ async def generate_pdf_report(
     story.append(Paragraph(status_text, status_text_style))
     story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand (1.2cm statt 0.8cm)
     
-    # === BLOCK 2: Badges (VÖLLIG NEU - OHNE verschachtelte Tables!) ===
+    # === BLOCK 2: Badges (OHNE Verschachtelung, aber mit ORIGINAL-Größe) ===
     
     def create_simple_card(number, label, border_color, bg_color):
-        """Erstellt einfache Karte als EINZELNE Table ohne Verschachtelung"""
+        """Erstellt einfache Karte als EINZELNE Table - OHNE feste Row Heights für automatische Größe"""
         # Zwei Rows: Zahl + Label
         card_data = [
-            [Paragraph(f"<b>{number}</b>", ParagraphStyle('Num', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER, textColor=colors.HexColor('#333333')))],
-            [Paragraph(label, ParagraphStyle('Lbl', parent=styles['Normal'], fontSize=6, alignment=TA_CENTER, textColor=colors.HexColor('#555555')))]
+            [Paragraph(f"<b>{number}</b>", ParagraphStyle('Num', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER, textColor=colors.HexColor('#333333'), leading=12))],
+            [Paragraph(label, ParagraphStyle('Lbl', parent=styles['Normal'], fontSize=6, alignment=TA_CENTER, textColor=colors.HexColor('#555555'), leading=8))]
         ]
         
-        card_table = Table(card_data, colWidths=[2.9*cm], rowHeights=[0.4*cm, 0.3*cm])
+        # KEINE rowHeights - lasse ReportLab die Höhe automatisch berechnen!
+        card_table = Table(card_data, colWidths=[2.9*cm])
         card_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (0, 1), bg_color),
             ('BOX', (0, 0), (0, 1), 2, border_color),
             ('ALIGN', (0, 0), (0, 1), 'CENTER'),
             ('VALIGN', (0, 0), (0, 1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (0, 1), 0.1*cm),
-            ('BOTTOMPADDING', (0, 0), (0, 1), 0.1*cm),
-            ('LEFTPADDING', (0, 0), (0, 1), 0.1*cm),
-            ('RIGHTPADDING', (0, 0), (0, 1), 0.1*cm),
+            ('TOPPADDING', (0, 0), (0, 1), 0.2*cm),    # Mehr Padding für normale Größe
+            ('BOTTOMPADDING', (0, 0), (0, 1), 0.2*cm),
+            ('LEFTPADDING', (0, 0), (0, 1), 0.15*cm),
+            ('RIGHTPADDING', (0, 0), (0, 1), 0.15*cm),
             ('ROUNDEDCORNERS', [15, 15, 15, 15])
         ]))
         return card_table
@@ -288,15 +289,14 @@ async def generate_pdf_report(
     card4 = create_simple_card(str(warning_count), "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2))
     card5 = create_simple_card(str(pending_count), "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     
-    # Container Table mit FESTEN Row/Col Heights
+    # Container Table OHNE feste Row Heights - nur VALIGN=TOP für korrekte Positionierung
     cards_data = [[card1, '', card2, '', card3, '', card4, '', card5]]
     cards_container = Table(
         cards_data, 
-        colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm],
-        rowHeights=[0.8*cm]  # FESTE Höhe für Container
+        colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm]
     )
     cards_container.setStyle(TableStyle([
-        ('VALIGN', (0, 0), (-1, -1), 'TOP'),  # WICHTIG: TOP statt MIDDLE
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),  # WICHTIG: TOP verhindert Überlappung
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('LEFTPADDING', (0, 0), (-1, -1), 0),
         ('RIGHTPADDING', (0, 0), (-1, -1), 0),
