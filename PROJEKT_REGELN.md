@@ -8,6 +8,36 @@
 - ✅ User ist deutscher Muttersprachler
 - ✅ Alle Antworten, Erklärungen und Dokumentation auf Deutsch verfassen
 
+### Farbraum für PDF-Berichte
+**REGEL:** Definierte Farbpalette für professionelle QA-Berichte
+
+**Primärfarbe:**
+- #5771B2 (RGB: 87-113-178)
+- #38569F (RGB: 56-86-159)
+- #1D3E92 (RGB: 29-62-146)
+- #112E75 (RGB: 17-46-117)
+- #08205B (RGB: 8-32-91)
+
+**Sekundärfarbe #1 (Türkis):**
+- #4898A4 (RGB: 72-152-164)
+- #2A8491 (RGB: 42-132-145)
+- #0F7785 (RGB: 15-119-133)
+- #075F6B (RGB: 7-95-107)
+- #014953 (RGB: 1-73-83)
+
+**Sekundärfarbe #2 (Violett):**
+- #705AB6 (RGB: 112-90-182)
+- #533AA3 (RGB: 83-58-163)
+- #3B1E96 (RGB: 59-30-150)
+- #2B1278 (RGB: 43-18-120)
+- #1D095D (RGB: 29-9-93)
+
+**Verwendung:**
+- ✅ PDF-Titel: Primärfarbe #5771B2
+- ✅ Überschriften: Primärfarbe (dunklere Töne)
+- ✅ Akzente: Sekundärfarben
+- ❌ KEINE Farben außerhalb dieses Farbraums verwenden
+
 ### AI-Agent Arbeitsregeln
 **REGEL:** Kritische Arbeitsabläufe für AI-Agent
 1. **Erledigte Aufgaben:** 
