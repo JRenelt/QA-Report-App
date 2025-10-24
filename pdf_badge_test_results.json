@@ -1,35 +1,35 @@
 {
   "total_tests": 4,
-  "passed": 2,
-  "failed": 2,
-  "success_rate": 50.0,
+  "passed": 4,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "Admin Login",
       "success": true,
       "message": "Admin login successful - User: admin, Role: admin",
-      "timestamp": "2025-10-24T06:48:41.126206",
+      "timestamp": "2025-10-24T06:49:50.602944",
       "response_data": null
     },
     {
       "test": "Get Projects",
       "success": true,
       "message": "Found 15 projects - Using project: QA-Projekt (ID: d4c44efa-051c-45df-9260-fee092a3f388)",
-      "timestamp": "2025-10-24T06:48:41.140508",
+      "timestamp": "2025-10-24T06:49:50.612628",
       "response_data": null
     },
     {
       "test": "PDF Generation with New Badges",
-      "success": false,
-      "message": "Internal server error during PDF generation: Internal Server Error",
-      "timestamp": "2025-10-24T06:48:41.238036",
+      "success": true,
+      "message": "\u2705 PDF generated successfully - Content-Type: application/pdf, Size: 22,266 bytes, Download: attachment; filename=QA-Report_QA-Projekt_24-10-2025.pdf",
+      "timestamp": "2025-10-24T06:49:50.919624",
       "response_data": null
     },
     {
       "test": "PDF Badge Specifications",
-      "success": false,
-      "message": "Cannot verify badge specifications - PDF generation failed: HTTP 500",
-      "timestamp": "2025-10-24T06:48:41.272942",
+      "success": true,
+      "message": "\u2705 PDF generated with new badge specifications - Font sizes: Number 10pt, Label 6pt, Padding: 0.13cm, Row Height: 0.56cm",
+      "timestamp": "2025-10-24T06:49:51.107464",
       "response_data": null
     }
   ]
