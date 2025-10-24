@@ -558,7 +558,7 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-6 space-y-4 max-h-[60vh] overflow-auto">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                   Firmenname *
@@ -591,6 +591,145 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
                   }`}
                   placeholder="Kurze Beschreibung der Firma..."
                 />
+              </div>
+
+              {/* Adresse Section */}
+              <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                <h4 className={`font-medium mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  📍 Postalische Adresse
+                </h4>
+                
+                <div className="space-y-3">
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Straße & Hausnummer
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.street}
+                      onChange={(e) => setFormData({ ...formData, street: e.target.value })}
+                      className={`w-full px-3 py-2 rounded-lg border ${
+                        darkMode
+                          ? 'bg-gray-600 border-gray-500 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                      placeholder="z.B. Musterstraße 123"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        PLZ
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.postal_code}
+                        onChange={(e) => setFormData({ ...formData, postal_code: e.target.value })}
+                        className={`w-full px-3 py-2 rounded-lg border ${
+                          darkMode
+                            ? 'bg-gray-600 border-gray-500 text-white'
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                        placeholder="12345"
+                      />
+                    </div>
+
+                    <div className="col-span-2">
+                      <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Stadt
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.city}
+                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                        className={`w-full px-3 py-2 rounded-lg border ${
+                          darkMode
+                            ? 'bg-gray-600 border-gray-500 text-white'
+                            : 'bg-white border-gray-300 text-gray-900'
+                        }`}
+                        placeholder="z.B. Berlin"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Land
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.country}
+                      onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                      className={`w-full px-3 py-2 rounded-lg border ${
+                        darkMode
+                          ? 'bg-gray-600 border-gray-500 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                      placeholder="Deutschland"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Ansprechpartner Section */}
+              <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                <h4 className={`font-medium mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  👤 Ansprechpartner
+                </h4>
+                
+                <div className="space-y-3">
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.contact_person_name}
+                      onChange={(e) => setFormData({ ...formData, contact_person_name: e.target.value })}
+                      className={`w-full px-3 py-2 rounded-lg border ${
+                        darkMode
+                          ? 'bg-gray-600 border-gray-500 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                      placeholder="z.B. Max Mustermann"
+                    />
+                  </div>
+
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      E-Mail
+                    </label>
+                    <input
+                      type="email"
+                      value={formData.contact_person_email}
+                      onChange={(e) => setFormData({ ...formData, contact_person_email: e.target.value })}
+                      className={`w-full px-3 py-2 rounded-lg border ${
+                        darkMode
+                          ? 'bg-gray-600 border-gray-500 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                      placeholder="kontakt@firma.de"
+                    />
+                  </div>
+
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Telefon
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.contact_person_phone}
+                      onChange={(e) => setFormData({ ...formData, contact_person_phone: e.target.value })}
+                      className={`w-full px-3 py-2 rounded-lg border ${
+                        darkMode
+                          ? 'bg-gray-600 border-gray-500 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                      placeholder="+49 123 456789"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div>
