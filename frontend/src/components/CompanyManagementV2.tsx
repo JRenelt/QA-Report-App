@@ -17,6 +17,15 @@ interface CompanyV2 {
   is_blocked: boolean;
   is_deletable: boolean;
   created_at: string;
+  // Adresse
+  street?: string;
+  postal_code?: string;
+  city?: string;
+  country?: string;
+  // Ansprechpartner
+  contact_person_name?: string;
+  contact_person_email?: string;
+  contact_person_phone?: string;
 }
 
 const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClose, darkMode, currentUser }) => {
