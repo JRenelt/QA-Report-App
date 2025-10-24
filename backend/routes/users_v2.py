@@ -7,9 +7,9 @@ User Management V2 - Komplett überarbeitet
 
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
-from backend.auth import get_current_user, get_password_hash
-from backend.database import get_database
-from backend.models_v2 import (
+from auth import get_current_user, get_password_hash
+from database import get_database
+from models_v2 import (
     UserV2, UserCreateV2, UserUpdateV2, UserInDBV2, UserRoleV2
 )
 import uuid
