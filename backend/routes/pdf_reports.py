@@ -51,8 +51,17 @@ async def generate_pdf_report(
     
     company = await companies_collection.find_one({"id": project.get("company_id")})
     company_name = company.get("name", "Unbekannte Firma") if company else "Unbekannte Firma"
-    company_logo_url = company.get("logo_url") if company else DEFAULT_LOGO_URL
     
+    # Check for logo_url in both snake_case and camelCase formats
+    company_logo_url = None
+    if company:
+        company_logo_url = company.get("logo_url") or company.get("logoUrl")
+    
+    # Skip SVG data URLs as ReportLab doesn't support them
+    if company_logo_url and company_logo_url.startswith("data:image/svg"):
+        company_logo_url = None
+    
+    # Use default logo if no valid logo found
     if not company_logo_url:
         company_logo_url = DEFAULT_LOGO_URL
     
