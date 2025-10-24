@@ -1290,15 +1290,19 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
 
         {/* Rechts - User, Hilfe, Settings */}
         <div className="flex items-center space-x-3">
-          {/* User */}
-          <div className={`flex items-center space-x-2 px-3 py-2 rounded-lg ${
-            darkMode ? 'bg-[#1E222B]' : 'bg-gray-100'
-          }`}>
+          {/* User mit Profil-Button */}
+          <button
+            onClick={() => setShowProfileModal(true)}
+            className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
+              darkMode ? 'bg-[#1E222B] hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'
+            }`}
+            title="Profil & Einstellungen"
+          >
             {getUserIcon()}
             <span className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               {user?.username || 'User'}
             </span>
-          </div>
+          </button>
 
           {/* Hilfe */}
           <button
