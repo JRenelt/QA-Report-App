@@ -16,7 +16,7 @@ from models_v2 import (
 import uuid
 from datetime import datetime
 
-router = APIRouter(prefix="/api/projects-v2", tags=["projects-v2"])
+router = APIRouter(prefix="/projects-v2", tags=["projects-v2"])
 
 def generate_project_id(company_short_code: str, user_first_name: str, user_last_name: str, sequence_number: int) -> str:
     """
