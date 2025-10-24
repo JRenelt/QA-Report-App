@@ -2542,6 +2542,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         currentUser={user}
       />
 
+      <ProjectManagementV2
+        isOpen={showProjectManagement}
+        onClose={() => setShowProjectManagement(false)}
+        darkMode={darkMode || false}
+        currentUser={user}
+      />
+
       {/* Glossar nur für Admins und SysOps */}
       {(user?.role === 'admin' || user?.role === 'sysop') && (
         <GlossaryModal
