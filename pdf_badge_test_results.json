@@ -1,0 +1,22 @@
+{
+  "total_tests": 2,
+  "passed": 1,
+  "failed": 1,
+  "success_rate": 50.0,
+  "results": [
+    {
+      "test": "Admin Login",
+      "success": true,
+      "message": "Admin login successful - User: admin, Role: admin",
+      "timestamp": "2025-10-24T06:48:22.463766",
+      "response_data": null
+    },
+    {
+      "test": "Get Projects",
+      "success": false,
+      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-10-24T06:48:22.477502",
+      "response_data": null
+    }
+  ]
+}
