@@ -252,7 +252,16 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
     setFormData({
       name: company.name,
       description: company.description || '',
-      logo_url: company.logo_url || ''
+      logo_url: company.logo_url || '',
+      // Adresse
+      street: company.street || '',
+      postal_code: company.postal_code || '',
+      city: company.city || '',
+      country: company.country || 'Deutschland',
+      // Ansprechpartner
+      contact_person_name: company.contact_person_name || '',
+      contact_person_email: company.contact_person_email || '',
+      contact_person_phone: company.contact_person_phone || ''
     });
     setShowEditModal(true);
   };
@@ -261,7 +270,16 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
     setFormData({
       name: '',
       description: '',
-      logo_url: ''
+      logo_url: '',
+      // Adresse
+      street: '',
+      postal_code: '',
+      city: '',
+      country: 'Deutschland',
+      // Ansprechpartner
+      contact_person_name: '',
+      contact_person_email: '',
+      contact_person_phone: ''
     });
   };
 
