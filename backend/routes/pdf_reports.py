@@ -151,14 +151,20 @@ async def generate_pdf_report(
     
     # === TABELLEN: Projekt-Details (links) und Version/Projekt-ID (rechts) ===
     
-    # Linke Tabelle: Projekt-Details
+    # === TABELLEN-AUFTEILUNG: 48% + 4% + 48% ===
+    # Nutzbare Breite: 18cm
+    # Linke Tabelle: 48% = 8.64cm
+    # Abstand: 4% = 0.72cm
+    # Rechte Tabelle: 48% = 8.64cm
+    
+    # Linke Tabelle: Projekt-Details (48% der nutzbaren Breite)
     left_data = [
         [Paragraph("<b>Projekt</b>", meta_style), Paragraph(project.get('name', 'N/A'), meta_style)],
         [Paragraph("<b>Test objekt</b>", meta_style), Paragraph(project.get('test_object', 'Nicht angegeben'), meta_style)],
         [Paragraph("<b>Ziel des Testes</b>", meta_style), Paragraph(project.get('test_goal', 'Nicht angegeben'), meta_style)]
     ]
     
-    left_table = Table(left_data, colWidths=[3.5*cm, 5*cm])
+    left_table = Table(left_data, colWidths=[3*cm, 5.64*cm])  # Gesamt 8.64cm
     left_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#ECF0F1')),  # Graue Spalte links
         ('BACKGROUND', (1, 0), (1, -1), colors.white),
@@ -173,14 +179,14 @@ async def generate_pdf_report(
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0.2*cm)
     ]))
     
-    # Rechte Tabelle: Version und Projekt-ID
+    # Rechte Tabelle: Version und Projekt-ID (48% der nutzbaren Breite)
     project_id_short = project['id'][:8] if len(project['id']) > 8 else project['id']
     right_data = [
         [Paragraph("<b>Version</b>", meta_style), Paragraph("v1.0.0", meta_style)],
         [Paragraph("<b>Projekt ID</b>", meta_style), Paragraph(project_id_short, meta_style)]
     ]
     
-    right_table = Table(right_data, colWidths=[2.5*cm, 3*cm])
+    right_table = Table(right_data, colWidths=[2.5*cm, 6.14*cm])  # Gesamt 8.64cm
     right_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#ECF0F1')),
         ('BACKGROUND', (1, 0), (1, -1), colors.white),
@@ -195,15 +201,17 @@ async def generate_pdf_report(
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0.2*cm)
     ]))
     
-    # Beide Tabellen nebeneinander
+    # Beide Tabellen nebeneinander: 48% + 4% + 48% = 100%
     tables_data = [[left_table, '', right_table]]
-    tables_combined = Table(tables_data, colWidths=[8.5*cm, 1*cm, 5.5*cm])
+    tables_combined = Table(tables_data, colWidths=[8.64*cm, 0.72*cm, 8.64*cm])  # Exakte Aufteilung
     tables_combined.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('ALIGN', (0, 0), (0, 0), 'LEFT'),
-        ('ALIGN', (2, 0), (2, 0), 'RIGHT'),
+        ('ALIGN', (2, 0), (2, 0), 'LEFT'),  # Beide linksbündig in ihren Spalten
         ('LEFTPADDING', (0, 0), (-1, -1), 0),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0)
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
     ]))
     
     story.append(tables_combined)
