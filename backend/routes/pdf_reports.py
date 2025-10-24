@@ -75,19 +75,19 @@ async def generate_pdf_report(
     # Basis-Styles
     styles = getSampleStyleSheet()
     
-    # === ZEILE 1: "QA-Report" Überschrift (linksbündig, rot) ===
+    # === ZEILE 1: "QA-Report" Überschrift (Primärfarbe #5771B2) ===
     title_style = ParagraphStyle(
         'ReportTitle',
         parent=styles['Heading1'],
         fontSize=22,
-        textColor=colors.HexColor('#E74C3C'),  # Rot
+        textColor=colors.HexColor('#5771B2'),  # Primärfarbe aus Farbraum
         leftIndent=0,
         spaceBefore=0,
         spaceAfter=8
     )
     story.append(Paragraph("<b>QA-Report</b>", title_style))
     
-    # === ZEILE 2: Logo + Firmenname (nebeneinander) + Erstellungsdatum (rechts) ===
+    # === ZEILE 2: [LOGO] [FIRMA] nebeneinander + Erstellungsdatum (rechts) ===
     from reportlab.platypus import Table, TableStyle, Image
     
     # Logo laden
@@ -95,7 +95,7 @@ async def generate_pdf_report(
         logo_img = Image(company_logo_url, width=1.2*cm, height=1.2*cm, kind='proportional')
     except:
         # Fallback: Text statt Logo
-        logo_img = Paragraph("[LOGO]", styles['Normal'])
+        logo_img = Paragraph("[LOGO]", ParagraphStyle('LogoFallback', parent=styles['Normal'], fontSize=10))
     
     # Firmenname
     firma_para = Paragraph(
@@ -103,14 +103,28 @@ async def generate_pdf_report(
         ParagraphStyle('FirmaName', parent=styles['Normal'], fontSize=14, textColor=colors.HexColor('#2C3E50'))
     )
     
+    # Logo + Firma in Sub-Table (nebeneinander)
+    logo_firma_data = [[logo_img, firma_para]]
+    logo_firma_table = Table(logo_firma_data, colWidths=[1.5*cm, 8*cm])
+    logo_firma_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+        ('ALIGN', (1, 0), (1, 0), 'LEFT'),
+        ('LEFTPADDING', (0, 0), (0, 0), 0.3*cm),  # Logo: 1 Zeichen weiter rechts (~0.3cm)
+        ('LEFTPADDING', (1, 0), (1, 0), 0.2*cm),  # Firma: kleiner Abstand vom Logo
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
+    ]))
+    
     # Erstellungsdatum
     datum_para = Paragraph(
         f"<b>Erstellungsdatum</b> | {datetime.utcnow().strftime('%d.%m.%Y')}",
         ParagraphStyle('Datum', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'), alignment=TA_RIGHT)
     )
     
-    # Header-Tabelle: Logo + Firma (links) und Datum (rechts)
-    header_data = [[[logo_img, firma_para], datum_para]]
+    # Haupttabelle: Logo+Firma (links) und Datum (rechts)
+    header_data = [[logo_firma_table, datum_para]]
     header_table = Table(header_data, colWidths=[10*cm, 8*cm])
     header_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
