@@ -364,7 +364,166 @@ async def generate_pdf_report(
     story.append(fazit_table)
     story.append(Spacer(1, 1.0*cm))
     
-    story.append(Paragraph("✅ Phase 5: Fazit und Empfehlungen + Footer implementiert!", styles['Normal']))
+    # === PAGE BREAK: Neue Seite für Inhaltsverzeichnis ===
+    story.append(PageBreak())
+    
+    # === SEITE 2: INHALTSVERZEICHNIS / MENÜ ===
+    
+    # Lade Test-Suites (Bereiche)
+    from database import test_suites_collection, test_cases_collection
+    test_suites = await test_suites_collection.find({"project_id": project_id}).sort("sort_order", 1).to_list(None)
+    
+    if test_suites:
+        # Überschrift
+        menu_title_style = ParagraphStyle(
+            'MenuTitle',
+            parent=styles['Heading1'],
+            fontSize=18,
+            textColor=colors.HexColor('#5771B2'),
+            leftIndent=0,
+            spaceBefore=0,
+            spaceAfter=16,
+            fontName='Helvetica-Bold'
+        )
+        story.append(Paragraph("<b>INHALTSVERZEICHNIS</b>", menu_title_style))
+        story.append(Paragraph(f"<b>Projekt:</b> {project.get('name', 'N/A')}", styles['Normal']))
+        story.append(Spacer(1, 0.8*cm))
+        
+        # Menü-Items (Test-Bereiche)
+        for idx, suite in enumerate(test_suites, 1):
+            suite_name = suite.get('name', 'Unbekannter Bereich')
+            suite_id = suite.get('id', '')
+            
+            # Zähle Tests in diesem Bereich
+            suite_test_count = await test_cases_collection.count_documents({"test_suite_id": suite_id})
+            
+            menu_item_style = ParagraphStyle(
+                'MenuItem',
+                parent=styles['Normal'],
+                fontSize=12,
+                textColor=colors.HexColor('#2C3E50'),
+                leftIndent=0.5*cm,
+                spaceBefore=6,
+                spaceAfter=6
+            )
+            
+            menu_text = f"{idx}. <b>{suite_name}</b> ({suite_test_count} Tests)"
+            story.append(Paragraph(menu_text, menu_item_style))
+        
+        story.append(Spacer(1, 1.0*cm))
+        
+        # === PAGE BREAK: Neue Seite für Test-Details ===
+        story.append(PageBreak())
+        
+        # === AB SEITE 3: TEST-DETAILS ===
+        
+        for suite in test_suites:
+            suite_name = suite.get('name', 'Unbekannter Bereich')
+            suite_icon = suite.get('icon', '📋')
+            suite_id = suite.get('id', '')
+            
+            # Bereichs-Überschrift
+            suite_header_style = ParagraphStyle(
+                'SuiteHeader',
+                parent=styles['Heading2'],
+                fontSize=14,
+                textColor=colors.HexColor('#5771B2'),
+                leftIndent=0,
+                spaceBefore=12,
+                spaceAfter=12,
+                fontName='Helvetica-Bold'
+            )
+            story.append(Paragraph(f"<b>{suite_icon} {suite_name}</b>", suite_header_style))
+            
+            # Lade Tests für diesen Bereich
+            suite_tests = await test_cases_collection.find({"test_suite_id": suite_id}).sort("sort_order", 1).to_list(None)
+            suite_test_count = len(suite_tests)
+            
+            count_style = ParagraphStyle('Count', parent=styles['Normal'], fontSize=10, textColor=colors.HexColor('#666666'))
+            story.append(Paragraph(f"({suite_test_count} Tests)", count_style))
+            story.append(Spacer(1, 0.5*cm))
+            
+            # Test-Boxen für diesen Bereich
+            for test in suite_tests:
+                test_id = test.get('test_id', 'N/A')
+                test_name = test.get('name', 'Unbenannter Test')
+                test_desc = test.get('description', 'Keine Beschreibung')
+                test_status = test.get('status', 'pending')
+                test_created = test.get('created_at', 'N/A')
+                test_updated = test.get('updated_at', 'N/A')
+                
+                # Status-Mapping
+                status_map = {
+                    'success': ('OK', colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.1)),
+                    'error': ('FEHLER', colors.darkred, colors.Color(1, 0, 0, alpha=0.1)),
+                    'warning': ('In Bearbeitung', colors.goldenrod, colors.Color(1, 1, 0, alpha=0.1)),
+                    'pending': ('Offen', colors.HexColor('#666666'), colors.Color(0.5, 0.5, 0.5, alpha=0.1))
+                }
+                
+                status_text, status_border, status_bg = status_map.get(test_status, status_map['pending'])
+                
+                # Test-Box erstellen (wie im Bild)
+                # Linke Seite: ID + Name + Beschreibung
+                test_id_para = Paragraph(f"<b>{test_id}</b>", ParagraphStyle('TestID', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#666666')))
+                test_name_para = Paragraph(f"<b>{test_name}</b>", ParagraphStyle('TestName', parent=styles['Normal'], fontSize=11, textColor=colors.HexColor('#2C3E50')))
+                test_desc_para = Paragraph(test_desc, ParagraphStyle('TestDesc', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#666666')))
+                
+                # Rechte Seite: Datum + Status-Button
+                test_date_para = Paragraph(f"Getestet am: {test_created}<br/>Aktualisiert am: {test_updated}", ParagraphStyle('TestDate', parent=styles['Normal'], fontSize=8, textColor=colors.HexColor('#666666'), alignment=TA_RIGHT))
+                
+                # Status-Button
+                status_button = Table([[Paragraph(f"<b>{status_text}</b>", ParagraphStyle('StatusBtn', parent=styles['Normal'], fontSize=9, textColor=colors.white, alignment=TA_CENTER))]], colWidths=[3*cm])
+                status_button.setStyle(TableStyle([
+                    ('BACKGROUND', (0, 0), (0, 0), status_border),
+                    ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+                    ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+                    ('TOPPADDING', (0, 0), (0, 0), 0.2*cm),
+                    ('BOTTOMPADDING', (0, 0), (0, 0), 0.2*cm),
+                    ('ROUNDEDCORNERS', [15, 15, 15, 15])
+                ]))
+                
+                # Test-Box Table
+                left_col = [[test_id_para], [test_name_para], [test_desc_para]]
+                left_table = Table(left_col, colWidths=[12*cm])
+                left_table.setStyle(TableStyle([
+                    ('VALIGN', (0, 0), (0, -1), 'TOP'),
+                    ('LEFTPADDING', (0, 0), (0, -1), 0),
+                    ('RIGHTPADDING', (0, 0), (0, -1), 0),
+                    ('TOPPADDING', (0, 0), (0, -1), 0.1*cm),
+                    ('BOTTOMPADDING', (0, 0), (0, -1), 0.1*cm)
+                ]))
+                
+                right_col = [[test_date_para], [status_button]]
+                right_table = Table(right_col, colWidths=[5*cm])
+                right_table.setStyle(TableStyle([
+                    ('VALIGN', (0, 0), (0, -1), 'TOP'),
+                    ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+                    ('LEFTPADDING', (0, 0), (0, -1), 0),
+                    ('RIGHTPADDING', (0, 0), (0, -1), 0),
+                    ('TOPPADDING', (0, 0), (0, -1), 0.1*cm),
+                    ('BOTTOMPADDING', (0, 0), (0, -1), 0.1*cm)
+                ]))
+                
+                test_box_data = [[left_table, right_table]]
+                test_box = Table(test_box_data, colWidths=[12*cm, 5.5*cm])
+                test_box.setStyle(TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, -1), status_bg),
+                    ('BOX', (0, 0), (-1, -1), 2, status_border),
+                    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                    ('TOPPADDING', (0, 0), (-1, -1), 0.3*cm),
+                    ('BOTTOMPADDING', (0, 0), (-1, -1), 0.3*cm),
+                    ('LEFTPADDING', (0, 0), (-1, -1), 0.4*cm),
+                    ('RIGHTPADDING', (0, 0), (-1, -1), 0.4*cm),
+                    ('ROUNDEDCORNERS', [10, 10, 10, 10])
+                ]))
+                
+                story.append(test_box)
+                story.append(Spacer(1, 0.4*cm))
+            
+            # Abstand zwischen Bereichen
+            story.append(Spacer(1, 0.8*cm))
+    
+    story.append(Paragraph("✅ Phase 6: Inhaltsverzeichnis + Test-Details implementiert!", styles['Normal']))
     
     # PDF generieren mit Custom Footer
     def add_footer(canvas, doc):
