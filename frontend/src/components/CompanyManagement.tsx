@@ -45,7 +45,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
   const loadCompanies = async () => {
     try {
       setLoading(true);
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-modernize.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://modernreportapp.preview.emergentagent.com';
       const response = await fetch(`${backendUrl}/api/companies/`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -163,7 +163,7 @@ const CompanyManagement: React.FC<CompanyManagementProps> = ({
     }
 
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-modernize.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://modernreportapp.preview.emergentagent.com';
       
       // UPDATE oder CREATE?
       const isUpdate = editingCompany !== null;
