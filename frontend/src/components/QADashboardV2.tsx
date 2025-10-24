@@ -977,12 +977,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       const previewWindow = window.open('', '_blank', 'width=900,height=1000,scrollbars=yes');
       
       if (previewWindow) {
+        const titleText = type === 'tested' ? 'QA-Report (Getestet) Vorschau' : 'QA-Report Vorschau';
         previewWindow.document.write(`
           <!DOCTYPE html>
           <html>
           <head>
             <meta charset="utf-8">
-            <title>QA-Report Vorschau</title>
+            <title>${titleText}</title>
             <style>
               body {
                 margin: 0;
