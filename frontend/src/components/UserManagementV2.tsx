@@ -54,8 +54,6 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
     password: ''
   });
 
-  if (!isOpen) return null;
-
   // Load users and companies on mount
   useEffect(() => {
     if (isOpen) {
