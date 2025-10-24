@@ -32,7 +32,7 @@ async def import_companies(
     """
     Import companies from JSON/CSV (nur SysOp)
     """
-    if current_user["role"] != "sysop":
+    if current_user.role != "sysop":
         raise HTTPException(status_code=403, detail="Nur SysOp kann Firmen importieren")
     
     db = await get_database()
@@ -75,7 +75,7 @@ async def import_users(
     """
     Import users from JSON/CSV (SysOp + Admin)
     """
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     db = await get_database()
@@ -85,7 +85,7 @@ async def import_users(
     
     for user_data in import_data.users:
         # Permission Check für Admin
-        if current_user["role"] == "admin" and user_data["company_id"] != current_user["company_id"]:
+        if current_user.role == "admin" and user_data["company_id"] != current_user["company_id"]:
             continue
         
         # Check if user already exists
@@ -128,7 +128,7 @@ async def import_projects(
     """
     Import projects from JSON/CSV (SysOp + Admin)
     """
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     db = await get_database()
@@ -139,7 +139,7 @@ async def import_projects(
     
     for project_data in import_data.projects:
         # Permission Check für Admin
-        if current_user["role"] == "admin" and project_data["company_id"] != current_user["company_id"]:
+        if current_user.role == "admin" and project_data["company_id"] != current_user["company_id"]:
             continue
         
         # Get company
@@ -199,7 +199,7 @@ async def generate_test_data(
     created_projects = 0
     created_test_cases = 0
     
-    if current_user["role"] == "sysop":
+    if current_user.role == "sysop":
         # SysOp: Massentestdaten
         company_count = test_data.company_count or 2
         
@@ -274,7 +274,7 @@ async def generate_test_data(
                     await test_cases_collection.insert_one(new_test_case)
                     created_test_cases += 1
     
-    elif current_user["role"] == "admin":
+    elif current_user.role == "admin":
         # Admin: 2 Projekte mit 10 und 15 Testfällen
         company_id = current_user["company_id"]
         company = await companies_collection.find_one({"id": company_id})
@@ -326,7 +326,7 @@ async def generate_test_data(
                 await test_cases_collection.insert_one(new_test_case)
                 created_test_cases += 1
     
-    elif current_user["role"] == "qa_tester":
+    elif current_user.role == "qa_tester":
         # QA-Tester: Optional 1 Projekt mit 10 Testfällen
         company_id = current_user["company_id"]
         company = await companies_collection.find_one({"id": company_id})

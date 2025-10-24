@@ -60,10 +60,10 @@ async def get_user(user_id: str, current_user: dict = Depends(get_current_user))
         raise HTTPException(status_code=404, detail="User nicht gefunden")
     
     # Permission Check
-    if current_user["role"] == "qa_tester" and user["id"] != current_user["id"]:
+    if current_user.role == "qa_tester" and user["id"] != current_user["id"]:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
-    if current_user["role"] == "admin" and user["company_id"] != current_user["company_id"]:
+    if current_user.role == "admin" and user["company_id"] != current_user["company_id"]:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     user.pop("hashed_password", None)
@@ -82,10 +82,10 @@ async def create_user(user_data: UserCreateV2, current_user: dict = Depends(get_
     users_collection = db["users_v2"]
     
     # Permission Check
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         raise HTTPException(status_code=403, detail="QA-Tester können keine User anlegen")
     
-    if current_user["role"] == "admin":
+    if current_user.role == "admin":
         # Admin kann nur User seiner Firma erstellen
         if user_data.company_id != current_user["company_id"]:
             raise HTTPException(status_code=403, detail="Keine Berechtigung für diese Firma")
@@ -145,13 +145,13 @@ async def update_user(
         raise HTTPException(status_code=404, detail="User nicht gefunden")
     
     # Permission Check
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         if user["id"] != current_user["id"]:
             raise HTTPException(status_code=403, detail="QA-Tester können nur ihr eigenes Profil bearbeiten")
         # QA-Tester darf nur bestimmte Felder ändern
         allowed_fields = {"username", "first_name", "last_name", "email", "tel"}
         update_fields = {k: v for k, v in user_update.dict(exclude_unset=True).items() if k in allowed_fields}
-    elif current_user["role"] == "admin":
+    elif current_user.role == "admin":
         if user["company_id"] != current_user["company_id"]:
             raise HTTPException(status_code=403, detail="Admin kann nur User seiner Firma bearbeiten")
         # Admin darf keine SysOps bearbeiten
@@ -187,7 +187,7 @@ async def delete_user(user_id: str, current_user: dict = Depends(get_current_use
     users_collection = db["users_v2"]
     
     # Permission Check
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         raise HTTPException(status_code=403, detail="QA-Tester können keine User löschen")
     
     user = await users_collection.find_one({"id": user_id})
@@ -198,7 +198,7 @@ async def delete_user(user_id: str, current_user: dict = Depends(get_current_use
     if not user.get("is_deletable", True):
         raise HTTPException(status_code=403, detail="Dieser User kann nicht gelöscht werden")
     
-    if current_user["role"] == "admin":
+    if current_user.role == "admin":
         if user["company_id"] != current_user["company_id"]:
             raise HTTPException(status_code=403, detail="Admin kann nur User seiner Firma löschen")
         if user["role"] == "sysop":
@@ -218,14 +218,14 @@ async def block_user(user_id: str, current_user: dict = Depends(get_current_user
     db = await get_database()
     users_collection = db["users_v2"]
     
-    if current_user["role"] not in ["sysop", "admin"]:
+    if current_user.role not in ["sysop", "admin"]:
         raise HTTPException(status_code=403, detail="Keine Berechtigung zum Sperren")
     
     user = await users_collection.find_one({"id": user_id})
     if not user:
         raise HTTPException(status_code=404, detail="User nicht gefunden")
     
-    if current_user["role"] == "admin":
+    if current_user.role == "admin":
         if user["company_id"] != current_user["company_id"]:
             raise HTTPException(status_code=403, detail="Keine Berechtigung")
         if user["role"] == "sysop":
@@ -249,7 +249,7 @@ async def block_user_from_project(
     """
     Block user from specific project (nur SysOp)
     """
-    if current_user["role"] != "sysop":
+    if current_user.role != "sysop":
         raise HTTPException(status_code=403, detail="Nur SysOp kann User für einzelne Projekte sperren")
     
     db = await get_database()

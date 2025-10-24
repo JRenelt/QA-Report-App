@@ -52,11 +52,11 @@ async def get_projects(
     
     query = {}
     
-    if current_user["role"] == "sysop":
+    if current_user.role == "sysop":
         # SysOp: Optional nach Firma filtern
         if company_id:
             query["company_id"] = company_id
-    elif current_user["role"] == "admin":
+    elif current_user.role == "admin":
         # Admin: Nur eigene Firma
         query["company_id"] = current_user["company_id"]
     else:
@@ -64,7 +64,7 @@ async def get_projects(
         query["assigned_testers.user_id"] = current_user["id"]
     
     # Filter: Keine gesperrten Projekte für QA-Tester
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         query["is_blocked"] = False
         # Prüfe blocked_projects des Users
         query["id"] = {"$nin": current_user.get("blocked_projects", [])}
@@ -87,12 +87,12 @@ async def get_project(project_id: str, current_user: dict = Depends(get_current_
         raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
     
     # Permission Check
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         # QA-Tester: Nur zugewiesene Projekte
         assigned_user_ids = [t["user_id"] for t in project.get("assigned_testers", [])]
         if current_user["id"] not in assigned_user_ids:
             raise HTTPException(status_code=403, detail="Keine Berechtigung für dieses Projekt")
-    elif current_user["role"] == "admin":
+    elif current_user.role == "admin":
         # Admin: Nur eigene Firma
         if project["company_id"] != current_user["company_id"]:
             raise HTTPException(status_code=403, detail="Keine Berechtigung")
@@ -105,7 +105,7 @@ async def create_project(project_data: ProjectCreateV2, current_user: dict = Dep
     """
     Create new project (SysOp + Admin)
     """
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         raise HTTPException(status_code=403, detail="QA-Tester können keine Projekte anlegen")
     
     db = await get_database()
@@ -113,7 +113,7 @@ async def create_project(project_data: ProjectCreateV2, current_user: dict = Dep
     companies_collection = db["companies_v2"]
     
     # Permission Check für Admin
-    if current_user["role"] == "admin" and project_data.company_id != current_user["company_id"]:
+    if current_user.role == "admin" and project_data.company_id != current_user["company_id"]:
         raise HTTPException(status_code=403, detail="Admin kann nur Projekte für eigene Firma anlegen")
     
     # Get company info
@@ -171,7 +171,7 @@ async def update_project(
         raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
     
     # Permission Check & Field Restrictions
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         # QA-Tester: Nur zugewiesene Projekte & nur 'notes' änderbar
         assigned_user_ids = [t["user_id"] for t in project.get("assigned_testers", [])]
         if current_user["id"] not in assigned_user_ids:
@@ -183,7 +183,7 @@ async def update_project(
         
         if not update_fields:
             raise HTTPException(status_code=400, detail="QA-Tester können nur 'notes' bearbeiten")
-    elif current_user["role"] == "admin":
+    elif current_user.role == "admin":
         # Admin: Nur eigene Firma
         if project["company_id"] != current_user["company_id"]:
             raise HTTPException(status_code=403, detail="Keine Berechtigung")
@@ -208,7 +208,7 @@ async def delete_project(project_id: str, current_user: dict = Depends(get_curre
     """
     Delete project (SysOp + Admin)
     """
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         raise HTTPException(status_code=403, detail="QA-Tester können keine Projekte löschen")
     
     db = await get_database()
@@ -220,7 +220,7 @@ async def delete_project(project_id: str, current_user: dict = Depends(get_curre
         raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
     
     # Permission Check
-    if current_user["role"] == "admin" and project["company_id"] != current_user["company_id"]:
+    if current_user.role == "admin" and project["company_id"] != current_user["company_id"]:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     # Delete associated test cases
@@ -239,7 +239,7 @@ async def assign_tester_to_project(
     """
     Assign QA-Tester to project (SysOp + Admin)
     """
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     db = await get_database()
@@ -251,7 +251,7 @@ async def assign_tester_to_project(
         raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
     
     # Permission Check
-    if current_user["role"] == "admin" and project["company_id"] != current_user["company_id"]:
+    if current_user.role == "admin" and project["company_id"] != current_user["company_id"]:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     # Get user
@@ -288,7 +288,7 @@ async def remove_tester_from_project(
     """
     Remove QA-Tester from project (SysOp + Admin)
     """
-    if current_user["role"] == "qa_tester":
+    if current_user.role == "qa_tester":
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     db = await get_database()
@@ -299,7 +299,7 @@ async def remove_tester_from_project(
         raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
     
     # Permission Check
-    if current_user["role"] == "admin" and project["company_id"] != current_user["company_id"]:
+    if current_user.role == "admin" and project["company_id"] != current_user["company_id"]:
         raise HTTPException(status_code=403, detail="Keine Berechtigung")
     
     # Remove assignment
@@ -318,7 +318,7 @@ async def block_project(project_id: str, current_user: dict = Depends(get_curren
     """
     Block/Unblock project (nur SysOp)
     """
-    if current_user["role"] != "sysop":
+    if current_user.role != "sysop":
         raise HTTPException(status_code=403, detail="Nur SysOp kann Projekte sperren")
     
     db = await get_database()
