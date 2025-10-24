@@ -941,7 +941,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
   };
 
-  // PDF Export Funktionen - NEU IMPLEMENTIERT - Phase 1
+  // PDF Export Funktionen - NEU IMPLEMENTIERT - Phase 1 mit Vorschau
   const handlePDFExport = async (type: 'all' | 'tested') => {
     if (!selectedProjectId || !authToken) {
       alert('❌ Kein Projekt ausgewählt oder nicht angemeldet');
@@ -964,19 +964,70 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      // PDF herunterladen
+      // PDF als Blob abrufen
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `QA-Report_Phase1_${new Date().toISOString().split('T')[0]}.pdf`;
+      const blobUrl = window.URL.createObjectURL(blob);
       
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Neues Fenster für Vorschau öffnen
+      const previewWindow = window.open('', '_blank', 'width=900,height=1000,scrollbars=yes');
+      
+      if (previewWindow) {
+        previewWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>QA-Report Vorschau</title>
+            <style>
+              body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+              }
+              #pdf-container {
+                width: 100%;
+                height: calc(100vh - 60px);
+                border: none;
+              }
+              #button-bar {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                background: white;
+                padding: 10px 20px;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+                border-top: 2px solid #06b6d4;
+              }
+              .print-btn {
+                background: #06b6d4;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                font-size: 16px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                transition: background 0.2s;
+              }
+              .print-btn:hover {
+                background: #0891b2;
+              }
+            </style>
+          </head>
+          <body>
+            <iframe id="pdf-container" src="${blobUrl}"></iframe>
+            <div id="button-bar">
+              <button class="print-btn" onclick="window.print()">🖨️ Drucken</button>
+            </div>
+          </body>
+          </html>
+        `);
+        previewWindow.document.close();
+      }
 
-      console.log(`✅ Phase 1 PDF erfolgreich heruntergeladen`);
+      console.log(`✅ Phase 1 PDF Vorschau geöffnet`);
     } catch (error) {
       console.error('PDF Export Fehler:', error);
       alert(`❌ Fehler beim PDF-Export: ${error instanceof Error ? error.message : 'Unbekannter Fehler'}`);
