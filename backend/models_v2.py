@@ -31,6 +31,15 @@ class CompanyBaseV2(BaseModel):
     name: str
     description: Optional[str] = None
     logo_url: Optional[str] = None
+    # Postalische Adresse
+    street: Optional[str] = None
+    postal_code: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = "Deutschland"
+    # Ansprechpartner
+    contact_person_name: Optional[str] = None
+    contact_person_email: Optional[str] = None
+    contact_person_phone: Optional[str] = None
 
 class CompanyCreateV2(CompanyBaseV2):
     pass
@@ -39,6 +48,15 @@ class CompanyUpdateV2(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     logo_url: Optional[str] = None
+    # Postalische Adresse
+    street: Optional[str] = None
+    postal_code: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    # Ansprechpartner
+    contact_person_name: Optional[str] = None
+    contact_person_email: Optional[str] = None
+    contact_person_phone: Optional[str] = None
     is_blocked: Optional[bool] = None
 
 class CompanyV2(CompanyBaseV2):
