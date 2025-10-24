@@ -6,9 +6,9 @@ Import & Testdaten-Generierung V2
 
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 from typing import List
-from backend.auth import get_current_user, get_password_hash
-from backend.database import get_database
-from backend.models_v2 import (
+from auth import get_current_user, get_password_hash
+from database import get_database
+from models_v2 import (
     GenerateTestDataV2, ImportCompaniesV2, ImportUsersV2,
     ImportProjectsV2, ImportTestCasesV2
 )
