@@ -1,0 +1,106 @@
+{
+  "total_tests": 14,
+  "passed": 0,
+  "failed": 14,
+  "success_rate": 0.0,
+  "results": [
+    {
+      "test": "SysOp Login",
+      "success": false,
+      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-10-24T10:12:17.991550",
+      "response_data": null
+    },
+    {
+      "test": "Admin Login",
+      "success": false,
+      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-10-24T10:12:17.999771",
+      "response_data": null
+    },
+    {
+      "test": "QA-Tester Login",
+      "success": false,
+      "message": "HTTP 404: {\"detail\":\"Not Found\"}",
+      "timestamp": "2025-10-24T10:12:18.007619",
+      "response_data": null
+    },
+    {
+      "test": "SysOp Companies V2 Access",
+      "success": false,
+      "message": "No auth token for SysOp",
+      "timestamp": "2025-10-24T10:12:18.007656",
+      "response_data": null
+    },
+    {
+      "test": "SysOp Users V2 Access",
+      "success": false,
+      "message": "No auth token for SysOp",
+      "timestamp": "2025-10-24T10:12:18.007662",
+      "response_data": null
+    },
+    {
+      "test": "SysOp Projects V2 Access",
+      "success": false,
+      "message": "No auth token for SysOp",
+      "timestamp": "2025-10-24T10:12:18.007667",
+      "response_data": null
+    },
+    {
+      "test": "Admin Companies V2 Access",
+      "success": false,
+      "message": "No auth token for Admin",
+      "timestamp": "2025-10-24T10:12:18.007670",
+      "response_data": null
+    },
+    {
+      "test": "Admin Users V2 Access",
+      "success": false,
+      "message": "No auth token for Admin",
+      "timestamp": "2025-10-24T10:12:18.007677",
+      "response_data": null
+    },
+    {
+      "test": "Admin Projects V2 Access",
+      "success": false,
+      "message": "No auth token for Admin",
+      "timestamp": "2025-10-24T10:12:18.007682",
+      "response_data": null
+    },
+    {
+      "test": "QA-Tester Companies V2 Access",
+      "success": false,
+      "message": "No auth token for QA-Tester",
+      "timestamp": "2025-10-24T10:12:18.007685",
+      "response_data": null
+    },
+    {
+      "test": "QA-Tester Users V2 Access",
+      "success": false,
+      "message": "No auth token for QA-Tester",
+      "timestamp": "2025-10-24T10:12:18.007691",
+      "response_data": null
+    },
+    {
+      "test": "QA-Tester Projects V2 Access",
+      "success": false,
+      "message": "No auth token for QA-Tester",
+      "timestamp": "2025-10-24T10:12:18.007694",
+      "response_data": null
+    },
+    {
+      "test": "Admin Generate Test Data V2",
+      "success": false,
+      "message": "No auth token for Admin",
+      "timestamp": "2025-10-24T10:12:18.007699",
+      "response_data": null
+    },
+    {
+      "test": "Admin Projects V2 After Generation",
+      "success": false,
+      "message": "No auth token for Admin",
+      "timestamp": "2025-10-24T10:12:18.007703",
+      "response_data": null
+    }
+  ]
+}
