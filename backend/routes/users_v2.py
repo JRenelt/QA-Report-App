@@ -15,7 +15,7 @@ from models_v2 import (
 import uuid
 from datetime import datetime
 
-router = APIRouter(prefix="/api/users-v2", tags=["users-v2"])
+router = APIRouter(prefix="/users-v2", tags=["users-v2"])
 
 @router.get("/", response_model=List[UserV2])
 async def get_users(current_user: dict = Depends(get_current_user)):
