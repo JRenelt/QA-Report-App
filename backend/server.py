@@ -87,22 +87,37 @@ async def get_profile(current_user: User = Depends(get_current_user)):
 # Import routes dynamically after MongoDB connection
 try:
     from routes import auth as auth_routes
+    print("✅ Imported auth routes")
     from routes import users
+    print("✅ Imported users routes")
     from routes import companies
+    print("✅ Imported companies routes")
     from routes import projects
+    print("✅ Imported projects routes")
     from routes import test_suites
+    print("✅ Imported test_suites routes")
     from routes import test_cases
+    print("✅ Imported test_cases routes")
     from routes import test_results
+    print("✅ Imported test_results routes")
     from routes import import_export
+    print("✅ Imported import_export routes")
     from routes import pdf_reports
+    print("✅ Imported pdf_reports routes")
     from routes import archive
+    print("✅ Imported archive routes")
     from routes import admin
+    print("✅ Imported admin routes")
     
     # Import NEW V2 Routes
     from routes import users_v2
+    print("✅ Imported users_v2 routes")
     from routes import companies_v2
+    print("✅ Imported companies_v2 routes")
     from routes import projects_v2
+    print("✅ Imported projects_v2 routes")
     from routes import admin_v2
+    print("✅ Imported admin_v2 routes")
     
     # Include API Routes with /api prefix via router
     api_router.include_router(auth_routes.router, prefix="/auth", tags=["Authentication"])
@@ -122,6 +137,8 @@ try:
     api_router.include_router(companies_v2.router, tags=["Companies V2"])
     api_router.include_router(projects_v2.router, tags=["Projects V2"])
     api_router.include_router(admin_v2.router, tags=["Admin Operations V2"])
+    
+    print("✅ All routes imported and registered successfully")
 except ImportError as e:
     print(f"⚠️  Warning: Could not import route: {e}")
     print("Routes will be loaded after dependencies are installed")
