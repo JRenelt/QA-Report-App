@@ -6,7 +6,7 @@ import {
   CheckCircle, User, FunnelX, Coffee, CircleOff, MousePointerClick, CircleCheck, Factory, FolderOpen, BookOpen
 } from 'lucide-react';
 import UserManagementV2 from './UserManagementV2';
-import CompanyManagement from './CompanyManagement';
+import CompanyManagementV2 from './CompanyManagementV2';
 import GlossaryModal from './GlossaryModal';
 import ProfileModal from './ProfileModal';
 import qaService from '../services/qaService';
