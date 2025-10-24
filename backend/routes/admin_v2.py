@@ -348,7 +348,7 @@ async def generate_test_data(
             "is_blocked": False,
             "assigned_testers": [{
                 "user_id": current_user.id,
-                "username": current_user["username"],
+                "username": current_user.username,
                 "assigned_at": datetime.utcnow().isoformat()
             }],
             "created_by": current_user.id,
