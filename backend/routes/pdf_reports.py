@@ -255,7 +255,7 @@ async def generate_pdf_report(
     status_text_style = ParagraphStyle('StatusText', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#555555'))
     status_text = f"Status: {success_count} von {total_tests} Tests bestanden. {error_count} Fehler festgestellt. {pending_count} ungeprüft."
     story.append(Paragraph(status_text, status_text_style))
-    story.append(Spacer(1, 0.5*cm))  # 0.5cm Abstand zum Karten-Block
+    story.append(Spacer(1, 0.8*cm))  # ERHÖHT auf 0.8cm für klare Trennung
     
     # === 5 KARTEN (vertikal, abgerundete Ecken) ===
     
