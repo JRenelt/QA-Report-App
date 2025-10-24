@@ -1,147 +1,161 @@
 {
-  "total_tests": 20,
-  "passed": 19,
-  "failed": 1,
-  "success_rate": 95.0,
+  "total_tests": 22,
+  "passed": 22,
+  "failed": 0,
+  "success_rate": 100.0,
   "results": [
     {
       "test": "SysOp Login",
       "success": true,
       "message": "Login successful - User: JR, Role: sysop",
-      "timestamp": "2025-10-24T10:19:25.769897",
+      "timestamp": "2025-10-24T10:22:01.366756",
       "response_data": null
     },
     {
       "test": "Admin Login",
       "success": true,
       "message": "Login successful - User: AR, Role: admin",
-      "timestamp": "2025-10-24T10:19:26.044316",
+      "timestamp": "2025-10-24T10:22:01.601779",
       "response_data": null
     },
     {
       "test": "QA-Tester Login",
       "success": true,
       "message": "Login successful - User: AT, Role: qa_tester",
-      "timestamp": "2025-10-24T10:19:26.315990",
+      "timestamp": "2025-10-24T10:22:01.837001",
       "response_data": null
     },
     {
       "test": "SysOp Companies V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.360171",
+      "timestamp": "2025-10-24T10:22:01.872189",
       "response_data": null
     },
     {
       "test": "SysOp Companies V2 Count",
       "success": true,
       "message": "Correct count: 2 companies - ['ID2.de', 'Test_Firma']",
-      "timestamp": "2025-10-24T10:19:26.360741",
+      "timestamp": "2025-10-24T10:22:01.872743",
       "response_data": null
     },
     {
       "test": "SysOp Users V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.397564",
+      "timestamp": "2025-10-24T10:22:01.949695",
       "response_data": null
     },
     {
       "test": "SysOp Users V2 Count",
       "success": true,
       "message": "Correct count: 3 users - ['JR', 'AR', 'AT']",
-      "timestamp": "2025-10-24T10:19:26.398181",
+      "timestamp": "2025-10-24T10:22:01.950325",
       "response_data": null
     },
     {
       "test": "SysOp Projects V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.434787",
+      "timestamp": "2025-10-24T10:22:01.986249",
       "response_data": null
     },
     {
       "test": "Admin Companies V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.471860",
+      "timestamp": "2025-10-24T10:22:02.024263",
       "response_data": null
     },
     {
       "test": "Admin Companies V2 Count",
       "success": true,
       "message": "Correct count: 1 company - ['Test_Firma']",
-      "timestamp": "2025-10-24T10:19:26.472494",
+      "timestamp": "2025-10-24T10:22:02.024898",
       "response_data": null
     },
     {
       "test": "Admin Users V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.511257",
+      "timestamp": "2025-10-24T10:22:02.062283",
       "response_data": null
     },
     {
       "test": "Admin Users V2 Count",
       "success": true,
       "message": "Correct count: 2 users - ['AR', 'AT']",
-      "timestamp": "2025-10-24T10:19:26.511869",
+      "timestamp": "2025-10-24T10:22:02.062874",
       "response_data": null
     },
     {
       "test": "Admin Projects V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.545966",
+      "timestamp": "2025-10-24T10:22:02.096097",
       "response_data": null
     },
     {
       "test": "QA-Tester Companies V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.587207",
+      "timestamp": "2025-10-24T10:22:02.132755",
       "response_data": null
     },
     {
       "test": "QA-Tester Companies V2 Count",
       "success": true,
       "message": "Correct count: 1 company - ['Test_Firma']",
-      "timestamp": "2025-10-24T10:19:26.587826",
+      "timestamp": "2025-10-24T10:22:02.133361",
       "response_data": null
     },
     {
       "test": "QA-Tester Users V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.626895",
+      "timestamp": "2025-10-24T10:22:02.168169",
       "response_data": null
     },
     {
       "test": "QA-Tester Users V2 Count",
       "success": true,
       "message": "Correct count: 1 user - ['AT']",
-      "timestamp": "2025-10-24T10:19:26.627544",
+      "timestamp": "2025-10-24T10:22:02.168758",
       "response_data": null
     },
     {
       "test": "QA-Tester Projects V2 Access",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.667992",
+      "timestamp": "2025-10-24T10:22:02.200175",
       "response_data": null
     },
     {
       "test": "Admin Generate Test Data V2",
-      "success": false,
-      "message": "Expected HTTP 200, got 500: Internal Server Error",
-      "timestamp": "2025-10-24T10:19:26.703284",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:22:02.263062",
+      "response_data": null
+    },
+    {
+      "test": "Admin Test Data Generation V2",
+      "success": true,
+      "message": "Correct generation: 2 projects, 25 test cases",
+      "timestamp": "2025-10-24T10:22:02.263731",
       "response_data": null
     },
     {
       "test": "Admin Projects V2 After Generation",
       "success": true,
       "message": "HTTP 200 - Response received successfully",
-      "timestamp": "2025-10-24T10:19:26.736517",
+      "timestamp": "2025-10-24T10:22:02.305163",
+      "response_data": null
+    },
+    {
+      "test": "Projects V2 After Generation",
+      "success": true,
+      "message": "Correct count: 2 projects visible after generation",
+      "timestamp": "2025-10-24T10:22:02.305882",
       "response_data": null
     }
   ]
