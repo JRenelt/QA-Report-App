@@ -28,18 +28,18 @@ async def get_users(current_user: dict = Depends(get_current_user)):
     db = await get_database()
     users_collection = db["users_v2"]
     
-    if current_user["role"] == "sysop":
+    if current_user.role == "sysop":
         # SysOp sieht ALLE User
         users = await users_collection.find().to_list(length=None)
-    elif current_user["role"] == "admin":
+    elif current_user.role == "admin":
         # Admin sieht nur User seiner Firma
         users = await users_collection.find({
-            "company_id": current_user["company_id"]
+            "company_id": current_user.company_id
         }).to_list(length=None)
     else:
         # QA-Tester sieht nur sich selbst
         users = await users_collection.find({
-            "id": current_user["id"]
+            "id": current_user.id
         }).to_list(length=None)
     
     # Entferne hashed_password aus Response
