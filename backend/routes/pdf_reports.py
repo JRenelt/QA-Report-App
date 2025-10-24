@@ -309,7 +309,11 @@ async def generate_pdf_report(
     story.append(badges_block)
     story.append(Spacer(1, 1.0*cm))
     
-    # === FAZIT UND EMPFEHLUNGEN (volle Breite) ===
+    # === FAZIT UND EMPFEHLUNGEN (volle Breite) - MIT KeepTogether ===
+    # WICHTIG: Wenn zu lang für Seite 1 → GESAMTER Block auf Seite 2
+    
+    fazit_elements = []
+    
     # Überschrift "FAZIT UND EMPFEHLUNGEN"
     fazit_title_style = ParagraphStyle(
         'FazitTitle',
@@ -321,7 +325,7 @@ async def generate_pdf_report(
         spaceAfter=10,
         fontName='Helvetica-Bold'
     )
-    story.append(Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>", fazit_title_style))
+    fazit_elements.append(Paragraph("<b>FAZIT UND EMPFEHLUNGEN</b>", fazit_title_style))
     
     # Orange Box mit Fazit-Inhalt
     fazit_content_style = ParagraphStyle(
@@ -342,7 +346,7 @@ async def generate_pdf_report(
     <b>Empfehlung:</b><br/>
     Die identifizierten Fehler sollten priorisiert und zeitnah behoben werden. 
     Eine Re-Evaluation der fehlgeschlagenen Tests wird nach der Fehlerbehebung empfohlen.<br/><br/>
-    <b>TEMP - Lorem Ipsum (50 Zeilen):</b><br/>
+    <b>TEMP - Lorem Ipsum (20 Zeilen):</b><br/>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br/>
     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br/>
     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br/>
@@ -363,41 +367,15 @@ async def generate_pdf_report(
     And dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire.<br/>
     That they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those.<br/>
     Who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain.<br/>
-    These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled.<br/>
-    And when nothing prevents our being able to do what we like best, every pleasure is to be welcomed.<br/>
-    And every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business.<br/>
-    It will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore.<br/>
-    Always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures.<br/>
-    Or else he endures pains to avoid worse pains. But I must explain to you how all this mistaken idea.<br/>
-    Of denouncing pleasure and praising pain was born and I will give you a complete account of the system.<br/>
-    And expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.<br/>
-    No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know.<br/>
-    How to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone.<br/>
-    Who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances.<br/>
-    Occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever.<br/>
-    Undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault.<br/>
-    With a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces.<br/>
-    No resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled.<br/>
-    And demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain.<br/>
-    And trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness.<br/>
-    Of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple.<br/>
-    And easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents.<br/>
-    Our being able to do what we like best, every pleasure is to be welcomed and every pain avoided.<br/>
-    But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur.<br/>
-    That pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters.<br/>
-    To this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains.<br/>
-    To avoid worse pains. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.<br/>
-    Ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.<br/>
-    Ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.<br/>
-    Eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.<br/>
-    Anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.<br/>
-    Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.<br/>
-    Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.<br/>
     """
     
-    # WICHTIG: Fazit-Paragraph OHNE Table-Wrapping für automatischen Seitenumbruch
-    story.append(Paragraph(fazit_text, fazit_content_style))
-    story.append(Spacer(1, 1.0*cm))
+    fazit_para = Paragraph(fazit_text, fazit_content_style)
+    fazit_elements.append(fazit_para)
+    fazit_elements.append(Spacer(1, 1.0*cm))
+    
+    # KeepTogether: Wenn nicht genug Platz → GESAMTES Fazit auf Seite 2
+    fazit_block = KeepTogether(fazit_elements)
+    story.append(fazit_block)
     
     # === PAGE BREAK: Neue Seite für Inhaltsverzeichnis ===
     story.append(PageBreak())
