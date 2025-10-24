@@ -296,11 +296,11 @@ async def generate_pdf_report(
     
     # Outer Table mit ECHTEN Spacer-Spalten zwischen den Karten (nicht Padding!)
     # Struktur: [Card] [Spacer] [Card] [Spacer] [Card] [Spacer] [Card] [Spacer] [Card]
+    # WICHTIG: rowHeights NICHT setzen, damit Tabelle sich automatisch an Inhaltshöhe anpasst!
     cards_data = [[card1, '', card2, '', card3, '', card4, '', card5]]
     cards_table = Table(
         cards_data, 
-        colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm],  # Spacer = 1cm
-        rowHeights=[0.56*cm]  # 50% von 1.125cm = 0.56cm (dritte Reduktion)
+        colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm]  # Spacer = 1cm
     )
     cards_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
