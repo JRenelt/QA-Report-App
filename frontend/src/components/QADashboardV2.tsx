@@ -2497,10 +2497,10 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       </footer>
 
       {/* Modals */}
-      <UserManagement
+      <UserManagementV2
         isOpen={showUserManagement}
         onClose={() => setShowUserManagement(false)}
-        authToken={authToken}
+        darkMode={darkMode || false}
         currentUser={user}
       />
 
