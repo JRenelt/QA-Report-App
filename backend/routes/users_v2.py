@@ -275,3 +275,45 @@ async def block_user_from_project(
     )
     
     return {"message": message, "blocked_projects": blocked_projects}
+
+@router.post("/change-password")
+async def change_password(
+    old_password: str,
+    new_password: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Change user's own password
+    Alle User können ihr eigenes Passwort ändern
+    """
+    from auth import verify_password, get_password_hash
+    
+    db = await get_database()
+    users_collection = db["users_v2"]
+    
+    # Get current user from database
+    user = await users_collection.find_one({"id": current_user["id"]})
+    if not user:
+        raise HTTPException(status_code=404, detail="User nicht gefunden")
+    
+    # Verify old password
+    if not verify_password(old_password, user.get("hashed_password", "")):
+        raise HTTPException(status_code=400, detail="Altes Passwort ist nicht korrekt")
+    
+    # Validate new password
+    if len(new_password) < 8:
+        raise HTTPException(status_code=400, detail="Neues Passwort muss mindestens 8 Zeichen lang sein")
+    
+    # Hash new password
+    new_hashed_password = get_password_hash(new_password)
+    
+    # Update password
+    await users_collection.update_one(
+        {"id": current_user["id"]},
+        {"$set": {
+            "hashed_password": new_hashed_password,
+            "updated_at": datetime.utcnow().isoformat()
+        }}
+    )
+    
+    return {"message": "Passwort erfolgreich geändert"}
