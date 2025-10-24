@@ -257,27 +257,28 @@ async def generate_pdf_report(
     story.append(Paragraph(status_text, status_text_style))
     story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand (1.2cm statt 0.8cm)
     
-    # === BLOCK 2: Badges (OHNE Verschachtelung, aber mit ORIGINAL-Größe) ===
+    # === BLOCK 2: Badges (QUADRATISCH - gleiche Höhe und Breite!) ===
     
     def create_simple_card(number, label, border_color, bg_color):
-        """Erstellt einfache Karte als EINZELNE Table - OHNE feste Row Heights für automatische Größe"""
+        """Erstellt QUADRATISCHE Karte (2.9cm x 2.9cm)"""
         # Zwei Rows: Zahl + Label
         card_data = [
             [Paragraph(f"<b>{number}</b>", ParagraphStyle('Num', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER, textColor=colors.HexColor('#333333'), leading=12))],
             [Paragraph(label, ParagraphStyle('Lbl', parent=styles['Normal'], fontSize=6, alignment=TA_CENTER, textColor=colors.HexColor('#555555'), leading=8))]
         ]
         
-        # KEINE rowHeights - lasse ReportLab die Höhe automatisch berechnen!
+        # Breite = 2.9cm, also brauchen wir Höhe = 2.9cm
+        # Text nimmt ca. 0.5cm ein, also Padding = (2.9 - 0.5) / 2 = ca. 1.2cm oben/unten
         card_table = Table(card_data, colWidths=[2.9*cm])
         card_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (0, 1), bg_color),
             ('BOX', (0, 0), (0, 1), 2, border_color),
             ('ALIGN', (0, 0), (0, 1), 'CENTER'),
             ('VALIGN', (0, 0), (0, 1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (0, 1), 0.2*cm),    # Mehr Padding für normale Größe
-            ('BOTTOMPADDING', (0, 0), (0, 1), 0.2*cm),
-            ('LEFTPADDING', (0, 0), (0, 1), 0.15*cm),
-            ('RIGHTPADDING', (0, 0), (0, 1), 0.15*cm),
+            ('TOPPADDING', (0, 0), (0, 1), 1.0*cm),    # Großes Padding für Quadrat
+            ('BOTTOMPADDING', (0, 0), (0, 1), 1.0*cm),
+            ('LEFTPADDING', (0, 0), (0, 1), 0.2*cm),
+            ('RIGHTPADDING', (0, 0), (0, 1), 0.2*cm),
             ('ROUNDEDCORNERS', [15, 15, 15, 15])
         ]))
         return card_table
