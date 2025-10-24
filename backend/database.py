@@ -61,6 +61,10 @@ async def init_db():
     # Archives indexes
     await archives_collection.create_index("project_id")
 
+async def get_database():
+    """Get database instance"""
+    return db
+
 async def connect_db():
     """Connect to database"""
     await init_db()
