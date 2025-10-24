@@ -93,7 +93,7 @@ async def create_company(company_data: CompanyCreateV2, current_user: dict = Dep
         "short_code": short_code,
         "is_blocked": False,
         "is_deletable": True,
-        "created_by": current_user["id"],
+        "created_by": current_user.id,
         "created_at": datetime.utcnow().isoformat(),
         "updated_at": datetime.utcnow().isoformat()
     }
