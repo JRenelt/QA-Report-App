@@ -415,8 +415,12 @@ async def generate_pdf_report(
         ('ROUNDEDCORNERS', [10, 10, 10, 10])
     ]))
     
-    story.append(fazit_table)
-    story.append(Spacer(1, 1.0*cm))
+    fazit_elements.append(fazit_table)
+    fazit_elements.append(Spacer(1, 1.0*cm))
+    
+    # KeepTogether: Wenn zu lang → gesamtes Fazit auf nächste Seite
+    fazit_block = KeepTogether(fazit_elements)
+    story.append(fazit_block)
     
     # === PAGE BREAK: Neue Seite für Inhaltsverzeichnis ===
     story.append(PageBreak())
