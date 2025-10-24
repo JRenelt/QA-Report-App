@@ -1,105 +1,147 @@
 {
-  "total_tests": 14,
-  "passed": 3,
-  "failed": 11,
-  "success_rate": 21.428571428571427,
+  "total_tests": 20,
+  "passed": 19,
+  "failed": 1,
+  "success_rate": 95.0,
   "results": [
     {
       "test": "SysOp Login",
       "success": true,
       "message": "Login successful - User: JR, Role: sysop",
-      "timestamp": "2025-10-24T10:16:12.552775",
+      "timestamp": "2025-10-24T10:19:25.769897",
       "response_data": null
     },
     {
       "test": "Admin Login",
       "success": true,
       "message": "Login successful - User: AR, Role: admin",
-      "timestamp": "2025-10-24T10:16:12.784838",
+      "timestamp": "2025-10-24T10:19:26.044316",
       "response_data": null
     },
     {
       "test": "QA-Tester Login",
       "success": true,
       "message": "Login successful - User: AT, Role: qa_tester",
-      "timestamp": "2025-10-24T10:16:13.022481",
+      "timestamp": "2025-10-24T10:19:26.315990",
       "response_data": null
     },
     {
       "test": "SysOp Companies V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.060590",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.360171",
+      "response_data": null
+    },
+    {
+      "test": "SysOp Companies V2 Count",
+      "success": true,
+      "message": "Correct count: 2 companies - ['ID2.de', 'Test_Firma']",
+      "timestamp": "2025-10-24T10:19:26.360741",
       "response_data": null
     },
     {
       "test": "SysOp Users V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.096961",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.397564",
+      "response_data": null
+    },
+    {
+      "test": "SysOp Users V2 Count",
+      "success": true,
+      "message": "Correct count: 3 users - ['JR', 'AR', 'AT']",
+      "timestamp": "2025-10-24T10:19:26.398181",
       "response_data": null
     },
     {
       "test": "SysOp Projects V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.134738",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.434787",
       "response_data": null
     },
     {
       "test": "Admin Companies V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.210729",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.471860",
+      "response_data": null
+    },
+    {
+      "test": "Admin Companies V2 Count",
+      "success": true,
+      "message": "Correct count: 1 company - ['Test_Firma']",
+      "timestamp": "2025-10-24T10:19:26.472494",
       "response_data": null
     },
     {
       "test": "Admin Users V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.248537",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.511257",
+      "response_data": null
+    },
+    {
+      "test": "Admin Users V2 Count",
+      "success": true,
+      "message": "Correct count: 2 users - ['AR', 'AT']",
+      "timestamp": "2025-10-24T10:19:26.511869",
       "response_data": null
     },
     {
       "test": "Admin Projects V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.282234",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.545966",
       "response_data": null
     },
     {
       "test": "QA-Tester Companies V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.322096",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.587207",
+      "response_data": null
+    },
+    {
+      "test": "QA-Tester Companies V2 Count",
+      "success": true,
+      "message": "Correct count: 1 company - ['Test_Firma']",
+      "timestamp": "2025-10-24T10:19:26.587826",
       "response_data": null
     },
     {
       "test": "QA-Tester Users V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.358533",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.626895",
+      "response_data": null
+    },
+    {
+      "test": "QA-Tester Users V2 Count",
+      "success": true,
+      "message": "Correct count: 1 user - ['AT']",
+      "timestamp": "2025-10-24T10:19:26.627544",
       "response_data": null
     },
     {
       "test": "QA-Tester Projects V2 Access",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.391461",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.667992",
       "response_data": null
     },
     {
       "test": "Admin Generate Test Data V2",
       "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.429715",
+      "message": "Expected HTTP 200, got 500: Internal Server Error",
+      "timestamp": "2025-10-24T10:19:26.703284",
       "response_data": null
     },
     {
       "test": "Admin Projects V2 After Generation",
-      "success": false,
-      "message": "Expected HTTP 200, got 404: {'detail': 'Not Found'}",
-      "timestamp": "2025-10-24T10:16:13.506239",
+      "success": true,
+      "message": "HTTP 200 - Response received successfully",
+      "timestamp": "2025-10-24T10:19:26.736517",
       "response_data": null
     }
   ]
