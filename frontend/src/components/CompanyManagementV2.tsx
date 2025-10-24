@@ -425,6 +425,28 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
                     </p>
                   )}
 
+                  {/* Adresse */}
+                  {(company.street || company.city) && (
+                    <div className={`text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      <p className="font-medium mb-1">📍 Adresse:</p>
+                      {company.street && <p>{company.street}</p>}
+                      {(company.postal_code || company.city) && (
+                        <p>{company.postal_code} {company.city}</p>
+                      )}
+                      {company.country && company.country !== 'Deutschland' && <p>{company.country}</p>}
+                    </div>
+                  )}
+
+                  {/* Ansprechpartner */}
+                  {(company.contact_person_name || company.contact_person_email || company.contact_person_phone) && (
+                    <div className={`text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      <p className="font-medium mb-1">👤 Ansprechpartner:</p>
+                      {company.contact_person_name && <p>{company.contact_person_name}</p>}
+                      {company.contact_person_email && <p>✉️ {company.contact_person_email}</p>}
+                      {company.contact_person_phone && <p>📞 {company.contact_person_phone}</p>}
+                    </div>
+                  )}
+
                   {/* Status Badge */}
                   <div className="mb-3">
                     {company.is_blocked ? (
