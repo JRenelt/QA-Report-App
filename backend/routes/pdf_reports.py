@@ -251,55 +251,52 @@ async def generate_pdf_report(
     # === 5 KARTEN (vertikal, abgerundete Ecken) ===
     
     def create_card(number, label, border_color, bg_color):
-        """Erstellt eine vertikale Karte mit abgerundeten Ecken"""
-        # Zahl (groß, oben)
+        """Erstellt Karte wie HTML-Code: schmal, hoher Padding, stark abgerundet"""
+        # Zahl (30px = ca. 11pt in PDF)
         num_para = Paragraph(
-            f"<font size=32 color='#333333'><b>{number}</b></font>",
-            ParagraphStyle('CardNum', parent=styles['Normal'], alignment=TA_CENTER, leading=38)
+            f"<font size=30 color='#333333'><b>{number}</b></font>",
+            ParagraphStyle('CardNum', parent=styles['Normal'], alignment=TA_CENTER, leading=35)
         )
-        # Label (klein, unten)
+        # Label (15px = ca. 11pt in PDF, margin-top: 4px)
         label_para = Paragraph(
-            f"<font size=8 color='#555555'>{label}</font>",
-            ParagraphStyle('CardLabel', parent=styles['Normal'], alignment=TA_CENTER, leading=10)
+            f"<font size=11 color='#555555'>{label}</font>",
+            ParagraphStyle('CardLabel', parent=styles['Normal'], alignment=TA_CENTER, leading=13, spaceBefore=0.1*cm)
         )
         
         # Mini-Tabelle: Zahl und Label untereinander
-        card_table = Table([[num_para], [label_para]], colWidths=[2.5*cm])
+        # width: 50px + 2*30px padding = 110px ≈ 2.9cm
+        card_table = Table([[num_para], [label_para]], colWidths=[2.9*cm])
         card_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, -1), bg_color),
-            ('BOX', (0, 0), (-1, -1), 2, border_color),
+            ('BOX', (0, 0), (-1, -1), 2, border_color),  # 2pt Rahmen
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (0, 0), 0.8*cm),     # Zahl: viel Padding oben
-            ('BOTTOMPADDING', (0, 0), (0, 0), 0.3*cm),
-            ('TOPPADDING', (0, 1), (0, 1), 0.3*cm),      # Label: wenig Padding oben
-            ('BOTTOMPADDING', (0, 1), (0, 1), 0.8*cm),   # Label: viel Padding unten
-            ('LEFTPADDING', (0, 0), (-1, -1), 0.2*cm),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 0.2*cm),
-            ('ROUNDEDCORNERS', [10, 10, 10, 10])  # Abgerundete Ecken
+            ('TOPPADDING', (0, 0), (-1, -1), 1.06*cm),    # 30px padding = 1.06cm
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 1.06*cm),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('ROUNDEDCORNERS', [15, 15, 15, 15])  # border-radius: 15px
         ]))
         return card_table
     
-    # 5 Karten erstellen - Design wie Bild-Analyse
-    # Karte 1: GESAMT - Weißer Hintergrund, schwarzer Rahmen, schwarze Schrift
-    # Karte 2-5: Farbige Hintergründe (pastellig), passende Rahmen, schwarze Zahlen
+    # 5 Karten erstellen - GENAU wie HTML-Code
+    # Farben: darkgreen, goldenrod, #666, darkred mit transparenten Hintergründen
     cards_data = [[
-        create_card(total_tests, "GESAMT", colors.black, colors.white),  # Weiß mit schwarzem Rahmen
-        create_card(success_count, "BESTANDEN", colors.HexColor('#27AE60'), colors.HexColor('#D5F4E6')),  # Hellgrün
-        create_card(error_count, "FEHLER", colors.HexColor('#E74C3C'), colors.HexColor('#FADBD8')),  # Hellrot
-        create_card(warning_count, "WARNUNG", colors.HexColor('#F39C12'), colors.HexColor('#FCF3CF')),  # Hellgelb
-        create_card(pending_count, "OFFEN", colors.HexColor('#95A5A6'), colors.HexColor('#E8E8E8'))  # Hellgrau
+        create_card(total_tests, "GESAMT", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3)),  # Hellgrau
+        create_card(success_count, "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2)),  # Grün transparent
+        create_card(error_count, "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2)),  # Rot transparent
+        create_card(warning_count, "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2)),  # Gelb transparent
+        create_card(pending_count, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))  # Hellgrau
     ]]
     
-    # Outer Table: 5 Karten nebeneinander mit Abständen
-    # Nutzbare Breite: 18cm, 5 Karten à 2.5cm = 12.5cm, verbleibend 5.5cm für Abstände
-    # 6 Abstände (vor, zwischen, nach) = 0.92cm pro Abstand
-    cards_table = Table(cards_data, colWidths=[2.5*cm]*5, rowHeights=[3.5*cm])
+    # Outer Table: 5 Karten nebeneinander mit gap: 20px = 0.7cm
+    # 5 Karten à 2.9cm = 14.5cm, verbleibend 3.5cm für 4 Abstände = 0.875cm pro Abstand
+    cards_table = Table(cards_data, colWidths=[2.9*cm]*5, rowHeights=[4.5*cm])  # Höher wegen großem Padding
     cards_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0.46*cm),   # Halber Abstand
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0.46*cm),  # = 0.92cm gesamt
+        ('LEFTPADDING', (0, 0), (-1, -1), 0.44*cm),   # Halber Abstand
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0.44*cm),  # = 0.88cm gesamt
         ('TOPPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
     ]))
