@@ -418,7 +418,19 @@ async def generate_pdf_report(
             suite_id = suite.get('id', '')
             
             # Zähle Tests in diesem Bereich
-            suite_test_count = await test_cases_collection.count_documents({"test_suite_id": suite_id})
+            if type == "tested":
+                # Nur getestete Tests (ohne 'pending')
+                suite_test_count = await test_cases_collection.count_documents({
+                    "test_suite_id": suite_id,
+                    "status": {"$ne": "pending"}
+                })
+            else:
+                # Alle Tests
+                suite_test_count = await test_cases_collection.count_documents({"test_suite_id": suite_id})
+            
+            # Überspringe leere Bereiche bei type=tested
+            if suite_test_count == 0 and type == "tested":
+                continue
             
             menu_item_style = ParagraphStyle(
                 'MenuItem',
