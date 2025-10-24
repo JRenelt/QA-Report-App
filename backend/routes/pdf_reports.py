@@ -87,7 +87,9 @@ async def generate_pdf_report(
     # Basis-Styles
     styles = getSampleStyleSheet()
     
-    # === ZEILE 1: "QA-Report" Überschrift (Primärfarbe #5771B2) ===
+    # === ZEILE 1: "QA-Report" Überschrift mit Type-Anpassung ===
+    report_title = "QA-Report für Getestete" if type == "tested" else "QA-Report"
+    
     title_style = ParagraphStyle(
         'ReportTitle',
         parent=styles['Heading1'],
@@ -97,7 +99,7 @@ async def generate_pdf_report(
         spaceBefore=0,
         spaceAfter=8
     )
-    story.append(Paragraph("<b>QA-Report</b>", title_style))
+    story.append(Paragraph(f"<b>{report_title}</b>", title_style))
     
     # === ZEILE 2: [LOGO] [FIRMA] nebeneinander + Erstellungsdatum (rechts) ===
     from reportlab.platypus import Table, TableStyle, Image
