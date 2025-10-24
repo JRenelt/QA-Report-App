@@ -251,16 +251,16 @@ async def generate_pdf_report(
     # === 5 KARTEN (vertikal, abgerundete Ecken) ===
     
     def create_card(number, label, border_color, bg_color):
-        """Erstellt Karte: 50% kleiner in der Höhe"""
-        # Zahl (30px = ca. 11pt in PDF)
+        """Erstellt Karte: NOCHMAL 50% kleiner = 25% der Original-Höhe"""
+        # Zahl (kleiner: 20pt statt 30pt)
         num_para = Paragraph(
-            f"<font size=30 color='#333333'><b>{number}</b></font>",
-            ParagraphStyle('CardNum', parent=styles['Normal'], alignment=TA_CENTER, leading=35)
+            f"<font size=20 color='#333333'><b>{number}</b></font>",
+            ParagraphStyle('CardNum', parent=styles['Normal'], alignment=TA_CENTER, leading=24)
         )
-        # Label (15px = ca. 11pt in PDF, margin-top: 4px)
+        # Label (kleiner: 8pt statt 11pt)
         label_para = Paragraph(
-            f"<font size=11 color='#555555'>{label}</font>",
-            ParagraphStyle('CardLabel', parent=styles['Normal'], alignment=TA_CENTER, leading=13, spaceBefore=0.1*cm)
+            f"<font size=8 color='#555555'>{label}</font>",
+            ParagraphStyle('CardLabel', parent=styles['Normal'], alignment=TA_CENTER, leading=10, spaceBefore=0.05*cm)
         )
         
         # Mini-Tabelle: Zahl und Label untereinander
@@ -270,33 +270,34 @@ async def generate_pdf_report(
             ('BOX', (0, 0), (-1, -1), 2, border_color),  # 2pt Rahmen
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (-1, -1), 0.53*cm),    # 50% von 1.06cm = 0.53cm
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 0.53*cm),
+            ('TOPPADDING', (0, 0), (-1, -1), 0.265*cm),    # 50% von 0.53cm = 0.265cm
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0.265*cm),
             ('LEFTPADDING', (0, 0), (-1, -1), 0),
             ('RIGHTPADDING', (0, 0), (-1, -1), 0),
             ('ROUNDEDCORNERS', [15, 15, 15, 15])  # border-radius: 15px
         ]))
         return card_table
     
-    # 5 Karten erstellen - GENAU wie HTML-Code
-    # Farben: darkgreen, goldenrod, #666, darkred mit transparenten Hintergründen
-    cards_data = [[
-        create_card(total_tests, "GESAMT", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3)),  # Hellgrau
-        create_card(success_count, "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2)),  # Grün transparent
-        create_card(error_count, "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2)),  # Rot transparent
-        create_card(warning_count, "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2)),  # Gelb transparent
-        create_card(pending_count, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))  # Hellgrau
-    ]]
+    # 5 Karten erstellen
+    card1 = create_card(total_tests, "GESAMT", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
+    card2 = create_card(success_count, "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2))
+    card3 = create_card(error_count, "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2))
+    card4 = create_card(warning_count, "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2))
+    card5 = create_card(pending_count, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     
-    # Outer Table: 5 Karten nebeneinander mit 1cm Abstand
-    # 5 Karten à 2.9cm = 14.5cm, verbleibend 3.5cm für 4 Abstände, aber wir wollen 1cm pro Abstand
-    # 4 × 1cm = 4cm für Abstände, bleiben 14cm für Karten = 2.8cm pro Karte (fast gleich)
-    cards_table = Table(cards_data, colWidths=[2.9*cm]*5, rowHeights=[2.25*cm])  # 50% von 4.5cm = 2.25cm
+    # Outer Table mit ECHTEN Spacer-Spalten zwischen den Karten (nicht Padding!)
+    # Struktur: [Card] [Spacer] [Card] [Spacer] [Card] [Spacer] [Card] [Spacer] [Card]
+    cards_data = [[card1, '', card2, '', card3, '', card4, '', card5]]
+    cards_table = Table(
+        cards_data, 
+        colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm],  # Spacer = 1cm
+        rowHeights=[1.125*cm]  # 50% von 2.25cm = 1.125cm
+    )
     cards_table.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0.5*cm),   # Halber Abstand = 0.5cm
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0.5*cm),  # Gesamt = 1.0cm Abstand
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
         ('TOPPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
     ]))
