@@ -460,7 +460,16 @@ async def generate_pdf_report(
             
             # Lade Tests für diesen Bereich
             suite_tests = await test_cases_collection.find({"test_suite_id": suite_id}).sort("sort_order", 1).to_list(None)
+            
+            # Filter: Bei type=tested nur getestete Tests (ohne 'pending')
+            if type == "tested":
+                suite_tests = [t for t in suite_tests if t.get('status') != 'pending']
+            
             suite_test_count = len(suite_tests)
+            
+            # Überspringe leere Bereiche bei type=tested
+            if suite_test_count == 0 and type == "tested":
+                continue
             
             count_style = ParagraphStyle('Count', parent=styles['Normal'], fontSize=10, textColor=colors.HexColor('#666666'))
             story.append(Paragraph(f"({suite_test_count} Tests)", count_style))
