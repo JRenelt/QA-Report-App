@@ -251,16 +251,16 @@ async def generate_pdf_report(
     # === 5 KARTEN (vertikal, abgerundete Ecken) ===
     
     def create_card(number, label, border_color, bg_color):
-        """Erstellt Karte: NOCHMAL 50% kleiner = 25% der Original-Höhe"""
-        # Zahl (kleiner: 20pt statt 30pt)
+        """Erstellt Karte: NOCHMAL 50% kleiner = 12.5% der Original-Höhe (dritte Reduktion)"""
+        # Zahl (nochmal 50% kleiner: 10pt statt 20pt)
         num_para = Paragraph(
-            f"<font size=20 color='#333333'><b>{number}</b></font>",
-            ParagraphStyle('CardNum', parent=styles['Normal'], alignment=TA_CENTER, leading=24)
+            f"<font size=10 color='#333333'><b>{number}</b></font>",
+            ParagraphStyle('CardNum', parent=styles['Normal'], alignment=TA_CENTER, leading=12)
         )
-        # Label (kleiner: 8pt statt 11pt)
+        # Label (nochmal 50% kleiner: 6pt statt 8pt)
         label_para = Paragraph(
-            f"<font size=8 color='#555555'>{label}</font>",
-            ParagraphStyle('CardLabel', parent=styles['Normal'], alignment=TA_CENTER, leading=10, spaceBefore=0.05*cm)
+            f"<font size=6 color='#555555'>{label}</font>",
+            ParagraphStyle('CardLabel', parent=styles['Normal'], alignment=TA_CENTER, leading=7, spaceBefore=0.025*cm)
         )
         
         # Mini-Tabelle: Zahl und Label untereinander
@@ -270,8 +270,8 @@ async def generate_pdf_report(
             ('BOX', (0, 0), (-1, -1), 2, border_color),  # 2pt Rahmen
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (-1, -1), 0.265*cm),    # 50% von 0.53cm = 0.265cm
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 0.265*cm),
+            ('TOPPADDING', (0, 0), (-1, -1), 0.13*cm),    # 50% von 0.265cm = 0.13cm
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0.13*cm),
             ('LEFTPADDING', (0, 0), (-1, -1), 0),
             ('RIGHTPADDING', (0, 0), (-1, -1), 0),
             ('ROUNDEDCORNERS', [15, 15, 15, 15])  # border-radius: 15px
