@@ -187,7 +187,7 @@ const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose, darkMode
       id: 'ccc-console-clear-cache',
       term: 'CCC (Console Clear Cache)',
       category: 'Testing & Debugging',
-      definition: 'Vollständiges Löschen des localStorage über Browser DevTools. F12 → Application Tab → Local Storage → https://modernreportapp.preview.emergentagent.com → Kompletten localStorage löschen für harten Reset.',
+      definition: 'Vollständiges Löschen des localStorage über Browser DevTools. F12 → Application Tab → Local Storage → https://qa-report-portal.preview.emergentagent.com → Kompletten localStorage löschen für harten Reset.',
       examples: [
         'F12 öffnen (Browser DevTools)',
         'Application Tab auswählen',
