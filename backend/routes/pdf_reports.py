@@ -38,10 +38,13 @@ DEFAULT_LOGO_URL = "https://customer-assets.emergentagent.com/job_test-result-da
 @router.get("/generate/{project_id}")
 async def generate_pdf_report(
     project_id: str,
+    type: str = "all",  # "all" oder "tested"
     current_user: User = Depends(get_current_user)
 ):
     """
-    Phase 2: Header-Bereich mit Logo, Firmenname, Datum und Metadaten
+    PDF Report Generation mit Type-Parameter:
+    - type=all: Alle Tests (Standard)
+    - type=tested: Nur getestete Tests (ohne "OFFEN")
     """
     
     # Projekt- und Firmen-Daten abrufen
