@@ -257,26 +257,25 @@ async def generate_pdf_report(
     story.append(Paragraph(status_text, status_text_style))
     story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand (1.2cm statt 0.8cm)
     
-    # === BLOCK 2: Badges (QUADRATISCH - gleiche Höhe und Breite!) ===
+    # === BLOCK 2: Badges (50% KLEINER in Höhe, Content +3pt größer) ===
     
     def create_simple_card(number, label, border_color, bg_color):
-        """Erstellt QUADRATISCHE Karte (2.9cm x 2.9cm)"""
-        # Zwei Rows: Zahl + Label
+        """Erstellt Karte: 50% kleiner in Höhe, Text +3pt größer"""
+        # Zwei Rows: Zahl + Label (BEIDE +3pt größer)
         card_data = [
-            [Paragraph(f"<b>{number}</b>", ParagraphStyle('Num', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER, textColor=colors.HexColor('#333333'), leading=12))],
-            [Paragraph(label, ParagraphStyle('Lbl', parent=styles['Normal'], fontSize=6, alignment=TA_CENTER, textColor=colors.HexColor('#555555'), leading=8))]
+            [Paragraph(f"<b>{number}</b>", ParagraphStyle('Num', parent=styles['Normal'], fontSize=13, alignment=TA_CENTER, textColor=colors.HexColor('#333333'), leading=15))],  # 10pt + 3pt = 13pt
+            [Paragraph(label, ParagraphStyle('Lbl', parent=styles['Normal'], fontSize=9, alignment=TA_CENTER, textColor=colors.HexColor('#555555'), leading=11))]  # 6pt + 3pt = 9pt
         ]
         
-        # Breite = 2.9cm, also brauchen wir Höhe = 2.9cm
-        # Text nimmt ca. 0.5cm ein, also Padding = (2.9 - 0.5) / 2 = ca. 1.2cm oben/unten
+        # Höhe um 50% reduziert: Padding von 1.0cm auf 0.5cm
         card_table = Table(card_data, colWidths=[2.9*cm])
         card_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (0, 1), bg_color),
             ('BOX', (0, 0), (0, 1), 2, border_color),
             ('ALIGN', (0, 0), (0, 1), 'CENTER'),
             ('VALIGN', (0, 0), (0, 1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (0, 1), 1.0*cm),    # Großes Padding für Quadrat
-            ('BOTTOMPADDING', (0, 0), (0, 1), 1.0*cm),
+            ('TOPPADDING', (0, 0), (0, 1), 0.5*cm),    # 50% von 1.0cm
+            ('BOTTOMPADDING', (0, 0), (0, 1), 0.5*cm),  # 50% von 1.0cm
             ('LEFTPADDING', (0, 0), (0, 1), 0.2*cm),
             ('RIGHTPADDING', (0, 0), (0, 1), 0.2*cm),
             ('ROUNDEDCORNERS', [15, 15, 15, 15])
