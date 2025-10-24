@@ -257,67 +257,59 @@ async def generate_pdf_report(
     story.append(Paragraph(status_text, status_text_style))
     story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand (1.2cm statt 0.8cm)
     
-    # === BLOCK 2: Badges (separate Struktur mit KeepTogether) ===
+    # === BLOCK 2: Badges (VÖLLIG NEU - OHNE verschachtelte Tables!) ===
     
-    def create_card(number, label, border_color, bg_color):
-        """Erstellt Karte: KOMPAKTE Version mit minimaler Höhe"""
-        # Zahl und Label KOMBINIERT in einem Paragraph für minimale Höhe
-        combined_text = f"<b><font size=10 color='#333333'>{number}</font></b><br/><font size=6 color='#555555'>{label}</font>"
-        combined_para = Paragraph(
-            combined_text,
-            ParagraphStyle(
-                'CardContent', 
-                parent=styles['Normal'], 
-                alignment=TA_CENTER, 
-                leading=8,  # Minimal für kompakte Darstellung
-                spaceBefore=0,
-                spaceAfter=0
-            )
-        )
+    def create_simple_card(number, label, border_color, bg_color):
+        """Erstellt einfache Karte als EINZELNE Table ohne Verschachtelung"""
+        # Zwei Rows: Zahl + Label
+        card_data = [
+            [Paragraph(f"<b>{number}</b>", ParagraphStyle('Num', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER, textColor=colors.HexColor('#333333')))],
+            [Paragraph(label, ParagraphStyle('Lbl', parent=styles['Normal'], fontSize=6, alignment=TA_CENTER, textColor=colors.HexColor('#555555')))]
+        ]
         
-        # Mini-Tabelle mit MINIMALEM Padding
-        card_table = Table([[combined_para]], colWidths=[2.9*cm])
+        card_table = Table(card_data, colWidths=[2.9*cm], rowHeights=[0.4*cm, 0.3*cm])
         card_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, -1), bg_color),
-            ('BOX', (0, 0), (-1, -1), 2, border_color),  # 2pt Rahmen
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (-1, -1), 0.15*cm),    # Minimal
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 0.15*cm),
-            ('LEFTPADDING', (0, 0), (-1, -1), 0.1*cm),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 0.1*cm),
-            ('ROUNDEDCORNERS', [15, 15, 15, 15])  # border-radius: 15px
+            ('BACKGROUND', (0, 0), (0, 1), bg_color),
+            ('BOX', (0, 0), (0, 1), 2, border_color),
+            ('ALIGN', (0, 0), (0, 1), 'CENTER'),
+            ('VALIGN', (0, 0), (0, 1), 'MIDDLE'),
+            ('TOPPADDING', (0, 0), (0, 1), 0.1*cm),
+            ('BOTTOMPADDING', (0, 0), (0, 1), 0.1*cm),
+            ('LEFTPADDING', (0, 0), (0, 1), 0.1*cm),
+            ('RIGHTPADDING', (0, 0), (0, 1), 0.1*cm),
+            ('ROUNDEDCORNERS', [15, 15, 15, 15])
         ]))
         return card_table
     
     # 5 Karten erstellen
-    card1 = create_card(total_tests, "GESAMT", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
-    card2 = create_card(success_count, "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2))
-    card3 = create_card(error_count, "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2))
-    card4 = create_card(warning_count, "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2))
-    card5 = create_card(pending_count, "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
+    card1 = create_simple_card(str(total_tests), "GESAMT", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
+    card2 = create_simple_card(str(success_count), "BESTANDEN", colors.darkgreen, colors.Color(0, 0.5, 0, alpha=0.2))
+    card3 = create_simple_card(str(error_count), "FEHLER", colors.darkred, colors.Color(1, 0, 0, alpha=0.2))
+    card4 = create_simple_card(str(warning_count), "WARNUNG", colors.goldenrod, colors.Color(1, 1, 0, alpha=0.2))
+    card5 = create_simple_card(str(pending_count), "OFFEN", colors.HexColor('#666666'), colors.Color(0.78, 0.78, 0.78, alpha=0.3))
     
-    # Outer Table mit ECHTEN Spacer-Spalten zwischen den Karten (nicht Padding!)
-    # Struktur: [Card] [Spacer] [Card] [Spacer] [Card] [Spacer] [Card] [Spacer] [Card]
-    # WICHTIG: rowHeights NICHT setzen, damit Tabelle sich automatisch an Inhaltshöhe anpasst!
+    # Container Table mit FESTEN Row/Col Heights
     cards_data = [[card1, '', card2, '', card3, '', card4, '', card5]]
-    cards_table = Table(
+    cards_container = Table(
         cards_data, 
-        colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm]  # Spacer = 1cm
+        colWidths=[2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm, 1*cm, 2.9*cm],
+        rowHeights=[0.8*cm]  # FESTE Höhe für Container
     )
-    cards_table.setStyle(TableStyle([
+    cards_container.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),  # WICHTIG: TOP statt MIDDLE
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('LEFTPADDING', (0, 0), (-1, -1), 0),
         ('RIGHTPADDING', (0, 0), (-1, -1), 0),
         ('TOPPADDING', (0, 0), (-1, -1), 0),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
     ]))
     
-    story.append(cards_table)
-    story.append(Spacer(1, 0.8*cm))  # ERHÖHT auf 0.8cm für klare Trennung
+    # Mit KeepTogether gruppieren
+    badges_block = KeepTogether([cards_container])
+    story.append(badges_block)
+    story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand nach Badges
     
-    # Test-Text für Phase 4
+    # === BLOCK 3: Phase-Text (separate Struktur) ===
     story.append(Paragraph("✅ Phase 4: Executive Summary mit 5 Karten (Badge-Höhe 3x reduziert: 12.5% der Original-Höhe, 1cm Spacing)!", styles['Normal']))
     
     # PDF generieren
