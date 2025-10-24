@@ -5,7 +5,7 @@ import {
   Trash2, Save, FileDown, Archive, HelpCircle, Settings, Crown, UserRound, FlaskConical, LogOut, Users,
   CheckCircle, User, FunnelX, Coffee, CircleOff, MousePointerClick, CircleCheck, Factory, FolderOpen, BookOpen
 } from 'lucide-react';
-import UserManagement from './UserManagement';
+import UserManagementV2 from './UserManagementV2';
 import CompanyManagement from './CompanyManagement';
 import GlossaryModal from './GlossaryModal';
 import ProfileModal from './ProfileModal';
