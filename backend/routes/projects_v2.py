@@ -67,7 +67,7 @@ async def get_projects(
     if current_user.role == "qa_tester":
         query["is_blocked"] = False
         # Prüfe blocked_projects des Users
-        query["id"] = {"$nin": current_user.get("blocked_projects", [])}
+        query["id"] = {"$nin": getattr(current_user, "blocked_projects", [])}
     
     projects = await projects_collection.find(query).to_list(length=None)
     
