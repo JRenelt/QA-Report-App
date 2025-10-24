@@ -226,7 +226,7 @@ async def generate_pdf_report(
     story.append(tables_combined)
     story.append(Spacer(1, 0.6*cm))
     
-    # === EXECUTIVE SUMMARY ===
+    # === EXECUTIVE SUMMARY - KOMPLETT UMSTRUKTURIERT ===
     
     # Überschrift "EXECUTIVE SUMMARY" (linksbündig, Primärfarbe)
     summary_title_style = ParagraphStyle(
@@ -236,12 +236,12 @@ async def generate_pdf_report(
         textColor=colors.HexColor('#5771B2'),  # Primärfarbe
         leftIndent=0,
         spaceBefore=0,
-        spaceAfter=8,
+        spaceAfter=12,
         fontName='Helvetica-Bold'
     )
     story.append(Paragraph("<b>EXECUTIVE SUMMARY</b>", summary_title_style))
     
-    # Testdaten aus Datenbank laden (später durch echte Daten ersetzen)
+    # Testdaten aus Datenbank laden
     from database import test_cases_collection
     test_cases = await test_cases_collection.find({"project_id": project_id}).to_list(None)
     
@@ -251,13 +251,13 @@ async def generate_pdf_report(
     warning_count = len([t for t in test_cases if t.get('status') == 'warning'])
     pending_count = len([t for t in test_cases if t.get('status') == 'pending'])
     
-    # Status-Text
+    # === BLOCK 1: Status-Text (separate Struktur) ===
     status_text_style = ParagraphStyle('StatusText', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#555555'))
     status_text = f"Status: {success_count} von {total_tests} Tests bestanden. {error_count} Fehler festgestellt. {pending_count} ungeprüft."
     story.append(Paragraph(status_text, status_text_style))
-    story.append(Spacer(1, 0.8*cm))  # ERHÖHT auf 0.8cm für klare Trennung
+    story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand (1.2cm statt 0.8cm)
     
-    # === 5 KARTEN (vertikal, abgerundete Ecken) ===
+    # === BLOCK 2: Badges (separate Struktur mit KeepTogether) ===
     
     def create_card(number, label, border_color, bg_color):
         """Erstellt Karte: KOMPAKTE Version mit minimaler Höhe"""
