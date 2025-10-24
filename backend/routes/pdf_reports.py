@@ -41,8 +41,20 @@ async def generate_pdf_report(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Phase 1: Einfaches Test-PDF mit korrekten Margins
+    Phase 2: Header-Bereich mit Logo, Firmenname, Datum und Metadaten
     """
+    
+    # Projekt- und Firmen-Daten abrufen
+    project = await projects_collection.find_one({"id": project_id})
+    if not project:
+        raise HTTPException(status_code=404, detail="Projekt nicht gefunden")
+    
+    company = await companies_collection.find_one({"id": project.get("company_id")})
+    company_name = company.get("name", "Unbekannte Firma") if company else "Unbekannte Firma"
+    company_logo_url = company.get("logo_url") if company else DEFAULT_LOGO_URL
+    
+    if not company_logo_url:
+        company_logo_url = DEFAULT_LOGO_URL
     
     # PDF in Memory erstellen
     buffer = io.BytesIO()
@@ -63,39 +75,76 @@ async def generate_pdf_report(
     # Basis-Styles
     styles = getSampleStyleSheet()
     
-    # Test-Überschrift
+    # === ZEILE 1: "QA-Report" Überschrift (linksbündig, rot) ===
     title_style = ParagraphStyle(
-        'Title',
+        'ReportTitle',
         parent=styles['Heading1'],
         fontSize=22,
-        textColor=colors.HexColor('#E74C3C'),  # Rot wie in Analyse
+        textColor=colors.HexColor('#E74C3C'),  # Rot
         leftIndent=0,
         spaceBefore=0,
-        spaceAfter=12
+        spaceAfter=8
+    )
+    story.append(Paragraph("<b>QA-Report</b>", title_style))
+    
+    # === ZEILE 2: Logo + Firmenname (nebeneinander) + Erstellungsdatum (rechts) ===
+    from reportlab.platypus import Table, TableStyle, Image
+    
+    # Logo laden
+    try:
+        logo_img = Image(company_logo_url, width=1.2*cm, height=1.2*cm, kind='proportional')
+    except:
+        # Fallback: Text statt Logo
+        logo_img = Paragraph("[LOGO]", styles['Normal'])
+    
+    # Firmenname
+    firma_para = Paragraph(
+        f"<b>{company_name}</b>",
+        ParagraphStyle('FirmaName', parent=styles['Normal'], fontSize=14, textColor=colors.HexColor('#2C3E50'))
     )
     
-    story.append(Paragraph("<b>QA-Report</b>", title_style))
-    story.append(Spacer(1, 1*cm))
+    # Erstellungsdatum
+    datum_para = Paragraph(
+        f"<b>Erstellungsdatum</b> | {datetime.utcnow().strftime('%d.%m.%Y')}",
+        ParagraphStyle('Datum', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'), alignment=TA_RIGHT)
+    )
     
-    # Test-Text
-    test_text = ParagraphStyle('Normal', parent=styles['Normal'])
-    story.append(Paragraph("✅ Phase 1: Basis-Setup erfolgreich!", test_text))
+    # Header-Tabelle: Logo + Firma (links) und Datum (rechts)
+    header_data = [[[logo_img, firma_para], datum_para]]
+    header_table = Table(header_data, colWidths=[10*cm, 8*cm])
+    header_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+        ('VALIGN', (1, 0), (1, 0), 'TOP'),
+        ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+        ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0)
+    ]))
+    story.append(header_table)
+    story.append(Spacer(1, 0.3*cm))
+    
+    # === ZEILE 3-5: Metadaten-Block ===
+    meta_style = ParagraphStyle('Meta', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#2C3E50'))
+    
+    username = f"{current_user.first_name} {current_user.last_name}" if current_user.first_name else current_user.username
+    story.append(Paragraph(f"<b>Getestet von:</b> {username}", meta_style))
+    story.append(Paragraph(f"<b>Test Umgebung:</b> {project.get('test_environment', 'Nicht angegeben')}", meta_style))
+    story.append(Paragraph(f"<b>Test Methodik:</b> {project.get('test_methodology', 'Nicht angegeben')}", meta_style))
+    
     story.append(Spacer(1, 0.5*cm))
-    story.append(Paragraph(f"Globale Margins:", test_text))
-    story.append(Paragraph(f"• Links: 1.5 cm", test_text))
-    story.append(Paragraph(f"• Rechts: 1.5 cm", test_text))
-    story.append(Paragraph(f"• Oben: 1.2 cm", test_text))
-    story.append(Paragraph(f"• Unten: 1.0 cm", test_text))
-    story.append(Spacer(1, 0.5*cm))
-    story.append(Paragraph(f"Getestet von: {current_user.username}", test_text))
-    story.append(Paragraph(f"Datum: {datetime.utcnow().strftime('%d.%m.%Y')}", test_text))
+    
+    # Test-Text für Phase 2
+    story.append(Paragraph("✅ Phase 2: Header-Bereich implementiert!", styles['Normal']))
     
     # PDF generieren
     doc.build(story)
     buffer.seek(0)
     
     # Filename
-    filename = f"QA-Report_Phase1_Test_{datetime.utcnow().strftime('%d-%m-%Y_%H%M%S')}.pdf"
+    project_name_clean = project['name'].replace(" ", "_")
+    filename = f"QA-Report_{project_name_clean}_{datetime.utcnow().strftime('%d-%m-%Y')}.pdf"
     
     return StreamingResponse(
         buffer,
