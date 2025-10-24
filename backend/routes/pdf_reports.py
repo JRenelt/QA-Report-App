@@ -310,7 +310,8 @@ async def generate_pdf_report(
     story.append(Spacer(1, 1.2*cm))  # GROSSER Abstand nach Badges
     
     # === BLOCK 3: Phase-Text (separate Struktur) ===
-    story.append(Paragraph("✅ Phase 4: Executive Summary mit 5 Karten (Badge-Höhe 3x reduziert: 12.5% der Original-Höhe, 1cm Spacing)!", styles['Normal']))
+    # === BLOCK 3: Phase-Text (separate Struktur) ===
+    story.append(Paragraph("✅ Phase 4: Executive Summary - Badges als separate Strukturen ohne Verschachtelung!", styles['Normal']))
     
     # PDF generieren
     doc.build(story)
