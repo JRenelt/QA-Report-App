@@ -951,8 +951,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://modernreportapp.preview.emergentagent.com';
       
+      // URL mit type-Parameter
+      const pdfUrl = type === 'tested' 
+        ? `${backendUrl}/api/pdf-reports/generate/${selectedProjectId}?type=tested`
+        : `${backendUrl}/api/pdf-reports/generate/${selectedProjectId}`;
+      
       const response = await fetch(
-        `${backendUrl}/api/pdf-reports/generate/${selectedProjectId}`,
+        pdfUrl,
         {
           headers: {
             'Authorization': `Bearer ${authToken}`
