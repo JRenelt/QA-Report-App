@@ -98,6 +98,12 @@ try:
     from routes import archive
     from routes import admin
     
+    # Import NEW V2 Routes
+    from routes import users_v2
+    from routes import companies_v2
+    from routes import projects_v2
+    from routes import admin_v2
+    
     # Include API Routes with /api prefix via router
     api_router.include_router(auth_routes.router, prefix="/auth", tags=["Authentication"])
     api_router.include_router(users.router, prefix="/users", tags=["User Management"])
@@ -110,6 +116,12 @@ try:
     api_router.include_router(pdf_reports.router, prefix="/pdf-reports", tags=["PDF Reports"])
     api_router.include_router(archive.router, prefix="/archive", tags=["Archive Management"])
     api_router.include_router(admin.router, prefix="/admin", tags=["Admin Operations"])
+    
+    # Include NEW V2 Routes
+    api_router.include_router(users_v2.router, tags=["User Management V2"])
+    api_router.include_router(companies_v2.router, tags=["Companies V2"])
+    api_router.include_router(projects_v2.router, tags=["Projects V2"])
+    api_router.include_router(admin_v2.router, tags=["Admin Operations V2"])
 except ImportError as e:
     print(f"⚠️  Warning: Could not import route: {e}")
     print("Routes will be loaded after dependencies are installed")
