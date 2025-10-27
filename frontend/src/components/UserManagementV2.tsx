@@ -634,7 +634,10 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                   <input
                     type="text"
                     value={formData.username}
-                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, username: e.target.value });
+                      if (error) setError(''); // Reset error beim Tippen
+                    }}
                     className={`w-full px-3 py-2 rounded-lg border ${
                       !formData.username && error
                         ? 'bg-orange-500 bg-opacity-10 border-orange-400'
@@ -653,7 +656,10 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                   <input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (error) setError(''); // Reset error beim Tippen
+                    }}
                     className={`w-full px-3 py-2 rounded-lg border ${
                       !formData.email && error
                         ? 'bg-orange-500 bg-opacity-10 border-orange-400'
@@ -674,7 +680,10 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                   <input
                     type="text"
                     value={formData.first_name}
-                    onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, first_name: e.target.value });
+                      if (error) setError(''); // Reset error beim Tippen
+                    }}
                     className={`w-full px-3 py-2 rounded-lg border ${
                       !formData.first_name && error
                         ? 'bg-orange-500 bg-opacity-10 border-orange-400'
@@ -692,7 +701,10 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                   <input
                     type="text"
                     value={formData.last_name}
-                    onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, last_name: e.target.value });
+                      if (error) setError(''); // Reset error beim Tippen
+                    }}
                     className={`w-full px-3 py-2 rounded-lg border ${
                       !formData.last_name && error
                         ? 'bg-orange-500 bg-opacity-10 border-orange-400'
