@@ -352,7 +352,7 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
             </div>
             <div>
               <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                Benutzerverwaltung V2
+                Benutzerverwaltung
               </h2>
               <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 {currentUser.role === 'sysop' ? 'Alle Benutzer verwalten' : 'Benutzer Ihrer Firma verwalten'}
