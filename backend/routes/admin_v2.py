@@ -327,7 +327,7 @@ async def generate_test_data(
                 created_test_cases += 1
     
     elif current_user.role == "qa_tester":
-        # QA-Tester: Optional 1 Projekt mit 10 Testfällen
+        # QA-Tester: 1 Projekt mit 3 Bereichen und 100 Testfällen
         company_id = current_user.company_id
         company = await companies_collection.find_one({"id": company_id})
         if not company:
@@ -340,7 +340,7 @@ async def generate_test_data(
             "id": str(uuid.uuid4()),
             "project_id": project_id_str,
             "title": f"QA-Test-Projekt",
-            "description": "Testprojekt für QA-Tester",
+            "description": "Testprojekt mit 3 Bereichen und 100 Testfällen",
             "notes": "",
             "company_id": company_id,
             "company_name": company["name"],
@@ -358,26 +358,33 @@ async def generate_test_data(
         await projects_collection.insert_one(new_project)
         created_projects += 1
         
-        # Create 10 test cases
-        for k in range(1, 11):
-            test_id = f"{company['short_code']}{str(k).zfill(4)}"
-            
-            new_test_case = {
-                "id": str(uuid.uuid4()),
-                "test_id": test_id,
-                "name": f"Testfall {k}",
-                "description": f"Testfall {k}",
-                "status": "pending",
-                "note": "",
-                "priority": 3,
-                "expected_result": "",
-                "project_id": new_project["id"],
-                "created_by": current_user.id,
-                "created_at": datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat()
-            }
-            await test_cases_collection.insert_one(new_test_case)
-            created_test_cases += 1
+        # Create 100 test cases in 3 areas
+        areas = ["UI/UX Test", "Funktionalität", "Performance"]
+        test_cases_per_area = [34, 33, 33]  # 100 total
+        
+        test_counter = 1
+        for area_idx, area in enumerate(areas):
+            for i in range(test_cases_per_area[area_idx]):
+                test_id = f"{company['short_code']}{str(test_counter).zfill(4)}"
+                
+                new_test_case = {
+                    "id": str(uuid.uuid4()),
+                    "test_id": test_id,
+                    "name": f"Testfall {test_counter}: {area}",
+                    "description": f"Testfall {test_counter} im Bereich {area}",
+                    "area": area,  # NEU: Bereich setzen
+                    "status": "pending",
+                    "note": "",
+                    "priority": 3,
+                    "expected_result": "",
+                    "project_id": new_project["id"],
+                    "created_by": current_user.id,
+                    "created_at": datetime.utcnow().isoformat(),
+                    "updated_at": datetime.utcnow().isoformat()
+                }
+                await test_cases_collection.insert_one(new_test_case)
+                created_test_cases += 1
+                test_counter += 1
     
     return {
         "message": "Testdaten erfolgreich generiert",
