@@ -106,7 +106,10 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
 
       if (response.ok) {
         const data = await response.json();
+        console.log('Loaded companies:', data); // Debug
         setCompanies(data);
+      } else {
+        console.error('Failed to load companies');
       }
     } catch (err) {
       console.error('Load companies error:', err);
