@@ -746,23 +746,34 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                   <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     Firma *
                   </label>
-                  <select
-                    value={formData.company_id}
-                    onChange={(e) => setFormData({ ...formData, company_id: e.target.value })}
-                    disabled={currentUser.role === 'admin'} // Admin kann nur eigene Firma wählen
-                    className={`w-full px-3 py-2 rounded-lg border ${
-                      !formData.company_id && error
-                        ? 'bg-orange-500 bg-opacity-10 border-orange-400'
-                        : darkMode
-                          ? 'bg-gray-700 border-gray-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-900'
-                    }`}
-                  >
-                    <option value="">Firma wählen...</option>
-                    {companies.map(company => (
-                      <option key={company.id} value={company.id}>{company.name}</option>
-                    ))}
-                  </select>
+                  {currentUser.role === 'admin' ? (
+                    // Admin sieht nur Firmenname (nicht änderbar)
+                    <div className={`w-full px-3 py-2 rounded-lg border ${
+                      darkMode
+                        ? 'bg-gray-700 border-gray-600 text-gray-300'
+                        : 'bg-gray-100 border-gray-300 text-gray-700'
+                    }`}>
+                      {companies.find(c => c.id === currentUser.company_id)?.name || 'Lädt...'}
+                    </div>
+                  ) : (
+                    // SysOp kann Firma wählen
+                    <select
+                      value={formData.company_id}
+                      onChange={(e) => setFormData({ ...formData, company_id: e.target.value })}
+                      className={`w-full px-3 py-2 rounded-lg border ${
+                        !formData.company_id && error
+                          ? 'bg-orange-500 bg-opacity-10 border-orange-400'
+                          : darkMode
+                            ? 'bg-gray-700 border-gray-600 text-white'
+                            : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                    >
+                      <option value="">Firma wählen...</option>
+                      {companies.map(company => (
+                        <option key={company.id} value={company.id}>{company.name}</option>
+                      ))}
+                    </select>
+                  )}
                 </div>
               </div>
 
