@@ -186,9 +186,9 @@ async def generate_test_data(
 ):
     """
     Generiere Testdaten basierend auf Rolle:
-    - SysOp: Massentestdaten
-    - Admin: 2 Projekte mit 10 und 15 Testfällen
-    - QA-Tester: Optional 1 Projekt mit 10 Testfällen
+    - SysOp: Massentestdaten (konfigurierbar)
+    - Admin: 2 Projekte mit 10 und 15 Testfällen (3 Bereiche pro Projekt)
+    - QA-Tester: 1 Projekt mit 3 Bereichen und 100 Testfällen
     """
     db = await get_database()
     companies_collection = db["companies_v2"]
