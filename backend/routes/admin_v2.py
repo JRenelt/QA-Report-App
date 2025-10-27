@@ -257,11 +257,16 @@ async def generate_test_data(
                 for k in range(1, test_cases_per_project + 1):
                     test_id = f"{short_code}{str(k).zfill(4)}"
                     
+                    # Assign area based on test number
+                    areas = ["UI/UX Test", "Funktionalität", "Performance"]
+                    area = areas[k % 3]  # Rotate through areas
+                    
                     new_test_case = {
                         "id": str(uuid.uuid4()),
                         "test_id": test_id,
                         "name": f"Testfall {k}",
                         "description": f"Testfall {k} für Projekt {project_id_str}",
+                        "area": area,
                         "status": "pending",
                         "note": "",
                         "priority": 3,
