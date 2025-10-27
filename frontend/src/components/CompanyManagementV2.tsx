@@ -305,7 +305,7 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
             </div>
             <div>
               <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                Firmenverwaltung V2
+                Firmenverwaltung
               </h2>
               <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 {canManage ? 'Alle Firmen verwalten' : 'Ihre Firma'}
