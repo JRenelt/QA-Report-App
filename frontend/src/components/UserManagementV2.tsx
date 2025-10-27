@@ -759,7 +759,13 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                     // SysOp kann Firma wählen
                     <select
                       value={formData.company_id}
-                      onChange={(e) => setFormData({ ...formData, company_id: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, company_id: e.target.value });
+                        // Reset error wenn User Firma auswählt
+                        if (error && e.target.value) {
+                          setError('');
+                        }
+                      }}
                       className={`w-full px-3 py-2 rounded-lg border ${
                         !formData.company_id && error
                           ? 'bg-orange-500 bg-opacity-10 border-orange-400'
