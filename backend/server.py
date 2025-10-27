@@ -11,7 +11,6 @@ from contextlib import asynccontextmanager
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
