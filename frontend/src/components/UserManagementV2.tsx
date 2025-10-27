@@ -598,6 +598,7 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                 onClick={() => {
                   setShowCreateModal(false);
                   setShowEditModal(false);
+                  setError('');
                   resetForm();
                 }}
                 className={`p-2 rounded-lg transition-colors ${
@@ -611,6 +612,14 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
             </div>
 
             <div className="p-6 space-y-4 max-h-[60vh] overflow-auto">
+              {/* Error Message im Modal */}
+              {error && (
+                <div className={`p-3 rounded-lg flex items-center ${darkMode ? 'bg-red-900 bg-opacity-20 border border-red-800' : 'bg-red-50 border border-red-200'}`}>
+                  <AlertCircle className={`h-5 w-5 mr-2 ${darkMode ? 'text-red-400' : 'text-red-600'}`} />
+                  <span className={`text-sm ${darkMode ? 'text-red-300' : 'text-red-700'}`}>{error}</span>
+                </div>
+              )}
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -621,9 +630,11 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                     className={`w-full px-3 py-2 rounded-lg border ${
-                      darkMode
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
+                      !formData.username && error
+                        ? 'bg-orange-500 bg-opacity-10 border-orange-400'
+                        : darkMode
+                          ? 'bg-gray-700 border-gray-600 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
                     }`}
                     placeholder="z.B. JR"
                   />
@@ -638,9 +649,11 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className={`w-full px-3 py-2 rounded-lg border ${
-                      darkMode
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
+                      !formData.email && error
+                        ? 'bg-orange-500 bg-opacity-10 border-orange-400'
+                        : darkMode
+                          ? 'bg-gray-700 border-gray-600 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
                     }`}
                     placeholder="user@firma.de"
                   />
@@ -657,9 +670,11 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                     value={formData.first_name}
                     onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
                     className={`w-full px-3 py-2 rounded-lg border ${
-                      darkMode
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
+                      !formData.first_name && error
+                        ? 'bg-orange-500 bg-opacity-10 border-orange-400'
+                        : darkMode
+                          ? 'bg-gray-700 border-gray-600 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
                     }`}
                   />
                 </div>
@@ -673,9 +688,11 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                     value={formData.last_name}
                     onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
                     className={`w-full px-3 py-2 rounded-lg border ${
-                      darkMode
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
+                      !formData.last_name && error
+                        ? 'bg-orange-500 bg-opacity-10 border-orange-400'
+                        : darkMode
+                          ? 'bg-gray-700 border-gray-600 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
                     }`}
                   />
                 </div>
@@ -728,9 +745,11 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                     onChange={(e) => setFormData({ ...formData, company_id: e.target.value })}
                     disabled={currentUser.role === 'admin'} // Admin kann nur eigene Firma wählen
                     className={`w-full px-3 py-2 rounded-lg border ${
-                      darkMode
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
+                      !formData.company_id && error
+                        ? 'bg-orange-500 bg-opacity-10 border-orange-400'
+                        : darkMode
+                          ? 'bg-gray-700 border-gray-600 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
                     }`}
                   >
                     <option value="">Firma wählen...</option>
@@ -751,11 +770,16 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className={`w-full px-3 py-2 rounded-lg border ${
-                      darkMode
-                        ? 'bg-gray-700 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-900'
+                      (!formData.password || formData.password.length < 8) && error
+                        ? 'bg-orange-500 bg-opacity-10 border-orange-400'
+                        : darkMode
+                          ? 'bg-gray-700 border-gray-600 text-white'
+                          : 'bg-white border-gray-300 text-gray-900'
                     }`}
                   />
+                  {formData.password && formData.password.length < 8 && (
+                    <p className="text-xs text-orange-500 mt-1">⚠️ Passwort muss mindestens 8 Zeichen lang sein</p>
+                  )}
                 </div>
               )}
             </div>
@@ -765,6 +789,7 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                 onClick={() => {
                   setShowCreateModal(false);
                   setShowEditModal(false);
+                  setError('');
                   resetForm();
                 }}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
