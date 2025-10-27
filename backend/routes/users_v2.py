@@ -238,6 +238,14 @@ async def block_user(user_id: str, current_user: dict = Depends(get_current_user
         {"$set": {"is_blocked": new_status, "updated_at": datetime.utcnow().isoformat()}}
     )
     
+    # WICHTIG: Wenn User entsperrt wird, muss auch die Firma entsperrt werden
+    if new_status == False:  # User wird entsperrt
+        companies_collection = db["companies_v2"]
+        await companies_collection.update_one(
+            {"id": user["company_id"]},
+            {"$set": {"is_blocked": False, "updated_at": datetime.utcnow().isoformat()}}
+        )
+    
     return {"message": f"User {'gesperrt' if new_status else 'entsperrt'}", "is_blocked": new_status}
 
 @router.post("/{user_id}/block-project/{project_id}")
