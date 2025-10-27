@@ -163,6 +163,7 @@ class TestCaseBaseV2(BaseModel):
     test_id: str  # Generiert aus Projekt
     name: str
     description: Optional[str] = None
+    area: Optional[str] = None  # NEU: Bereich/Kategorie (z.B. "UI/UX Test", "Funktionalität", "Performance")
     status: str = "pending"  # success, error, warning, pending, skipped
     note: Optional[str] = None
     priority: int = 3
