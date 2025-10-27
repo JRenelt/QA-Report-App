@@ -271,10 +271,13 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
 
   const openCreateModal = () => {
     resetForm();
+    setError(''); // Reset error
     // Set default company for admin
     if (currentUser.role === 'admin') {
+      console.log('Setting company_id for admin:', currentUser.company_id); // Debug
       setFormData(prev => ({ ...prev, company_id: currentUser.company_id }));
     }
+    console.log('Current companies:', companies); // Debug
     setShowCreateModal(true);
   };
 
