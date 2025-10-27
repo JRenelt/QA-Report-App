@@ -118,6 +118,8 @@ try:
     print("✅ Imported projects_v2 routes")
     from routes import admin_v2
     print("✅ Imported admin_v2 routes")
+    from routes import templates
+    print("✅ Imported templates routes")
     
     # Include API Routes with /api prefix via router
     api_router.include_router(auth_routes.router, prefix="/auth", tags=["Authentication"])
