@@ -803,7 +803,10 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                   <input
                     type="password"
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, password: e.target.value });
+                      if (error) setError(''); // Reset error beim Tippen
+                    }}
                     className={`w-full px-3 py-2 rounded-lg border ${
                       (!formData.password || formData.password.length < 8) && error
                         ? 'bg-orange-500 bg-opacity-10 border-orange-400'
