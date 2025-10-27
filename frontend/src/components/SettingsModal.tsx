@@ -694,7 +694,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
           </div>
 
           {/* Content */}
-          <div className="px-6 py-6 max-h-[60vh] overflow-y-auto">
+          <div className="px-6 py-6 max-h-[calc(90vh-200px)] overflow-y-auto">
             {/* 1. DARSTELLUNG */}
             {activeTab === 'appearance' && (
               <div className="space-y-6">
