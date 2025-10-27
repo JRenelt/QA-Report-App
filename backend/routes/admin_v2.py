@@ -339,7 +339,7 @@ async def generate_test_data(
         new_project = {
             "id": str(uuid.uuid4()),
             "project_id": project_id_str,
-            "title": f"QA-Test-Projekt",
+            "title": "QA-Test-Projekt",
             "description": "Testprojekt mit 3 Bereichen und 100 Testfällen",
             "notes": "",
             "company_id": company_id,
