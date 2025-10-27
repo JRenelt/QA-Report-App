@@ -780,15 +780,32 @@ const UserManagementV2: React.FC<UserManagementV2Props> = ({ isOpen, onClose, da
                       }}
                       className={`w-full px-3 py-2 rounded-lg border ${
                         !formData.company_id && error
-                          ? 'bg-orange-500 bg-opacity-10 border-orange-400'
+                          ? 'border-orange-400'
                           : darkMode
                             ? 'bg-gray-700 border-gray-600 text-white'
                             : 'bg-white border-gray-300 text-gray-900'
+                      } ${
+                        darkMode
+                          ? 'bg-gray-700 text-white'
+                          : 'bg-white text-gray-900'
                       }`}
+                      style={{
+                        backgroundColor: (!formData.company_id && error) 
+                          ? 'rgba(249, 115, 22, 0.1)' 
+                          : darkMode ? '#374151' : '#ffffff'
+                      }}
                     >
-                      <option value="">Firma wählen...</option>
+                      <option value="" style={{ backgroundColor: darkMode ? '#374151' : '#ffffff', color: darkMode ? '#fff' : '#000' }}>
+                        Firma wählen...
+                      </option>
                       {companies.map(company => (
-                        <option key={company.id} value={company.id}>{company.name}</option>
+                        <option 
+                          key={company.id} 
+                          value={company.id}
+                          style={{ backgroundColor: darkMode ? '#374151' : '#ffffff', color: darkMode ? '#fff' : '#000' }}
+                        >
+                          {company.name}
+                        </option>
                       ))}
                     </select>
                   )}
