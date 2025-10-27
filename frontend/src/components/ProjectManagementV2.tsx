@@ -451,7 +451,7 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
             </div>
             <div>
               <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                Projektverwaltung V2
+                Projektverwaltung
               </h2>
               <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 {currentUser.role === 'sysop' ? 'Alle Projekte verwalten' : 
