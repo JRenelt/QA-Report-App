@@ -5,7 +5,7 @@ Excel (CSV) und JSON Templates zum Download
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
-from backend.auth import get_current_user
+from auth import get_current_user
 import io
 import csv
 import json
