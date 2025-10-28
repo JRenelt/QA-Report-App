@@ -283,14 +283,14 @@ async def import_users(
 async def import_projects(
     file: UploadFile = File(...),
     file_type: str = Form(...),  # "csv" or "json"
-    current_user: UserV2 = Depends(get_current_user_v2)
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Import von Projekten (SysOp, Admin, optional QA-Tester)
     Duplikate werden übersprungen (basierend auf title + company_id)
     """
     # Rollenprüfung (alle Rollen erlaubt, aber unterschiedliche Rechte)
-    if current_user.role not in [UserRoleV2.sysop, UserRoleV2.admin, UserRoleV2.qa_tester]:
+    if current_user.get("role") not in ["sysop", "admin", "qa_tester"]:
         raise HTTPException(status_code=403, detail="Keine Berechtigung zum Projekt-Import")
     
     # Dateigröße prüfen
