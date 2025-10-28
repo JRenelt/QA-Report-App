@@ -8,7 +8,7 @@ German Test Request:
 - Admin: AR / admin123  
 - QA-Tester: AT / tester123
 
-Backend URL: https://qa-report-portal.preview.emergentagent.com
+Backend URL: https://testflow-app-3.preview.emergentagent.com
 """
 
 import requests
@@ -17,7 +17,7 @@ import sys
 from datetime import datetime
 
 # Backend URL from German test request
-BACKEND_URL = "https://qa-report-portal.preview.emergentagent.com"
+BACKEND_URL = "https://testflow-app-3.preview.emergentagent.com"
 API_BASE = f"{BACKEND_URL}/api"
 
 # Test credentials from German request

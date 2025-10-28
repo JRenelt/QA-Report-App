@@ -11,7 +11,7 @@ import subprocess
 from datetime import datetime
 
 # Backend URL from environment
-BACKEND_URL = "https://qa-report-portal.preview.emergentagent.com"
+BACKEND_URL = "https://testflow-app-3.preview.emergentagent.com"
 API_BASE = f"{BACKEND_URL}/api"
 
 class JRLoginDiagnostic:
