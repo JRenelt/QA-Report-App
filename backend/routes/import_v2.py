@@ -330,8 +330,8 @@ async def import_projects(
                 continue
             
             # Admin/QA-Tester darf nur Projekte der eigenen Firma importieren
-            if current_user.role in [UserRoleV2.admin, UserRoleV2.qa_tester]:
-                if row["company_id"] != current_user.company_id:
+            if current_user.get("role") in ["admin", "qa_tester"]:
+                if row["company_id"] != current_user.get("company_id"):
                     errors.append(f"Zeile {idx + 1}: Keine Berechtigung für diese Firma")
                     continue
             
