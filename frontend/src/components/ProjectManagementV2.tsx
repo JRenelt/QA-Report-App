@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, Edit, Trash2, Ban, CheckCircle, Search, AlertCircle, FolderKanban, Users, User, Clock, Building, Download, FileSpreadsheet, FileJson } from 'lucide-react';
+import { X, Plus, Edit, Trash2, Ban, CheckCircle, Search, AlertCircle, FolderKanban, Users, User, Clock, Building, Download, FileSpreadsheet, FileJson, Upload } from 'lucide-react';
 
 interface ProjectManagementV2Props {
   isOpen: boolean;
