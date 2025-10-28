@@ -138,7 +138,7 @@ async def import_companies(
                 "contact_person_phone": row.get("contact_person_phone"),
                 "is_blocked": False,
                 "is_deletable": True,
-                "created_by": current_user.username,
+                "created_by": current_user.get("username"),
                 "created_at": datetime.utcnow().isoformat(),
                 "updated_at": datetime.utcnow().isoformat()
             }
@@ -397,7 +397,7 @@ async def import_projects(
                 "status": "active",
                 "is_blocked": False,
                 "assigned_testers": [],
-                "created_by": current_user.username,
+                "created_by": current_user.get("username"),
                 "created_at": datetime.utcnow().isoformat(),
                 "updated_at": datetime.utcnow().isoformat()
             }
@@ -526,7 +526,7 @@ async def import_test_cases(
                 "note": row.get("note"),
                 "priority": int(row.get("priority", 3)),
                 "expected_result": row.get("expected_result"),
-                "created_by": current_user.username,
+                "created_by": current_user.get("username"),
                 "created_at": datetime.utcnow().isoformat(),
                 "updated_at": datetime.utcnow().isoformat()
             }
