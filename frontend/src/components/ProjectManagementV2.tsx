@@ -746,7 +746,6 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
                         <FolderKanban className={`h-4 w-4 ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`} />
                         <span 
                           className={`text-xs font-mono ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}
-                          style={{ WebkitTextSecurity: 'none', unicodeBidi: 'isolate' }}
                           data-content={project.project_id}
                         >
                           {project.project_id}
