@@ -1059,6 +1059,37 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
                           </button>
                         </div>
 
+                        {/* Max Upload Size (nur SysOp) */}
+                        {isSysOp && (
+                          <div className={`mt-4 p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                            <label className={`block font-medium mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                              Max. Import-Dateigröße (nur SysOp)
+                            </label>
+                            <div className="grid grid-cols-5 gap-2">
+                              {[1, 5, 10, 25, 50].map((size) => (
+                                <button
+                                  key={size}
+                                  onClick={() => handleMaxUploadSizeChange(size)}
+                                  className={`p-3 rounded-lg text-center transition-all border-2 ${
+                                    maxUploadSize === size
+                                      ? darkMode 
+                                        ? 'bg-cyan-600 border-cyan-400 text-white' 
+                                        : 'bg-cyan-500 border-cyan-300 text-white'
+                                      : darkMode
+                                        ? 'bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700'
+                                        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                  }`}
+                                >
+                                  <div className="text-sm font-medium">{size} MB</div>
+                                </button>
+                              ))}
+                            </div>
+                            <div className={`mt-2 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                              Aktuelle Größe: {maxUploadSize} MB
+                            </div>
+                          </div>
+                        )}
+
                         {/* Einstellungen zurücksetzen */}
                         <div className="mt-4">
                           <button
