@@ -93,7 +93,7 @@ async def import_companies(
     else:
         raise HTTPException(status_code=400, detail="Ungültiger Dateityp. Nur 'csv' oder 'json' erlaubt")
     
-    db = get_database()
+    db = await get_database()
     companies_collection = db.companies_v2
     
     imported = 0
@@ -196,7 +196,7 @@ async def import_users(
     else:
         raise HTTPException(status_code=400, detail="Ungültiger Dateityp")
     
-    db = get_database()
+    db = await get_database()
     users_collection = db.users_v2
     
     imported = 0
@@ -310,7 +310,7 @@ async def import_projects(
     else:
         raise HTTPException(status_code=400, detail="Ungültiger Dateityp")
     
-    db = get_database()
+    db = await get_database()
     projects_collection = db.projects_v2
     companies_collection = db.companies_v2
     
@@ -449,7 +449,7 @@ async def import_test_cases(
     else:
         raise HTTPException(status_code=400, detail="Ungültiger Dateityp")
     
-    db = get_database()
+    db = await get_database()
     test_cases_collection = db.test_cases_v2
     projects_collection = db.projects_v2
     
@@ -578,7 +578,7 @@ async def preview_import(
     else:
         raise HTTPException(status_code=400, detail="Ungültiger Dateityp")
     
-    db = get_database()
+    db = await get_database()
     preview_data = []
     
     # Je nach Import-Typ unterschiedliche Duplikatsprüfung
@@ -665,7 +665,7 @@ async def set_max_upload_size_setting(
     if size_mb < 0.1 or size_mb > 100:
         raise HTTPException(status_code=400, detail="Größe muss zwischen 0.1 MB und 100 MB liegen")
     
-    db = get_database()
+    db = await get_database()
     size_bytes = int(size_mb * 1024 * 1024)
     
     await db.settings_v2.update_one(
