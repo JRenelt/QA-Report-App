@@ -55,7 +55,15 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectV2 | null>(null);
+  
+  // Import States
+  const [importTab, setImportTab] = useState<'csv' | 'json' | 'manual'>('csv');
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importPreview, setImportPreview] = useState<any[]>([]);
+  const [importLoading, setImportLoading] = useState(false);
+  const [importResult, setImportResult] = useState<any>(null);
   
   // Form Data
   const [formData, setFormData] = useState({
