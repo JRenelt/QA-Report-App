@@ -29,6 +29,58 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
     }
   }, [isOpen, initialTab]);
 
+  // Load max upload size when modal opens
+  React.useEffect(() => {
+    if (isOpen && authToken) {
+      loadMaxUploadSize();
+    }
+  }, [isOpen, authToken]);
+
+  const loadMaxUploadSize = async () => {
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+      const response = await fetch(`${backendUrl}/api/import-v2/settings/max-upload-size`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setMaxUploadSize(data.max_upload_size_mb);
+      }
+    } catch (error) {
+      console.error('Fehler beim Laden der Upload-Größe:', error);
+    }
+  };
+
+  const handleMaxUploadSizeChange = async (sizeMB: number) => {
+    if (!isSysOp) {
+      showMessage('error', 'Nur SysOp darf diese Einstellung ändern');
+      return;
+    }
+
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+      const response = await fetch(`${backendUrl}/api/import-v2/settings/max-upload-size?size_mb=${sizeMB}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+      
+      if (response.ok) {
+        setMaxUploadSize(sizeMB);
+        showMessage('success', `Max. Upload-Größe auf ${sizeMB} MB gesetzt`);
+      } else {
+        const errorData = await response.json();
+        showMessage('error', errorData.detail || 'Fehler beim Speichern');
+      }
+    } catch (error) {
+      console.error('Fehler beim Setzen der Upload-Größe:', error);
+      showMessage('error', 'Fehler beim Speichern der Einstellung');
+    }
+  };
+
   if (!isOpen) return null;
 
   // SysOp und Admin haben volle Rechte (Gefahrenbereich)
