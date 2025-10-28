@@ -214,8 +214,8 @@ async def import_users(
                 continue
             
             # Admin darf nur User der eigenen Firma importieren
-            if current_user.role == UserRoleV2.admin:
-                if row["company_id"] != current_user.company_id:
+            if current_user.get("role") == "admin":
+                if row["company_id"] != current_user.get("company_id"):
                     errors.append(f"Zeile {idx + 1}: Admin darf nur User der eigenen Firma importieren")
                     continue
             
