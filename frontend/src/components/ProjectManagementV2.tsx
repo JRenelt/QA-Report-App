@@ -409,6 +409,118 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
     setShowAssignModal(true);
   };
 
+  // Import-Funktionen
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImportFile(file);
+    setImportPreview([]);
+    setImportResult(null);
+
+    // Vorschau laden
+    await loadImportPreview(file);
+  };
+
+  const loadImportPreview = async (file: File) => {
+    setImportLoading(true);
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const token = localStorage.getItem('authToken');
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('file_type', importTab === 'csv' ? 'csv' : 'json');
+      formData.append('import_type', 'projects');
+
+      const response = await fetch(`${backendUrl}/api/import-v2/preview`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setImportPreview(data.preview);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.detail || 'Fehler beim Laden der Vorschau');
+      }
+    } catch (err) {
+      setError('Fehler beim Laden der Vorschau');
+      console.error('Preview error:', err);
+    } finally {
+      setImportLoading(false);
+    }
+  };
+
+  const handleImport = async () => {
+    if (!importFile) {
+      setError('Bitte wählen Sie eine Datei aus');
+      return;
+    }
+
+    // Bestätigung
+    const duplicateCount = importPreview.filter(p => p.is_duplicate).length;
+    const importCount = importPreview.length - duplicateCount;
+    
+    if (!confirm(`${importCount} Projekte werden importiert. ${duplicateCount} Duplikate werden übersprungen.\n\nFortfahren?`)) {
+      return;
+    }
+
+    setImportLoading(true);
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const token = localStorage.getItem('authToken');
+      
+      const formData = new FormData();
+      formData.append('file', importFile);
+      formData.append('file_type', importTab === 'csv' ? 'csv' : 'json');
+
+      const response = await fetch(`${backendUrl}/api/import-v2/projects`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setImportResult(data);
+        setSuccess(`✅ ${data.imported} Projekte importiert, ${data.skipped} übersprungen`);
+        
+        // Liste neu laden
+        await loadProjects();
+        
+        // Modal nach 3 Sekunden schließen
+        setTimeout(() => {
+          setShowImportModal(false);
+          setImportFile(null);
+          setImportPreview([]);
+          setImportResult(null);
+        }, 3000);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.detail || 'Fehler beim Import');
+      }
+    } catch (err) {
+      setError('Fehler beim Import');
+      console.error('Import error:', err);
+    } finally {
+      setImportLoading(false);
+    }
+  };
+
+  const resetImport = () => {
+    setImportFile(null);
+    setImportPreview([]);
+    setImportResult(null);
+    setImportTab('csv');
+  };
+
   const resetForm = () => {
     setFormData({
       title: '',
