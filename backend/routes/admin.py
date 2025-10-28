@@ -153,12 +153,18 @@ async def clear_database(current_user: User = Depends(require_admin)):
     """
     DANGER: Clear all projects, test data, and companies (except ID2 GmbH)
     ID2 GmbH is required for system operation (protected company)
+    Clears both OLD and V2 collections
     """
     
-    # Delete ALL projects (including ID2 projects)
+    # Delete ALL projects (OLD collection)
     deleted_projects = await projects_collection.delete_many({})
     
-    # Delete all test data
+    # Delete ALL projects (V2 collection)
+    from database import get_database
+    db = await get_database()
+    deleted_projects_v2 = await db.projects_v2.delete_many({})
+    
+    # Delete all test data (OLD collections)
     await test_suites_collection.delete_many({})
     await test_cases_collection.delete_many({})
     await test_results_collection.delete_many({})
@@ -166,12 +172,20 @@ async def clear_database(current_user: User = Depends(require_admin)):
     await project_users_collection.delete_many({})
     await reports_collection.delete_many({})
     
-    # Delete all companies EXCEPT ID2 GmbH (system requirement)
+    # Delete all test cases (V2 collection)
+    await db.test_cases_v2.delete_many({})
+    
+    # Delete all companies EXCEPT ID2 GmbH (OLD collection - system requirement)
     deleted_companies = await companies_collection.delete_many({
         "id": {"$ne": "ID2"}  # Keep ID2 GmbH
     })
     
-    # Keep admin, sysop, and qa_demo users, delete others
+    # Delete all companies EXCEPT ID2.de (V2 collection)
+    deleted_companies_v2 = await db.companies_v2.delete_many({
+        "name": {"$ne": "ID2.de"}  # Keep ID2.de
+    })
+    
+    # Keep admin, sysop, and qa_demo users, delete others (OLD collection)
     deleted_users = await users_collection.delete_many({
         "$and": [
             {"role": {"$nin": ["admin", "sysop"]}},
@@ -179,12 +193,20 @@ async def clear_database(current_user: User = Depends(require_admin)):
         ]
     })
     
+    # Keep SysOp, Admin, QA-Tester (JR, AR, AT) - delete others (V2 collection)
+    deleted_users_v2 = await db.users_v2.delete_many({
+        "username": {"$nin": ["JR", "AR", "AT"]}
+    })
+    
     return {
         "message": "Datenbank erfolgreich geleert",
         "deleted_projects": deleted_projects.deleted_count,
+        "deleted_projects_v2": deleted_projects_v2.deleted_count,
         "deleted_companies": deleted_companies.deleted_count,
+        "deleted_companies_v2": deleted_companies_v2.deleted_count,
         "deleted_users": deleted_users.deleted_count,
-        "preserved": "ID2 GmbH Firma sowie Admin-, SysOp- und QA-Demo-Benutzer beibehalten"
+        "deleted_users_v2": deleted_users_v2.deleted_count,
+        "preserved": "ID2 GmbH/ID2.de Firma sowie Admin-, SysOp- und QA-Tester-Benutzer (JR, AR, AT) beibehalten"
     }
 
 
