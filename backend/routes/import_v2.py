@@ -656,10 +656,10 @@ async def get_max_upload_size_setting(
 @router.put("/settings/max-upload-size")
 async def set_max_upload_size_setting(
     size_mb: float,
-    current_user: UserV2 = Depends(get_current_user_v2)
+    current_user: dict = Depends(get_current_user)
 ):
     """Maximale Upload-Größe setzen (nur SysOp)"""
-    if current_user.role != UserRoleV2.sysop:
+    if current_user.get("role") != "sysop":
         raise HTTPException(status_code=403, detail="Nur SysOp darf diese Einstellung ändern")
     
     if size_mb < 0.1 or size_mb > 100:
