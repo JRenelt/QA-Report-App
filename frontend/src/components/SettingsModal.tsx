@@ -18,6 +18,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, darkMode
   const [showTooltips, setShowTooltips] = useState(localStorage.getItem('showTooltips') !== 'false');
   const [messageDelay, setMessageDelay] = useState(parseInt(localStorage.getItem('messageDelay') || '3000'));
   const [manualTooltipClose, setManualTooltipClose] = useState(localStorage.getItem('manualTooltipClose') === 'true');
+  const [maxUploadSize, setMaxUploadSize] = useState<number>(5); // in MB
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
