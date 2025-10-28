@@ -643,7 +643,7 @@ async def preview_import(
 # ==================== SETTINGS ====================
 @router.get("/settings/max-upload-size")
 async def get_max_upload_size_setting(
-    current_user: UserV2 = Depends(get_current_user_v2)
+    current_user: dict = Depends(get_current_user)
 ):
     """Maximale Upload-Größe abrufen (alle Rollen)"""
     size_bytes = await get_max_upload_size()
