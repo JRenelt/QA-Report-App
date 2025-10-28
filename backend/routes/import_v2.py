@@ -27,7 +27,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # Helper: Get max upload size from settings
 async def get_max_upload_size() -> int:
     """Holt die maximale Upload-Größe aus den Einstellungen (in Bytes)"""
-    db = get_database()
+    db = await get_database()
     settings = await db.settings_v2.find_one({"key": "max_upload_size"})
     if settings:
         return settings.get("value", 5 * 1024 * 1024)  # Default 5 MB
