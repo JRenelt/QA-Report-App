@@ -556,7 +556,7 @@ async def preview_import(
     file: UploadFile = File(...),
     file_type: str = Form(...),  # "csv" or "json"
     import_type: str = Form(...),  # "companies", "users", "projects", "test_cases"
-    current_user: UserV2 = Depends(get_current_user_v2)
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Vorschau der zu importierenden Daten mit Duplikats-Markierung
