@@ -517,45 +517,60 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
               </select>
             )}
 
-            {/* Template Download Buttons */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  const backendUrl = process.env.REACT_APP_BACKEND_URL;
-                  const token = localStorage.getItem('authToken');
-                  window.open(`${backendUrl}/api/templates/project-template-excel?token=${token}`, '_blank');
-                }}
-                className={`px-3 py-2 rounded-lg font-medium transition-colors flex items-center ${
-                  darkMode
-                    ? 'bg-green-600 hover:bg-green-700 text-white'
-                    : 'bg-green-500 hover:bg-green-600 text-white'
-                }`}
-                title="Excel Template herunterladen"
-              >
-                <FileSpreadsheet className="h-4 w-4 mr-1" />
-                Excel
-              </button>
+            {/* Template Download Buttons & Import - Nur anzeigen wenn: Admin ODER (SysOp UND Firma ausgewählt) */}
+            {(currentUser.role === 'admin' || (currentUser.role === 'sysop' && selectedCompanyFilter !== 'all')) && (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+                    const token = localStorage.getItem('authToken');
+                    window.open(`${backendUrl}/api/templates/project-template-excel?token=${token}`, '_blank');
+                  }}
+                  className={`px-3 py-2 rounded-lg font-medium transition-colors flex items-center ${
+                    darkMode
+                      ? 'bg-green-600 hover:bg-green-700 text-white'
+                      : 'bg-green-500 hover:bg-green-600 text-white'
+                  }`}
+                  title="Excel Template herunterladen"
+                >
+                  <FileSpreadsheet className="h-4 w-4 mr-1" />
+                  Excel
+                </button>
 
-              <button
-                onClick={() => {
-                  const backendUrl = process.env.REACT_APP_BACKEND_URL;
-                  const token = localStorage.getItem('authToken');
-                  window.open(`${backendUrl}/api/templates/project-template-json?token=${token}`, '_blank');
-                }}
-                className={`px-3 py-2 rounded-lg font-medium transition-colors flex items-center ${
-                  darkMode
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                    : 'bg-blue-500 hover:bg-blue-600 text-white'
-                }`}
-                title="JSON Template herunterladen"
-              >
-                <FileJson className="h-4 w-4 mr-1" />
-                JSON
-              </button>
-            </div>
+                <button
+                  onClick={() => {
+                    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+                    const token = localStorage.getItem('authToken');
+                    window.open(`${backendUrl}/api/templates/project-template-json?token=${token}`, '_blank');
+                  }}
+                  className={`px-3 py-2 rounded-lg font-medium transition-colors flex items-center ${
+                    darkMode
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                      : 'bg-blue-500 hover:bg-blue-600 text-white'
+                  }`}
+                  title="JSON Template herunterladen"
+                >
+                  <FileJson className="h-4 w-4 mr-1" />
+                  JSON
+                </button>
 
-            {/* Create Button */}
-            {canManage && (
+                <button
+                  onClick={() => setShowImportModal(true)}
+                  className={`px-3 py-2 rounded-lg font-medium transition-colors flex items-center ${
+                    darkMode
+                      ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                      : 'bg-purple-500 hover:bg-purple-600 text-white'
+                  }`}
+                  title="Projekte importieren"
+                >
+                  <Upload className="h-4 w-4 mr-1" />
+                  Import
+                </button>
+              </div>
+            )}
+
+            {/* Create Button - Nur anzeigen wenn: Admin ODER (SysOp UND Firma ausgewählt) */}
+            {canManage && (currentUser.role === 'admin' || (currentUser.role === 'sysop' && selectedCompanyFilter !== 'all')) && (
               <button
                 onClick={openCreateModal}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
