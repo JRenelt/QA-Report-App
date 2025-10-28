@@ -1143,6 +1143,266 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
           </div>
         </div>
       )}
+
+      {/* Import Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
+          <div className={`w-full max-w-4xl rounded-lg shadow-xl max-h-[90vh] overflow-hidden flex flex-col ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+            {/* Header */}
+            <div className={`flex items-center justify-between p-6 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <div className="flex items-center space-x-3">
+                <div className={`p-2 rounded-lg ${darkMode ? 'bg-purple-900' : 'bg-purple-100'}`}>
+                  <Upload className={`h-6 w-6 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`} />
+                </div>
+                <div>
+                  <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    Projekte importieren
+                  </h2>
+                  <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Lade Templates herunter, fülle sie aus und importiere sie hier
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setShowImportModal(false);
+                  resetImport();
+                }}
+                className={`p-2 rounded-lg transition-colors ${
+                  darkMode 
+                    ? 'hover:bg-gray-700 text-gray-400 hover:text-white' 
+                    : 'hover:bg-gray-100 text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Tabs */}
+            <div className={`flex border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+              <button
+                onClick={() => setImportTab('csv')}
+                className={`flex-1 px-6 py-3 font-medium transition-colors ${
+                  importTab === 'csv'
+                    ? darkMode
+                      ? 'bg-cyan-900 text-cyan-400 border-b-2 border-cyan-400'
+                      : 'bg-cyan-50 text-cyan-600 border-b-2 border-cyan-600'
+                    : darkMode
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-750'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <FileSpreadsheet className="h-4 w-4 inline mr-2" />
+                CSV/Excel Upload
+              </button>
+              <button
+                onClick={() => setImportTab('json')}
+                className={`flex-1 px-6 py-3 font-medium transition-colors ${
+                  importTab === 'json'
+                    ? darkMode
+                      ? 'bg-cyan-900 text-cyan-400 border-b-2 border-cyan-400'
+                      : 'bg-cyan-50 text-cyan-600 border-b-2 border-cyan-600'
+                    : darkMode
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-750'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <FileJson className="h-4 w-4 inline mr-2" />
+                JSON Upload
+              </button>
+              <button
+                onClick={() => setImportTab('manual')}
+                className={`flex-1 px-6 py-3 font-medium transition-colors ${
+                  importTab === 'manual'
+                    ? darkMode
+                      ? 'bg-cyan-900 text-cyan-400 border-b-2 border-cyan-400'
+                      : 'bg-cyan-50 text-cyan-600 border-b-2 border-cyan-600'
+                    : darkMode
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-750'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <Plus className="h-4 w-4 inline mr-2" />
+                Manuelle Eingabe
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {/* CSV/JSON Upload Tab */}
+              {(importTab === 'csv' || importTab === 'json') && (
+                <div className="space-y-4">
+                  {/* File Upload */}
+                  <div className={`border-2 border-dashed rounded-lg p-8 text-center ${
+                    darkMode ? 'border-gray-600 bg-gray-750' : 'border-gray-300 bg-gray-50'
+                  }`}>
+                    <Upload className={`h-12 w-12 mx-auto mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
+                    <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      {importTab === 'csv' ? 'CSV/Excel-Datei' : 'JSON-Datei'} auswählen
+                    </p>
+                    <input
+                      type="file"
+                      accept={importTab === 'csv' ? '.csv,.xlsx' : '.json'}
+                      onChange={handleFileUpload}
+                      className="hidden"
+                      id="file-upload"
+                    />
+                    <label
+                      htmlFor="file-upload"
+                      className={`inline-block px-6 py-3 rounded-lg font-medium cursor-pointer transition-colors ${
+                        darkMode
+                          ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                          : 'bg-cyan-500 hover:bg-cyan-600 text-white'
+                      }`}
+                    >
+                      Datei auswählen
+                    </label>
+                    {importFile && (
+                      <p className={`mt-4 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        📄 {importFile.name} ({(importFile.size / 1024).toFixed(2)} KB)
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Preview */}
+                  {importPreview.length > 0 && (
+                    <div className="space-y-2">
+                      <h3 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                        Vorschau ({importPreview.length} Einträge)
+                      </h3>
+                      <div className={`border rounded-lg overflow-hidden ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+                        <table className="w-full">
+                          <thead className={darkMode ? 'bg-gray-700' : 'bg-gray-50'}>
+                            <tr>
+                              <th className="px-4 py-2 text-left text-xs font-medium uppercase">Zeile</th>
+                              <th className="px-4 py-2 text-left text-xs font-medium uppercase">Titel</th>
+                              <th className="px-4 py-2 text-left text-xs font-medium uppercase">Firma</th>
+                              <th className="px-4 py-2 text-left text-xs font-medium uppercase">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-700">
+                            {importPreview.map((item, idx) => (
+                              <tr key={idx} className={item.is_duplicate ? (darkMode ? 'bg-yellow-900 bg-opacity-20' : 'bg-yellow-50') : ''}>
+                                <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  {item.row}
+                                </td>
+                                <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  {item.data?.title || '-'}
+                                </td>
+                                <td className={`px-4 py-2 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  {item.data?.company_id || '-'}
+                                </td>
+                                <td className={`px-4 py-2 text-sm`}>
+                                  {item.is_duplicate ? (
+                                    <span className="px-2 py-1 rounded text-xs bg-yellow-600 text-white">
+                                      Duplikat - Übersprungen
+                                    </span>
+                                  ) : (
+                                    <span className="px-2 py-1 rounded text-xs bg-green-600 text-white">
+                                      Wird importiert
+                                    </span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Import Result */}
+                  {importResult && (
+                    <div className={`p-4 rounded-lg ${darkMode ? 'bg-green-900 bg-opacity-20 border border-green-800' : 'bg-green-50 border border-green-200'}`}>
+                      <p className={`font-semibold ${darkMode ? 'text-green-400' : 'text-green-700'}`}>
+                        ✅ Import erfolgreich!
+                      </p>
+                      <p className={`text-sm ${darkMode ? 'text-green-300' : 'text-green-600'}`}>
+                        {importResult.imported} importiert, {importResult.skipped} übersprungen
+                      </p>
+                      {importResult.errors && importResult.errors.length > 0 && (
+                        <div className="mt-2">
+                          <p className={`text-sm font-medium ${darkMode ? 'text-red-400' : 'text-red-600'}`}>
+                            Fehler:
+                          </p>
+                          <ul className="list-disc list-inside text-sm">
+                            {importResult.errors.map((err: string, idx: number) => (
+                              <li key={idx} className={darkMode ? 'text-red-300' : 'text-red-500'}>{err}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Manual Input Tab */}
+              {importTab === 'manual' && (
+                <div className={`p-6 rounded-lg text-center ${darkMode ? 'bg-gray-750' : 'bg-gray-50'}`}>
+                  <Plus className={`h-12 w-12 mx-auto mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
+                  <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Für manuelle Projekterstellung bitte den "Neues Projekt" Button verwenden
+                  </p>
+                  <button
+                    onClick={() => {
+                      setShowImportModal(false);
+                      openCreateModal();
+                    }}
+                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                      darkMode
+                        ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                        : 'bg-cyan-500 hover:bg-cyan-600 text-white'
+                    }`}
+                  >
+                    Neues Projekt erstellen
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            {(importTab === 'csv' || importTab === 'json') && (
+              <div className={`flex justify-between p-6 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+                <button
+                  onClick={() => {
+                    setShowImportModal(false);
+                    resetImport();
+                  }}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    darkMode
+                      ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                      : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                  }`}
+                >
+                  Abbrechen
+                </button>
+                <button
+                  onClick={handleImport}
+                  disabled={!importFile || importPreview.length === 0 || importLoading}
+                  className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center ${
+                    darkMode
+                      ? 'bg-cyan-600 hover:bg-cyan-700 text-white disabled:bg-gray-700 disabled:text-gray-500'
+                      : 'bg-cyan-500 hover:bg-cyan-600 text-white disabled:bg-gray-300 disabled:text-gray-500'
+                  }`}
+                >
+                  {importLoading ? (
+                    <>
+                      <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                      Importiere...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-4 w-4 mr-2" />
+                      Importieren ({importPreview.filter(p => !p.is_duplicate).length})
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
