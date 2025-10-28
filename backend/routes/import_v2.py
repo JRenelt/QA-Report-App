@@ -167,7 +167,7 @@ async def import_companies(
 async def import_users(
     file: UploadFile = File(...),
     file_type: str = Form(...),  # "csv" or "json"
-    current_user: UserV2 = Depends(get_current_user_v2)
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Import von Benutzern (SysOp & Admin)
@@ -176,7 +176,7 @@ async def import_users(
     Duplikate werden übersprungen (basierend auf username oder email)
     """
     # Rollenprüfung
-    if current_user.role not in [UserRoleV2.sysop, UserRoleV2.admin]:
+    if current_user.get("role") not in ["sysop", "admin"]:
         raise HTTPException(status_code=403, detail="Keine Berechtigung zum User-Import")
     
     # Dateigröße prüfen
