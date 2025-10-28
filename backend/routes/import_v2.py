@@ -426,7 +426,7 @@ async def import_projects(
 async def import_test_cases(
     file: UploadFile = File(...),
     file_type: str = Form(...),  # "csv" or "json"
-    current_user: UserV2 = Depends(get_current_user_v2)
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Import von Testfällen (alle Rollen)
