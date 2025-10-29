@@ -139,7 +139,7 @@ async def create_archive(
 @router.get("/{archive_id}", response_model=ProjectArchive)
 async def get_archive(
     archive_id: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Einzelnes Archiv abrufen
