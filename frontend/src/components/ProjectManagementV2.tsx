@@ -648,7 +648,7 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
                     try {
                       const backendUrl = process.env.REACT_APP_BACKEND_URL;
                       const token = localStorage.getItem('authToken');
-                      const response = await fetch(`${backendUrl}/api/templates/project-template-excel`, {
+                      const response = await fetch(`${backendUrl}/api/templates/project-template-csv`, {
                         headers: {
                           'Authorization': `Bearer ${token}`
                         }
@@ -658,11 +658,12 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
                         const url = window.URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;
-                        a.download = 'projekt_template.csv';
+                        a.download = 'projekt_testfaelle_template.csv';
                         document.body.appendChild(a);
                         a.click();
                         window.URL.revokeObjectURL(url);
                         document.body.removeChild(a);
+                        setSuccess('Excel-Template heruntergeladen');
                       } else {
                         setError('Fehler beim Download des Excel-Templates');
                       }
