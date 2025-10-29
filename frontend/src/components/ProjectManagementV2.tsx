@@ -629,14 +629,36 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
               </select>
             )}
 
-            {/* Template Download Buttons & Import - Nur anzeigen wenn: Admin ODER (SysOp UND Firma ausgewählt) */}
+            {/* Template Download Buttons & Import - SysOp: Nur wenn Firma ausgewählt, Admin: immer */}
             {(currentUser.role === 'admin' || (currentUser.role === 'sysop' && selectedCompanyFilter !== 'all')) && (
               <div className="flex gap-2">
                 <button
-                  onClick={() => {
-                    const backendUrl = process.env.REACT_APP_BACKEND_URL;
-                    const token = localStorage.getItem('authToken');
-                    window.open(`${backendUrl}/api/templates/project-template-excel?token=${token}`, '_blank');
+                  onClick={async () => {
+                    try {
+                      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+                      const token = localStorage.getItem('authToken');
+                      const response = await fetch(`${backendUrl}/api/templates/project-template-excel`, {
+                        headers: {
+                          'Authorization': `Bearer ${token}`
+                        }
+                      });
+                      if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'projekt_template.csv';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                      } else {
+                        setError('Fehler beim Download des Excel-Templates');
+                      }
+                    } catch (err) {
+                      setError('Fehler beim Download des Excel-Templates');
+                      console.error('Template download error:', err);
+                    }
                   }}
                   className={`px-3 py-2 rounded-lg font-medium transition-colors flex items-center ${
                     darkMode
@@ -650,10 +672,32 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
                 </button>
 
                 <button
-                  onClick={() => {
-                    const backendUrl = process.env.REACT_APP_BACKEND_URL;
-                    const token = localStorage.getItem('authToken');
-                    window.open(`${backendUrl}/api/templates/project-template-json?token=${token}`, '_blank');
+                  onClick={async () => {
+                    try {
+                      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+                      const token = localStorage.getItem('authToken');
+                      const response = await fetch(`${backendUrl}/api/templates/project-template-json`, {
+                        headers: {
+                          'Authorization': `Bearer ${token}`
+                        }
+                      });
+                      if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'projekt_template.json';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                      } else {
+                        setError('Fehler beim Download des JSON-Templates');
+                      }
+                    } catch (err) {
+                      setError('Fehler beim Download des JSON-Templates');
+                      console.error('Template download error:', err);
+                    }
                   }}
                   className={`px-3 py-2 rounded-lg font-medium transition-colors flex items-center ${
                     darkMode
