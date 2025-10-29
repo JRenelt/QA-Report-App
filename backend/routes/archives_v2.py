@@ -10,6 +10,7 @@ from typing import List, Optional
 from datetime import datetime
 from pydantic import BaseModel
 from auth import get_current_user
+from models import User
 from database import get_database
 import uuid
 
