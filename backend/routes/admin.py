@@ -151,9 +151,9 @@ async def generate_test_data(
 @router.delete("/clear-database")
 async def clear_database(current_user: User = Depends(require_admin)):
     """
-    DANGER: Clear all projects, test data, and companies (except ID2 GmbH)
-    ID2 GmbH is required for system operation (protected company)
-    Clears both OLD and V2 collections
+    DANGER: Clear all projects, test data, and companies (except ID2 GmbH/ID2.de)
+    Also deletes users whose companies no longer exist
+    Preserves system users: JR (SysOp), AR (Admin), AT (QA-Tester)
     """
     
     # Delete ALL projects (OLD collection)
@@ -175,7 +175,7 @@ async def clear_database(current_user: User = Depends(require_admin)):
     # Delete all test cases (V2 collection)
     await db.test_cases_v2.delete_many({})
     
-    # Delete all companies EXCEPT ID2 GmbH (OLD collection - system requirement)
+    # Delete all companies EXCEPT ID2 GmbH (OLD collection)
     deleted_companies = await companies_collection.delete_many({
         "id": {"$ne": "ID2"}  # Keep ID2 GmbH
     })
@@ -185,6 +185,10 @@ async def clear_database(current_user: User = Depends(require_admin)):
         "name": {"$ne": "ID2.de"}  # Keep ID2.de
     })
     
+    # Get remaining company IDs (V2)
+    remaining_companies_v2 = await db.companies_v2.find({}, {"id": 1}).to_list(length=None)
+    remaining_company_ids_v2 = [c["id"] for c in remaining_companies_v2]
+    
     # Keep admin, sysop, and qa_demo users, delete others (OLD collection)
     deleted_users = await users_collection.delete_many({
         "$and": [
@@ -193,9 +197,28 @@ async def clear_database(current_user: User = Depends(require_admin)):
         ]
     })
     
-    # Keep SysOp, Admin, QA-Tester (JR, AR, AT) - delete others (V2 collection)
+    # V2: Delete users that are NOT system users (JR, AR, AT)
+    # OR whose company no longer exists
     deleted_users_v2 = await db.users_v2.delete_many({
-        "username": {"$nin": ["JR", "AR", "AT"]}
+        "$and": [
+            {"username": {"$nin": ["JR", "AR", "AT"]}},
+            {
+                "$or": [
+                    {"company_id": {"$nin": remaining_company_ids_v2}},
+                    {"company_id": {"$exists": False}},
+                    {"company_id": None}
+                ]
+            }
+        ]
+    })
+    
+    # Also delete users whose company_id doesn't match any remaining company
+    # (for users that might have been created before company deletion)
+    additional_orphaned_users = await db.users_v2.delete_many({
+        "$and": [
+            {"username": {"$nin": ["JR", "AR", "AT"]}},
+            {"company_id": {"$nin": remaining_company_ids_v2}}
+        ]
     })
     
     return {
@@ -205,8 +228,9 @@ async def clear_database(current_user: User = Depends(require_admin)):
         "deleted_companies": deleted_companies.deleted_count,
         "deleted_companies_v2": deleted_companies_v2.deleted_count,
         "deleted_users": deleted_users.deleted_count,
-        "deleted_users_v2": deleted_users_v2.deleted_count,
-        "preserved": "ID2 GmbH/ID2.de Firma sowie Admin-, SysOp- und QA-Tester-Benutzer (JR, AR, AT) beibehalten"
+        "deleted_users_v2": deleted_users_v2.deleted_count + additional_orphaned_users.deleted_count,
+        "preserved": "ID2 GmbH/ID2.de Firma sowie System-Benutzer (JR, AR, AT) beibehalten",
+        "info": "Alle Benutzer ohne gültige Firma wurden ebenfalls entfernt"
     }
 
 
