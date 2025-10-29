@@ -30,7 +30,7 @@ Deutschsprachige QA-Management-Anwendung für Test-Berichte und Projekt-Verwaltu
 
 ## 🔗 Links
 
-- Template-Download: https://testflow-app-3.preview.emergentagent.com/test-import-template-v2.json
+- Template-Download: https://qa-report-v2.preview.emergentagent.com/test-import-template-v2.json
 - API-Docs: `/api/docs`
 
 ---

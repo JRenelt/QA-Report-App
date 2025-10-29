@@ -114,6 +114,6 @@ Sonderzeichen: & / % - + = ( ) [ ] { } < > | \ : ; , . ? ! " ' ` ~ @ # $ ^ * _
 
 ## Download-Link
 
-**URL:** https://testflow-app-3.preview.emergentagent.com/test-import-template-regelkonform.json
+**URL:** https://qa-report-v2.preview.emergentagent.com/test-import-template-regelkonform.json
 
 **Größe:** 17KB

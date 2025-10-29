@@ -131,7 +131,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     // Test-Suites aus Backend laden
     const loadTestSuitesFromBackend = async () => {
       try {
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
         console.log(`🔄 Lade Test-Suites für Projekt ${selectedProjectId}...`);
         
         const response = await fetch(`${backendUrl}/api/test-suites/?project_id=${selectedProjectId}`, {
@@ -173,7 +173,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     
     const loadAllTestCasesFromBackend = async () => {
       try {
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
         console.log(`🔄 Lade ALLE Test-Cases für Projekt ${selectedProjectId}...`);
         
         // Lade ALLE Test-Cases des Projekts (nicht nur aktive Suite)
@@ -292,7 +292,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       if (!saved || JSON.parse(saved).length === 0) {
         console.log('⚠️ LocalStorage leer - lade Companies aus Backend...');
         try {
-          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
           const authToken = localStorage.getItem('authToken');
           
           if (!authToken) {
@@ -365,7 +365,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     setIsLoadingProjects(true);
     console.log('🔄 MANUELLER RELOAD - Lade Projekte aus Backend...');
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
       const token = localStorage.getItem('authToken');
       
       if (!token) {
@@ -403,7 +403,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       if (!saved || JSON.parse(saved).length === 0) {
         console.log('⚠️ LocalStorage leer - lade Projekte aus Backend...');
         try {
-          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+          const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
           const authToken = localStorage.getItem('authToken');
           
           if (!authToken) {
@@ -985,7 +985,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
     }
 
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
       
       // URL mit type-Parameter
       const pdfUrl = type === 'tested' 
@@ -1682,7 +1682,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                               
                               // Update im Backend speichern
                               try {
-                                const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+                                const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
                                 
                                 // Konvertiere camelCase zu snake_case für Backend
                                 const backendPayload = {
@@ -1742,7 +1742,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                               
                               // Update im Backend speichern
                               try {
-                                const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+                                const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
                                 
                                 // Konvertiere camelCase zu snake_case für Backend
                                 const backendPayload = {
@@ -2301,7 +2301,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   
                   // Update im Backend speichern (KRITISCH für Persistenz)
                   try {
-                    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://testflow-app-3.preview.emergentagent.com';
+                    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
                     
                     // Konvertiere camelCase zu snake_case für Backend
                     const backendPayload = {

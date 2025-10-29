@@ -1,81 +1,76 @@
 <analysis>
-The AI engineer has transitioned from PDF report generation to a comprehensive re-architecture of user, company, and project management. This V2 initiative involved creating new backend models () and dedicated API routes (, , , , ), integrated into  with an updated .
-
-Initial setup included a  fix and  for seeding data. Early challenges involved case-sensitive login and frontend caching, which were meticulously debugged. A profile modal with password change was then implemented.
-
-Subsequent frontend development focused on , , and , alongside role-based navigation adjustments in . Recurring bugs included React Hooks violations, UI interaction issues with disabled fields and CSS impacting dropdowns, and a critical backend import error. Recent work addressed dynamic test data generation (introducing areas to ), fixed modal scrolling in , and added template export functionality. The immediate task is resolving another dialog sizing issue in .
+The previous AI engineer successfully initiated a major re-architecture, transitioning the application from basic PDF reports to a V2 with comprehensive user, company, and project management. This involved extensive backend (, , etc.) and frontend (, etc.) development. Key achievements include a robust role-based system, dynamic project ID generation, and improved data import/export templates. Significant effort was dedicated to fixing critical bugs, such as authentication function import issues, data inconsistencies during database clear, and frontend crashes ( null errors). The engineer also began implementing complex features like the Test Speichern archiving system and enhancing UI/UX (collapsible company cards, detailed error messages). The immediate focus concluded with providing a pre-formatted JSON for frontend import testing, addressing user feedback on import compatibility.
 </analysis>
 
 <product_requirements>
-The QA-Report-App is a German-localized full-stack application. Initial requirements included:
-1.  **Documentation Update:**  and  updated with German user rule, logo format, and color palette.
-2.  **PDF Report Modernization:** Creating modern, compact, structured PDF reports with dynamic headers, 3M logo, project details, Executive Summary cards (5 or 4 for tested reports, with iterative layout refinements), Fazit box with intelligent page breaking, page numbering, Table of Contents, and detailed Test Case displays. A  parameter filters OFFEN test cases and adjusts summary.
-3.  **UI/UX:** Trigger PDF export from  with dynamic parameters and updated preview title.
+The QA-Report-App is a German-localized full-stack application. Initial requirements included documentation updates, modern PDF report generation with dynamic content and specific filtering, and UI/UX for PDF export.
 
-**Current Major Development (V2 Management):** The user explicitly requested a complete re-development of Company, User, and Project Management with detailed role-based permissions:
-*   **SysOp:** Full administrative rights over all companies and users (CRUD, block), manage projects and test cases, assign QA testers, can promote Admin to SysOp. Needs to see company selection first, then projects/test cases.
-*   **Admin:** Belongs to one company. Manages users within their company (CRUD, block), manages projects and test tasks, assigns QA testers to projects. No company selection.
-*   **QA-Tester:** Manages own profile (edit only), manages assigned projects (read-only, can edit notes, can optionally self-assign to projects if admin-approved).
-*   **Project Configuration:** Generated ID format , company name, project title/description (not editable by QA-tester), optional project notes (editable by QA-tester). Assigned QA testers in a mini-table with user, update time, current user on top.
-*   **Data Import/Generation:** SysOp can import and generate mass test data. Admin can import and generate test data for 2 projects (10 & 15 test cases). QA-Tester can optionally import and create test data.
-*   **Password Management:** Users should be able to change their password.
-*   **UI/UX for V2:** Role-based navigation icons ( for company/user,  for projects,  for profile). User creation modal with validation, error messages, and visual feedback for required fields and password strength. Bidirectional blocking (unblocking a user should unblock the company if no other users are blocked). Dialogs should adapt to content height to prevent scrolling.
-
+The core ongoing development is V2 Management, a complete re-development of Company, User, and Project Management with detailed role-based permissions:
+*   **SysOp:** Full CRUD for companies/users, project/test case management, QA tester assignment, Admin promotion. Must select a specific company to view projects and access management buttons; Alle Firmen hides these. Configurable max import file size.
+*   **Admin:** Company-specific user/project management. Sees projects/buttons immediately.
+*   **QA-Tester:** Manages own profile (edit only), read-only access to assigned projects (can edit notes).
+*   **Project Configuration:** Auto-generated ID format . Project notes are editable by QA-testers.
+*   **Data Import/Generation:** SysOp and Admin can import/generate data.
+*   **Password Management:** Users can change their password.
+*   **UI/UX for V2:** Role-based navigation, user creation with validation/password strength, bidirectional blocking. Dialogs must adapt to content height (fixed for Datenbank leeren). Company cards should be collapsible, search results yellow-marked, search field needs clear button.
+*   **Test Archiving:** Test Speichern button to save projects and test cases to a persistent archive. Archive lists projects with specific date/time data. SysOp has CRUD rights on the archive.
+*   **QA Reports:** Buttons for full report preview and tested report preview.
 </product_requirements>
 
 <key_technical_concepts>
--   **Backend**: FastAPI, MongoDB (pymongo), JWT Authentication, ReportLab (for PDF generation), Pydantic (data validation).
--   **Frontend**: React.js, TypeScript, Tailwind CSS.
+-   **Backend**: FastAPI, MongoDB (pymongo), JWT Authentication, ReportLab, Pydantic, UUIDs.
+-   **Frontend**: React.js, TypeScript, Tailwind CSS, React Hooks, Conditional rendering.
 -   **Deployment**: Supervisor, Kubernetes Ingress.
--   **Data Handling**: UUIDs, Base64 encoding.
 -   **Architecture**: Full-stack, German localization.
--   **Frontend Design Patterns**: Conditional rendering, React Hooks.
 </key_technical_concepts>
 
 <code_architecture>
 
--   ****: **New file.** Defines Pydantic models for  (now with , ), , , and  (now with  field). Important for new data structures.
--   ****: **New file.** Initializes the MongoDB with V2 specific data, including SysOp, Admin, QA-Tester users and ,  companies. Crucial for seeding initial application state.
--   ****: **New file.** Implements CRUD operations for V2 users, including password change and user blocking. Recently modified to handle bidirectional blocking (unblocking user affects company status).
--   ****: **New file.** Implements CRUD operations for V2 companies.
--   ****: **New file.** Implements CRUD operations for V2 projects, including dynamic ID generation and QA tester assignment.
--   ****: **New file.** Handles administrative tasks like mass test data generation and imports for V2 entities. Recently modified to incorporate areas into test case generation logic.
--   ****: **New file.** Provides API endpoints for downloading Excel (CSV) and JSON templates for projects, areas, and test cases.
--   ****: **Modified file.** Expanded to support V2 user roles and authentication logic.
--   ****: **Modified file.** Added  function to correctly initialize and return the MongoDB client instance for V2 scripts and routes.
--   ****: **Modified file.** Integrates all new  and  API routes under the  prefix.
--   ****: **Modified file.** Central dashboard. Modified to integrate , , , , and adjust navigation icons/visibility based on user roles.
--   ****: **Modified file.** Updated to display correct demo credentials and handle case-sensitive logins.
--   ****: **New file.** Allows logged-in users to view their profile and change their password.
--   ****: **New file.** Replaces old user management. Provides role-based UI for managing users (CRUD, block). Heavily modified to fix React Hooks issues, company selection dropdown, and implement visual validation feedback for user creation.
--   ****: **New file.** Replaces old company management. Provides role-based UI for managing companies (CRUD, block), extended with address and contact person fields.
--   ****: **New file.** Replaces old project management. Provides role-based UI for managing projects, including ID generation, tester assignment, and recently added template download buttons.
--   ****: **Modified file.** Adjusted to resolve scrolling issues in various dialogs, specifically the Datenbank leeren dialog, by adapting content height. Currently being modified again for another dialog sizing issue.
-
+-   ****: Defines Pydantic models for V2 entities;  updated with an  field.
+-   ****: Supports V2 user roles;  ensures dict-like access for V2 routes.
+-   ****: Initializes V2 database with system users and companies.
+-   ****: A new script to create specific company and users for testing.
+-   ****: A new file providing a sample JSON structure for importing comprehensive frontend test cases.
+-   ****:  now deletes V2 collections and users (excluding SysOp role) and handles async .
+-   ****: Generates test data for V2, now incorporating areas for test cases.
+-   ****: Project management routes.  logic was updated to conform to the user's detailed format.
+-   ****: Provides API endpoints for downloading templates. Modified to include descriptive comments, improved Excel/JSON formatting, and a new endpoint for the QA frontend test JSON.
+-   ****: New file for V2 import operations. Updated to handle async database calls and the max upload size setting.
+-   ****: New file defining backend routes for the project archiving system.
+-   ****: Integrates all new V2 and  routes.
+-   ****: Central dashboard. Modified for  state and new archive button logic.
+-   ****: Manages application settings. Adjusted for Datenbank leeren dialog height, and includes a new section for SysOp to configure max upload size.
+-   ****: Manages V2 companies. Modified for collapsible cards, search highlighting, clear search button, and fixed  null access.
+-   ****: Manages V2 projects. Updated for SysOp company selection, dynamic button visibility, project ID display (preventing phone number detection), local error/success messages in modals, and fixed  null access.
+-   ****: Manages V2 users. Fixed  null access.
 </code_architecture>
 
 <pending_tasks>
--   **Testdaten-Generierung (Frontend-Integration):** Implement UI buttons and dialogs for generating test data based on roles (SysOp, Admin, QA-Tester).
--   **Import-Funktionen (CSV/JSON/Manuell):** Implement frontend dialogs and upload components for importing companies, users, projects, and test cases.
--   **Admin zu SysOp hochstufen:** Implement the functionality in  for SysOps to promote Admins to SysOp role.
--   **Alte Components & Code-Bereinigung:** Delete old ,  and related backend routes after V2 is fully validated.
--   **PDF-Reports für V2-Projekte anpassen:** Update existing PDF report generation to use the new V2 project structure and data.
--   **UI/UX-Verbesserungen:** Implement toast notifications, better confirmation dialogs, password strength indicators, and editable profile in .
--   **Mixed Content Error (FE-001/BUG-010):** Awaiting CloudFront CDN support (not directly tackled by AI engineer).
--   **Refine Dialog Sizing**: Fix the issue where a confirmation dialog's content is covered by a scrollbar, it should adapt its height to the content.
+-   **Testdaten-Generierung (Frontend-UI):** Implement UI for generating test data based on roles.
+-   **Import-Funktionen (Frontend UI):** Implement actual file upload and processing logic for CSV/JSON imports.
+-   **Admin zu SysOp hochstufen:** Implement promotion functionality in .
+-   **Alte Components & Code-Bereinigung:** Delete old V1 components and routes.
+-   **PDF-Reports für V2-Projekte anpassen:** Update PDF report generation for V2 data structure.
+-   **UI/UX-Verbesserungen:** Implement toast notifications, password strength indicators, and editable profile in .
+-   **Mixed Content Error (FE-001/BUG-010):** Awaiting CloudFront CDN support.
+-   **Refine Dialog Sizing:** Fix the specific confirmation dialog in  to adapt its height.
+-   **Test Speichern Button:** Fully implement save/load from archive, counter, and overwrite safety.
+-   **Archive Listing:** Implement frontend display of archived projects.
+-   **QA-Report Buttons:** Implement full and tested report preview functionalities.
 </pending_tasks>
 
 <current_work>
-The AI engineer is currently addressing a UI anomaly related to dialog window sizing. Specifically, a confirmation dialog (möchte Sie wirklich fortfahren?) within  is reportedly getting partially covered, requiring a scrollbar to view its content, which is not desired for an informational dialog. The user requested that the dialog should adapt its height to the content to prevent scrolling.
+The AI engineer's immediate work involved addressing the user's request for a konforme Json zum Download (a conforming JSON for download) to simulate project imports, as the previous template was incompatible. The engineer successfully created and provided a complete, import-compatible JSON file () directly in the chat. This JSON includes 65 detailed test cases across various frontend functions and design aspects, formatted for easy import, along with instructions on how to use it for testing the import functionality.
 
-Immediately prior to this, the engineer successfully addressed several user requests:
-1.  **Test data generation:**  in  was updated to include an  field.  was modified to generate test data for 1 project with 3 specified areas (UI/UX Test, Funktionalität, Performance) and 100 test cases, aligning with user requirements. The docstring was also updated.
-2.  **Datenbank leeren Dialog fix:** The  component was adjusted to modify  styles, allowing the Datenbank leeren dialog to adapt its height and prevent unnecessary scrolling.
-3.  **Template Export:** A new backend route  was created to handle downloading CSV/JSON templates for Project, Area, and Test Case data. This route was registered in . Frontend download buttons for these templates were added to the toolbar in .
-
-A critical bug was also encountered and fixed: a  in  ( instead of ), which prevented the backend from starting and caused login failures. This was resolved, restoring full application functionality.
+Concurrently, several key issues were resolved:
+1.  **Project ID Format:** The  function in  was updated to accurately reflect the user's complex specified format.
+2.  **Network Error on Project Create:** The company_id fehlt error during project creation was fixed by adjusting  and  in  to correctly set the  based on the user's role.
+3.  **Initial Archive System:** Backend routes () were created and registered, and the Test Speichern button in  was updated with initial archive logic and  state.
+4.  **Template Usability:**  was enhanced with detailed comments and improved formatting for both Excel (CSV) and JSON templates.
+5.  **Project Creation Error Handling:**  was refined to display specific  and  messages directly within the project creation dialog.
+6.  **Database Clear Crash:** A  () causing a white screen after clearing the database was resolved by adding null checks for  in , , and .
 </current_work>
 
 <optional_next_step>
-Adjust the styling of the confirmation dialog within  to ensure its height automatically adapts to its content.
+Test the JSON import functionality in the frontend and then proceed with the full implementation of the archiving system.
 </optional_next_step>
