@@ -133,8 +133,8 @@ async def create_project(project_data: ProjectCreateV2, current_user: dict = Dep
     project_id_str = generate_project_id(
         project_data.title,
         company["name"],
-        current_user.get("first_name", ""),
-        current_user.get("last_name", "")
+        current_user.first_name,
+        current_user.last_name
     )
     
     new_project = {
