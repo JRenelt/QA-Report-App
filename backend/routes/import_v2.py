@@ -673,7 +673,7 @@ async def set_max_upload_size_setting(
         {"$set": {
             "value": size_bytes,
             "updated_at": datetime.utcnow().isoformat(),
-            "updated_by": current_user.get("username")
+            "updated_by": current_user.username
         }},
         upsert=True
     )
