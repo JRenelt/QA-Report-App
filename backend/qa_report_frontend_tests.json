@@ -1,8 +1,559 @@
-[
-  {
-    "title": "QA-Report Frontend Tests",
-    "description": "Umfassende Tests aller Funktionen, Design und Usability des QA-Report-App Frontends",
-    "notes": "Komplette Test-Suite für Abnahme und Qualitätssicherung",
-    "company_id": "BITTE_FIRMEN_ID_EINTRAGEN"
-  }
-]
+{
+  "_HINWEIS": "Diese JSON ist Import-kompatibel. Erstellen Sie zuerst das Projekt, dann importieren Sie die Testfälle separat ODER nutzen Sie diese als Vorlage zum manuellen Eintragen.",
+  
+  "projekt": {
+    "title": "QA-Report Frontend Kompletttest",
+    "description": "Umfassende Tests aller Funktionen, Design und Usability der QA-Report-App",
+    "notes": "Diese Test-Suite deckt Login, Dashboard, Projektverwaltung, Firmenverwaltung, Benutzerverwaltung, Archiv, Reports, Settings und Design ab",
+    "company_id": "IHRE_FIRMEN_ID_HIER_EINTRAGEN"
+  },
+  
+  "testbereiche": [
+    "Login & Authentifizierung",
+    "Dashboard & Navigation",
+    "Projektverwaltung",
+    "Testfall-Management",
+    "Firmenverwaltung",
+    "Benutzerverwaltung",
+    "Archiv-System",
+    "QA-Reports & PDF",
+    "Settings & Einstellungen",
+    "Design & Usability",
+    "Responsive Design",
+    "Performance & Geschwindigkeit"
+  ],
+  
+  "testfaelle": [
+    {
+      "test_id": "",
+      "name": "Login mit gültigen Credentials (SysOp)",
+      "area": "Login & Authentifizierung",
+      "description": "Einloggen als SysOp (JR / 3r7k03nI9) und Weiterleitung zum Dashboard prüfen",
+      "priority": 1,
+      "expected_result": "Erfolgreiche Anmeldung, Dashboard wird angezeigt, Username 'JR' erscheint oben rechts",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Login mit ungültigen Credentials",
+      "area": "Login & Authentifizierung",
+      "description": "Versuch mit falschen Zugangsdaten einzuloggen",
+      "priority": 1,
+      "expected_result": "Fehlermeldung 'Incorrect username or password', kein Zugang gewährt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Case-sensitive Login prüfen",
+      "area": "Login & Authentifizierung",
+      "description": "Login mit 'jr' statt 'JR' testen",
+      "priority": 2,
+      "expected_result": "Login schlägt fehl, Hinweis auf Groß-/Kleinschreibung",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Logout-Funktionalität",
+      "area": "Login & Authentifizierung",
+      "description": "Abmelden über Logout-Button und Redirect zu Login prüfen",
+      "priority": 1,
+      "expected_result": "User wird abgemeldet, Token gelöscht, Redirect zu Login-Seite",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Dashboard lädt korrekt",
+      "area": "Dashboard & Navigation",
+      "description": "Nach Login wird Dashboard mit allen Elementen angezeigt",
+      "priority": 1,
+      "expected_result": "Dashboard angezeigt, alle Icons sichtbar, keine Fehler in Console",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Projektverwaltung Icon (Kanban) öffnen",
+      "area": "Dashboard & Navigation",
+      "description": "Klick auf Kanban-Icon öffnet Projektverwaltung",
+      "priority": 1,
+      "expected_result": "Projektverwaltung-Modal öffnet sich, Projektliste wird angezeigt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Firmenverwaltung Icon (Factory) öffnen",
+      "area": "Dashboard & Navigation",
+      "description": "Klick auf Factory-Icon öffnet Firmenverwaltung",
+      "priority": 1,
+      "expected_result": "Firmenverwaltung-Modal öffnet sich, Firmenliste wird angezeigt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Benutzerverwaltung öffnen",
+      "area": "Dashboard & Navigation",
+      "description": "Navigation zur Benutzerverwaltung",
+      "priority": 1,
+      "expected_result": "Benutzerverwaltung wird angezeigt (für SysOp/Admin)",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Settings-Modal öffnen",
+      "area": "Dashboard & Navigation",
+      "description": "Klick auf Settings-Icon (Zahnrad) öffnet Einstellungen",
+      "priority": 1,
+      "expected_result": "Settings-Modal öffnet sich mit Tabs: Allgemein, Erweitert",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Profil-Modal öffnen",
+      "area": "Dashboard & Navigation",
+      "description": "Klick auf User-Icon öffnet Profil",
+      "priority": 2,
+      "expected_result": "Profil-Modal zeigt User-Daten und Passwort-Änderung",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "SysOp sieht ID2.de vorausgewählt",
+      "area": "Projektverwaltung",
+      "description": "Nach Login als SysOp ist ID2.de Firma automatisch ausgewählt",
+      "priority": 1,
+      "expected_result": "Dropdown zeigt 'ID2.de', Import-Buttons sind sichtbar",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "SysOp kann Firma wechseln",
+      "area": "Projektverwaltung",
+      "description": "SysOp wählt andere Firma aus Dropdown",
+      "priority": 1,
+      "expected_result": "Firmenauswahl funktioniert, Projektliste ändert sich entsprechend",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "SysOp wählt 'Alle Firmen' - Buttons verschwinden",
+      "area": "Projektverwaltung",
+      "description": "Bei Auswahl 'Alle Firmen' sollen Import-Buttons ausgeblendet werden",
+      "priority": 1,
+      "expected_result": "Excel, JSON, Import Buttons sind NICHT sichtbar bei 'Alle Firmen'",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Neues Projekt anlegen (SysOp)",
+      "area": "Projektverwaltung",
+      "description": "Button '+ Neues Projekt' klicken und Projekt erstellen",
+      "priority": 1,
+      "expected_result": "Modal öffnet, Projekt wird erstellt, neue Projekt-ID im korrekten Format",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Projekt-ID Format validieren",
+      "area": "Projektverwaltung",
+      "description": "Prüfen ob Projekt-ID Format korrekt ist: [Projekt]_[Firma]_[User]_[Datum]_[Zeit]",
+      "priority": 1,
+      "expected_result": "Beispiel: 'TWR_MI_JR_2025.10.29_14.30'",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Projekt bearbeiten",
+      "area": "Projektverwaltung",
+      "description": "Bearbeiten-Icon klicken, Titel ändern, speichern",
+      "priority": 1,
+      "expected_result": "Änderungen werden gespeichert und angezeigt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Projekt löschen",
+      "area": "Projektverwaltung",
+      "description": "Projekt löschen mit Bestätigungsdialog",
+      "priority": 2,
+      "expected_result": "Bestätigung erscheint, Projekt wird gelöscht",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "QA-Tester zuweisen",
+      "area": "Projektverwaltung",
+      "description": "QA-Tester einem Projekt zuweisen",
+      "priority": 1,
+      "expected_result": "Tester wird zugewiesen, erscheint in Tester-Liste",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Excel-Template herunterladen",
+      "area": "Projektverwaltung",
+      "description": "Excel-Button klicken und Template downloaden",
+      "priority": 1,
+      "expected_result": "CSV-Datei wird heruntergeladen, enthält Anleitung und Beispiele",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "JSON-Template herunterladen",
+      "area": "Projektverwaltung",
+      "description": "JSON-Button klicken und Template downloaden",
+      "priority": 1,
+      "expected_result": "JSON-Datei wird heruntergeladen, Format ist lesbar und kommentiert",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Projekt importieren (JSON)",
+      "area": "Projektverwaltung",
+      "description": "Import-Button klicken, JSON hochladen, Vorschau prüfen",
+      "priority": 1,
+      "expected_result": "Vorschau zeigt Daten, Duplikate markiert, Import erfolgreich",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Fehlerbehandlung bei Projekt-Anlegen",
+      "area": "Projektverwaltung",
+      "description": "Projekt ohne Pflichtfelder anlegen",
+      "priority": 1,
+      "expected_result": "Detaillierte Fehlermeldung im Dialog, keine Sackgasse",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Testfall erstellen",
+      "area": "Testfall-Management",
+      "description": "Neuen Testfall im Dashboard erstellen",
+      "priority": 1,
+      "expected_result": "Testfall wird angelegt, erscheint in Liste",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Testfall bearbeiten",
+      "area": "Testfall-Management",
+      "description": "Bestehenden Testfall editieren",
+      "priority": 1,
+      "expected_result": "Änderungen werden gespeichert",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Testfall Status ändern",
+      "area": "Testfall-Management",
+      "description": "Status von pending auf passed/failed ändern",
+      "priority": 1,
+      "expected_result": "Status wird aktualisiert, Farbe ändert sich",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Testfall löschen",
+      "area": "Testfall-Management",
+      "description": "Testfall löschen mit Bestätigung",
+      "priority": 2,
+      "expected_result": "Bestätigung erscheint, Testfall wird gelöscht",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Test Speichern Button - Counter",
+      "area": "Testfall-Management",
+      "description": "Projekt archivieren und Counter prüfen",
+      "priority": 1,
+      "expected_result": "Counter erhöht sich, zeigt [1], [2], etc.",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Test Speichern - Überschreib-Warnung",
+      "area": "Testfall-Management",
+      "description": "Gleiches Projekt nochmal archivieren",
+      "priority": 1,
+      "expected_result": "Warnung erscheint: 'Archiv überschreiben?'",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Test Speichern ohne Projekt",
+      "area": "Testfall-Management",
+      "description": "Button klicken ohne Projektauswahl",
+      "priority": 2,
+      "expected_result": "Warnung: 'Kein Projekt ausgewählt'",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Firma erstellen",
+      "area": "Firmenverwaltung",
+      "description": "Neue Firma anlegen mit allen Feldern",
+      "priority": 1,
+      "expected_result": "Firma wird erstellt, erscheint in Liste",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Firma bearbeiten",
+      "area": "Firmenverwaltung",
+      "description": "Firmendaten ändern (Adresse, Kontakt)",
+      "priority": 1,
+      "expected_result": "Änderungen werden gespeichert",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Firma sperren/entsperren",
+      "area": "Firmenverwaltung",
+      "description": "Firma sperren, alle User sollten auch gesperrt werden",
+      "priority": 1,
+      "expected_result": "Firma und alle zugehörigen User werden gesperrt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Firmenkarte zusammenklappen",
+      "area": "Firmenverwaltung",
+      "description": "ChevronDown Icon klicken, Karte einklappen",
+      "priority": 1,
+      "expected_result": "Details werden ausgeblendet, nur Name + Kürzel sichtbar",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Firmen-Suche mit Highlighting",
+      "area": "Firmenverwaltung",
+      "description": "Suchbegriff eingeben, Treffer sollten gelb markiert sein",
+      "priority": 1,
+      "expected_result": "Suchergebnisse werden gelb hervorgehoben",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Suchfeld mit X-Button leeren",
+      "area": "Firmenverwaltung",
+      "description": "X-Icon im Suchfeld klicken",
+      "priority": 2,
+      "expected_result": "Suchfeld wird geleert, alle Firmen werden angezeigt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Benutzer erstellen",
+      "area": "Benutzerverwaltung",
+      "description": "Neuen User anlegen mit allen Pflichtfeldern",
+      "priority": 1,
+      "expected_result": "User wird erstellt, erscheint in Liste",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Benutzer bearbeiten",
+      "area": "Benutzerverwaltung",
+      "description": "User-Daten ändern (Name, Email, Tel)",
+      "priority": 1,
+      "expected_result": "Änderungen werden gespeichert",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Benutzer sperren",
+      "area": "Benutzerverwaltung",
+      "description": "User sperren über Ban-Icon",
+      "priority": 1,
+      "expected_result": "User wird gesperrt, Login nicht mehr möglich",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Passwort ändern (Profil)",
+      "area": "Benutzerverwaltung",
+      "description": "Im Profil-Modal Passwort ändern",
+      "priority": 1,
+      "expected_result": "Passwort wird geändert, neues Passwort funktioniert",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "QA-Report Preview alle Tests",
+      "area": "QA-Reports & PDF",
+      "description": "[QA-Report] Button klicken, Vorschau öffnen",
+      "priority": 1,
+      "expected_result": "PDF-Vorschau mit ALLEN Testfällen wird angezeigt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "QA-Report Preview nur getestete",
+      "area": "QA-Reports & PDF",
+      "description": "[QA-Report (getestet)] Button klicken",
+      "priority": 1,
+      "expected_result": "PDF-Vorschau nur mit getesteten Testfällen (ohne 'pending')",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "PDF Export funktioniert",
+      "area": "QA-Reports & PDF",
+      "description": "PDF herunterladen und Inhalt prüfen",
+      "priority": 1,
+      "expected_result": "PDF wird heruntergeladen, Inhalt ist korrekt formatiert",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Dark Mode umschalten",
+      "area": "Settings & Einstellungen",
+      "description": "Dark Mode ein/aus schalten",
+      "priority": 1,
+      "expected_result": "UI wechselt zwischen Hell/Dunkel-Modus",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Sprache ändern (DE/EN)",
+      "area": "Settings & Einstellungen",
+      "description": "Sprache wechseln in Settings",
+      "priority": 2,
+      "expected_result": "UI-Texte wechseln zur gewählten Sprache",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Max Upload-Größe ändern (SysOp)",
+      "area": "Settings & Einstellungen",
+      "description": "SysOp ändert max. Import-Dateigröße",
+      "priority": 2,
+      "expected_result": "Einstellung wird gespeichert, beim Upload berücksichtigt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Datenbank leeren",
+      "area": "Settings & Einstellungen",
+      "description": "Gefahrenbereich: DB leeren ausführen",
+      "priority": 1,
+      "expected_result": "Bestätigung, DB wird geleert, kein White Screen, nur SysOp bleibt",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Konsistentes Farbschema",
+      "area": "Design & Usability",
+      "description": "Alle Buttons und Icons verwenden einheitliche Farben",
+      "priority": 2,
+      "expected_result": "Cyan für Aktionen, Rot für Löschen, Grün für Erfolg, konsistent",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Button-Hover-Effekte",
+      "area": "Design & Usability",
+      "description": "Alle Buttons haben sichtbare Hover-States",
+      "priority": 2,
+      "expected_result": "Hover verändert Farbe/Opacity, Feedback für User",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Icons sind intuitiv",
+      "area": "Design & Usability",
+      "description": "Alle Icons sind verständlich und haben Tooltips",
+      "priority": 1,
+      "expected_result": "Hover über Icon zeigt Tooltip mit Erklärung",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Fehlermeldungen sind hilfreich",
+      "area": "Design & Usability",
+      "description": "Fehler enthalten Kontext und Lösungsvorschläge",
+      "priority": 1,
+      "expected_result": "Keine Sackgassen, immer Hinweise wie es weitergeht",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Erfolgs-Feedback sichtbar",
+      "area": "Design & Usability",
+      "description": "Nach Aktionen erscheint grüne Erfolgs-Meldung",
+      "priority": 1,
+      "expected_result": "User weiß, dass Aktion erfolgreich war",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Loading-States vorhanden",
+      "area": "Design & Usability",
+      "description": "Bei längeren Aktionen erscheint Ladeanimation",
+      "priority": 2,
+      "expected_result": "Spinner/Loading-Indicator sichtbar",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Bestätigungs-Dialoge bei destruktiven Aktionen",
+      "area": "Design & Usability",
+      "description": "Löschen/Sperren hat immer Bestätigung",
+      "priority": 1,
+      "expected_result": "Confirm-Dialog erscheint vor Löschen/Sperren",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Responsive auf 1920x1080",
+      "area": "Responsive Design",
+      "description": "App auf Full-HD Display testen",
+      "priority": 1,
+      "expected_result": "Alle Elemente korrekt dargestellt, kein Overflow",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Responsive auf 1366x768",
+      "area": "Responsive Design",
+      "description": "App auf kleineren Laptop-Display",
+      "priority": 2,
+      "expected_result": "Layout passt sich an, Scrollbars wo nötig",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Seitenladezeit < 3 Sekunden",
+      "area": "Performance & Geschwindigkeit",
+      "description": "Initial Load der Login-Seite messen",
+      "priority": 1,
+      "expected_result": "Seite lädt in unter 3 Sekunden",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Dashboard-Interaktionen flüssig",
+      "area": "Performance & Geschwindigkeit",
+      "description": "Klicks auf Buttons reagieren sofort",
+      "priority": 1,
+      "expected_result": "Keine Verzögerungen, UI ist responsiv",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Große Datenlisten (100+ Einträge)",
+      "area": "Performance & Geschwindigkeit",
+      "description": "Performance bei vielen Projekten/Testfällen",
+      "priority": 2,
+      "expected_result": "Auch bei 100+ Einträgen bleibt UI schnell",
+      "status": "pending"
+    },
+    {
+      "test_id": "",
+      "name": "Browser-Console ohne Fehler",
+      "area": "Performance & Geschwindigkeit",
+      "description": "Keine JavaScript-Fehler in Console",
+      "priority": 1,
+      "expected_result": "Console ist clean, keine Errors/Warnings",
+      "status": "pending"
+    }
+  ]
+}
