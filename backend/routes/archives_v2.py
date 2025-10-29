@@ -115,7 +115,7 @@ async def create_archive(
         "project_id": project_id,
         "project_name": project.get("title", "Unbenannt"),
         "company_name": project.get("company_name", "Unbekannt"),
-        "saved_by": current_user.get("username"),
+        "saved_by": current_user.username,
         "saved_at": datetime.utcnow().isoformat(),
         "test_start_date": test_start_date,
         "test_completion_date": test_completion_date,
