@@ -1966,48 +1966,59 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     Config
                   </button>
                 </CustomTooltip>
-                <CustomTooltip text="Alle Tests im Backend speichern">
+                <CustomTooltip text="Aktuelles Projekt im Archiv speichern">
                   <button 
                     onClick={async () => {
+                      if (!selectedProjectId) {
+                        alert('❌ Kein Projekt ausgewählt!\n\nBitte wählen Sie erst ein Projekt aus.');
+                        return;
+                      }
+                      
                       try {
-                        const unsavedTests = testCases.filter(test => test.id.startsWith('test-')); // Lokale Tests
-                        if (unsavedTests.length === 0) {
-                          alert('Alle Tests sind bereits gespeichert.');
-                          return;
+                        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+                        const token = localStorage.getItem('authToken');
+                        
+                        // Prüfen ob bereits archiviert
+                        const countResponse = await fetch(
+                          `${backendUrl}/api/archives-v2/count/by-project/${selectedProjectId}`,
+                          {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                          }
+                        );
+                        
+                        const countData = await countResponse.json();
+                        const archiveCount = countData.archive_count || 0;
+                        
+                        // Wenn bereits archiviert, Überschreib-Warnung
+                        if (archiveCount > 0) {
+                          if (!confirm(`⚠️ ÜBERSCHREIBEN?\n\nDieses Projekt wurde bereits ${archiveCount}x archiviert.\n\nMöchten Sie das Archiv überschreiben?`)) {
+                            return;
+                          }
                         }
                         
-                        const saved = await Promise.all(unsavedTests.map(async (test) => {
-                          try {
-                            const testData = {
-                              test_id: test.test_id,
-                              testSuiteId: test.testSuiteId,
-                              title: test.title,
-                              description: test.description || '',
-                              status: 'pending' as const,
-                              created_by: user?.username || 'unknown'
-                            };
-                            return await qaService.createTestCase(testData);
-                          } catch (error) {
-                            console.error('Fehler beim Speichern von Test:', test.test_id, error);
-                            return null;
+                        // Projekt archivieren
+                        const response = await fetch(
+                          `${backendUrl}/api/archives-v2/?project_id=${selectedProjectId}`,
+                          {
+                            method: 'POST',
+                            headers: { 'Authorization': `Bearer ${token}` }
                           }
-                        }));
+                        );
                         
-                        const successCount = saved.filter(s => s !== null).length;
-                        alert(`${successCount} von ${unsavedTests.length} Tests erfolgreich gespeichert.`);
-                        
-                        // UI aktualisieren - lokale Test IDs durch Backend IDs ersetzen
-                        setTestCases(testCases.map(test => {
-                          if (test.id.startsWith('test-')) {
-                            const savedTest = saved.find((s, i) => unsavedTests[i].id === test.id && s !== null);
-                            return savedTest ? { ...test, id: savedTest.id } : test;
-                          }
-                          return test;
-                        }));
-                        
+                        if (response.ok) {
+                          const data = await response.json();
+                          const newCount = archiveCount === 0 ? 1 : archiveCount;
+                          alert(`✅ Projekt erfolgreich archiviert!\n\n📦 Gespeicherte Archive: ${newCount}\n📅 Gespeichert am: ${new Date(data.saved_at).toLocaleString('de-DE')}`);
+                          
+                          // Archive-Count aktualisieren (für UI)
+                          setArchiveCount(newCount);
+                        } else {
+                          const errorData = await response.json();
+                          alert(`❌ Fehler beim Archivieren:\n\n${errorData.detail || 'Unbekannter Fehler'}`);
+                        }
                       } catch (error) {
-                        console.error('Fehler beim Speichern:', error);
-                        alert(`Fehler beim Speichern: ${error instanceof Error ? error.message : error}`);
+                        console.error('Archivierungs-Fehler:', error);
+                        alert(`❌ Netzwerkfehler:\n\n${error instanceof Error ? error.message : error}`);
                       }
                     }}
                     className={`px-3 py-1.5 text-sm rounded transition-all flex items-center border ${
@@ -2016,7 +2027,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                         : 'border-green-500 text-green-500 hover:bg-green-500 hover:bg-opacity-10'
                     }`}>
                     <Save className="h-4 w-4 mr-1" />
-                    Test speichern [{testCases.filter(t => t.id.startsWith('test-')).length}]
+                    Test speichern [{archiveCount || 0}]
                   </button>
                 </CustomTooltip>
                 <CustomTooltip text="Archiv mit persistenten Tests öffnen">
