@@ -176,11 +176,22 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
   };
 
   const handleCreateProject = async () => {
-    setError('');
-    setSuccess('');
+    setModalError('');
+    setModalSuccess('');
 
-    if (!formData.title || !formData.description || !formData.company_id) {
-      setError('Bitte Titel, Beschreibung und Firma ausfüllen');
+    // Validierung
+    if (!formData.title.trim()) {
+      setModalError('❌ Projekttitel ist ein Pflichtfeld');
+      return;
+    }
+    
+    if (!formData.description.trim()) {
+      setModalError('❌ Projektbeschreibung ist ein Pflichtfeld');
+      return;
+    }
+    
+    if (!formData.company_id) {
+      setModalError('❌ Bitte wählen Sie eine Firma aus');
       return;
     }
 
@@ -200,17 +211,41 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
       });
 
       if (response.ok) {
-        setSuccess('Projekt erfolgreich angelegt!');
+        setSuccess('✅ Projekt erfolgreich angelegt!');
         setShowCreateModal(false);
         resetForm();
         loadProjects();
       } else {
         const errorData = await response.json();
-        setError(errorData.detail || 'Fehler beim Anlegen des Projekts');
+        // Detaillierte Fehlermeldung
+        let errorMessage = '❌ Fehler beim Anlegen des Projekts:\n\n';
+        
+        if (errorData.detail) {
+          if (typeof errorData.detail === 'string') {
+            errorMessage += errorData.detail;
+          } else if (Array.isArray(errorData.detail)) {
+            errorMessage += errorData.detail.map((err: any) => `• ${err.msg || err}`).join('\n');
+          } else {
+            errorMessage += JSON.stringify(errorData.detail);
+          }
+        } else {
+          errorMessage += `Server antwortete mit Status ${response.status}`;
+        }
+        
+        errorMessage += '\n\n💡 Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.';
+        setModalError(errorMessage);
       }
     } catch (err) {
-      setError('Fehler beim Anlegen des Projekts');
       console.error('Create project error:', err);
+      setModalError(
+        '❌ Netzwerkfehler:\n\n' +
+        'Die Verbindung zum Server konnte nicht hergestellt werden.\n\n' +
+        '💡 Mögliche Ursachen:\n' +
+        '• Backend ist nicht erreichbar\n' +
+        '• Netzwerkprobleme\n' +
+        '• Token abgelaufen\n\n' +
+        'Bitte versuchen Sie es erneut oder kontaktieren Sie den Administrator.'
+      );
     } finally {
       setLoading(false);
     }
