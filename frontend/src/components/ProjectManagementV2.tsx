@@ -578,6 +578,8 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
       notes: '',
       company_id: ''
     });
+    setModalError('');
+    setModalSuccess('');
   };
 
   const formatDateTime = (dateString: string) => {
