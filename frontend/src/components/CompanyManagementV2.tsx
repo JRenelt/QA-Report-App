@@ -29,6 +29,11 @@ interface CompanyV2 {
 }
 
 const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClose, darkMode, currentUser }) => {
+  // Safety check: Falls currentUser null ist (nach DB-Leerung)
+  if (!currentUser) {
+    return null;
+  }
+
   const [companies, setCompanies] = useState<CompanyV2[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
