@@ -427,7 +427,9 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredCompanies.map(company => (
+              {filteredCompanies.map(company => {
+                const isCollapsed = collapsedCompanies.has(company.id);
+                return (
                 <div 
                   key={company.id} 
                   className={`p-4 rounded-lg border ${
@@ -436,29 +438,46 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
                       : 'bg-white border-gray-200 hover:border-gray-300'
                   } transition-colors`}
                 >
-                  {/* Company Header */}
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center space-x-3">
+                  {/* Company Header - ALWAYS VISIBLE */}
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center space-x-3 flex-1">
                       <div className={`p-2 rounded-lg ${darkMode ? 'bg-cyan-900' : 'bg-cyan-100'}`}>
                         <Building className={`h-5 w-5 ${darkMode ? 'text-cyan-400' : 'text-cyan-600'}`} />
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                          {company.name}
+                          {highlightMatch(company.name, searchTerm)}
                         </h3>
                         <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                          Kürzel: {company.short_code}
+                          Kürzel: {highlightMatch(company.short_code, searchTerm)}
                         </p>
                       </div>
+                      {/* Collapse Toggle Button */}
+                      <button
+                        onClick={() => toggleCollapse(company.id)}
+                        className={`p-1 rounded transition-colors ${
+                          darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                        }`}
+                        title={isCollapsed ? 'Ausklappen' : 'Einklappen'}
+                      >
+                        {isCollapsed ? (
+                          <ChevronDown className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+                        ) : (
+                          <ChevronUp className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+                        )}
+                      </button>
                     </div>
                   </div>
 
-                  {/* Description */}
-                  {company.description && (
-                    <p className={`text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {company.description}
-                    </p>
-                  )}
+                  {/* COLLAPSIBLE CONTENT */}
+                  {!isCollapsed && (
+                    <>
+                      {/* Description */}
+                      {company.description && (
+                        <p className={`text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                          {company.description}
+                        </p>
+                      )}
 
                   {/* Adresse */}
                   {(company.street || company.city) && (
