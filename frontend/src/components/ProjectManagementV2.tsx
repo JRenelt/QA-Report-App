@@ -581,7 +581,7 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
       title: '',
       description: '',
       notes: '',
-      company_id: ''
+      company_id: currentUser.role === 'admin' ? currentUser.company_id : (selectedCompanyFilter !== 'all' ? selectedCompanyFilter : '')
     });
     setModalError('');
     setModalSuccess('');
