@@ -58,6 +58,10 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
   const [showImportModal, setShowImportModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectV2 | null>(null);
   
+  // Modal-specific error (appears inside dialog)
+  const [modalError, setModalError] = useState('');
+  const [modalSuccess, setModalSuccess] = useState('');
+  
   // Import States
   const [importTab, setImportTab] = useState<'csv' | 'json' | 'manual'>('csv');
   const [importFile, setImportFile] = useState<File | null>(null);
