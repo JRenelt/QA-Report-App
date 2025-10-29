@@ -207,12 +207,12 @@ async def restore_archive(
 @router.delete("/{archive_id}")
 async def delete_archive(
     archive_id: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Archiv löschen (nur SysOp)
     """
-    if current_user.get("role") != "sysop":
+    if current_user.role != "sysop":
         raise HTTPException(status_code=403, detail="Nur SysOp darf Archive löschen")
     
     db = await get_database()
