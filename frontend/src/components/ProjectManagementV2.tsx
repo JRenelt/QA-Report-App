@@ -82,6 +82,17 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
     }
   }, [isOpen, selectedCompanyFilter]);
 
+  // SysOp: Automatisch ID2.de Firma vorauswählen beim ersten Laden
+  useEffect(() => {
+    if (isOpen && currentUser.role === 'sysop' && companies.length > 0 && selectedCompanyFilter === 'all') {
+      // Finde ID2.de Firma
+      const id2Company = companies.find(c => c.name === 'ID2.de');
+      if (id2Company) {
+        setSelectedCompanyFilter(id2Company.id);
+      }
+    }
+  }, [isOpen, companies, currentUser.role]);
+
   const loadProjects = async () => {
     setLoading(true);
     setError('');
