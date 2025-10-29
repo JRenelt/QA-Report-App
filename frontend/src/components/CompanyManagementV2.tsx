@@ -219,6 +219,32 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const token = localStorage.getItem('authToken');
 
+  const toggleCollapse = (companyId: string) => {
+    setCollapsedCompanies(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(companyId)) {
+        newSet.delete(companyId);
+      } else {
+        newSet.add(companyId);
+      }
+      return newSet;
+    });
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+  };
+
+  const highlightMatch = (text: string, search: string) => {
+    if (!search.trim()) return text;
+    const parts = text.split(new RegExp(`(${search})`, 'gi'));
+    return parts.map((part, i) => 
+      part.toLowerCase() === search.toLowerCase() 
+        ? <mark key={i} className="bg-yellow-300 text-black">{part}</mark>
+        : part
+    );
+  };
+
       const response = await fetch(`${backendUrl}/api/companies-v2/${companyId}/block`, {
         method: 'POST',
         headers: {
