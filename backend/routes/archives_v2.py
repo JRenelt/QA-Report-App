@@ -229,7 +229,7 @@ async def delete_archive(
 @router.get("/count/by-project/{project_id}")
 async def get_archive_count(
     project_id: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Anzahl der Archive für ein Projekt
