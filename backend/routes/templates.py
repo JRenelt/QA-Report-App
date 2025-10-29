@@ -111,6 +111,30 @@ async def get_project_template_csv(current_user: dict = Depends(get_current_user
         }
     )
 
+@router.get("/qa-report-test-suite")
+async def get_qa_report_test_suite(current_user: dict = Depends(get_current_user)):
+    """
+    Download komplette Test-Suite für QA-Report Frontend
+    Umfasst alle Funktionen, Design und Usability Tests
+    """
+    import os
+    file_path = "/app/backend/qa_report_frontend_tests.json"
+    
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Test-Suite nicht gefunden")
+    
+    with open(file_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    return StreamingResponse(
+        iter([content]),
+        media_type="application/json",
+        headers={
+            "Content-Disposition": "attachment; filename=qa_report_frontend_kompletttest.json"
+        }
+    )
+
+
 @router.get("/project-template-json")
 async def get_project_template_json(current_user: dict = Depends(get_current_user)):
     """
