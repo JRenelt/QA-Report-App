@@ -1038,6 +1038,41 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
               </button>
             </div>
 
+            {/* Modal Error/Success Messages */}
+            {modalError && (
+              <div className="mx-6 mt-4 p-4 rounded-lg bg-red-500 bg-opacity-10 border border-red-500">
+                <div className="flex items-start">
+                  <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-red-500 whitespace-pre-line text-sm">{modalError}</p>
+                  </div>
+                  <button
+                    onClick={() => setModalError('')}
+                    className="text-red-500 hover:text-red-600 ml-2"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {modalSuccess && (
+              <div className="mx-6 mt-4 p-4 rounded-lg bg-green-500 bg-opacity-10 border border-green-500">
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-green-500 whitespace-pre-line text-sm">{modalSuccess}</p>
+                  </div>
+                  <button
+                    onClick={() => setModalSuccess('')}
+                    className="text-green-500 hover:text-green-600 ml-2"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="p-6 space-y-4">
               {(canManage || showCreateModal) && (
                 <>
