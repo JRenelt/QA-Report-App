@@ -158,7 +158,7 @@ async def get_archive(
 @router.post("/{archive_id}/restore")
 async def restore_archive(
     archive_id: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Projekt aus Archiv wiederherstellen
