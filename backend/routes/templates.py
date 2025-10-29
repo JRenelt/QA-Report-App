@@ -10,7 +10,7 @@ import io
 import csv
 import json
 
-router = APIRouter(prefix="/api/templates", tags=["templates"])
+router = APIRouter(tags=["templates"])
 
 @router.get("/project-template-csv")
 async def get_project_template_csv(current_user: dict = Depends(get_current_user)):
