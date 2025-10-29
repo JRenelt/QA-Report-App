@@ -66,14 +66,14 @@ def parse_json(content: bytes) -> List[Dict[str, Any]]:
 async def import_companies(
     file: UploadFile = File(...),
     file_type: str = Form(...),  # "csv" or "json"
-    current_user: dict = Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Import von Firmen (nur SysOp)
     Duplikate werden übersprungen (basierend auf short_code)
     """
     # Rollenprüfung
-    if current_user.get("role") != "sysop":
+    if current_user.role != "sysop":
         raise HTTPException(status_code=403, detail="Nur SysOp darf Firmen importieren")
     
     # Dateigröße prüfen
