@@ -129,16 +129,12 @@ async def create_project(project_data: ProjectCreateV2, current_user: dict = Dep
     if not company:
         raise HTTPException(status_code=404, detail="Firma nicht gefunden")
     
-    # Get sequence number (count existing projects for this company)
-    existing_count = await projects_collection.count_documents({"company_id": project_data.company_id})
-    sequence_number = existing_count + 1
-    
     # Generate project_id
     project_id_str = generate_project_id(
-        company["short_code"],
+        project_data.title,
+        company["name"],
         current_user.get("first_name", ""),
-        current_user.get("last_name", ""),
-        sequence_number
+        current_user.get("last_name", "")
     )
     
     new_project = {
