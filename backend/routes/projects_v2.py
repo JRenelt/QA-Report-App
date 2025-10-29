@@ -18,23 +18,31 @@ from datetime import datetime
 
 router = APIRouter(prefix="/projects-v2", tags=["projects-v2"])
 
-def generate_project_id(company_short_code: str, user_first_name: str, user_last_name: str, sequence_number: int) -> str:
+def generate_project_id(project_title: str, company_name: str, user_first_name: str, user_last_name: str) -> str:
     """
     Generiere Projekt-ID:
-    Format: [2Buchst-Firma][1Vorname][1Nachname][UHRZEIT][LfdNr]
-    Beispiel: IDJR143025001
+    Format: [Anfangsbuchstabe erste 3 Worte Projektname]_[Anfangsbuchstaben Firmenname]_[Vorname+Nachname]_[Datum YYYY.MM.DD]_[Zeit HH.MM]
+    Beispiel: TWR_MI_JR_2025.10.29_14.30
     """
-    # Hole erste Buchstaben
+    # Hole Anfangsbuchstaben der ersten 3 Worte des Projektnamens
+    project_words = project_title.split()[:3]
+    project_initials = ''.join([word[0].upper() for word in project_words if word])
+    
+    # Hole Anfangsbuchstaben des Firmennamens (alle Worte)
+    company_words = company_name.split()
+    company_initials = ''.join([word[0].upper() for word in company_words if word])
+    
+    # Hole Anfangsbuchstaben Vor+Nachname
     first_initial = user_first_name[0].upper() if user_first_name else "X"
     last_initial = user_last_name[0].upper() if user_last_name else "X"
+    user_initials = f"{first_initial}{last_initial}"
     
-    # Hole aktuelle Zeit (HHMMSS)
-    current_time = datetime.utcnow().strftime("%H%M%S")
+    # Hole aktuelles Datum und Zeit
+    now = datetime.utcnow()
+    date_str = now.strftime("%Y.%m.%d")
+    time_str = now.strftime("%H.%M")
     
-    # 3-stellige Laufende Nummer
-    sequence = str(sequence_number).zfill(3)
-    
-    return f"{company_short_code}{first_initial}{last_initial}{current_time}{sequence}"
+    return f"{project_initials}_{company_initials}_{user_initials}_{date_str}_{time_str}"
 
 @router.get("/", response_model=List[ProjectV2])
 async def get_projects(
