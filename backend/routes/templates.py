@@ -141,8 +141,9 @@ async def get_project_template_json(current_user: dict = Depends(get_current_use
         ]
     }
     
-    return JSONResponse(
-        content=template,
+    return StreamingResponse(
+        iter([json.dumps(template, indent=2, ensure_ascii=False)]),
+        media_type="application/json",
         headers={
             "Content-Disposition": "attachment; filename=projekt_testfaelle_template.json"
         }
