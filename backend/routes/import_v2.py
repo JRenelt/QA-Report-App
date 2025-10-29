@@ -472,13 +472,13 @@ async def import_test_cases(
                 continue
             
             # Berechtigungsprüfung: QA-Tester nur für eigene Projekte
-            if current_user.get("role") == "qa_tester":
-                is_assigned = any(t["user_id"] == current_user.get("id") for t in project.get("assigned_testers", []))
+            if current_user.role == "qa_tester":
+                is_assigned = any(t["user_id"] == current_user.id for t in project.get("assigned_testers", []))
                 if not is_assigned:
                     errors.append(f"Zeile {idx + 1}: Keine Berechtigung für dieses Projekt")
                     continue
-            elif current_user.get("role") == "admin":
-                if project["company_id"] != current_user.get("company_id"):
+            elif current_user.role == "admin":
+                if project["company_id"] != current_user.company_id:
                     errors.append(f"Zeile {idx + 1}: Projekt gehört nicht zur eigenen Firma")
                     continue
             
