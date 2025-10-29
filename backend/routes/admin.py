@@ -197,11 +197,12 @@ async def clear_database(current_user: User = Depends(require_admin)):
         ]
     })
     
-    # V2: Delete users that are NOT system users (JR, AR, AT)
+    # V2: Delete users that are NOT SysOp (role: "sysop")
     # OR whose company no longer exists
+    # Only SysOp users are protected!
     deleted_users_v2 = await db.users_v2.delete_many({
         "$and": [
-            {"username": {"$nin": ["JR", "AR", "AT"]}},
+            {"role": {"$ne": "sysop"}},  # Nur SysOp-Rolle ist geschützt
             {
                 "$or": [
                     {"company_id": {"$nin": remaining_company_ids_v2}},
@@ -212,11 +213,10 @@ async def clear_database(current_user: User = Depends(require_admin)):
         ]
     })
     
-    # Also delete users whose company_id doesn't match any remaining company
-    # (for users that might have been created before company deletion)
+    # Also delete non-sysop users whose company_id doesn't match any remaining company
     additional_orphaned_users = await db.users_v2.delete_many({
         "$and": [
-            {"username": {"$nin": ["JR", "AR", "AT"]}},
+            {"role": {"$ne": "sysop"}},
             {"company_id": {"$nin": remaining_company_ids_v2}}
         ]
     })
@@ -229,8 +229,8 @@ async def clear_database(current_user: User = Depends(require_admin)):
         "deleted_companies_v2": deleted_companies_v2.deleted_count,
         "deleted_users": deleted_users.deleted_count,
         "deleted_users_v2": deleted_users_v2.deleted_count + additional_orphaned_users.deleted_count,
-        "preserved": "ID2 GmbH/ID2.de Firma sowie System-Benutzer (JR, AR, AT) beibehalten",
-        "info": "Alle Benutzer ohne gültige Firma wurden ebenfalls entfernt"
+        "preserved": "ID2 GmbH/ID2.de Firma sowie SysOp-Benutzer (Rolle: sysop)",
+        "info": "Alle Benutzer ohne gültige Firma oder ohne SysOp-Rolle wurden entfernt"
     }
 
 
