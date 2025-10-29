@@ -34,6 +34,7 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [collapsedCompanies, setCollapsedCompanies] = useState<Set<string>>(new Set());
   
   // Modal States
   const [showCreateModal, setShowCreateModal] = useState(false);
