@@ -42,6 +42,11 @@ interface UserV2 {
 }
 
 const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClose, darkMode, currentUser }) => {
+  // Safety check: Falls currentUser null ist (nach DB-Leerung)
+  if (!currentUser) {
+    return null;
+  }
+
   const [projects, setProjects] = useState<ProjectV2[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [users, setUsers] = useState<UserV2[]>([]);
