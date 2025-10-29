@@ -12,6 +12,7 @@ import json
 import io
 from datetime import datetime
 from auth import get_current_user
+from models import User
 from models_v2 import (
     UserV2, CompanyV2, ProjectV2, TestCaseV2,
     CompanyCreateV2, UserCreateV2, ProjectCreateV2, TestCaseCreateV2,
