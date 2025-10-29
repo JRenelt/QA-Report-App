@@ -115,66 +115,115 @@ async def get_project_template_csv(current_user: dict = Depends(get_current_user
 async def get_project_template_json(current_user: dict = Depends(get_current_user)):
     """
     Download JSON-Template für Projekt/Bereich/Testfälle Import
+    Mit Kommentaren und Anleitung
     """
     template = {
-        "project": {
-            "title": "Beispiel Projekt",
-            "description": "Projekt-Beschreibung hier",
-            "notes": "Optionale Notizen"
+        "_ANLEITUNG": {
+            "HINWEIS": "Löschen Sie dieses '_ANLEITUNG' Objekt vor dem Import!",
+            "PROJEKT_ID": "Wird AUTOMATISCH vom System generiert - NICHT manuell eintragen!",
+            "STATUS_WERTE": ["pending", "passed", "failed", "skipped"],
+            "STATUS_BEDEUTUNG": {
+                "pending": "Test noch nicht durchgeführt (Standard)",
+                "passed": "Test erfolgreich bestanden",
+                "failed": "Test fehlgeschlagen",
+                "skipped": "Test übersprungen"
+            },
+            "PRIORITY_WERTE": {
+                "1": "Hoch - Kritischer Test",
+                "2": "Mittel - Wichtiger Test",
+                "3": "Niedrig - Optionaler Test"
+            },
+            "TEST_ID": "Leer lassen oder weglassen - wird automatisch generiert!",
+            "COMPANY_ID": "Wird automatisch zugewiesen - NICHT ausfüllen!"
         },
+        "project": {
+            "_KOMMENTAR": "Projekt-Informationen",
+            "title": "Mein Test-Projekt",
+            "description": "Hier Projektbeschreibung eingeben",
+            "notes": "Optionale Notizen zum Projekt"
+        },
+        "areas": [
+            {
+                "_KOMMENTAR": "Testbereiche definieren",
+                "name": "UI/UX Test",
+                "description": "Tests der Benutzeroberfläche und Benutzererfahrung"
+            },
+            {
+                "name": "Funktionalität",
+                "description": "Tests der funktionalen Anforderungen"
+            },
+            {
+                "name": "Performance",
+                "description": "Tests der Systemleistung"
+            },
+            {
+                "name": "Sicherheit",
+                "description": "Tests der Sicherheitsmechanismen"
+            }
+        ],
         "test_cases": [
             {
-                "test_id": "TEST001",
+                "_KOMMENTAR": "test_id LEER LASSEN - wird automatisch generiert!",
+                "test_id": "",
                 "name": "Login-Funktion testen",
                 "area": "UI/UX Test",
-                "description": "Prüfen ob Login funktioniert",
+                "description": "Prüfen ob Login mit gültigen Daten funktioniert",
                 "priority": 1,
-                "expected_result": "User wird eingeloggt",
+                "expected_result": "User wird erfolgreich eingeloggt",
                 "status": "pending"
             },
             {
-                "test_id": "TEST002",
+                "test_id": "",
                 "name": "Navigation testen",
                 "area": "UI/UX Test",
-                "description": "Alle Menüpunkte anklicken",
+                "description": "Alle Menüpunkte anklicken und Erreichbarkeit prüfen",
                 "priority": 2,
-                "expected_result": "Navigation funktioniert",
+                "expected_result": "Navigation funktioniert fehlerfrei",
                 "status": "pending"
             },
             {
-                "test_id": "TEST003",
+                "test_id": "",
                 "name": "Datenspeicherung testen",
                 "area": "Funktionalität",
-                "description": "Daten in DB speichern",
+                "description": "Daten in Datenbank speichern und wieder abrufen",
                 "priority": 1,
-                "expected_result": "Daten werden gespeichert",
+                "expected_result": "Daten werden korrekt gespeichert und abgerufen",
                 "status": "pending"
             },
             {
-                "test_id": "TEST004",
+                "test_id": "",
                 "name": "API-Endpoints testen",
                 "area": "Funktionalität",
-                "description": "Alle REST-APIs prüfen",
+                "description": "Alle REST-APIs auf Funktionsfähigkeit prüfen",
                 "priority": 1,
-                "expected_result": "APIs antworten korrekt",
+                "expected_result": "APIs antworten mit Status 200 und korrekten Daten",
                 "status": "pending"
             },
             {
-                "test_id": "TEST005",
+                "test_id": "",
                 "name": "Ladezeiten messen",
                 "area": "Performance",
-                "description": "Seitenladezeit unter 2s",
+                "description": "Seitenladezeit unter 2 Sekunden prüfen",
                 "priority": 2,
-                "expected_result": "Seite lädt schnell",
+                "expected_result": "Seite lädt in unter 2 Sekunden",
                 "status": "pending"
             },
             {
-                "test_id": "TEST006",
+                "test_id": "",
                 "name": "Stress-Test durchführen",
                 "area": "Performance",
-                "description": "100 gleichzeitige User",
+                "description": "100 gleichzeitige User simulieren",
                 "priority": 3,
-                "expected_result": "System bleibt stabil",
+                "expected_result": "System bleibt stabil unter Last",
+                "status": "pending"
+            },
+            {
+                "test_id": "",
+                "name": "SQL-Injection Test",
+                "area": "Sicherheit",
+                "description": "Eingabefelder auf SQL-Injection Anfälligkeit prüfen",
+                "priority": 1,
+                "expected_result": "Keine SQL-Injection möglich",
                 "status": "pending"
             }
         ]
