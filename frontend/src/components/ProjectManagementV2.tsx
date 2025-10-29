@@ -640,8 +640,8 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
               </select>
             )}
 
-            {/* Template Download Buttons & Import - Admin UND SysOp können sie immer sehen */}
-            {(currentUser.role === 'admin' || currentUser.role === 'sysop') && (
+            {/* Template Download Buttons & Import - Nur sichtbar bei spezifischer Firma (nicht "Alle Firmen") */}
+            {((currentUser.role === 'admin') || (currentUser.role === 'sysop' && selectedCompanyFilter !== 'all')) && (
               <div className="flex gap-2">
                 <button
                   onClick={async () => {
