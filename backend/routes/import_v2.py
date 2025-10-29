@@ -382,8 +382,8 @@ async def import_projects(
             now = datetime.utcnow()
             time_part = now.strftime("%H%M")
             seq_part = f"{seq_counters[row['company_id']]:02d}"
-            first_char = current_user.get("first_name", "X")[0].upper()
-            last_char = current_user.get("last_name", "X")[0].upper()
+            first_char = getattr(current_user, "first_name", "X")[0].upper()
+            last_char = getattr(current_user, "last_name", "X")[0].upper()
             project_id = f"{company['short_code']}{first_char}{last_char}{time_part}{seq_part}"
             
             # Projekt erstellen
