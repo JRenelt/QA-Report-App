@@ -54,7 +54,7 @@ async def get_archives(
 @router.post("/", response_model=ProjectArchive)
 async def create_archive(
     project_id: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Projekt im Archiv speichern
