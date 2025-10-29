@@ -82,6 +82,37 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
   const [archiveCount, setArchiveCount] = useState<number>(0);
+
+  // Load archive count when project changes
+  useEffect(() => {
+    const loadArchiveCount = async () => {
+      if (!selectedProjectId) {
+        setArchiveCount(0);
+        return;
+      }
+      
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        const token = localStorage.getItem('authToken');
+        
+        const response = await fetch(
+          `${backendUrl}/api/archives-v2/count/by-project/${selectedProjectId}`,
+          {
+            headers: { 'Authorization': `Bearer ${token}` }
+          }
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          setArchiveCount(data.archive_count || 0);
+        }
+      } catch (error) {
+        console.error('Fehler beim Laden des Archive-Counts:', error);
+      }
+    };
+    
+    loadArchiveCount();
+  }, [selectedProjectId]);
   
   // State declarations
   const [testSuites, setTestSuites] = useState<TestSuite[]>([]);
