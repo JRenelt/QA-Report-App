@@ -81,6 +81,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
   // Company and Project Management State (muss VOR useEffect deklariert werden)
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
+  const [archiveCount, setArchiveCount] = useState<number>(0);
   
   // State declarations
   const [testSuites, setTestSuites] = useState<TestSuite[]>([]);
