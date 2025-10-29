@@ -243,6 +243,33 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
     }
   };
 
+  // Helper functions for collapse, search, and highlighting
+  const toggleCollapse = (companyId: string) => {
+    setCollapsedCompanies(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(companyId)) {
+        newSet.delete(companyId);
+      } else {
+        newSet.add(companyId);
+      }
+      return newSet;
+    });
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+  };
+
+  const highlightMatch = (text: string, search: string) => {
+    if (!search.trim()) return text;
+    const parts = text.split(new RegExp(`(${search})`, 'gi'));
+    return parts.map((part, i) => 
+      part.toLowerCase() === search.toLowerCase() 
+        ? <mark key={i} className="bg-yellow-300 text-black">{part}</mark>
+        : part
+    );
+  };
+
   const openCreateModal = () => {
     resetForm();
     setShowCreateModal(true);
