@@ -362,12 +362,20 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Suche nach Firmenname oder Kürzel..."
-                className={`w-full pl-10 pr-4 py-2 rounded-lg border ${
+                className={`w-full pl-10 pr-10 py-2 rounded-lg border ${
                   darkMode
                     ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                     : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
                 }`}
               />
+              {searchTerm && (
+                <button
+                  onClick={clearSearch}
+                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
             </div>
 
             {/* Create Button (nur SysOp) */}
