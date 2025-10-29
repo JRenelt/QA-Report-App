@@ -563,7 +563,7 @@ const CompanyManagementV2: React.FC<CompanyManagementV2Props> = ({ isOpen, onClo
                         </button>
                       )}
                     </div>
-                  </>
+                    </>
                   )}
                 </div>
               );
