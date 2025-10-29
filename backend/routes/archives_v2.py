@@ -33,7 +33,7 @@ class ProjectArchive(BaseModel):
 
 @router.get("/", response_model=List[ProjectArchive])
 async def get_archives(
-    current_user: dict = Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Alle Archive abrufen
