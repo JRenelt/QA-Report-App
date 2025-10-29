@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, Edit, Trash2, Ban, CheckCircle, Search, AlertCircle, Building, Users as UsersIcon, Shield } from 'lucide-react';
+import { X, Plus, Edit, Trash2, Ban, CheckCircle, Search, AlertCircle, Building, Users as UsersIcon, Shield, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface CompanyManagementV2Props {
   isOpen: boolean;
