@@ -166,6 +166,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           const suites = Object.keys(suitesByArea).map((area, idx) => ({
             id: `suite-${idx}`,
             name: area,
+            icon: 'TestTube2', // Default icon für alle Bereiche
             tests: suitesByArea[area]
           }));
           
