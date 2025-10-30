@@ -142,11 +142,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         if (response.ok) {
           const testCases = await response.json();
           console.log(`✅ ${testCases.length} Test-Cases aus Backend geladen (V2)`);
+          console.log('Test-Cases Daten:', testCases);
           
           // Gruppiere Test-Cases nach Bereich (area) und erstelle daraus "Suites"
           const suitesByArea: { [key: string]: any[] } = {};
           testCases.forEach((tc: any) => {
             const area = tc.area || 'Allgemein';
+            console.log(`Test-Case: ${tc.name}, Bereich: ${area}`);
             if (!suitesByArea[area]) {
               suitesByArea[area] = [];
             }
@@ -162,6 +164,8 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             });
           });
           
+          console.log('Gruppierte Bereiche:', Object.keys(suitesByArea), suitesByArea);
+          
           // Erstelle Suite-Objekte aus gruppierten Test-Cases
           const suites = Object.keys(suitesByArea).map((area, idx) => ({
             id: `suite-${idx}`,
@@ -170,12 +174,13 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             tests: suitesByArea[area]
           }));
           
-          console.log(`✅ ${suites.length} Bereiche (Suites) erstellt aus Test-Cases`);
+          console.log(`✅ ${suites.length} Bereiche (Suites) erstellt aus Test-Cases:`, suites);
           setTestSuites(suites);
           
           // Erste Suite aktivieren
           if (suites.length > 0) {
             setActiveSuite(suites[0].id);
+            console.log(`Aktiviere erste Suite: ${suites[0].id} (${suites[0].name})`);
           }
         } else if (response.status === 401) {
           console.error('❌ 401 Unauthorized - Auth-Token ungültig oder abgelaufen');
