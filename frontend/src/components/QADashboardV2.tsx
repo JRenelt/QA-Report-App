@@ -128,19 +128,48 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
       return;
     }
     
-    // Test-Suites aus Backend laden
-    const loadTestSuitesFromBackend = async () => {
+    // Test-Cases aus Backend laden (V2 API)
+    const loadTestCasesFromBackend = async () => {
       try {
         const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://qa-report-v2.preview.emergentagent.com';
-        console.log(`🔄 Lade Test-Suites für Projekt ${selectedProjectId}...`);
+        console.log(`🔄 Lade Test-Cases für Projekt ${selectedProjectId}...`);
         
-        const response = await fetch(`${backendUrl}/api/test-suites/?project_id=${selectedProjectId}`, {
+        // V2 API: /api/test-cases-v2/?project_id=...
+        const response = await fetch(`${backendUrl}/api/test-cases-v2/?project_id=${selectedProjectId}`, {
           headers: { 'Authorization': `Bearer ${authToken}` }
         });
         
         if (response.ok) {
-          const suites = await response.json();
-          console.log(`✅ ${suites.length} Test Suites aus Backend geladen für Projekt ${selectedProjectId}`);
+          const testCases = await response.json();
+          console.log(`✅ ${testCases.length} Test-Cases aus Backend geladen (V2)`);
+          
+          // Gruppiere Test-Cases nach Bereich (area) und erstelle daraus "Suites"
+          const suitesByArea: { [key: string]: any[] } = {};
+          testCases.forEach((tc: any) => {
+            const area = tc.area || 'Allgemein';
+            if (!suitesByArea[area]) {
+              suitesByArea[area] = [];
+            }
+            suitesByArea[area].push({
+              id: tc.id,
+              testId: tc.test_id,
+              name: tc.name,
+              description: tc.description,
+              priority: tc.priority,
+              expected: tc.expected_result,
+              status: tc.status || 'pending',
+              note: tc.note
+            });
+          });
+          
+          // Erstelle Suite-Objekte aus gruppierten Test-Cases
+          const suites = Object.keys(suitesByArea).map((area, idx) => ({
+            id: `suite-${idx}`,
+            name: area,
+            tests: suitesByArea[area]
+          }));
+          
+          console.log(`✅ ${suites.length} Bereiche (Suites) erstellt aus Test-Cases`);
           setTestSuites(suites);
           
           // Erste Suite aktivieren
@@ -151,16 +180,16 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
           console.error('❌ 401 Unauthorized - Auth-Token ungültig oder abgelaufen');
           setTestSuites([]);
         } else {
-          console.error('❌ Fehler beim Laden der Test-Suites:', response.status);
+          console.error('❌ Fehler beim Laden der Test-Cases:', response.status);
           setTestSuites([]);
         }
       } catch (error) {
-        console.error('❌ Fehler beim Laden der Test-Suites:', error);
+        console.error('❌ Fehler beim Laden der Test-Cases:', error);
         setTestSuites([]);
       }
     };
     
-    loadTestSuitesFromBackend();
+    loadTestCasesFromBackend();
   }, [selectedProjectId, authToken]);
   
   // Test Cases aus Backend laden wenn PROJEKT gewählt wird (ALLE Cases des Projekts)
