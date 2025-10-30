@@ -68,7 +68,7 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
   const [modalSuccess, setModalSuccess] = useState('');
   
   // Import States
-  const [importTab, setImportTab] = useState<'csv' | 'json' | 'manual'>('csv');
+  const [importTab, setImportTab] = useState<'csv' | 'json' | 'manual' | 'complete'>('csv');
   const [importFile, setImportFile] = useState<File | null>(null);
   const [importPreview, setImportPreview] = useState<any[]>([]);
   const [importLoading, setImportLoading] = useState(false);
