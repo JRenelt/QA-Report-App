@@ -1512,6 +1512,19 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     ? projects.filter((p: any) => p.companyId === selectedCompanyId)
                     : projects.filter((p: any) => p.companyId === currentUserCompany?.id);
                   
+                  // Debug-Log
+                  console.log('Dashboard Projekt-Dropdown:', {
+                    totalProjects: projects.length,
+                    selectedCompanyId,
+                    userRole: user?.role,
+                    filteredProjects: userProjects.length,
+                    projectsData: projects
+                  });
+                  
+                  if (userProjects.length === 0 && projects.length > 0) {
+                    console.warn('⚠️ Projekte vorhanden, aber keine nach Filter für Company:', selectedCompanyId);
+                  }
+                  
                   return userProjects.map((project: any) => (
                     <option key={project.id} value={project.id}>
                       {project.name}
