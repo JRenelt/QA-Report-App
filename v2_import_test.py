@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Backend Test für V2 Komplett-Projekt Import Funktionalität
-Testet POST /api/v2/import/project-complete Endpoint
+Testet POST /api/import-v2/project-complete Endpoint
 
 Test-Szenarien:
 1. Neues Projekt importieren
