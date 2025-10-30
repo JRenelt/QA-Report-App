@@ -1656,7 +1656,7 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
             </div>
 
             {/* Footer */}
-            {(importTab === 'csv' || importTab === 'json') && (
+            {(importTab === 'csv' || importTab === 'json' || importTab === 'complete') && (
               <div className={`flex justify-between p-6 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
                 <button
                   onClick={() => {
@@ -1672,8 +1672,8 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
                   Abbrechen
                 </button>
                 <button
-                  onClick={handleImport}
-                  disabled={!importFile || importPreview.length === 0 || importLoading}
+                  onClick={importTab === 'complete' ? handleCompleteProjectImport : handleImport}
+                  disabled={!importFile || (importTab !== 'complete' && importPreview.length === 0) || importLoading}
                   className={`px-6 py-2 rounded-lg font-medium transition-colors flex items-center ${
                     darkMode
                       ? 'bg-cyan-600 hover:bg-cyan-700 text-white disabled:bg-gray-700 disabled:text-gray-500'
@@ -1688,7 +1688,10 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
                   ) : (
                     <>
                       <Upload className="h-4 w-4 mr-2" />
-                      Importieren ({importPreview.filter(p => !p.is_duplicate).length})
+                      {importTab === 'complete' 
+                        ? 'Komplett-Projekt importieren'
+                        : `Importieren (${importPreview.filter(p => !p.is_duplicate).length})`
+                      }
                     </>
                   )}
                 </button>
