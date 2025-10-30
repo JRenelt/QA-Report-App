@@ -10,6 +10,7 @@ from typing import List, Dict, Any
 import csv
 import json
 import io
+import uuid
 from datetime import datetime
 from auth import get_current_user
 from models import User
