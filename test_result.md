@@ -667,6 +667,18 @@ backend:
           agent: "testing"
           comment: "🇩🇪 URGENT JR LOGIN DIAGNOSTIC COMPLETED - ISSUE RESOLVED! ✅ COMPREHENSIVE TESTING RESULTS: (1) JR User EXISTS in MongoDB users_v2 collection (username: 'JR', role: 'sysop', is_active: true, is_blocked: false) ✅ (2) LOGIN 'JR/3r7k03nI9' WORKS PERFECTLY - HTTP 200 with valid JWT token, user object returned correctly ✅ (3) LOGIN 'jr/3r7k03nI9' FAILS - HTTP 401 'Incorrect username or password' ❌ (4) Curl tests confirm same behavior - case sensitivity is the issue ✅ (5) Backend authentication system working correctly with exact case matching ✅ ROOT CAUSE IDENTIFIED: Authentication is CASE-SENSITIVE. User must login with 'JR' (uppercase) not 'jr' (lowercase). The reported login failure was due to incorrect case usage. SOLUTION: User should use 'JR' (uppercase) for successful authentication. Backend V2 authentication system is functioning correctly."
 
+  - task: "V2 Complete Project Import Functionality"
+    implemented: true
+    working: true
+    file: "backend/routes/import_v2.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "🇩🇪 V2 KOMPLETT-PROJEKT IMPORT TESTING COMPLETED SUCCESSFULLY! ✅ ALL 3 TEST SCENARIOS PASSED: (1) Neues Projekt importieren: POST /api/import-v2/project-complete with SysOp login (JR/3r7k03nI9) and ID2.de company_id successfully created new project 'Test Komplett-Import' with success=true, project.action='created', test_cases.imported=3, test_cases.skipped=0 ✅ (2) Existierendes Projekt aktualisieren: Same import returned project.action='updated', test_cases.skipped=3 (duplicates), test_cases.imported=0 ✅ (3) Neue Testfälle hinzufügen: Extended JSON with 5 test cases (3 old + 2 new) returned project.action='updated', test_cases.imported=2 (new), test_cases.skipped=3 (old), test_cases.total=5 ✅ ENDPOINT FUNCTIONALITY: Complete project import with JSON file upload working perfectly. Duplicate detection based on name+area+project_id. Auto-generated test_id format TC-001, TC-002, etc. Role-based permissions enforced (SysOp access verified). All expected behaviors confirmed: new project creation, existing project updates, selective test case imports with proper duplicate handling."
+
 frontend:
   - task: "Login Dark Mode Kontrast"
     implemented: true
