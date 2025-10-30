@@ -103,7 +103,7 @@ class TestCompleteProjectImport:
             data = {'company_id': self.company_id}
             
             response = requests.post(
-                f"{API_URL}/v2/import/project-complete",
+                f"{API_URL}/import-v2/project-complete",
                 files=files,
                 data=data,
                 headers={"Authorization": f"Bearer {self.auth_token}"}
@@ -154,7 +154,7 @@ class TestCompleteProjectImport:
             data = {'company_id': self.company_id}
             
             response = requests.post(
-                f"{API_URL}/v2/import/project-complete",
+                f"{API_URL}/import-v2/project-complete",
                 files=files,
                 data=data,
                 headers={"Authorization": f"Bearer {self.auth_token}"}
@@ -259,7 +259,7 @@ class TestCompleteProjectImport:
             data = {'company_id': self.company_id}
             
             response = requests.post(
-                f"{API_URL}/v2/import/project-complete",
+                f"{API_URL}/import-v2/project-complete",
                 files=files,
                 data=data,
                 headers={"Authorization": f"Bearer {self.auth_token}"}
