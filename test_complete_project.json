@@ -1,0 +1,33 @@
+{
+  "project": {
+    "title": "Test Komplett-Import",
+    "description": "Dies ist ein Test für den kompletten Projekt-Import",
+    "notes": "Testnotizen für Import-Funktion"
+  },
+  "test_cases": [
+    {
+      "name": "Login Test",
+      "area": "Authentifizierung",
+      "description": "Benutzer kann sich einloggen",
+      "priority": 1,
+      "expected_result": "Erfolgreicher Login",
+      "status": "pending"
+    },
+    {
+      "name": "Dashboard Test",
+      "area": "UI/UX",
+      "description": "Dashboard wird angezeigt",
+      "priority": 1,
+      "expected_result": "Dashboard sichtbar",
+      "status": "pending"
+    },
+    {
+      "name": "Navigation Test",
+      "area": "UI/UX",
+      "description": "Navigation funktioniert",
+      "priority": 2,
+      "expected_result": "Alle Links funktionieren",
+      "status": "pending"
+    }
+  ]
+}
