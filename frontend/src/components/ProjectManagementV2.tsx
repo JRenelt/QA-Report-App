@@ -642,6 +642,20 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
           if (projectResponse.ok) {
             const projectData = await projectResponse.json();
             setProjects(projectData);
+            
+            // WICHTIG: LocalStorage aktualisieren für Dashboard
+            // Konvertiere V2-Format zu V1-Format
+            const convertedProjects = projectData.map((p: any) => ({
+              id: p.id,
+              name: p.title,  // V2: "title" → V1: "name"
+              companyId: p.company_id,  // V2: "company_id" → V1: "companyId"
+              description: p.description,
+              notes: p.notes,
+              status: p.status
+            }));
+            
+            localStorage.setItem('qa_projects', JSON.stringify(convertedProjects));
+            console.log(`✅ ${convertedProjects.length} Projekte in localStorage gespeichert`);
           }
         } catch (err) {
           console.error('Fehler beim Laden der Projekte nach Import:', err);
