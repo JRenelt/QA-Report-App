@@ -291,3 +291,150 @@ async def get_project_template_excel(current_user: dict = Depends(get_current_us
             "Content-Disposition": "attachment; filename=projekt_testfaelle_template.csv"
         }
     )
+
+
+@router.get("/complete-project-template-json")
+async def get_complete_project_template_json(current_user: dict = Depends(get_current_user)):
+    """
+    Download JSON-Template für kompletten Projekt-Import (Projekt + Testfälle)
+    
+    Dieses Template ermöglicht den Import eines vollständigen Projekts
+    mit allen Testfällen in einer einzigen JSON-Datei.
+    
+    WICHTIG:
+    - Projekt-ID wird automatisch vom System generiert
+    - Test-IDs werden automatisch vom System generiert
+    - Bei existierendem Projekt: Nur aktualisieren (alte Daten bleiben erhalten)
+    - Bei Testfällen: Nur neue hinzufügen (Duplikate werden übersprungen)
+    """
+    template = {
+        "_ANLEITUNG": {
+            "BESCHREIBUNG": "Dieses Template ermöglicht den Import eines kompletten Projekts mit Testfällen",
+            "VERWENDUNG": [
+                "1. Füllen Sie die Projekt-Informationen aus",
+                "2. Fügen Sie beliebig viele Testfälle hinzu",
+                "3. Löschen Sie dieses '_ANLEITUNG'-Objekt vor dem Import",
+                "4. Importieren Sie die Datei über 'Import Komplett-Projekt'"
+            ],
+            "HINWEISE": {
+                "projekt_id": "Wird automatisch generiert - NICHT ausfüllen!",
+                "test_id": "Wird automatisch generiert - NICHT ausfüllen!",
+                "priority": "1=Hoch, 2=Mittel, 3=Niedrig",
+                "status": "pending, passed, failed, skipped (Standard: pending)"
+            },
+            "PROJEKT_UPDATE": "Wenn ein Projekt mit gleichem Titel bereits existiert, werden nur neue Testfälle hinzugefügt",
+            "DUPLIKATE": "Testfälle mit gleichem Name + Bereich werden übersprungen"
+        },
+        "project": {
+            "title": "Mein Testprojekt",
+            "description": "Umfassende Tests für die QA-Report-App",
+            "notes": "Wichtige Hinweise zum Projekt (optional)"
+        },
+        "test_cases": [
+            {
+                "name": "Login-Funktion testen",
+                "area": "Authentifizierung",
+                "description": "Prüfen ob Benutzer sich mit korrekten Zugangsdaten einloggen kann",
+                "priority": 1,
+                "expected_result": "Benutzer wird erfolgreich eingeloggt und zum Dashboard weitergeleitet",
+                "status": "pending"
+            },
+            {
+                "name": "Dashboard anzeigen",
+                "area": "UI/UX",
+                "description": "Überprüfen ob Dashboard nach Login korrekt angezeigt wird",
+                "priority": 1,
+                "expected_result": "Dashboard wird vollständig mit allen Widgets angezeigt",
+                "status": "pending"
+            },
+            {
+                "name": "Navigation testen",
+                "area": "UI/UX",
+                "description": "Alle Menüpunkte anklicken und Erreichbarkeit prüfen",
+                "priority": 2,
+                "expected_result": "Alle Navigationselemente führen zu den korrekten Seiten",
+                "status": "pending"
+            },
+            {
+                "name": "Projekt anlegen",
+                "area": "Funktionalität",
+                "description": "Neues Projekt über die Projektverwaltung anlegen",
+                "priority": 1,
+                "expected_result": "Projekt wird erfolgreich angelegt und in der Liste angezeigt",
+                "status": "pending"
+            },
+            {
+                "name": "Testfall hinzufügen",
+                "area": "Funktionalität",
+                "description": "Zu einem Projekt einen neuen Testfall hinzufügen",
+                "priority": 1,
+                "expected_result": "Testfall wird gespeichert und ist im Projekt sichtbar",
+                "status": "pending"
+            },
+            {
+                "name": "Datenexport testen",
+                "area": "Funktionalität",
+                "description": "Projektdaten als CSV/JSON exportieren",
+                "priority": 2,
+                "expected_result": "Export-Datei enthält alle korrekten Daten",
+                "status": "pending"
+            },
+            {
+                "name": "Seitenladezeit messen",
+                "area": "Performance",
+                "description": "Ladezeit der Hauptseite unter verschiedenen Bedingungen messen",
+                "priority": 2,
+                "expected_result": "Seite lädt in unter 2 Sekunden",
+                "status": "pending"
+            },
+            {
+                "name": "Concurrent User Test",
+                "area": "Performance",
+                "description": "Verhalten bei 50 gleichzeitigen Benutzern testen",
+                "priority": 3,
+                "expected_result": "System bleibt stabil und responsiv",
+                "status": "pending"
+            },
+            {
+                "name": "XSS-Schutz prüfen",
+                "area": "Sicherheit",
+                "description": "Eingabefelder auf Cross-Site-Scripting Anfälligkeit testen",
+                "priority": 1,
+                "expected_result": "Alle Eingaben werden korrekt escaped, kein XSS möglich",
+                "status": "pending"
+            },
+            {
+                "name": "Authentifizierung prüfen",
+                "area": "Sicherheit",
+                "description": "Zugriff ohne Login verhindern",
+                "priority": 1,
+                "expected_result": "Nicht-authentifizierte Benutzer werden auf Login umgeleitet",
+                "status": "pending"
+            },
+            {
+                "name": "Mobile Darstellung",
+                "area": "Responsive Design",
+                "description": "App auf verschiedenen mobilen Geräten testen",
+                "priority": 2,
+                "expected_result": "App ist auf allen Bildschirmgrößen nutzbar",
+                "status": "pending"
+            },
+            {
+                "name": "Fehlerbehandlung testen",
+                "area": "Robustheit",
+                "description": "Verhalten bei Netzwerkfehlern und ungültigen Eingaben",
+                "priority": 2,
+                "expected_result": "Aussagekräftige Fehlermeldungen werden angezeigt",
+                "status": "pending"
+            }
+        ]
+    }
+    
+    return StreamingResponse(
+        iter([json.dumps(template, indent=2, ensure_ascii=False)]),
+        media_type="application/json",
+        headers={
+            "Content-Disposition": "attachment; filename=komplett_projekt_template.json"
+        }
+    )
+
