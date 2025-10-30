@@ -684,3 +684,228 @@ async def set_max_upload_size_setting(
         "max_upload_size_bytes": size_bytes,
         "max_upload_size_mb": size_mb
     }
+
+
+
+# ==================== COMPLETE PROJECT IMPORT (PROJECT + TESTCASES) ====================
+@router.post("/project-complete")
+async def import_complete_project(
+    file: UploadFile = File(...),
+    company_id: str = Form(...),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Import eines kompletten Projekts mit Testfällen in einer JSON-Datei
+    
+    JSON-Format:
+    {
+        "project": {
+            "title": "Projekt-Name",
+            "description": "Beschreibung",
+            "notes": "Optionale Notizen"
+        },
+        "test_cases": [
+            {
+                "name": "Test 1",
+                "area": "UI/UX",
+                "description": "Testbeschreibung",
+                "priority": 1,
+                "expected_result": "Erwartetes Ergebnis"
+            }
+        ]
+    }
+    
+    Logik:
+    - Projekt existiert (title + company_id) → Aktualisieren (alte Daten behalten)
+    - Projekt existiert nicht → Neu anlegen
+    - Testfälle: Nur neue hinzufügen (Duplikate anhand name + area überspringen)
+    """
+    # Rollenprüfung
+    if current_user.role not in ["sysop", "admin", "qa_tester"]:
+        raise HTTPException(status_code=403, detail="Keine Berechtigung zum Import")
+    
+    # Admin/QA-Tester darf nur für eigene Firma importieren
+    if current_user.role in ["admin", "qa_tester"]:
+        if company_id != current_user.company_id:
+            raise HTTPException(status_code=403, detail="Keine Berechtigung für diese Firma")
+    
+    # Dateigröße prüfen
+    max_size = await get_max_upload_size()
+    content = await file.read()
+    if len(content) > max_size:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Datei zu groß. Maximal {max_size / (1024 * 1024):.1f} MB erlaubt"
+        )
+    
+    # JSON parsen
+    try:
+        text = content.decode('utf-8')
+        data = json.loads(text)
+        
+        if "project" not in data:
+            raise HTTPException(status_code=400, detail="JSON muss 'project'-Objekt enthalten")
+        
+        project_data = data["project"]
+        test_cases_data = data.get("test_cases", [])
+        
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=400, detail=f"JSON-Parsing-Fehler: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Fehler beim Verarbeiten: {str(e)}")
+    
+    # Pflichtfelder prüfen
+    if not project_data.get("title"):
+        raise HTTPException(status_code=400, detail="Projekt 'title' fehlt")
+    
+    db = await get_database()
+    projects_collection = db.projects_v2
+    test_cases_collection = db.test_cases_v2
+    companies_collection = db.companies_v2
+    
+    # Firma prüfen
+    company = await companies_collection.find_one({"id": company_id})
+    if not company:
+        raise HTTPException(status_code=404, detail="Firma nicht gefunden")
+    
+    # ===== PROJEKT VERARBEITEN =====
+    existing_project = await projects_collection.find_one({
+        "title": project_data["title"],
+        "company_id": company_id
+    })
+    
+    project_id = None
+    project_action = None
+    
+    if existing_project:
+        # Projekt existiert → Aktualisieren (nur description und notes, wenn vorhanden)
+        project_id = existing_project["id"]
+        project_action = "updated"
+        
+        update_fields = {
+            "updated_at": datetime.utcnow().isoformat()
+        }
+        
+        # Nur aktualisieren, wenn neue Werte vorhanden sind
+        if project_data.get("description"):
+            update_fields["description"] = project_data["description"]
+        if project_data.get("notes"):
+            update_fields["notes"] = project_data["notes"]
+        
+        await projects_collection.update_one(
+            {"id": project_id},
+            {"$set": update_fields}
+        )
+        
+    else:
+        # Projekt neu anlegen
+        project_id = str(uuid.uuid4())
+        project_action = "created"
+        
+        # Projekt-ID generieren
+        from routes.projects_v2 import generate_project_id
+        project_id_str = generate_project_id(
+            project_data["title"],
+            company["name"],
+            current_user.first_name,
+            current_user.last_name
+        )
+        
+        new_project = {
+            "id": project_id,
+            "project_id": project_id_str,
+            "title": project_data["title"],
+            "description": project_data.get("description", ""),
+            "notes": project_data.get("notes"),
+            "company_id": company_id,
+            "company_name": company["name"],
+            "status": "active",
+            "is_blocked": False,
+            "assigned_testers": [],
+            "created_by": current_user.id,
+            "created_at": datetime.utcnow().isoformat(),
+            "updated_at": datetime.utcnow().isoformat()
+        }
+        
+        await projects_collection.insert_one(new_project)
+    
+    # ===== TESTFÄLLE VERARBEITEN =====
+    test_cases_imported = 0
+    test_cases_skipped = 0
+    test_case_errors = []
+    
+    for idx, tc_data in enumerate(test_cases_data):
+        try:
+            # Pflichtfelder prüfen
+            if not tc_data.get("name"):
+                test_case_errors.append(f"Testfall {idx + 1}: 'name' fehlt")
+                continue
+            
+            # Duplikatsprüfung (name + area + project_id)
+            existing_tc = await test_cases_collection.find_one({
+                "name": tc_data["name"],
+                "area": tc_data.get("area"),
+                "project_id": project_id
+            })
+            
+            if existing_tc:
+                test_cases_skipped += 1
+                continue
+            
+            # test_id ermitteln (höchste existierende + 1)
+            last_test = await test_cases_collection.find_one(
+                {"project_id": project_id},
+                sort=[("created_at", -1)]
+            )
+            
+            if last_test and last_test.get("test_id"):
+                try:
+                    last_id_num = int(last_test["test_id"].split("-")[-1])
+                    next_id_num = last_id_num + 1
+                except:
+                    next_id_num = 1
+            else:
+                next_id_num = 1
+            
+            test_id = f"TC-{next_id_num:03d}"
+            
+            # Testfall erstellen
+            new_tc = {
+                "id": str(uuid.uuid4()),
+                "test_id": test_id,
+                "name": tc_data["name"],
+                "area": tc_data.get("area"),
+                "description": tc_data.get("description"),
+                "priority": int(tc_data.get("priority", 3)),
+                "expected_result": tc_data.get("expected_result"),
+                "status": tc_data.get("status", "pending"),
+                "note": tc_data.get("note"),
+                "project_id": project_id,
+                "created_by": current_user.id,
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat()
+            }
+            
+            await test_cases_collection.insert_one(new_tc)
+            test_cases_imported += 1
+            
+        except Exception as e:
+            test_case_errors.append(f"Testfall {idx + 1}: {str(e)}")
+    
+    # Zusammenfassung
+    return {
+        "success": True,
+        "project": {
+            "id": project_id,
+            "title": project_data["title"],
+            "action": project_action,
+            "company_name": company["name"]
+        },
+        "test_cases": {
+            "imported": test_cases_imported,
+            "skipped": test_cases_skipped,
+            "total": len(test_cases_data),
+            "errors": test_case_errors if test_case_errors else None
+        },
+        "message": f"Projekt '{project_action}', {test_cases_imported} Testfälle importiert, {test_cases_skipped} übersprungen"
+    }
