@@ -619,10 +619,14 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
         // Für SysOp: Firma im Filter auswählen, damit Projekte angezeigt werden
         if (currentUser?.role === 'sysop' && companyId) {
           setSelectedCompanyFilter(companyId);
+          // Warte kurz, damit setState wirksam wird, dann lade Projekte
+          setTimeout(async () => {
+            await loadProjects();
+          }, 100);
+        } else {
+          // Für Admin: Direkt neu laden
+          await loadProjects();
         }
-        
-        // Liste neu laden
-        await loadProjects();
         
         // Modal nach 5 Sekunden schließen
         setTimeout(() => {
