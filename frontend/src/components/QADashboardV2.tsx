@@ -1508,8 +1508,14 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                   <option value="">Bitte Projekt auswählen</option>
                 )}
                 {(() => {
+                  // Flexibler Filter: Prüfe sowohl exakte Übereinstimmung als auch Teilstring
                   const userProjects = (user?.role === 'admin' || user?.role === 'sysop')
-                    ? projects.filter((p: any) => p.companyId === selectedCompanyId)
+                    ? projects.filter((p: any) => {
+                        // Exakte Übereinstimmung ODER selectedCompanyId ist Teil von companyId
+                        return p.companyId === selectedCompanyId || 
+                               p.companyId?.includes(selectedCompanyId) ||
+                               selectedCompanyId?.includes(p.companyId);
+                      })
                     : projects.filter((p: any) => p.companyId === currentUserCompany?.id);
                   
                   // Debug-Log
@@ -1518,7 +1524,7 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
                     selectedCompanyId,
                     userRole: user?.role,
                     filteredProjects: userProjects.length,
-                    projectsData: projects
+                    projectsData: projects.map((p: any) => ({ id: p.id, name: p.name, companyId: p.companyId }))
                   });
                   
                   if (userProjects.length === 0 && projects.length > 0) {
