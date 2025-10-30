@@ -616,16 +616,32 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
         setImportResult(data);
         setSuccess(`✅ ${data.message}`);
         
-        // Für SysOp: Firma im Filter auswählen, damit Projekte angezeigt werden
+        // Für SysOp: Firma im Filter auswählen
         if (currentUser?.role === 'sysop' && companyId) {
           setSelectedCompanyFilter(companyId);
-          // Warte kurz, damit setState wirksam wird, dann lade Projekte
-          setTimeout(async () => {
-            await loadProjects();
-          }, 100);
-        } else {
-          // Für Admin: Direkt neu laden
-          await loadProjects();
+        }
+        
+        // Liste neu laden mit korrekter company_id
+        try {
+          const token = localStorage.getItem('authToken');
+          let projectUrl = `${backendUrl}/api/projects-v2/`;
+          if (currentUser?.role === 'sysop' && companyId) {
+            projectUrl += `?company_id=${companyId}`;
+          }
+          
+          const projectResponse = await fetch(projectUrl, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            }
+          });
+          
+          if (projectResponse.ok) {
+            const projectData = await projectResponse.json();
+            setProjects(projectData);
+          }
+        } catch (err) {
+          console.error('Fehler beim Laden der Projekte nach Import:', err);
         }
         
         // Modal nach 5 Sekunden schließen
