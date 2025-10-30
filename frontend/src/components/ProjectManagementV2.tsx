@@ -569,6 +569,65 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
     }
   };
 
+
+  const handleCompleteProjectImport = async () => {
+    if (!importFile) {
+      setError('Bitte wählen Sie eine Datei aus');
+      return;
+    }
+
+    if (!selectedCompanyId) {
+      setError('Bitte wählen Sie eine Firma aus');
+      return;
+    }
+
+    setImportLoading(true);
+    setError(null);
+
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const token = localStorage.getItem('authToken');
+      
+      const formData = new FormData();
+      formData.append('file', importFile);
+      formData.append('company_id', selectedCompanyId);
+
+      const response = await fetch(`${backendUrl}/api/import-v2/project-complete`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setImportResult(data);
+        setSuccess(`✅ ${data.message}`);
+        
+        // Liste neu laden
+        await loadProjects();
+        
+        // Modal nach 5 Sekunden schließen
+        setTimeout(() => {
+          setShowImportModal(false);
+          resetImport();
+        }, 5000);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.detail || 'Fehler beim Import');
+        setImportResult({ success: false, message: errorData.detail });
+      }
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : 'Fehler beim Import';
+      setError(errorMsg);
+      setImportResult({ success: false, message: errorMsg });
+      console.error('Complete project import error:', err);
+    } finally {
+      setImportLoading(false);
+    }
+  };
+
   const resetImport = () => {
     setImportFile(null);
     setImportPreview([]);
