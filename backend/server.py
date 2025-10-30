@@ -147,6 +147,7 @@ try:
     api_router.include_router(templates.router, prefix="/templates", tags=["Templates"])
     api_router.include_router(import_v2.router, prefix="/import-v2", tags=["Import V2"])
     api_router.include_router(archives_v2.router, prefix="/archives-v2", tags=["Archives V2"])
+    api_router.include_router(test_cases_v2.router, prefix="/test-cases-v2", tags=["Test Cases V2"])
     
     print("✅ All routes imported and registered successfully")
 except ImportError as e:
