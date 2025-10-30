@@ -473,8 +473,11 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
     setImportPreview([]);
     setImportResult(null);
 
-    // Vorschau laden
-    await loadImportPreview(file);
+    // Nur für CSV/JSON-Tabs Preview laden, für "complete" nicht
+    if (importTab === 'csv' || importTab === 'json') {
+      await loadImportPreview(file);
+    }
+    // Für "complete" Tab: Keine Preview nötig
   };
 
   const loadImportPreview = async (file: File) => {
