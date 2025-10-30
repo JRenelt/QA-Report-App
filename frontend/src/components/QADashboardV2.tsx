@@ -374,19 +374,31 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         return;
       }
       
-      const response = await fetch(`${backendUrl}/api/projects/all`, {
+      // Lade V2-Projekte (neue API)
+      const responseV2 = await fetch(`${backendUrl}/api/projects-v2/`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
-      if (response.ok) {
-        const backendProjects = await response.json();
-        console.log(`✅ ${backendProjects.length} Projekte aus Backend geladen`);
-        localStorage.setItem('qa_projects', JSON.stringify(backendProjects));
-        setProjects(backendProjects);
-        alert(`✅ ${backendProjects.length} Projekte aus Backend geladen!`);
+      if (responseV2.ok) {
+        const v2Projects = await responseV2.json();
+        console.log(`✅ ${v2Projects.length} V2-Projekte aus Backend geladen`);
+        
+        // Konvertiere V2-Format zu V1-Format für Kompatibilität
+        const convertedProjects = v2Projects.map((p: any) => ({
+          id: p.id,
+          name: p.title,  // V2: "title" → V1: "name"
+          companyId: p.company_id,  // V2: "company_id" → V1: "companyId"
+          description: p.description,
+          notes: p.notes,
+          status: p.status
+        }));
+        
+        localStorage.setItem('qa_projects', JSON.stringify(convertedProjects));
+        setProjects(convertedProjects);
+        alert(`✅ ${convertedProjects.length} Projekte aus Backend geladen!`);
       } else {
-        console.error('❌ Backend-Fehler:', response.status);
-        alert(`❌ Backend-Fehler: ${response.status}`);
+        console.error('❌ Backend-Fehler:', responseV2.status);
+        alert(`❌ Backend-Fehler: ${responseV2.status}`);
       }
     } catch (error) {
       console.error('❌ Fehler:', error);
