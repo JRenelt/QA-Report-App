@@ -576,13 +576,24 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
       return;
     }
 
-    if (!selectedCompanyId) {
-      setError('Bitte wählen Sie eine Firma aus');
+    // Für SysOp: selectedCompanyFilter verwenden
+    // Für Admin: currentUser.company_id verwenden
+    let companyId = '';
+    if (currentUser?.role === 'sysop') {
+      if (!selectedCompanyFilter || selectedCompanyFilter === 'all') {
+        setError('Bitte wählen Sie eine Firma aus');
+        return;
+      }
+      companyId = selectedCompanyFilter;
+    } else if (currentUser?.company_id) {
+      companyId = currentUser.company_id;
+    } else {
+      setError('Firma konnte nicht ermittelt werden');
       return;
     }
 
     setImportLoading(true);
-    setError(null);
+    setError('');
 
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -590,7 +601,7 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
       
       const formData = new FormData();
       formData.append('file', importFile);
-      formData.append('company_id', selectedCompanyId);
+      formData.append('company_id', companyId);
 
       const response = await fetch(`${backendUrl}/api/import-v2/project-complete`, {
         method: 'POST',
