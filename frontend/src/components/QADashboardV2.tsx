@@ -423,17 +423,29 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
             return;
           }
           
-          const response = await fetch(`${backendUrl}/api/projects/all`, {
+          // Lade V2-Projekte
+          const responseV2 = await fetch(`${backendUrl}/api/projects-v2/`, {
             headers: { 'Authorization': `Bearer ${authToken}` }
           });
           
-          if (response.ok) {
-            const backendProjects = await response.json();
-            console.log(`✅ ${backendProjects.length} Projekte aus Backend geladen`);
-            localStorage.setItem('qa_projects', JSON.stringify(backendProjects));
-            setProjects(backendProjects);
+          if (responseV2.ok) {
+            const v2Projects = await responseV2.json();
+            console.log(`✅ ${v2Projects.length} V2-Projekte aus Backend geladen (useEffect)`);
+            
+            // Konvertiere V2 zu V1 Format
+            const convertedProjects = v2Projects.map((p: any) => ({
+              id: p.id,
+              name: p.title,
+              companyId: p.company_id,
+              description: p.description,
+              notes: p.notes,
+              status: p.status
+            }));
+            
+            localStorage.setItem('qa_projects', JSON.stringify(convertedProjects));
+            setProjects(convertedProjects);
           } else {
-            console.error('❌ Backend-Fehler beim Laden der Projekte:', response.status);
+            console.error('❌ Backend-Fehler beim Laden der Projekte:', responseV2.status);
           }
         } catch (error) {
           console.error('❌ Fehler beim Laden der Projekte aus Backend:', error);
