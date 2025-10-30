@@ -1514,6 +1514,145 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
                   </button>
                 </div>
               )}
+
+              {/* Complete Project Import Tab */}
+              {importTab === 'complete' && (
+                <div className="space-y-4">
+                  {/* Info Box */}
+                  <div className={`p-4 rounded-lg ${darkMode ? 'bg-blue-900 bg-opacity-20 border border-blue-800' : 'bg-blue-50 border border-blue-200'}`}>
+                    <p className={`font-semibold ${darkMode ? 'text-blue-400' : 'text-blue-700'} mb-2`}>
+                      📦 Komplett-Projekt Import
+                    </p>
+                    <p className={`text-sm ${darkMode ? 'text-blue-300' : 'text-blue-600'} mb-2`}>
+                      Importieren Sie ein komplettes Projekt mit allen Testfällen in einer JSON-Datei:
+                    </p>
+                    <ul className={`list-disc list-inside text-sm ${darkMode ? 'text-blue-300' : 'text-blue-600'} space-y-1`}>
+                      <li>Projekt wird automatisch angelegt (oder aktualisiert, falls vorhanden)</li>
+                      <li>Alle Testfälle werden in einem Schritt hinzugefügt</li>
+                      <li>Duplikate werden automatisch übersprungen</li>
+                      <li>Projekt-ID und Test-IDs werden automatisch generiert</li>
+                    </ul>
+                  </div>
+
+                  {/* Template Download */}
+                  <div className="flex justify-center">
+                    <button
+                      onClick={async () => {
+                        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+                        const token = localStorage.getItem('authToken');
+                        try {
+                          const response = await fetch(`${backendUrl}/api/templates/complete-project-template-json`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                          });
+                          const blob = await response.blob();
+                          const url = window.URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = 'komplett_projekt_template.json';
+                          document.body.appendChild(a);
+                          a.click();
+                          window.URL.revokeObjectURL(url);
+                          document.body.removeChild(a);
+                        } catch (err) {
+                          setError('Fehler beim Herunterladen der Vorlage');
+                        }
+                      }}
+                      className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
+                        darkMode
+                          ? 'bg-gray-700 hover:bg-gray-600 text-cyan-400'
+                          : 'bg-gray-100 hover:bg-gray-200 text-cyan-600'
+                      }`}
+                    >
+                      <FileJson className="h-4 w-4 mr-2" />
+                      Vorlage herunterladen
+                    </button>
+                  </div>
+
+                  {/* File Upload */}
+                  <div className={`border-2 border-dashed rounded-lg p-8 text-center ${
+                    darkMode ? 'border-gray-600 bg-gray-750' : 'border-gray-300 bg-gray-50'
+                  }`}>
+                    <Upload className={`h-12 w-12 mx-auto mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
+                    <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      JSON-Datei mit Projekt und Testfällen auswählen
+                    </p>
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                      id="complete-project-upload"
+                    />
+                    <label
+                      htmlFor="complete-project-upload"
+                      className={`inline-block px-6 py-3 rounded-lg font-medium cursor-pointer transition-colors ${
+                        darkMode
+                          ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                          : 'bg-cyan-500 hover:bg-cyan-600 text-white'
+                      }`}
+                    >
+                      Datei auswählen
+                    </label>
+                    {importFile && (
+                      <p className={`mt-4 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        📄 {importFile.name} ({(importFile.size / 1024).toFixed(2)} KB)
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Import Result */}
+                  {importResult && (
+                    <div className={`p-4 rounded-lg ${
+                      importResult.success
+                        ? darkMode ? 'bg-green-900 bg-opacity-20 border border-green-800' : 'bg-green-50 border border-green-200'
+                        : darkMode ? 'bg-red-900 bg-opacity-20 border border-red-800' : 'bg-red-50 border border-red-200'
+                    }`}>
+                      <p className={`font-semibold mb-2 ${
+                        importResult.success
+                          ? darkMode ? 'text-green-400' : 'text-green-700'
+                          : darkMode ? 'text-red-400' : 'text-red-700'
+                      }`}>
+                        {importResult.success ? '✅ Import erfolgreich!' : '❌ Import fehlgeschlagen'}
+                      </p>
+                      {importResult.message && (
+                        <p className={`text-sm ${
+                          importResult.success
+                            ? darkMode ? 'text-green-300' : 'text-green-600'
+                            : darkMode ? 'text-red-300' : 'text-red-600'
+                        }`}>
+                          {importResult.message}
+                        </p>
+                      )}
+                      {importResult.project && (
+                        <div className="mt-2 text-sm">
+                          <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+                            <strong>Projekt:</strong> {importResult.project.title} ({importResult.project.action === 'created' ? 'Neu angelegt' : 'Aktualisiert'})
+                          </p>
+                        </div>
+                      )}
+                      {importResult.test_cases && (
+                        <div className="mt-2 text-sm">
+                          <p className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+                            <strong>Testfälle:</strong> {importResult.test_cases.imported} importiert, {importResult.test_cases.skipped} übersprungen
+                          </p>
+                        </div>
+                      )}
+                      {importResult.test_cases?.errors && importResult.test_cases.errors.length > 0 && (
+                        <div className="mt-2">
+                          <p className={`text-sm font-medium ${darkMode ? 'text-red-400' : 'text-red-600'}`}>
+                            Fehler:
+                          </p>
+                          <ul className="list-disc list-inside text-sm">
+                            {importResult.test_cases.errors.map((err: string, idx: number) => (
+                              <li key={idx} className={darkMode ? 'text-red-300' : 'text-red-500'}>{err}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Footer */}
