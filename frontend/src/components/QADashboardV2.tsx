@@ -140,19 +140,22 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
         });
         
         if (response.ok) {
-          const testCases = await response.json();
-          console.log(`✅ ${testCases.length} Test-Cases aus Backend geladen (V2)`);
-          console.log('Test-Cases Daten:', testCases);
+          const testCasesData = await response.json();
+          console.log(`✅ ${testCasesData.length} Test-Cases aus Backend geladen (V2)`);
+          console.log('Test-Cases Daten:', testCasesData);
           
           // Gruppiere Test-Cases nach Bereich (area) und erstelle daraus "Suites"
           const suitesByArea: { [key: string]: any[] } = {};
-          testCases.forEach((tc: any) => {
+          const allTests: any[] = [];
+          
+          testCasesData.forEach((tc: any) => {
             const area = tc.area || 'Allgemein';
             console.log(`Test-Case: ${tc.name}, Bereich: ${area}`);
             if (!suitesByArea[area]) {
               suitesByArea[area] = [];
             }
-            suitesByArea[area].push({
+            
+            const testObj = {
               id: tc.id,
               testId: tc.test_id,
               name: tc.name,
@@ -160,22 +163,38 @@ const QADashboardV2: React.FC<QADashboardV2Props> = ({
               priority: tc.priority,
               expected: tc.expected_result,
               status: tc.status || 'pending',
-              note: tc.note
-            });
+              note: tc.note,
+              testSuiteId: '', // Wird später gesetzt
+            };
+            
+            suitesByArea[area].push(testObj);
           });
           
           console.log('Gruppierte Bereiche:', Object.keys(suitesByArea), suitesByArea);
           
           // Erstelle Suite-Objekte aus gruppierten Test-Cases
-          const suites = Object.keys(suitesByArea).map((area, idx) => ({
-            id: `suite-${idx}`,
-            name: area,
-            icon: 'TestTube2', // Default icon für alle Bereiche
-            tests: suitesByArea[area]
-          }));
+          const suites = Object.keys(suitesByArea).map((area, idx) => {
+            const suiteId = `suite-${idx}`;
+            
+            // Setze testSuiteId für alle Tests dieser Suite
+            suitesByArea[area].forEach(test => {
+              test.testSuiteId = suiteId;
+              allTests.push(test);
+            });
+            
+            return {
+              id: suiteId,
+              name: area,
+              icon: 'TestTube2',
+              tests: suitesByArea[area]
+            };
+          });
           
           console.log(`✅ ${suites.length} Bereiche (Suites) erstellt aus Test-Cases:`, suites);
+          console.log(`✅ ${allTests.length} Tests insgesamt in testCases Array`);
+          
           setTestSuites(suites);
+          setTestCases(allTests); // WICHTIG: Auch testCases State setzen!
           
           // Erste Suite aktivieren
           if (suites.length > 0) {
