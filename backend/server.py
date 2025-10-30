@@ -123,6 +123,8 @@ try:
     print("✅ Imported import_v2 routes")
     from routes import archives_v2
     print("✅ Imported archives_v2 routes")
+    from routes import test_cases_v2
+    print("✅ Imported test_cases_v2 routes")
     
     # Include API Routes with /api prefix via router
     api_router.include_router(auth_routes.router, prefix="/auth", tags=["Authentication"])
