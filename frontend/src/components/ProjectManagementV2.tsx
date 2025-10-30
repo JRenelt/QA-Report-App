@@ -1365,6 +1365,21 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
                 <Plus className="h-4 w-4 inline mr-2" />
                 Manuelle Eingabe
               </button>
+              <button
+                onClick={() => setImportTab('complete')}
+                className={`flex-1 px-6 py-3 font-medium transition-colors ${
+                  importTab === 'complete'
+                    ? darkMode
+                      ? 'bg-cyan-900 text-cyan-400 border-b-2 border-cyan-400'
+                      : 'bg-cyan-50 text-cyan-600 border-b-2 border-cyan-600'
+                    : darkMode
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-750'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <FileJson className="h-4 w-4 inline mr-2" />
+                Komplett-Projekt
+              </button>
             </div>
 
             {/* Content */}
