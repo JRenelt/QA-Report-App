@@ -1031,6 +1031,7 @@ test_plan:
     - "V2 Backend Endpoints Testing - ✅ COMPLETED (All 22 tests passed - authentication, role-based permissions, CRUD operations)"
     - "Test Suite Stats Pre-Calculation (Backend) - ✅ COMPLETED (Pre-calculate totalTests, passedTests, failedTests, openTests for each suite)"
     - "Mass Data Generation 10x10x50x50 - ✅ COMPLETED (10 companies × 10 projects × 50 suites × 50 cases = 250,000 test cases)"
+    - "V2 Complete Project Import Functionality - ✅ COMPLETED (All 3 scenarios passed: new project, existing project update, new test cases)"
     - "Test Suite Counter Display (Frontend) - 🆕 NEEDS TESTING (Display counters for ALL suites, not just active one)"
     - "Mixed Content Error Fix - ❌ CRITICAL BLOCKING ISSUE (HTTP/HTTPS protocol mismatch blocks some API calls)"
     - "Company Management Data Loading - ❌ FAILED (0 companies loaded due to Mixed Content Error)"
