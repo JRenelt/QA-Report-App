@@ -616,6 +616,11 @@ const ProjectManagementV2: React.FC<ProjectManagementV2Props> = ({ isOpen, onClo
         setImportResult(data);
         setSuccess(`✅ ${data.message}`);
         
+        // Für SysOp: Firma im Filter auswählen, damit Projekte angezeigt werden
+        if (currentUser?.role === 'sysop' && companyId) {
+          setSelectedCompanyFilter(companyId);
+        }
+        
         // Liste neu laden
         await loadProjects();
         
